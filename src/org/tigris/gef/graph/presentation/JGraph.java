@@ -51,22 +51,17 @@ import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 
-import org.tigris.gef.base.NudgeAction;
-import org.tigris.gef.base.SelectNextAction;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerDiagram;
+import org.tigris.gef.base.NudgeAction;
 import org.tigris.gef.base.SelectNearAction;
+import org.tigris.gef.base.SelectNextAction;
 import org.tigris.gef.base.ZoomAction;
-import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.ConnectionConstrainer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.TextEditor;
@@ -77,8 +72,10 @@ import org.tigris.gef.presentation.TextEditor;
  * class Editor, and other classes which do the real work.
  */
 
-public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
-        MouseWheelListener {
+public class JGraph extends JPanel
+        implements Cloneable, AdjustmentListener, MouseWheelListener {
+
+    static final long serialVersionUID = -5459241816919316496L;
 
     /**
      * The Editor object that is being shown in this panel
@@ -96,6 +93,7 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
     private String _currentDiagramId = null;
 
     private ZoomAction zoomOut = new ZoomAction(0.9);
+
     private ZoomAction zoomIn = new ZoomAction(1.1);
 
     // //////////////////////////////////////////////////////////////
@@ -162,8 +160,8 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
 
         Collection layerManagerContent = ed.getLayerManager().getContents();
         if (layerManagerContent != null) {
-            updateDrawingSizeToIncludeAllFigs(Collections
-                    .enumeration(layerManagerContent));
+            updateDrawingSizeToIncludeAllFigs(
+                    Collections.enumeration(layerManagerContent));
         } // end if
 
         int mask = java.awt.event.KeyEvent.ALT_MASK
@@ -178,9 +176,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
         if (o instanceof JGraph) {
             JGraph other = (JGraph) o;
             if (((this.getCurrentDiagramId() != null && this
-                    .getCurrentDiagramId().equals(other.getCurrentDiagramId())) || (this
-                    .getCurrentDiagramId() == null && other
-                    .getCurrentDiagramId() == null))
+                    .getCurrentDiagramId().equals(other.getCurrentDiagramId()))
+                    || (this.getCurrentDiagramId() == null
+                            && other.getCurrentDiagramId() == null))
                     && this.getEditor().equals(other.getEditor())) {
                 return true;
             }
@@ -191,23 +189,24 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
     /**
      * @see Object#hashCode()
      * 
-     * TODO: Investigate further:
-     * <p>
+     *      TODO: Investigate further:
+     *      <p>
      * 
-     * According to a mail from GZ (6th November 2004) on the ArgoUML dev list,
-     * {@link javax.swing.RepaintManager} puts these objects in some kind of
-     * data structure that uses this function. Assuming that there is a reason
-     * for this we dare not sabotage this by short-circuiting this to 0. Instead
-     * we rely on that
-     * {@link org.tigris.gef.graph.presentation.JGraph#setDiagram(
-     * org.tigris.gef.base.Diagram)} actually removes this object from the
-     * {@link javax.swing.RepaintManager} and registers it again when resetting
-     * the diagram id.
-     * <p>
+     *      According to a mail from GZ (6th November 2004) on the ArgoUML dev
+     *      list, {@link javax.swing.RepaintManager} puts these objects in some
+     *      kind of data structure that uses this function. Assuming that there
+     *      is a reason for this we dare not sabotage this by short-circuiting
+     *      this to 0. Instead we rely on that
+     *      {@link org.tigris.gef.graph.presentation.JGraph#setDiagram( org.tigris.gef.base.Diagram)}
+     *      actually removes this object from the
+     *      {@link javax.swing.RepaintManager} and registers it again when
+     *      resetting the diagram id.
+     *      <p>
      * 
-     * This is based on the assumption that the function {@link #equals(Object)}
-     * must work as it does. I (Linus) have not understood why it must. Could
-     * someone please explain that in the javadoc.
+     *      This is based on the assumption that the function
+     *      {@link #equals(Object)} must work as it does. I (Linus) have not
+     *      understood why it must. Could someone please explain that in the
+     *      javadoc.
      */
     public int hashCode() {
         if (getCurrentDiagramId() == null) {
@@ -236,14 +235,14 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
     }
 
     /* Set up some standard keystrokes and the Cmds that they invoke. */
-    public void initKeys() {
+    private void initKeys() {
         int shift = KeyEvent.SHIFT_MASK;
         int alt = KeyEvent.ALT_MASK;
         int meta = KeyEvent.META_MASK;
 
         bindKey(new SelectNextAction("Select Next", true), KeyEvent.VK_TAB, 0);
-        bindKey(new SelectNextAction("Select Previous", false),
-                KeyEvent.VK_TAB, shift);
+        bindKey(new SelectNextAction("Select Previous", false), KeyEvent.VK_TAB,
+                shift);
 
         bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
         bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
@@ -251,7 +250,8 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
         bindKey(new NudgeAction(NudgeAction.DOWN), KeyEvent.VK_DOWN, 0);
 
         bindKey(new NudgeAction(NudgeAction.LEFT, 8), KeyEvent.VK_LEFT, shift);
-        bindKey(new NudgeAction(NudgeAction.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
+        bindKey(new NudgeAction(NudgeAction.RIGHT, 8), KeyEvent.VK_RIGHT,
+                shift);
         bindKey(new NudgeAction(NudgeAction.UP, 8), KeyEvent.VK_UP, shift);
         bindKey(new NudgeAction(NudgeAction.DOWN, 8), KeyEvent.VK_DOWN, shift);
 
@@ -262,9 +262,10 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
 
         bindKey(new SelectNearAction(SelectNearAction.LEFT), KeyEvent.VK_LEFT,
                 meta);
-        bindKey(new SelectNearAction(SelectNearAction.RIGHT),
-                KeyEvent.VK_RIGHT, meta);
-        bindKey(new SelectNearAction(SelectNearAction.UP), KeyEvent.VK_UP, meta);
+        bindKey(new SelectNearAction(SelectNearAction.RIGHT), KeyEvent.VK_RIGHT,
+                meta);
+        bindKey(new SelectNearAction(SelectNearAction.UP), KeyEvent.VK_UP,
+                meta);
         bindKey(new SelectNearAction(SelectNearAction.DOWN), KeyEvent.VK_DOWN,
                 meta);
     }
@@ -273,9 +274,9 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
      * Utility function to bind a keystroke to a Swing Action. Note that GEF
      * Cmds are subclasses of Swing's Actions.
      */
-    public void bindKey(ActionListener action, int keyCode, int modifiers) {
-        drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(
-                keyCode, modifiers), WHEN_FOCUSED);
+    private void bindKey(ActionListener action, int keyCode, int modifiers) {
+        drawingPane.registerKeyboardAction(action,
+                KeyStroke.getKeyStroke(keyCode, modifiers), WHEN_FOCUSED);
     }
 
     // //////////////////////////////////////////////////////////////
@@ -291,11 +292,10 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
      * Layer that the Editor is using.
      */
     public void setDiagram(Diagram d) {
-        if (d == null)
-            return;
+        if (d == null) return;
         if (_currentDiagramId != null) {
-            _viewPortPositions.put(_currentDiagramId, scrollPane.getViewport()
-                    .getViewRect());
+            _viewPortPositions.put(_currentDiagramId,
+                    scrollPane.getViewport().getViewRect());
         } // end if
         setDrawingSize(getDefaultSize());
         updateDrawingSizeToIncludeAllFigs(d.elements());
@@ -321,7 +321,7 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
      * Enlarges the JGraphInternalPane dimensions as necessary to insure that
      * all the contained Figs are visible.
      */
-    protected void updateDrawingSizeToIncludeAllFigs(Enumeration iter) {
+    private void updateDrawingSizeToIncludeAllFigs(Enumeration iter) {
         if (iter == null) {
             return;
         }
@@ -333,12 +333,12 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
             Point point = rect.getLocation();
             Dimension dim = rect.getSize();
             if ((point.x + dim.width + 5) > drawingSize.width) {
-                drawingSize
-                        .setSize(point.x + dim.width + 5, drawingSize.height);
+                drawingSize.setSize(point.x + dim.width + 5,
+                        drawingSize.height);
             }
             if ((point.y + dim.height + 5) > drawingSize.height) {
-                drawingSize
-                        .setSize(drawingSize.width, point.y + dim.height + 5);
+                drawingSize.setSize(drawingSize.width,
+                        point.y + dim.height + 5);
             }
         }
         setDrawingSize(drawingSize.width, drawingSize.height);
@@ -348,46 +348,22 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
         setDrawingSize(new Dimension(width, height));
     }
 
-    public void setDrawingSize(Dimension dim) {
+    private void setDrawingSize(Dimension dim) {
         editor.drawingSizeChanged(dim);
     }
 
     /**
      * Set the GraphModel the Editor is using.
      */
-    public void setGraphModel(GraphModel gm) {
+    void setGraphModel(GraphModel gm) {
         editor.setGraphModel(gm);
     }
 
     /**
      * Get the GraphModel the Editor is using.
      */
-    public GraphModel getGraphModel() {
+    GraphModel getGraphModel() {
         return editor.getGraphModel();
-    }
-
-    /**
-     * Get and set the Renderer used to make FigNodes for nodes in the
-     * GraphModel.
-     */
-    public void setGraphNodeRenderer(GraphNodeRenderer r) {
-        editor.setGraphNodeRenderer(r);
-    }
-
-    public GraphNodeRenderer getGraphNodeRenderer() {
-        return editor.getGraphNodeRenderer();
-    }
-
-    /**
-     * Get and set the Renderer used to make FigEdges for edges in the
-     * GraphModel.
-     */
-    public void setGraphEdgeRenderer(GraphEdgeRenderer r) {
-        editor.setGraphEdgeRenderer(r);
-    }
-
-    public GraphEdgeRenderer getGraphEdgeRenderer() {
-        return editor.getGraphEdgeRenderer();
     }
 
     /**
@@ -438,90 +414,18 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
     // //////////////////////////////////////////////////////////////
     // Editor facade
 
-    /**
-     * The JGraph is painted by simply painting its Editor.
-     */
-    // public void paint(Graphics g) { _editor.paint(getGraphics()); }
-    // //////////////////////////////////////////////////////////////
-    // selection methods
-    /**
-     * Add the given item to this Editor's selections.
-     */
-    public void select(Fig f) {
-        if (f == null)
-            deselectAll();
-        else
-            editor.getSelectionManager().select(f);
-    }
-
-    /**
-     * Find the Fig that owns the given item and select it.
-     */
-    public void selectByOwner(Object owner) {
-        Layer lay = editor.getLayerManager().getActiveLayer();
-        if (lay instanceof LayerDiagram)
-            select(((LayerDiagram) lay).presentationFor(owner));
-    }
-
-    /**
-     * Find Fig that owns the given item, or the item if it is a Fig, and select
-     * it.
-     */
-    public void selectByOwnerOrFig(Object owner) {
-        if (owner instanceof Fig)
-            select((Fig) owner);
-        else
-            selectByOwner(owner);
-    }
-
-    /**
-     * Add the Fig that owns the given item to this Editor's selections.
-     */
-    public void selectByOwnerOrNoChange(Object owner) {
-        Layer lay = editor.getLayerManager().getActiveLayer();
-        if (lay instanceof LayerDiagram) {
-            Fig f = ((LayerDiagram) lay).presentationFor(owner);
-            if (f != null)
-                select(f);
-        }
-    }
-
-    /**
-     * Remove the given item from this editors selections.
-     */
-    public void deselect(Fig f) {
-        editor.getSelectionManager().deselect(f);
-    }
-
-    /**
-     * Select the given item if it was not already selected, and vis-a-versa.
-     */
-    public void toggleItem(Fig f) {
-        editor.getSelectionManager().toggle(f);
-    }
-
     /** Deslect everything that is currently selected. */
     public void deselectAll() {
         editor.getSelectionManager().deselectAll();
     }
 
-    /** Select a collection of Figs. */
-    public void select(Collection<DiagramElement> items) {
-        editor.getSelectionManager().selectFigs(items);
-    }
-
     /**
      * Select a collection of Figs.
+     * 
      * @deprecated in GEF 0.13.1 use select(Collection<DiagramElement>);
      */
     public void select(Vector items) {
         editor.getSelectionManager().select(items);
-    }
-
-    
-    /** Toggle the selection of a collection of Figs. */
-    public void toggleItems(Vector items) {
-        editor.getSelectionManager().toggle(items);
     }
 
     /** reply a Vector of all selected Figs. Used in many Cmds. */
@@ -529,48 +433,26 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
         return editor.getSelectionManager().getFigs();
     }
 
-    // public Dimension getPreferredSize() { return new Dimension(1000, 1000); }
-
-    // public Dimension getMinimumSize() { return new Dimension(1000, 1000); }
-
-    // public Dimension getSize() { return new Dimension(1000, 1000); }
-
-    public void setDefaultSize(int width, int height) {
-        defaultSize = new Dimension(width, height);
-    }
-
-    public void setDefaultSize(Dimension dim) {
-        defaultSize = dim;
-    }
-
-    public Dimension getDefaultSize() {
+    private Dimension getDefaultSize() {
         return defaultSize;
     }
 
     /** Get the position of the editor's scrollpane. */
-    public Point getViewPosition() {
+    protected Point getViewPosition() {
         return scrollPane.getViewport().getViewPosition();
-    }
-
-    /** Set the position of the editor's scrollpane. */
-    public void setViewPosition(Point p) {
-        if (p != null)
-            scrollPane.getViewport().setViewPosition(p);
     }
 
     /**
      * Establishes alternate MouseWheelListener object that's only active when
      * the alt/shift/ctrl keys are held down.
      * 
-     * @param listener
-     *                MouseWheelListener that will receive MouseWheelEvents
-     *                generated by this JGraph.
-     * @param mask
-     *                logical OR of key modifier values as defined by
-     *                java.awt.event.KeyEvent constants. This has been tested
-     *                with ALT_MASK, SHIFT_MASK, and CTRL_MASK.
+     * @param listener MouseWheelListener that will receive MouseWheelEvents
+     *            generated by this JGraph.
+     * @param mask logical OR of key modifier values as defined by
+     *            java.awt.event.KeyEvent constants. This has been tested with
+     *            ALT_MASK, SHIFT_MASK, and CTRL_MASK.
      */
-    public void establishAlternateMouseWheelListener(
+    private void establishAlternateMouseWheelListener(
             MouseWheelListener listener, int mask) {
 
         WheelKeyListenerToggleAction keyListener = new WheelKeyListenerToggleAction(
@@ -579,12 +461,10 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
         this.drawingPane.addKeyListener(keyListener);
     }
 
-    static final long serialVersionUID = -5459241816919316496L;
-
     /**
      * @return Returns the _currentDiagramId.
      */
-    protected String getCurrentDiagramId() {
+    private String getCurrentDiagramId() {
         return _currentDiagramId;
     }
 
@@ -616,6 +496,8 @@ public class JGraph extends JPanel implements Cloneable, AdjustmentListener,
 } /* end class JGraph */
 
 class JGraphInternalPane extends JPanel {
+
+    static final long serialVersionUID = -5067026168452437942L;
 
     private Editor _editor;
 
@@ -654,8 +536,7 @@ class JGraphInternalPane extends JPanel {
     }
 
     public void setToolTipText(String text) {
-        if ("".equals(text))
-            text = null;
+        if ("".equals(text)) text = null;
         putClientProperty(TOOL_TIP_TEXT_KEY, text);
         ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
         // if (text != null) {
@@ -683,16 +564,16 @@ class JGraphInternalPane extends JPanel {
         return true;
     }
 
-    static final long serialVersionUID = -5067026168452437942L;
-
 } /* end class JGraphInternalPane */
 
 class WheelKeyListenerToggleAction implements KeyListener {
 
     private int mask;
+
     private int down;
 
     private MouseWheelListener listener;
+
     private JPanel panel;
 
     /**
@@ -702,15 +583,12 @@ class WheelKeyListenerToggleAction implements KeyListener {
      * automatically managed by the JScrollPanel would never see the wheel
      * events.
      * 
-     * @param panel
-     *                JPanel object that will be listening for MouseWheelEvents
-     *                on demand.
-     * @param listener
-     *                MouseWheelListener that listens for MouseWheelEvents
-     * @param modifiersMask
-     *                the logical OR of the AWT modifier keys values defined as
-     *                constants by the KeyEvent class. This has been tested with
-     *                ALT_MASK, CTRL_MASK, and SHIFT_MASK.
+     * @param panel JPanel object that will be listening for MouseWheelEvents on
+     *            demand.
+     * @param listener MouseWheelListener that listens for MouseWheelEvents
+     * @param modifiersMask the logical OR of the AWT modifier keys values
+     *            defined as constants by the KeyEvent class. This has been
+     *            tested with ALT_MASK, CTRL_MASK, and SHIFT_MASK.
      */
     public WheelKeyListenerToggleAction(JPanel panel,
             MouseWheelListener listener, int modifiersMask) {
