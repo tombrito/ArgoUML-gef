@@ -65,8 +65,8 @@ import java.util.List;
  * supporting dialogs and frames are implemented in their own classes.
  * <p>
  * 
- * An Editor's LayerManager has a stack of Layers. Normally Layers contain
- * Figs. Some Figs are linked to NetPrimitives. When Figs are selected the
+ * An Editor's LayerManager has a stack of Layers. Normally Layers contain Figs.
+ * Some Figs are linked to NetPrimitives. When Figs are selected the
  * SelectionManager holds a Selection object. The behaviour of the Editor is
  * determined by its current Mode. The Editor's ModeManager keeps track of all
  * the active Modes. Modes interpret user input events and decide how to change
@@ -93,8 +93,8 @@ import java.util.List;
  * @see Cmd
  */
 
-public class Editor implements Serializable, MouseListener,
-        MouseMotionListener, KeyListener {
+public class Editor implements Serializable, MouseListener, MouseMotionListener,
+        KeyListener {
     // //////////////////////////////////////////////////////////////
     // constants
 
@@ -270,16 +270,14 @@ public class Editor implements Serializable, MouseListener,
     public boolean getGridHidden() {
         boolean h = false;
         Layer l = _layerManager.findLayerNamed("Grid");
-        if (l != null)
-            h = l.getHidden();
+        if (l != null) h = l.getHidden();
         return h;
     }
 
     /** Set the hidden state of the Grid layer. */
     public void setGridHidden(boolean b) {
         Layer l = _layerManager.findLayerNamed("Grid");
-        if (l != null)
-            l.setHidden(b);
+        if (l != null) l.setHidden(b);
     }
 
     /**
@@ -343,9 +341,9 @@ public class Editor implements Serializable, MouseListener,
     public void setScale(double scale) {
         _scale = scale;
         _layerManager.setScale(_scale);
-        jComponent.setPreferredSize(new Dimension(
-                (int) (_naturalComponentWidth * _scale),
-                (int) (_naturalComponentHeight * _scale)));
+        jComponent.setPreferredSize(
+                new Dimension((int) (_naturalComponentWidth * _scale),
+                        (int) (_naturalComponentHeight * _scale)));
         damageAll();
     }
 
@@ -363,8 +361,7 @@ public class Editor implements Serializable, MouseListener,
      * (default), elements in this Editor are selectable. Otherwise, elements
      * are not selectable, neither by keyboard nor by mouse activity.
      * 
-     * @param selectable
-     *                New value for the flag.
+     * @param selectable New value for the flag.
      */
     public void setElementsSelectable(boolean selectable) {
         _canSelectElements = selectable;
@@ -423,8 +420,7 @@ public class Editor implements Serializable, MouseListener,
 
     /** Add a Fig to the diagram being edited. */
     public void add(Fig f) {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Adding fig " + f);
+        if (LOG.isDebugEnabled()) LOG.debug("Adding fig " + f);
         getLayerManager().add(f);
     }
 
@@ -479,10 +475,8 @@ public class Editor implements Serializable, MouseListener,
         if (_canSelectElements) {
             Selection sel = _selectionManager.findSelectionAt(x, y);
             if (sel != _curSel) {
-                if (_curSel != null)
-                    _curSel.mouseExited(me);
-                if (sel != null)
-                    sel.mouseEntered(me);
+                if (_curSel != null) _curSel.mouseExited(me);
+                if (sel != null) sel.mouseEntered(me);
             }
             _curSel = sel;
         }
@@ -510,8 +504,7 @@ public class Editor implements Serializable, MouseListener,
      * Modify the given point to be on the guideline (In this case, a gridline).
      */
     public void snap(Point p) {
-        if (_guide != null)
-            _guide.snap(p);
+        if (_guide != null) _guide.snap(p);
     }
 
     public Guide getGuide() {
@@ -593,8 +586,7 @@ public class Editor implements Serializable, MouseListener,
      * 
      */
     public void paint(Graphics g) {
-        if (!shouldPaint())
-            return;
+        if (!shouldPaint()) return;
 
         if (g instanceof Graphics2D) {
             Graphics2D g2 = (Graphics2D) g;
@@ -636,8 +628,7 @@ public class Editor implements Serializable, MouseListener,
                 (int) (fig.getHeight() * _scale));
         bounds.grow((int) (50 * _scale), (int) (50 * _scale));
         JComponent c = getJComponent();
-        if (c != null)
-            c.scrollRectToVisible(bounds);
+        if (c != null) c.scrollRectToVisible(bounds);
     }
 
     /** Reply the current SelectionManager of this Editor. */
@@ -688,8 +679,7 @@ public class Editor implements Serializable, MouseListener,
      * diagram on the system clipboard.
      */
     public Image createImage(int w, int h) {
-        if (jComponent == null)
-            return null;
+        if (jComponent == null) return null;
         if (_peer_component == null) {
             _peer_component = jComponent;
             while (_peer_component instanceof JComponent)
@@ -709,16 +699,14 @@ public class Editor implements Serializable, MouseListener,
      * be visible because LayerGrid covers the entire drawing area.
      */
     public Color getBackground() {
-        if (jComponent == null)
-            return Color.lightGray;
+        if (jComponent == null) return Color.lightGray;
         return jComponent.getBackground();
     }
 
     public void setActiveTextEditor(FigTextEditor fte) {
         FigTextEditor oldTextEditor = _activeTextEditor;
         _activeTextEditor = fte;
-        if (oldTextEditor != null)
-            oldTextEditor.endEditing();
+        if (oldTextEditor != null) oldTextEditor.endEditing();
     }
 
     public TextEditor getActiveTextEditor() {
@@ -738,9 +726,9 @@ public class Editor implements Serializable, MouseListener,
         _naturalComponentWidth = dim.width;
         _naturalComponentHeight = dim.height;
         if (jComponent != null) {
-            jComponent.setPreferredSize(new Dimension(
-                    (int) (_naturalComponentWidth * _scale),
-                    (int) (_naturalComponentHeight * _scale)));
+            jComponent.setPreferredSize(
+                    new Dimension((int) (_naturalComponentWidth * _scale),
+                            (int) (_naturalComponentHeight * _scale)));
             jComponent.revalidate();
         }
     }
@@ -774,6 +762,7 @@ public class Editor implements Serializable, MouseListener,
     /**
      * Scales the mouse coordinates (which match the drawing scale) back to the
      * model scale.
+     * 
      * @see #setScale(double)
      */
     public MouseEvent translateMouseEvent(MouseEvent me) {
@@ -787,6 +776,7 @@ public class Editor implements Serializable, MouseListener,
     /**
      * Scales the mouse coordinates (which match the model scale) back to the
      * drawing scale.
+     * 
      * @see #setScale(double)
      */
     public MouseEvent retranslateMouseEvent(MouseEvent me) {
@@ -820,9 +810,8 @@ public class Editor implements Serializable, MouseListener,
     /** Invoked when a mouse button has been pressed. */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
-            if (LOG.isDebugEnabled())
-                LOG
-                        .debug("MousePressed detected but rejected as already consumed");
+            if (LOG.isDebugEnabled()) LOG.debug(
+                    "MousePressed detected but rejected as already consumed");
             return;
         }
         translateMouseEvent(me);
@@ -893,7 +882,9 @@ public class Editor implements Serializable, MouseListener,
         }
     }
 
-    /** Invoked when the mouse button has been moved (with no buttons no down). */
+    /**
+     * Invoked when the mouse button has been moved (with no buttons no down).
+     */
     public void mouseMoved(MouseEvent me) {
         translateMouseEvent(me);
         Globals.curEditor(this);
@@ -957,8 +948,7 @@ public class Editor implements Serializable, MouseListener,
      * safe environment so that buggy actions cannot crash the whole Editor.
      */
     public void executeCmd(Cmd c, InputEvent ie) {
-        if (c == null)
-            return;
+        if (c == null) return;
         try {
             c.doIt();
         } catch (java.lang.Throwable ex) {
