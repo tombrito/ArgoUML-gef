@@ -69,8 +69,7 @@ public interface GraphModel extends BaseGraphModel {
     /**
      * Set the rules dictating which ports are connectable by which edge
      * 
-     * @param cc
-     *                A connection constrainer
+     * @param cc A connection constrainer
      */
     public void setConnectionConstrainer(ConnectionConstrainer cc);
 } /* end interface GraphModel */

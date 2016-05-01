@@ -60,8 +60,8 @@ public class SvgWriter extends Graphics {
             try {
                 _writer = new OutputStreamWriter(out, "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                System.err
-                        .println("[SVGWriter] UTF-8 not supported. Switching to default."
+                System.err.println(
+                        "[SVGWriter] UTF-8 not supported. Switching to default."
                                 + e);
                 _writer = new OutputStreamWriter(out);
             }
@@ -106,7 +106,9 @@ public class SvgWriter extends Graphics {
     }
 
     private Utf8Writer _writer;
+
     Document _svg;
+
     Element _root;
 
     /**
@@ -128,16 +130,23 @@ public class SvgWriter extends Graphics {
      * The current font.
      */
     private Font _font = new Font("Verdana", Font.PLAIN, 8);
+
     private Rectangle _clip;
 
     // To keep the SVG output as simple as possible, I handle all
     // the transformations and the scaling in the writer.
     private int _xOffset = 0;
+
     private int _yOffset = 0;
+
     private int _hInset = 10;
+
     private int _vInset = 10;
+
     private double xScale = 1.0;
+
     private double yScale = 1.0;
+
     private String SVGns = "http://www.w3.org/2000/svg";
 
     /**
@@ -147,7 +156,7 @@ public class SvgWriter extends Graphics {
     private boolean isInline = false;
 
     public SvgWriter(OutputStream stream, Rectangle drawingArea)
-            throws IOException, Exception {
+        throws IOException, Exception {
         _writer = new Utf8Writer(stream);
         _drawingArea = drawingArea;
         translate(_hInset - drawingArea.x, _vInset - drawingArea.y);
@@ -160,10 +169,10 @@ public class SvgWriter extends Graphics {
         _svg = builder.newDocument();
         _root = _svg.createElement("svg");
         _root.setAttribute("xmlns", SVGns);
-        _root.setAttribute("width", ""
-                + (2 * _hInset + scaleX(_drawingArea.width)));
-        _root.setAttribute("height", ""
-                + (2 * _vInset + scaleY(_drawingArea.height)));
+        _root.setAttribute("width",
+                "" + (2 * _hInset + scaleX(_drawingArea.width)));
+        _root.setAttribute("height",
+                "" + (2 * _vInset + scaleY(_drawingArea.height)));
         _root.setAttribute("version", "1.1");
     }
 
@@ -171,14 +180,14 @@ public class SvgWriter extends Graphics {
      * 
      * @param stream
      * @param drawingArea
-     * @param isInline
-     *                If false, it writes the DOCTYPE and XML nodes. If true, we
-     *                don't write them (think on inline SVG)
+     * @param isInline If false, it writes the DOCTYPE and XML nodes. If true,
+     *            we don't write them (think on inline SVG)
      * @throws IOException
      * @throws Exception
      */
     public SvgWriter(OutputStream stream, Rectangle drawingArea,
-            boolean isInline) throws IOException, Exception {
+            boolean isInline)
+        throws IOException, Exception {
         this(stream, drawingArea);
         this.isInline = isInline;
     }
@@ -206,16 +215,15 @@ public class SvgWriter extends Graphics {
         case Node.DOCUMENT_NODE: {
             if (!isInline) {
                 _writer.println("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
-                _writer
-                        .print("<!DOCTYPE svg PUBLIC "
-                                + "\"-//W3C//DTD SVG 1.1//EN\" "
-                                + "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
+                _writer.print("<!DOCTYPE svg PUBLIC "
+                        + "\"-//W3C//DTD SVG 1.1//EN\" "
+                        + "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
             }
             printDOMTree(((Document) node).getDocumentElement());
             break;
         }
 
-            // print element with attributes
+        // print element with attributes
         case Node.ELEMENT_NODE: {
             _writer.print("<");
             _writer.print(node.getNodeName());
@@ -247,7 +255,7 @@ public class SvgWriter extends Graphics {
             break;
         }
 
-            // handle entity reference nodes
+        // handle entity reference nodes
         case Node.ENTITY_REFERENCE_NODE: {
             _writer.print("&");
             _writer.print(node.getNodeName());
@@ -255,7 +263,7 @@ public class SvgWriter extends Graphics {
             break;
         }
 
-            // print cdata sections
+        // print cdata sections
         case Node.CDATA_SECTION_NODE: {
             _writer.print("<![CDATA[");
             _writer.print(node.getNodeValue());
@@ -263,7 +271,7 @@ public class SvgWriter extends Graphics {
             break;
         }
 
-            // print text
+        // print text
         case Node.TEXT_NODE: {
             String text = node.getNodeValue();
 
@@ -295,7 +303,7 @@ public class SvgWriter extends Graphics {
             break;
         }
 
-            // print processing instruction
+        // print processing instruction
         case Node.PROCESSING_INSTRUCTION_NODE: {
             _writer.print("<?");
             _writer.print(node.getNodeName());
@@ -335,8 +343,7 @@ public class SvgWriter extends Graphics {
     /**
      * Set the current color for drawing operations.
      * 
-     * @param c
-     *                The new color for drawing operations.
+     * @param c The new color for drawing operations.
      */
     public void setColor(Color c) {
         _fColor = c;
@@ -365,8 +372,7 @@ public class SvgWriter extends Graphics {
     /**
      * Set the new background color.
      * 
-     * @param c
-     *                The new background color.
+     * @param c The new background color.
      */
     private void setBackgroundColor(Color c) {
         _bgColor = c;
@@ -422,8 +428,8 @@ public class SvgWriter extends Graphics {
          * 0, iw, ih, pixels, 0, iw); //
          * pg.setColorModel(Toolkit.getDefaultToolkit().getColorModel()); try {
          * pg.grabPixels(); } catch (InterruptedException e) {
-         * System.err.println("interrupted waiting for pixels!"); return false; }
-         * if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
+         * System.err.println("interrupted waiting for pixels!"); return false;
+         * } if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
          * System.err.println("image fetch aborted or errored"); return false; }
          * for (int j = 0; j < ih; j++) { for (int i = 0; i < iw; i++) {
          * handlesinglepixel(i, j, pixels[j * iw + i]); } if (iw % 2 == 1)
@@ -531,7 +537,8 @@ public class SvgWriter extends Graphics {
         drawOval(x, y, w, h, getColorAsString(), getColorAsString(), "1");
     }
 
-    public void drawArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
+    public void drawArc(int x, int y, int w, int h, int startAngle,
+            int arcAngle) {
 
         /*
          * writeEllipsePath(x,y,w+1,h+1,startAngle,arcAngle);
@@ -539,7 +546,8 @@ public class SvgWriter extends Graphics {
          */
     }
 
-    public void fillArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
+    public void fillArc(int x, int y, int w, int h, int startAngle,
+            int arcAngle) {
 
         /*
          * writeEllipsePath(x,y,w,h,startAngle,arcAngle); p.println("eofill");
@@ -589,17 +597,14 @@ public class SvgWriter extends Graphics {
 
         for (int i = 0; i < nPoints; i++) {
 
-            if (i > 0)
-                pointList.append(" ");
+            if (i > 0) pointList.append(" ");
 
-            pointList.append("" + transformX(xPoints[i]) + ","
-                    + transformY(yPoints[i]));
+            pointList.append(
+                    "" + transformX(xPoints[i]) + "," + transformY(yPoints[i]));
 
-            if (transformX(xPoints[i]) > maxX)
-                maxX = transformX(xPoints[i]);
+            if (transformX(xPoints[i]) > maxX) maxX = transformX(xPoints[i]);
 
-            if (transformY(yPoints[i]) > maxY)
-                maxY = transformY(yPoints[i]);
+            if (transformY(yPoints[i]) > maxY) maxY = transformY(yPoints[i]);
         }
 
         polygon.setAttribute("points", pointList.toString());
@@ -638,17 +643,14 @@ public class SvgWriter extends Graphics {
 
         for (int i = 0; i < nPoints; i++) {
 
-            if (i > 0)
-                pointList.append(" ");
+            if (i > 0) pointList.append(" ");
 
-            pointList.append("" + transformX(xPoints[i]) + ","
-                    + transformY(yPoints[i]));
+            pointList.append(
+                    "" + transformX(xPoints[i]) + "," + transformY(yPoints[i]));
 
-            if (transformX(xPoints[i]) > maxX)
-                maxX = transformX(xPoints[i]);
+            if (transformX(xPoints[i]) > maxX) maxX = transformX(xPoints[i]);
 
-            if (transformY(yPoints[i]) > maxY)
-                maxY = transformY(yPoints[i]);
+            if (transformY(yPoints[i]) > maxY) maxY = transformY(yPoints[i]);
         }
 
         polyline.setAttribute("points", pointList.toString());
@@ -707,12 +709,9 @@ public class SvgWriter extends Graphics {
     /**
      * Draw a string at a given position.
      * 
-     * @param t
-     *                The string to draw.
-     * @param x
-     *                The horizontal position of the text.
-     * @param y
-     *                The vertical position of the text.
+     * @param t The string to draw.
+     * @param x The horizontal position of the text.
+     * @param y The vertical position of the text.
      */
     public void drawString(String t, int x, int y) {
         Element text = _svg.createElement("text");

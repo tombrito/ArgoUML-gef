@@ -56,34 +56,55 @@ public class SVGParser extends DefaultHandler {
     // instance variables
 
     protected Diagram _diagram = null;
+
     protected int _nestedGroups = 0;
+
     protected HashMap _figRegistry = null;
+
     protected Map _ownerRegistry = new HashMap();
 
     // //////////////////////////////////////////////////////////////
     // XML element handlers
     private int _elementState = 0;
+
     private static final int DEFAULT_STATE = 0;
+
     private static final int TEXT_STATE = 1;
+
     private static final int LINE_STATE = 2;
+
     private static final int POLY_STATE = 3;
+
     private static final int NODE_STATE = 4;
+
     private static final int EDGE_STATE = 5;
+
     private static final int PRIVATE_STATE = 6;
 
     private static final int PRIVATE_NODE_STATE = 64;
+
     private static final int PRIVATE_EDGE_STATE = 65;
+
     private static final int TEXT_NODE_STATE = 14;
+
     private static final int TEXT_EDGE_STATE = 15;
 
     private FigLine _currentLine = null;
+
     private int _x1Int = 0;
+
     private int _y1Int = 0;
+
     private FigText _currentText = null;
+
     private StringBuffer _textBuf = null;
+
     private FigPoly _currentPoly = null;
+
     private FigNode _currentNode = null;
+
     private FigEdge _currentEdge = null;
+
     private String[] _entityPaths = { "/org/tigris/gef/xml/dtd/" };
 
     // //////////////////////////////////////////////////////////////
@@ -96,39 +117,26 @@ public class SVGParser extends DefaultHandler {
         if ((_elementState == TEXT_STATE || _elementState == PRIVATE_STATE
                 || _elementState == TEXT_NODE_STATE
                 || _elementState == TEXT_EDGE_STATE
-                || _elementState == PRIVATE_NODE_STATE || _elementState == PRIVATE_EDGE_STATE)
-                && _textBuf != null) {
+                || _elementState == PRIVATE_NODE_STATE
+                || _elementState == PRIVATE_EDGE_STATE) && _textBuf != null) {
             _textBuf.append(ch, start, length);
         }
     }
 
     protected Color colorByName(String name, Color defaultColor) {
-        if (name.equalsIgnoreCase("white"))
-            return Color.white;
-        if (name.equalsIgnoreCase("lightGray"))
-            return Color.lightGray;
-        if (name.equalsIgnoreCase("gray"))
-            return Color.gray;
-        if (name.equalsIgnoreCase("darkGray"))
-            return Color.darkGray;
-        if (name.equalsIgnoreCase("black"))
-            return Color.black;
-        if (name.equalsIgnoreCase("red"))
-            return Color.red;
-        if (name.equalsIgnoreCase("pink"))
-            return Color.pink;
-        if (name.equalsIgnoreCase("orange"))
-            return Color.orange;
-        if (name.equalsIgnoreCase("yellow"))
-            return Color.yellow;
-        if (name.equalsIgnoreCase("green"))
-            return Color.green;
-        if (name.equalsIgnoreCase("magenta"))
-            return Color.magenta;
-        if (name.equalsIgnoreCase("cyan"))
-            return Color.cyan;
-        if (name.equalsIgnoreCase("blue"))
-            return Color.blue;
+        if (name.equalsIgnoreCase("white")) return Color.white;
+        if (name.equalsIgnoreCase("lightGray")) return Color.lightGray;
+        if (name.equalsIgnoreCase("gray")) return Color.gray;
+        if (name.equalsIgnoreCase("darkGray")) return Color.darkGray;
+        if (name.equalsIgnoreCase("black")) return Color.black;
+        if (name.equalsIgnoreCase("red")) return Color.red;
+        if (name.equalsIgnoreCase("pink")) return Color.pink;
+        if (name.equalsIgnoreCase("orange")) return Color.orange;
+        if (name.equalsIgnoreCase("yellow")) return Color.yellow;
+        if (name.equalsIgnoreCase("green")) return Color.green;
+        if (name.equalsIgnoreCase("magenta")) return Color.magenta;
+        if (name.equalsIgnoreCase("cyan")) return Color.cyan;
+        if (name.equalsIgnoreCase("blue")) return Color.blue;
         try {
             return Color.decode(name);
         } catch (Exception ex) {
@@ -440,10 +448,8 @@ public class SVGParser extends DefaultHandler {
         String name = attrList.getValue("id");
         String clsName = attrList.getValue("class");
         try {
-            if (clsName != null && !clsName.equals(""))
-                initDiagram(clsName);
-            if (name != null && !name.equals(""))
-                _diagram.setName(name);
+            if (clsName != null && !clsName.equals("")) initDiagram(clsName);
+            if (name != null && !name.equals("")) _diagram.setName(name);
         } catch (Exception ex) {
             System.out.println("Exception in handleSVG");
         }
@@ -505,19 +511,19 @@ public class SVGParser extends DefaultHandler {
             if (tagName.equals("moveto")) {
                 String x1 = attrList.getValue("x");
                 String y1 = attrList.getValue("y");
-                _x1Int = (x1 == null || x1.equals("")) ? 0 : Integer
-                        .parseInt(x1);
-                _y1Int = (y1 == null || y1.equals("")) ? 0 : Integer
-                        .parseInt(y1);
+                _x1Int = (x1 == null || x1.equals("")) ? 0
+                        : Integer.parseInt(x1);
+                _y1Int = (y1 == null || y1.equals("")) ? 0
+                        : Integer.parseInt(y1);
                 _currentLine.setX1(_x1Int);
                 _currentLine.setY1(_y1Int);
             } else if (tagName.equals("lineto")) {
                 String x2 = attrList.getValue("x");
                 String y2 = attrList.getValue("y");
-                int x2Int = (x2 == null || x2.equals("")) ? _x1Int : Integer
-                        .parseInt(x2);
-                int y2Int = (y2 == null || y2.equals("")) ? _y1Int : Integer
-                        .parseInt(y2);
+                int x2Int = (x2 == null || x2.equals("")) ? _x1Int
+                        : Integer.parseInt(x2);
+                int y2Int = (y2 == null || y2.equals("")) ? _y1Int
+                        : Integer.parseInt(y2);
                 _currentLine.setX2(x2Int);
                 _currentLine.setY2(y2Int);
             }
@@ -545,16 +551,16 @@ public class SVGParser extends DefaultHandler {
                 int end = name.indexOf(",", start);
                 if (start != -1) {
                     start++;
-                    int red = Integer.parseInt(name.substring(start, end)
-                            .trim());
+                    int red = Integer
+                            .parseInt(name.substring(start, end).trim());
                     start = end + 1;
                     end = name.indexOf(",", start);
-                    int green = Integer.parseInt(name.substring(start, end)
-                            .trim());
+                    int green = Integer
+                            .parseInt(name.substring(start, end).trim());
                     start = end + 1;
                     end = name.indexOf(")", start);
-                    int blue = Integer.parseInt(name.substring(start, end)
-                            .trim());
+                    int blue = Integer
+                            .parseInt(name.substring(start, end).trim());
 
                     // System.out.println("[SVGParser] parseColor:
                     // ("+red+","+green+","+blue+")");
@@ -567,34 +573,20 @@ public class SVGParser extends DefaultHandler {
             return defaultColor;
         }
 
-        if (name.equalsIgnoreCase("none"))
-            return null;
-        if (name.equalsIgnoreCase("white"))
-            return Color.white;
-        if (name.equalsIgnoreCase("lightGray"))
-            return Color.lightGray;
-        if (name.equalsIgnoreCase("gray"))
-            return Color.gray;
-        if (name.equalsIgnoreCase("darkGray"))
-            return Color.darkGray;
-        if (name.equalsIgnoreCase("black"))
-            return Color.black;
-        if (name.equalsIgnoreCase("red"))
-            return Color.red;
-        if (name.equalsIgnoreCase("pink"))
-            return Color.pink;
-        if (name.equalsIgnoreCase("orange"))
-            return Color.orange;
-        if (name.equalsIgnoreCase("yellow"))
-            return Color.yellow;
-        if (name.equalsIgnoreCase("green"))
-            return Color.green;
-        if (name.equalsIgnoreCase("magenta"))
-            return Color.magenta;
-        if (name.equalsIgnoreCase("cyan"))
-            return Color.cyan;
-        if (name.equalsIgnoreCase("blue"))
-            return Color.blue;
+        if (name.equalsIgnoreCase("none")) return null;
+        if (name.equalsIgnoreCase("white")) return Color.white;
+        if (name.equalsIgnoreCase("lightGray")) return Color.lightGray;
+        if (name.equalsIgnoreCase("gray")) return Color.gray;
+        if (name.equalsIgnoreCase("darkGray")) return Color.darkGray;
+        if (name.equalsIgnoreCase("black")) return Color.black;
+        if (name.equalsIgnoreCase("red")) return Color.red;
+        if (name.equalsIgnoreCase("pink")) return Color.pink;
+        if (name.equalsIgnoreCase("orange")) return Color.orange;
+        if (name.equalsIgnoreCase("yellow")) return Color.yellow;
+        if (name.equalsIgnoreCase("green")) return Color.green;
+        if (name.equalsIgnoreCase("magenta")) return Color.magenta;
+        if (name.equalsIgnoreCase("cyan")) return Color.cyan;
+        if (name.equalsIgnoreCase("blue")) return Color.blue;
 
         try {
             return Color.decode(name);
@@ -608,10 +600,8 @@ public class SVGParser extends DefaultHandler {
      * This method parses the 'style' attribute for a particular field
      * 
      * @return java.lang.String
-     * @param field
-     *                java.lang.String
-     * @param style
-     *                java.lang.String
+     * @param field java.lang.String
+     * @param style java.lang.String
      */
     protected String parseStyle(String field, String style) {
         field += ":";
@@ -621,8 +611,9 @@ public class SVGParser extends DefaultHandler {
             if (end != -1) {
                 return style.substring(start + field.length(), end).trim();
             } else {
-                return style.substring(start + field.length(),
-                        style.length() - 1).trim();
+                return style
+                        .substring(start + field.length(), style.length() - 1)
+                        .trim();
             }
         }
 
@@ -636,20 +627,20 @@ public class SVGParser extends DefaultHandler {
             } else if (tagName.equals("moveto")) {
                 String x1 = attrList.getValue("x");
                 String y1 = attrList.getValue("y");
-                _x1Int = (x1 == null || x1.equals("")) ? 0 : Integer
-                        .parseInt(x1);
-                _y1Int = (y1 == null || y1.equals("")) ? 0 : Integer
-                        .parseInt(y1);
+                _x1Int = (x1 == null || x1.equals("")) ? 0
+                        : Integer.parseInt(x1);
+                _y1Int = (y1 == null || y1.equals("")) ? 0
+                        : Integer.parseInt(y1);
                 // _currentLine.setX1(_x1Int);
                 // _currentLine.setY1(_y1Int);
                 _currentPoly.addPoint(_x1Int, _y1Int);
             } else if (tagName.equals("lineto")) {
                 String x2 = attrList.getValue("x");
                 String y2 = attrList.getValue("y");
-                int x2Int = (x2 == null || x2.equals("")) ? _x1Int : Integer
-                        .parseInt(x2);
-                int y2Int = (y2 == null || y2.equals("")) ? _y1Int : Integer
-                        .parseInt(y2);
+                int x2Int = (x2 == null || x2.equals("")) ? _x1Int
+                        : Integer.parseInt(x2);
+                int y2Int = (y2 == null || y2.equals("")) ? _y1Int
+                        : Integer.parseInt(y2);
                 // _currentLine.setX2(x2Int);
                 // _currentLine.setY2(y2Int);
                 _currentPoly.addPoint(x2Int, y2Int);
@@ -659,8 +650,7 @@ public class SVGParser extends DefaultHandler {
 
     private void privateStateEndElement(String tagName) {
         if (_currentNode != null) {
-            if (_currentEdge != null)
-                _currentEdge = null;
+            if (_currentEdge != null) _currentEdge = null;
 
             _currentNode.setPrivateData(_textBuf.toString());
 
@@ -671,8 +661,7 @@ public class SVGParser extends DefaultHandler {
             while (st2.hasMoreElements()) {
                 String t = st2.nextToken();
                 String v = "no such fig";
-                if (st2.hasMoreElements())
-                    v = st2.nextToken();
+                if (st2.hasMoreElements()) v = st2.nextToken();
                 if (t.equals("enclosingFig")) {
                     encloser = findFig(v);
                 }
@@ -753,8 +742,7 @@ public class SVGParser extends DefaultHandler {
             try {
                 source = new InputSource(url.openStream());
                 source.setSystemId(systemId);
-                if (publicId != null)
-                    source.setPublicId(publicId);
+                if (publicId != null) source.setPublicId(publicId);
             } catch (java.io.IOException e) {
                 if (systemId.endsWith(".dtd")) {
                     int i = systemId.lastIndexOf('/');
@@ -777,8 +765,7 @@ public class SVGParser extends DefaultHandler {
                     if (is != null) {
                         source = new InputSource(is);
                         source.setSystemId(systemId);
-                        if (publicId != null)
-                            source.setPublicId(publicId);
+                        if (publicId != null) source.setPublicId(publicId);
                     }
                 }
             }
@@ -891,14 +878,14 @@ public class SVGParser extends DefaultHandler {
                     _diagram.add(handleText(attrList));
                 } else if (elementName.equals("line")) {
 
-                } else if (elementName.equals("line")) { /*
-                                                             * just gets rid of
-                                                             * the error msgs
-                                                             */
-                } else if (elementName.equals("path")) { /*
-                                                             * just gets rid of
-                                                             * the error msgs
-                                                             */
+                } else if (elementName
+                        .equals("line")) { /*
+                                            * just gets rid of the error msgs
+                                            */
+                } else if (elementName
+                        .equals("path")) { /*
+                                            * just gets rid of the error msgs
+                                            */
                 } else
                     System.out.println("unknown top-level tag: " + elementName);
             } else if (_nestedGroups > 0) {

@@ -39,8 +39,7 @@ public interface HandlerStack {
      * Pushes a new ContentHandler on the stack and insures that the SAX parser
      * uses that handler for further events.
      * 
-     * @param handler
-     *                ContentHandler to be pushed on the handler stack
+     * @param handler ContentHandler to be pushed on the handler stack
      */
     void pushHandlerStack(DefaultHandler handler);
 

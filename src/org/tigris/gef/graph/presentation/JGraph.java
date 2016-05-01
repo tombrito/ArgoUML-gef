@@ -24,6 +24,7 @@
 package org.tigris.gef.graph.presentation;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -65,6 +66,8 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.TextEditor;
+
+import javafx.embed.swing.JFXPanel;
 
 /**
  * JGraph is a Swing component that displays a connected graph and allows
@@ -551,7 +554,9 @@ class JGraphInternalPane extends JPanel {
             requestFocus();
         }
 
-        super.processMouseEvent(e);
+        super.processMouseEvent(e); // XXX só essa cara é responsavel pelo
+                                    // clique neste aquivo Java... Onde trata?
+                                    // Editor#mousePressed
     }
 
     /** Tell Swing/AWT that JGraph handles tab-order itself. */
@@ -566,6 +571,77 @@ class JGraphInternalPane extends JPanel {
 
 } /* end class JGraphInternalPane */
 
+class JGraphFXInternalPane extends JFXPanel {
+
+    static final long serialVersionUID = -5067026168452437942L;
+
+    private Editor _editor;
+
+    private boolean registeredWithTooltip;
+
+    public JGraphFXInternalPane(Editor e) {
+        _editor = e;
+        setLayout(null);
+        setDoubleBuffered(false);
+    }
+
+    public void paintComponent(Graphics g) {
+        _editor.paint(g);
+    }
+
+    public Graphics getGraphics() {
+        Graphics res = super.getGraphics();
+        if (res == null) {
+            return res;
+        }
+        Component parent = getParent();
+
+        if (parent instanceof JViewport) {
+            JViewport view = (JViewport) parent;
+            Rectangle bounds = view.getBounds();
+            Point pos = view.getViewPosition();
+            res.clipRect(bounds.x + pos.x - 1, bounds.y + pos.y - 1,
+                    bounds.width + 1, bounds.height + 1);
+        }
+        return res;
+    }
+
+    public Point getToolTipLocation(MouseEvent event) {
+        event = Globals.curEditor().retranslateMouseEvent(event);
+        return (super.getToolTipLocation(event));
+    }
+
+    public void setToolTipText(String text) {
+        if ("".equals(text)) text = null;
+        putClientProperty(TOOL_TIP_TEXT_KEY, text);
+        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+        // if (text != null) {
+        if (!registeredWithTooltip) {
+            toolTipManager.registerComponent(this);
+            registeredWithTooltip = true;
+        }
+    }
+
+    protected void processMouseEvent(MouseEvent e) {
+        // if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+        // requestFocus();
+        // }
+        //
+        // super.processMouseEvent(e);
+    }
+
+    /** Tell Swing/AWT that JGraph handles tab-order itself. */
+    public boolean isManagingFocus() {
+        return true;
+    }
+
+    /** Tell Swing/AWT that JGraph can be tabbed into. */
+    public boolean isFocusTraversable() {
+        return true;
+    }
+
+}
+
 class WheelKeyListenerToggleAction implements KeyListener {
 
     private int mask;
@@ -574,7 +650,7 @@ class WheelKeyListenerToggleAction implements KeyListener {
 
     private MouseWheelListener listener;
 
-    private JPanel panel;
+    private Component panel;
 
     /**
      * Creates KeyListener that adds and removes MouseWheelListener from
@@ -590,7 +666,7 @@ class WheelKeyListenerToggleAction implements KeyListener {
      *            defined as constants by the KeyEvent class. This has been
      *            tested with ALT_MASK, CTRL_MASK, and SHIFT_MASK.
      */
-    public WheelKeyListenerToggleAction(JPanel panel,
+    public WheelKeyListenerToggleAction(Component panel,
             MouseWheelListener listener, int modifiersMask) {
         this.panel = panel;
         this.listener = listener;

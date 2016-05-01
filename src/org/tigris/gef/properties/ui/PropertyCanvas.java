@@ -82,5 +82,6 @@ class PropertyCanvas extends JPanel implements MouseListener {
     }
 
     private JFrame frame;
+
     private PropertyEditor editor;
 }

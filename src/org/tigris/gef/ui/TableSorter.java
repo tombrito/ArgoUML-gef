@@ -59,8 +59,11 @@ import javax.swing.table.TableColumnModel;
 
 public class TableSorter extends TableMap {
     int indexes[];
+
     Vector sortingColumns = new Vector();
+
     boolean ascending = true;
+
     int compares;
 
     public TableSorter() {
@@ -169,8 +172,7 @@ public class TableSorter extends TableMap {
         for (int level = 0; level < sortingColumns.size(); level++) {
             Integer column = (Integer) sortingColumns.elementAt(level);
             int result = compareRowsByColumn(row1, row2, column.intValue());
-            if (result != 0)
-                return ascending ? result : -result;
+            if (result != 0) return ascending ? result : -result;
         }
         return 0;
     }

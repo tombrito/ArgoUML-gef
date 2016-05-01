@@ -47,8 +47,7 @@ public class PgmlUtility {
      * description otherwise it is in red green blue integer format seperated by
      * spaces.
      * 
-     * @param color
-     *                The color to convert to PGML style
+     * @param color The color to convert to PGML style
      * @return a string representing the color in pgml format
      */
     public static String getColor(Color color) {
@@ -90,21 +89,18 @@ public class PgmlUtility {
      * is the default so we return null for this to prevent redundent data being
      * written to PGML.
      * 
-     * @param f
-     *                The Fig
+     * @param f The Fig
      * @return "0"=hidden, null=shown
      */
     public static String getVisibility(Fig f) {
-        if (f.isVisible())
-            return null;
+        if (f.isVisible()) return null;
         return "0";
     }
 
     /**
      * Translate the dashed flag of a Fig to the PGML "dashed" attribute value.
      * 
-     * @param f
-     *                The Fig
+     * @param f The Fig
      * @return 0=not dashed, 1=dashed
      */
     public static int getDashed(Fig f) {
@@ -114,8 +110,7 @@ public class PgmlUtility {
     /**
      * Translate the filled flag of a Fig to the PGML "filled" attribute value.
      * 
-     * @param f
-     *                The Fig
+     * @param f The Fig
      * @return 0=not filled, 1=filled
      */
     public static int getFilled(Fig f) {
@@ -141,8 +136,7 @@ public class PgmlUtility {
     /**
      * Generate an identifier for this Fig which is unique within the diagram.
      * 
-     * @param f
-     *                the Fig to generate the id for
+     * @param f the Fig to generate the id for
      * @return a unique string
      */
     public static String getId(Fig f) {

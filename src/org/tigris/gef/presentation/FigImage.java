@@ -115,8 +115,7 @@ public class FigImage extends Fig implements ImageObserver {
     /** Paint this FigImage on the given Graphics. */
     public void paint(Graphics graphicContext) {
         if (_image == null) {
-            if (LOG.isDebugEnabled())
-                LOG.debug("reloading image");
+            if (LOG.isDebugEnabled()) LOG.debug("reloading image");
             if (_url != null) {
                 _image = Globals.getImage(_url);
                 Globals.waitForImages();
@@ -137,10 +136,10 @@ public class FigImage extends Fig implements ImageObserver {
     }
 
     public void appendSvg(StringBuffer sb) {
-        sb.append("<image id='").append(getId()).append("' class='").append(
-                getClass().getName()).append("' style='fill:none;' x='")
-                .append(getX()).append("' y='").append(getY()).append(
-                        "' width='").append(getWidth()).append("' height='")
+        sb.append("<image id='").append(getId()).append("' class='")
+                .append(getClass().getName()).append("' style='fill:none;' x='")
+                .append(getX()).append("' y='").append(getY())
+                .append("' width='").append(getWidth()).append("' height='")
                 .append(getHeight()).append("' xlink:href='").append(getURL())
                 .append(" />");
     }

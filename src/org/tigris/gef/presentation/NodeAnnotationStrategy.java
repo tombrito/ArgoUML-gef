@@ -53,7 +53,8 @@ public class NodeAnnotationStrategy extends AnnotationStrategy {
 
     public void drawConnectingLine(Fig annotation) {
         // if duration=0 -> do not draw the connecting line
-        if (getAnnotationProperties(annotation).getLineVisibilityDuration() == 0) {
+        if (getAnnotationProperties(annotation)
+                .getLineVisibilityDuration() == 0) {
             return;
         }
         Fig owner = annotation.getAnnotationOwner();
@@ -73,10 +74,9 @@ public class NodeAnnotationStrategy extends AnnotationStrategy {
         line.damage();
         annotation.damage();
         // remove line automatically
-        AnnotationLineRemover.instance()
-                .removeLineIn(
-                        getAnnotationProperties(annotation)
-                                .getLineVisibilityDuration(), annotation);
+        AnnotationLineRemover.instance().removeLineIn(
+                getAnnotationProperties(annotation).getLineVisibilityDuration(),
+                annotation);
     }
 
     // move annotations to its new position

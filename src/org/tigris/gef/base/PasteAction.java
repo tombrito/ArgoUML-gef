@@ -50,8 +50,7 @@ public class PasteAction extends UndoableAction {
     /**
      * Creates a new PasteAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public PasteAction(String name) {
         this(name, false);
@@ -60,10 +59,8 @@ public class PasteAction extends UndoableAction {
     /**
      * Creates a new PasteAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public PasteAction(String name, Icon icon) {
         this(name, icon, false);
@@ -72,10 +69,8 @@ public class PasteAction extends UndoableAction {
     /**
      * Creates a new PasteAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public PasteAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -84,12 +79,9 @@ public class PasteAction extends UndoableAction {
     /**
      * Creates a new PasteAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public PasteAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

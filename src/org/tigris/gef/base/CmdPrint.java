@@ -52,12 +52,17 @@ public class CmdPrint extends Cmd implements Printable {
     private static final long serialVersionUID = 5930094057682454011L;
 
     PrinterJob printerJob;
+
     PageFormat pageFormat;
 
     int maxPageIndex = 1;
+
     boolean fitDiagramToPage = true;
+
     boolean isFirstPrintCall = true;
+
     double scale;
+
     int nCol;
 
     double pageX, pageY, pageWidth, pageHeight;
@@ -189,8 +194,8 @@ public class CmdPrint extends Cmd implements Printable {
                 maxPageIndex = 1;
             } else {
                 nCol = Math.max((int) Math.ceil(diagramWidth / pageWidth), 1);
-                int nRow = Math.max(
-                        (int) Math.ceil(diagramHeight / pageHeight), 1);
+                int nRow = Math.max((int) Math.ceil(diagramHeight / pageHeight),
+                        1);
                 maxPageIndex = nCol * nRow;
             }
         }
@@ -198,8 +203,8 @@ public class CmdPrint extends Cmd implements Printable {
         if (fitDiagramToPage()) {
             if (scale < 1.0) {
                 g2d.scale(scale, scale);
-                g2d.translate((pageX / scale) - diagramX + 1, (pageY / scale)
-                        - diagramY + 1);
+                g2d.translate((pageX / scale) - diagramX + 1,
+                        (pageY / scale) - diagramY + 1);
             } else {
                 g2d.translate(pageX - diagramX + 1, pageY - diagramY + 1);
             }

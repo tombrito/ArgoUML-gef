@@ -40,8 +40,7 @@ public class SvgUtility {
      * description otherwise it is in hexadecimal red green blue format of
      * either #rrggbb or #rgb.
      * 
-     * @param color
-     *                The color to convert to SVG style
+     * @param color The color to convert to SVG style
      * @return a string representing the color in SVG format
      */
     public static String getColor(Color color) {

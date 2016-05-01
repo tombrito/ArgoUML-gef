@@ -79,8 +79,7 @@ public class ModeCreateFigImage extends ModeCreate {
         if (null == _image) {
             String dURL = "http://www.ics.uci.edu/~jrobbins/banners/gef_banner.gif";
             String urlString = (String) _args.get("imageURL");
-            if (urlString == null)
-                urlString = dURL;
+            if (urlString == null) urlString = dURL;
             _image = Globals.getImage(urlString);
             Globals.waitForImages();
         }
@@ -101,8 +100,7 @@ public class ModeCreateFigImage extends ModeCreate {
         anchorY = y;
         Point snapPt = new Point(x, y);
         editor.snap(snapPt);
-        if (null == _newItem)
-            _newItem = createNewItem(me, snapPt.x, snapPt.y);
+        if (null == _newItem) _newItem = createNewItem(me, snapPt.x, snapPt.y);
         me.consume();
     }
 

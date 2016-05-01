@@ -42,8 +42,8 @@ import org.tigris.gef.graph.*;
  * @see org.tigris.gef.graph.presentation.NetNode#presentationFor
  */
 
-public class DefaultGraphNodeRenderer implements GraphNodeRenderer,
-        java.io.Serializable {
+public class DefaultGraphNodeRenderer
+        implements GraphNodeRenderer, java.io.Serializable {
 
     private static final long serialVersionUID = -8396231710414093663L;
 
@@ -56,7 +56,8 @@ public class DefaultGraphNodeRenderer implements GraphNodeRenderer,
     }
 
     /** Return a Fig that can be used to represent the given node */
-    public FigNode getFigNodeFor(Object node, int x, int y, Map styleAttributes) {
+    public FigNode getFigNodeFor(Object node, int x, int y,
+            Map styleAttributes) {
         FigNode figNode = null;
         if (node instanceof NetNode) {
             figNode = ((NetNode) node).presentationFor(null);

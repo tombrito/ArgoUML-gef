@@ -84,7 +84,8 @@ public class SelectionReshape extends Selection implements KeyListener {
         }
         if (fig instanceof FigEdgePoly) {
             for (int i = 0; i < npoints - 1; ++i) {
-                if (Geometry.intersects(r, xs[i], ys[i], xs[i + 1], ys[i + 1])) {
+                if (Geometry.intersects(r, xs[i], ys[i], xs[i + 1],
+                        ys[i + 1])) {
                     h.index = fig.getNumPoints();
                     h.instructions = "Add a point";
                     return;
@@ -159,8 +160,8 @@ public class SelectionReshape extends Selection implements KeyListener {
             }
 
             if (UndoManager.getInstance().isGenerateMementos()) {
-                Memento memento = new FigEdgeReshapeMemento(figEdgePoly
-                        .getPolygon());
+                Memento memento = new FigEdgeReshapeMemento(
+                        figEdgePoly.getPolygon());
                 UndoManager.getInstance().startChain();
                 UndoManager.getInstance().addMemento(memento);
             }
@@ -212,8 +213,7 @@ public class SelectionReshape extends Selection implements KeyListener {
     // event handlers
 
     public void keyPressed(KeyEvent ke) {
-        if (ke.isConsumed())
-            return;
+        if (ke.isConsumed()) return;
         if (getContent() instanceof KeyListener) {
             ((KeyListener) getContent()).keyPressed(ke);
         }

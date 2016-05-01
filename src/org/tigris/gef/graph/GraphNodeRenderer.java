@@ -42,14 +42,10 @@ public interface GraphNodeRenderer extends java.io.Serializable {
     /**
      * Factory for a FigNode that can be used to represent the given node
      * 
-     * @param graphmodel
-     *                the model in which to place the FigNode
-     * @param layer
-     *                the layer in which to place the FigNode
-     * @param node
-     *                the model element from which to create the FigNode
-     * @param attributeMap
-     *                an optional map of attributes to style the fig. 
+     * @param graphmodel the model in which to place the FigNode
+     * @param layer the layer in which to place the FigNode
+     * @param node the model element from which to create the FigNode
+     * @param attributeMap an optional map of attributes to style the fig.
      * @return the new FigNode
      */
     FigNode getFigNodeFor(GraphModel graphmodel, Layer layer, Object node,
@@ -58,11 +54,9 @@ public interface GraphNodeRenderer extends java.io.Serializable {
     /**
      * Factory for a FigNode that can be used to represent the given node
      * 
-     * @param node
-     *                the model element from which to create the FigNode
-     * @param attributeMap
-     *                an optional map of attributes to style the fig. return the
-     *                new FigNode
+     * @param node the model element from which to create the FigNode
+     * @param attributeMap an optional map of attributes to style the fig.
+     *            return the new FigNode
      */
     FigNode getFigNodeFor(Object node, int x, int y, Map attributeMap);
 } /* end interface GraphNodeRenderer */

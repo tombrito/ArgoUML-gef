@@ -50,10 +50,8 @@ public class RemovePointAction extends UndoableAction {
     /**
      * Creates a new RemovePointAction
      * 
-     * @param name
-     *                The name of the action
-     * @param selectedHandle
-     *                The point to be removed
+     * @param name The name of the action
+     * @param selectedHandle The point to be removed
      */
     public RemovePointAction(String name, int selectedHandle) {
         this(name, selectedHandle, false);
@@ -62,12 +60,9 @@ public class RemovePointAction extends UndoableAction {
     /**
      * Creates a new RemovePointAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param selectedHandle
-     *                The point to be removed
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param selectedHandle The point to be removed
      */
     public RemovePointAction(String name, Icon icon, int selectedHandle) {
         this(name, icon, selectedHandle, false);
@@ -76,14 +71,12 @@ public class RemovePointAction extends UndoableAction {
     /**
      * Creates a new RemovePointAction
      * 
-     * @param name
-     *                The name of the action
-     * @param selectedHandle
-     *                The point to be removed
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param selectedHandle The point to be removed
+     * @param localize Whether to localize the name or not
      */
-    public RemovePointAction(String name, int selectedHandle, boolean localize) {
+    public RemovePointAction(String name, int selectedHandle,
+            boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
         this.selectedHandle = selectedHandle;
     }
@@ -91,14 +84,10 @@ public class RemovePointAction extends UndoableAction {
     /**
      * Creates a new RemovePointAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param selectedHandle
-     *                The point to be removed
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param selectedHandle The point to be removed
+     * @param localize Whether to localize the name or not
      */
     public RemovePointAction(String name, Icon icon, int selectedHandle,
             boolean localize) {

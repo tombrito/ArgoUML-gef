@@ -123,14 +123,17 @@ import org.tigris.gef.presentation.Fig;
  */
 public class SvgWriter2D extends Graphics2D {
 
-    private static final Logger LOG = 
-        Logger.getLogger(SvgWriter2D.class.getCanonicalName());
+    private static final Logger LOG = Logger
+            .getLogger(SvgWriter2D.class.getCanonicalName());
 
     private static final Stroke DEFAULT_STROKE = new BasicStroke();
+
     private static final Color DEFAULT_COLOR = Color.black;
+
     private static final Color DEFAULT_BACKGROUND = Color.white;
-    
+
     private PrintWriter writer;
+
     private Document svg;
 
     /**
@@ -140,14 +143,23 @@ public class SvgWriter2D extends Graphics2D {
 
     private class GraphicsContext {
         Color foreground;
+
         Color background;
+
         Composite composite;
+
         Paint paint;
+
         Stroke stroke;
+
         AffineTransform transform;
+
         Shape clip;
+
         int lineWidth = 0;
+
         Font font;
+
         boolean XOR = false;
 
         GraphicsContext(Color fg, Color bg, int w) {
@@ -157,18 +169,15 @@ public class SvgWriter2D extends Graphics2D {
             lineWidth = w;
         }
     }
-    
-    private Stack<GraphicsContext> graphicsContexts = 
-        new Stack<GraphicsContext>();
-    
+
+    private Stack<GraphicsContext> graphicsContexts = new Stack<GraphicsContext>();
+
     private GraphicsContext activeGC;
-    
 
     /**
      * The drawing area for the SVG output.
      */
-//    private Rectangle drawingArea;
-
+    // private Rectangle drawingArea;
 
     private Shape clip;
 
@@ -186,38 +195,37 @@ public class SvgWriter2D extends Graphics2D {
 
     private RenderingHints renderingHints = new RenderingHints(null);
 
-    
     private AffineTransform transform = new AffineTransform();
 
-//    private Stroke svgStroke;
-//
-//    private Paint svgPaint;
-//
-//    private Color svgFill;
-//    
-//    private Color svgLine;
-//    
-//    private Integer svgLineWidth;
-//    
-//    private AffineTransform svgTransform;
-    
+    // private Stroke svgStroke;
+    //
+    // private Paint svgPaint;
+    //
+    // private Color svgFill;
+    //
+    // private Color svgLine;
+    //
+    // private Integer svgLineWidth;
+    //
+    // private AffineTransform svgTransform;
+
     /**
      * Construct a new SvgWriter2D which will write to the given stream.
      * 
      * @param stream OutputStream to write SVG to
-     * @param area bounds of the drawing area. These coordinates will be
-     *            used as the SVG frame.
+     * @param area bounds of the drawing area. These coordinates will be used as
+     *            the SVG frame.
      * @throws ParserConfigurationException if the XML DocumentBuilder factory
      *             can't create the requested document
      * @throws UnsupportedEncodingException if UTF-8 encodings aren't supported
      */
-    public SvgWriter2D(OutputStream stream, Rectangle area) 
+    public SvgWriter2D(OutputStream stream, Rectangle area)
         throws ParserConfigurationException, UnsupportedEncodingException {
-        
+
         writer = new PrintWriter(new OutputStreamWriter(stream, "UTF-8"));
-//        drawingArea = area;
-//        setClip(area);
-//        translate(hInset - drawingArea.x, vInset - drawingArea.y);
+        // drawingArea = area;
+        // setClip(area);
+        // translate(hInset - drawingArea.x, vInset - drawingArea.y);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         factory.setNamespaceAware(false);
@@ -225,14 +233,12 @@ public class SvgWriter2D extends Graphics2D {
         DocumentBuilder builder = factory.newDocumentBuilder();
 
         svg = builder.newDocument();
-        
+
         Element root = svg.createElement("svg");
         root.setAttribute("xmlns", svgNamespace);
         root.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-        root.setAttribute("width", ""
-                + (2 * hInset + area.width));
-        root.setAttribute("height", ""
-                + (2 * vInset + area.height));
+        root.setAttribute("width", "" + (2 * hInset + area.width));
+        root.setAttribute("height", "" + (2 * vInset + area.height));
         root.setAttribute("version", "1.1");
         elements.push(root);
 
@@ -241,14 +247,13 @@ public class SvgWriter2D extends Graphics2D {
         graphicsContexts.push(activeGC);
 
         Element group = svg.createElement("g");
-        
+
         group.setAttribute("stroke", toHexString(activeGC.foreground));
         group.setAttribute("fill", toHexString(activeGC.background));
         group.setAttribute("font", activeGC.font.getFontName());
         group.setAttribute("stroke-width", "1");
         elements.push(group);
     }
-
 
     /**
      * Construct a new SvgWriter2D which will write to the given stream.
@@ -263,9 +268,9 @@ public class SvgWriter2D extends Graphics2D {
      * @throws UnsupportedEncodingException if UTF-8 encodings aren't supported
      */
     public SvgWriter2D(OutputStream stream, Rectangle drawingArea,
-            boolean isInline) throws ParserConfigurationException,
-        UnsupportedEncodingException {
-        
+            boolean isInline)
+        throws ParserConfigurationException, UnsupportedEncodingException {
+
         this(stream, drawingArea);
         this.isInline = isInline;
     }
@@ -289,11 +294,11 @@ public class SvgWriter2D extends Graphics2D {
         while (!elements.isEmpty()) {
             popElement();
         }
-//        popElement(); // outer group
-//        popElement(); // root element - this will add it to the document
-//        if (!elements.isEmpty()) {
-//            throw new IllegalStateException("Element stack not empty");
-//        }
+        // popElement(); // outer group
+        // popElement(); // root element - this will add it to the document
+        // if (!elements.isEmpty()) {
+        // throw new IllegalStateException("Element stack not empty");
+        // }
         printDOMTree(svg);
         writer.close();
     }
@@ -312,8 +317,8 @@ public class SvgWriter2D extends Graphics2D {
             if (!isInline) {
                 writer.println("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
                 writer.println("<!DOCTYPE svg PUBLIC "
-                    + "\"-//W3C//DTD SVG 1.1//EN\" "
-                    + "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
+                        + "\"-//W3C//DTD SVG 1.1//EN\" "
+                        + "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
             }
             printDOMTree(((Document) node).getDocumentElement());
             break;
@@ -363,7 +368,6 @@ public class SvgWriter2D extends Graphics2D {
         }
     }
 
-
     private void printElementNode(Node node) {
         writer.print("<");
         writer.print(node.getNodeName());
@@ -372,8 +376,8 @@ public class SvgWriter2D extends Graphics2D {
         for (int i = 0; i < attrs.getLength(); i++) {
             Node attr = attrs.item(i);
 
-            writer.print(" " + attr.getNodeName() + "=\""
-                    + attr.getNodeValue() + "\"");
+            writer.print(" " + attr.getNodeName() + "=\"" + attr.getNodeValue()
+                    + "\"");
         }
 
         NodeList children = node.getChildNodes();
@@ -423,7 +427,6 @@ public class SvgWriter2D extends Graphics2D {
         }
     }
 
-
     /**
      * Get the current color for drawing operations.
      * 
@@ -451,19 +454,17 @@ public class SvgWriter2D extends Graphics2D {
         // Remove the alpha channel info from the string representation.
         return "#" + Integer.toHexString(c.getRGB()).substring(2);
     }
-    
+
     /**
      * Set the current color for drawing operations.
      * 
-     * @param c
-     *                The new color for drawing operations.
+     * @param c The new color for drawing operations.
      */
     public void setColor(Color c) {
         activeGC.foreground = c;
     }
 
-
-    /** 
+    /**
      * @see java.awt.Graphics#setPaintMode()
      */
     public void setPaintMode() {
@@ -486,8 +487,8 @@ public class SvgWriter2D extends Graphics2D {
             activeGC.font = f;
             LOG.fine("setFont " + f.getFontName() + " " + f);
         } else {
-            LOG.fine("null setFont " 
-                    + activeGC.font.getFontName() + " " + activeGC.font);
+            LOG.fine("null setFont " + activeGC.font.getFontName() + " "
+                    + activeGC.font);
         }
     }
 
@@ -529,8 +530,8 @@ public class SvgWriter2D extends Graphics2D {
          * 0, iw, ih, pixels, 0, iw); //
          * pg.setColorModel(Toolkit.getDefaultToolkit().getColorModel()); try {
          * pg.grabPixels(); } catch (InterruptedException e) {
-         * System.err.println("interrupted waiting for pixels!"); return false; }
-         * if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
+         * System.err.println("interrupted waiting for pixels!"); return false;
+         * } if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
          * System.err.println("image fetch aborted or errored"); return false; }
          * for (int j = 0; j < ih; j++) { for (int i = 0; i < iw; i++) {
          * handlesinglepixel(i, j, pixels[j * iw + i]); } if (iw % 2 == 1)
@@ -570,8 +571,7 @@ public class SvgWriter2D extends Graphics2D {
         return true;
     }
 
-
-    private void drawRect(double x, double y, double w, double h, 
+    private void drawRect(double x, double y, double w, double h,
             Color strokeColor, Color fillColor) {
         LOG.fine("drawRect " + x + " " + y + " " + w + " " + h);
         Element rect = svg.createElement("rect");
@@ -580,9 +580,9 @@ public class SvgWriter2D extends Graphics2D {
         rect.setAttribute("y", "" + (y));
         rect.setAttribute("width", "" + w);
         rect.setAttribute("height", "" + h);
-        
-        setDrawingAttributes(rect, 
-                new GraphicsContext(strokeColor, fillColor, activeGC.lineWidth));
+
+        setDrawingAttributes(rect, new GraphicsContext(strokeColor, fillColor,
+                activeGC.lineWidth));
 
         elements.peek().appendChild(rect);
     }
@@ -594,7 +594,7 @@ public class SvgWriter2D extends Graphics2D {
     private void drawRect(double x, double y, double w, double h) {
         drawRect(x, y, w, h, activeGC.foreground, null);
     }
-    
+
     private void fillRect(double x, double y, double w, double h) {
         drawRect(x, y, w, h, activeGC.foreground, activeGC.foreground);
     }
@@ -607,10 +607,9 @@ public class SvgWriter2D extends Graphics2D {
         drawRect(x, y, w, h, activeGC.background, activeGC.background);
     }
 
-
     private void drawOval(double x, double y, double w, double h,
             Color strokeColor, Color fill) {
-        
+
         LOG.fine("drawOval " + x + " " + y + " " + w + " " + h);
 
         Element oval = svg.createElement("ellipse");
@@ -619,11 +618,10 @@ public class SvgWriter2D extends Graphics2D {
         oval.setAttribute("cy", "" + (y + h / 2));
         oval.setAttribute("rx", "" + (w / 2));
         oval.setAttribute("ry", "" + (h / 2));
-        setDrawingAttributes(oval, 
+        setDrawingAttributes(oval,
                 new GraphicsContext(strokeColor, fill, activeGC.lineWidth));
         elements.peek().appendChild(oval);
     }
-
 
     /**
      * @see java.awt.Graphics#drawOval(int, int, int, int)
@@ -644,7 +642,7 @@ public class SvgWriter2D extends Graphics2D {
         drawOval(x, y, w, h, activeGC.foreground, activeGC.foreground);
     }
 
-    public void drawArc(int x, int y, int w, int h, int startAngle, 
+    public void drawArc(int x, int y, int w, int h, int startAngle,
             int arcAngle) {
 
         LOG.warning("Not implemented : drawArc");
@@ -655,7 +653,7 @@ public class SvgWriter2D extends Graphics2D {
          */
     }
 
-    public void fillArc(int x, int y, int w, int h, int startAngle, 
+    public void fillArc(int x, int y, int w, int h, int startAngle,
             int arcAngle) {
         LOG.warning("Not implemented : fillArc");
         // TODO: Unimplemented
@@ -664,7 +662,6 @@ public class SvgWriter2D extends Graphics2D {
          */
     }
 
-    
     private void drawRoundRect(double x, double y, double w, double h,
             double arcw, double arch, Color stroke, Color fill) {
 
@@ -678,7 +675,7 @@ public class SvgWriter2D extends Graphics2D {
         rect.setAttribute("height", "" + h);
         rect.setAttribute("rx", "" + arcw);
         rect.setAttribute("ry", "" + arch);
-        setDrawingAttributes(rect, 
+        setDrawingAttributes(rect,
                 new GraphicsContext(stroke, fill, activeGC.lineWidth));
 
         elements.peek().appendChild(rect);
@@ -691,27 +688,30 @@ public class SvgWriter2D extends Graphics2D {
 
     private void drawRoundRect(double x, double y, double w, double h,
             double arcw, double arch) {
-        drawRoundRect(x, y, w, h, arcw, arch, activeGC.foreground, activeGC.background);
-    }
-    
-    public void fillRoundRect(int x, int y, int w, int h, int arcw, int arch) {
-        drawRoundRect(x, y, w, h, arcw, arch, activeGC.foreground, activeGC.foreground);
+        drawRoundRect(x, y, w, h, arcw, arch, activeGC.foreground,
+                activeGC.background);
     }
 
-    private void fillRoundRect(double x, double y, double w, double h, 
-            double arcw, double arch) {
-        drawRoundRect(x, y, w, h, arcw, arch, activeGC.foreground, activeGC.foreground);
+    public void fillRoundRect(int x, int y, int w, int h, int arcw, int arch) {
+        drawRoundRect(x, y, w, h, arcw, arch, activeGC.foreground,
+                activeGC.foreground);
     }
-    
+
+    private void fillRoundRect(double x, double y, double w, double h,
+            double arcw, double arch) {
+        drawRoundRect(x, y, w, h, arcw, arch, activeGC.foreground,
+                activeGC.foreground);
+    }
+
     private void drawPolygon(int[] xPoints, int[] yPoints, int nPoints,
             Color stroke, Color fill) {
-        LOG.fine("drawPolygon" );
+        LOG.fine("drawPolygon");
 
         double maxX = 0;
         double maxY = 0;
         Element polygon = svg.createElement("polygon");
 
-        setDrawingAttributes(polygon, 
+        setDrawingAttributes(polygon,
                 new GraphicsContext(stroke, fill, activeGC.lineWidth));
 
         // Create the list of points for this tag.
@@ -723,9 +723,8 @@ public class SvgWriter2D extends Graphics2D {
             if (i > 0) {
                 pointList.append(" ");
             }
-            
-            pointList.append("" + xPoints[i] + ","
-                    + (yPoints[i]));
+
+            pointList.append("" + xPoints[i] + "," + (yPoints[i]));
 
             if (xPoints[i] > maxX) {
                 maxX = xPoints[i];
@@ -745,11 +744,12 @@ public class SvgWriter2D extends Graphics2D {
     }
 
     public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        drawPolygon(xPoints, yPoints, nPoints, activeGC.foreground, activeGC.foreground);
+        drawPolygon(xPoints, yPoints, nPoints, activeGC.foreground,
+                activeGC.foreground);
     }
 
     public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
-        LOG.fine("drawPolyLine" );
+        LOG.fine("drawPolyLine");
 
         double maxX = 0;
         double maxY = 0;
@@ -766,9 +766,8 @@ public class SvgWriter2D extends Graphics2D {
             if (i > 0) {
                 pointList.append(" ");
             }
-            
-            pointList.append("" + xPoints[i] + ","
-                    + yPoints[i]);
+
+            pointList.append("" + xPoints[i] + "," + yPoints[i]);
 
             if (xPoints[i] > maxX) {
                 maxX = xPoints[i];
@@ -795,12 +794,11 @@ public class SvgWriter2D extends Graphics2D {
         line.setAttribute("y1", "" + y1);
         line.setAttribute("x2", "" + x2);
         line.setAttribute("y2", "" + y2);
-        
+
         setDrawingAttributes(line);
 
         elements.peek().appendChild(line);
     }
-
 
     public void setClip(int x, int y, int w, int h) {
         setClip(new Rectangle(x, y, w, h));
@@ -823,11 +821,9 @@ public class SvgWriter2D extends Graphics2D {
         }
     }
 
-
     public Shape getClip() {
         return clip;
     }
-
 
     public void clip(Shape s) {
         if (clip == null) {
@@ -841,19 +837,16 @@ public class SvgWriter2D extends Graphics2D {
         }
         LOG.fine("Clip with " + s + " result = " + clip);
     }
-    
-    
+
     public void translate(int x, int y) {
         translate((double) x, (double) y);
     }
-
 
     public void scale(double xscale, double yscale) {
         LOG.fine("Scale " + xscale + " " + yscale);
         transform.scale(xscale, yscale);
         transformGroup("scale(" + xscale + "," + yscale + ")");
     }
-
 
     @Override
     public void setTransform(AffineTransform tx) {
@@ -877,16 +870,13 @@ public class SvgWriter2D extends Graphics2D {
         transform.translate(tx, ty);
         LOG.fine("Translate " + tx + " " + ty);
     }
-    
+
     /**
      * Draw a string at a given position.
      * 
-     * @param t
-     *                The string to draw.
-     * @param x
-     *                The horizontal position of the text.
-     * @param y
-     *                The vertical position of the text.
+     * @param t The string to draw.
+     * @param x The horizontal position of the text.
+     * @param y The vertical position of the text.
      */
     public void drawString(String t, int x, int y) {
         drawString(t, (float) x, (float) y);
@@ -902,7 +892,6 @@ public class SvgWriter2D extends Graphics2D {
         LOG.warning("Warning - addRenderingHint not supported");
     }
 
-
     @Override
     public Object getRenderingHint(Key hintKey) {
         return renderingHints.get(hintKey);
@@ -912,7 +901,6 @@ public class SvgWriter2D extends Graphics2D {
     public RenderingHints getRenderingHints() {
         return renderingHints;
     }
-
 
     @Override
     public void setRenderingHint(Key hintKey, Object hintValue) {
@@ -926,11 +914,9 @@ public class SvgWriter2D extends Graphics2D {
         LOG.warning("Warning - setRenderingHint not supported");
     }
 
-
-
-
     /**
      * {@inheritDoc}
+     * 
      * @see java.awt.Graphics2D#draw(java.awt.Shape)
      */
     @Override
@@ -952,8 +938,8 @@ public class SvgWriter2D extends Graphics2D {
             drawPolygon((Polygon) s);
         } else if (s instanceof Ellipse2D) {
             Ellipse2D e = (Ellipse2D) s;
-            drawOval(e.getCenterX(), e.getCenterY(), e.getWidth() / 2, e
-                    .getHeight() / 2);
+            drawOval(e.getCenterX(), e.getCenterY(), e.getWidth() / 2,
+                    e.getHeight() / 2);
         } else {
             drawPath(s, activeGC.foreground, null);
         }
@@ -962,7 +948,7 @@ public class SvgWriter2D extends Graphics2D {
     private void drawPath(Shape gp, Color lineColor, Color fillColor) {
         LOG.fine("draw GeneralPath");
         Element element = svg.createElement("path");
-        setDrawingAttributes(element, 
+        setDrawingAttributes(element,
                 new GraphicsContext(lineColor, fillColor, activeGC.lineWidth));
         element.setAttribute("d", getPath(gp));
         elements.peek().appendChild(element);
@@ -1008,7 +994,7 @@ public class SvgWriter2D extends Graphics2D {
                 path.append(" Z");
                 LOG.fine("CLOSE path");
             } else {
-                LOG.warning("Unsupported GeneralPath segment type " + type); 
+                LOG.warning("Unsupported GeneralPath segment type " + type);
             }
             pi.next();
         }
@@ -1022,7 +1008,7 @@ public class SvgWriter2D extends Graphics2D {
     }
 
     @Override
-    public boolean drawImage(Image img, AffineTransform xform, 
+    public boolean drawImage(Image img, AffineTransform xform,
             ImageObserver obs) {
         LOG.warning("Unimplemented -  drawImage");
         // TODO Auto-generated method stub
@@ -1036,7 +1022,7 @@ public class SvgWriter2D extends Graphics2D {
     }
 
     @Override
-    public void drawRenderableImage(RenderableImage img, 
+    public void drawRenderableImage(RenderableImage img,
             AffineTransform xform) {
         // TODO Auto-generated method stub
 
@@ -1057,8 +1043,8 @@ public class SvgWriter2D extends Graphics2D {
         text.setAttribute("font-family", activeGC.font.getFamily());
         text.setAttribute("font-size", "" + activeGC.font.getSize());
         text.setAttribute("fill", getColorAsString());
-//        text.setAttribute("stroke", getColorAsString());
-        
+        // text.setAttribute("stroke", getColorAsString());
+
         // If this is a bold font, add the appropriate attribute.
         if (getFont().isBold()) {
             text.setAttribute("font-weight", "bold");
@@ -1082,13 +1068,14 @@ public class SvgWriter2D extends Graphics2D {
 
     /**
      * {@inheritDoc}
+     * 
      * @see java.awt.Graphics2D#fill(java.awt.Shape)
      */
     @Override
     public void fill(Shape s) {
         // TODO: We probably shouldn't be sharing drawing methods between
         // the Graphics & Graphics2D methods since they use different drawing
-        // models.  At a minimum, we use 1-pixel lines for the old and our
+        // models. At a minimum, we use 1-pixel lines for the old and our
         // current stroke from the new.
         if (s instanceof Line2D) {
             Line2D l = (Line2D) s;
@@ -1098,14 +1085,14 @@ public class SvgWriter2D extends Graphics2D {
             fillRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
         } else if (s instanceof RoundRectangle2D) {
             RoundRectangle2D r = (RoundRectangle2D) s;
-            fillRoundRect(r.getX(), r.getY(), r.getWidth(), r.getHeight(), 
+            fillRoundRect(r.getX(), r.getY(), r.getWidth(), r.getHeight(),
                     r.getArcWidth(), r.getArcHeight());
         } else if (s instanceof Polygon) {
             fillPolygon((Polygon) s);
         } else if (s instanceof Ellipse2D) {
             Ellipse2D e = (Ellipse2D) s;
-            fillOval(e.getCenterX(), e.getCenterY(), e.getWidth() / 2, e
-                    .getHeight() / 2);
+            fillOval(e.getCenterX(), e.getCenterY(), e.getWidth() / 2,
+                    e.getHeight() / 2);
         } else {
             // TODO: What other shapes do we need?
             // TODO: Whether or not this works may depend of the sophistication
@@ -1145,7 +1132,6 @@ public class SvgWriter2D extends Graphics2D {
         return activeGC.paint;
     }
 
-
     @Override
     public Stroke getStroke() {
         return activeGC.stroke;
@@ -1167,8 +1153,6 @@ public class SvgWriter2D extends Graphics2D {
         transform.rotate(theta);
         transformGroup("rotate(" + degrees(theta) + ")");
     }
-
-
 
     @Override
     public void rotate(double theta, double x, double y) {
@@ -1204,22 +1188,22 @@ public class SvgWriter2D extends Graphics2D {
      * required.
      */
     private void updateRenderGroup() {
-//        if (paint.equals(svgPaint) && stroke.equals(svgStroke)) {
-//            return;
-//        }
-//        Element group = svg.createElement("g");
-//        
-//        if (!getColor().equals(svgLine)) {
-//            group.setAttribute("color", getColorAsString());
-//        }
-//        if (paint.getTransparency() != svgPaint.getTransparency()) {
-//            
-//        }
-//        if (group.getAttributes().getLength() > 0) {
-//            elements.peek().appendChild(group);
-//        }
+        // if (paint.equals(svgPaint) && stroke.equals(svgStroke)) {
+        // return;
+        // }
+        // Element group = svg.createElement("g");
+        //
+        // if (!getColor().equals(svgLine)) {
+        // group.setAttribute("color", getColorAsString());
+        // }
+        // if (paint.getTransparency() != svgPaint.getTransparency()) {
+        //
+        // }
+        // if (group.getAttributes().getLength() > 0) {
+        // elements.peek().appendChild(group);
+        // }
     }
-    
+
     @Override
     public void setStroke(Stroke s) {
         if (s != null) {
@@ -1237,9 +1221,10 @@ public class SvgWriter2D extends Graphics2D {
     private double degrees(double theta) {
         return theta / Math.PI * 180.0;
     }
-    
+
     /**
      * Create a group with the given transformation
+     * 
      * @param transformation
      */
     private void transformGroup(String transformation) {
@@ -1261,7 +1246,7 @@ public class SvgWriter2D extends Graphics2D {
     private void setDrawingAttributes(Element element) {
         setDrawingAttributes(element, graphicsContexts.peek(), activeGC);
     }
-    
+
     /**
      * Output rendering attributes which are different from the last set output.
      * 
@@ -1271,7 +1256,7 @@ public class SvgWriter2D extends Graphics2D {
     private void setDrawingAttributes(Element element, GraphicsContext gc) {
         setDrawingAttributes(element, graphicsContexts.peek(), gc);
     }
-    
+
     /**
      * Set the drawing attributes on the given element to the difference between
      * the two GraphicContexts. It is assumed that first GraphicsContext
@@ -1281,7 +1266,7 @@ public class SvgWriter2D extends Graphics2D {
      * @param gc1 current graphics context
      * @param gc2 new graphics context
      */
-    private void setDrawingAttributes(Element element, GraphicsContext gc1, 
+    private void setDrawingAttributes(Element element, GraphicsContext gc1,
             GraphicsContext gc2) {
         if (gc2.background != null && !gc2.background.equals(gc1.background)) {
             element.setAttribute("fill", toHexString(gc2.background));
@@ -1309,8 +1294,8 @@ public class SvgWriter2D extends Graphics2D {
                             dashString.length() - 2);
                     element.setAttribute("stroke-dasharray", dashString);
                 }
-                element.setAttribute("stroke-width", ""
-                        + ((BasicStroke) s).getLineWidth());
+                element.setAttribute("stroke-width",
+                        "" + ((BasicStroke) s).getLineWidth());
             } else {
                 element.setAttribute("stroke-width", "1");
             }
@@ -1318,19 +1303,19 @@ public class SvgWriter2D extends Graphics2D {
     }
 
     /**
-     * Begin a new top level fig.  All drawing commands between this
-     * call and the call to endFig will be grouped in an SVG group.
+     * Begin a new top level fig. All drawing commands between this call and the
+     * call to endFig will be grouped in an SVG group.
      * 
      * @param fig the fig which be painted next
      */
     public void beginFig(Fig fig) {
         beginFig(fig, null, null);
     }
-    
+
     /**
      * Begin fig with an optional link and class(s).
      * 
-     * @param fig 
+     * @param fig
      * @param cssClass
      * @param url
      */
@@ -1338,12 +1323,12 @@ public class SvgWriter2D extends Graphics2D {
         if (url != null) {
             createLink(url);
         }
-        
+
         Element group = svg.createElement("g");
         if (cssClass != null) {
             group.setAttribute("class", cssClass);
         }
-        GraphicsContext gc = new GraphicsContext(fig.getLineColor(), 
+        GraphicsContext gc = new GraphicsContext(fig.getLineColor(),
                 fig.getFillColor(), fig.getLineWidth());
         setDrawingAttributes(group, graphicsContexts.peek(), gc);
         graphicsContexts.push(gc);
@@ -1355,7 +1340,7 @@ public class SvgWriter2D extends Graphics2D {
         link.setAttribute("xlink:href", url);
         elements.push(link);
     }
-    
+
     /**
      * End the current fig and pop related graphic context.
      */
@@ -1365,7 +1350,6 @@ public class SvgWriter2D extends Graphics2D {
         popElement();
         graphicsContexts.pop();
     }
-    
 
     private Element popElement() {
         Element popped = elements.pop();
@@ -1379,16 +1363,16 @@ public class SvgWriter2D extends Graphics2D {
         // or neither?
         return popped;
     }
-    
+
     private class Stack<T> extends LinkedList<T> {
 
         public void push(T e) {
             addFirst(e);
         }
-        
+
         public T pop() {
             return removeFirst();
         }
     }
-        
+
 }

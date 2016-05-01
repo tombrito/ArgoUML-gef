@@ -41,13 +41,17 @@ public class CmdSelectNear extends Cmd {
     private static final long serialVersionUID = 2806110325379938459L;
 
     public static final int LEFT = 1;
+
     public static final int RIGHT = 2;
+
     public static final int UP = 3;
+
     public static final int DOWN = 4;
 
     // //////////////////////////////////////////////////////////////
     // instance variables
     private int _direction;
+
     private int _magnitude;
 
     // //////////////////////////////////////////////////////////////

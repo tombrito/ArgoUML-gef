@@ -55,22 +55,33 @@ public class PrintAction extends AbstractAction implements Printable {
     private static final long serialVersionUID = 3600929184215942819L;
 
     private PrinterJob printerJob;
+
     private PageFormat pageFormat;
 
     private int maxPageIndex = 1;
+
     private boolean fitDiagramToPage = true;
+
     private boolean isFirstPrintCall = true;
+
     private double scale;
+
     private int nCol;
 
     private double pageX;
+
     private double pageY;
+
     private double pageWidth;
+
     private double pageHeight;
 
     private double diagramX;
+
     private double diagramY;
+
     private double diagramWidth;
+
     private double diagramHeight;
 
     public PrintAction() {
@@ -80,8 +91,7 @@ public class PrintAction extends AbstractAction implements Printable {
     /**
      * Creates a new PrintAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public PrintAction(String name, String diagramName) {
         this(name, diagramName, false);
@@ -90,10 +100,8 @@ public class PrintAction extends AbstractAction implements Printable {
     /**
      * Creates a new PrintAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public PrintAction(String name, String diagramName, Icon icon) {
         this(name, icon, diagramName, false);
@@ -102,10 +110,8 @@ public class PrintAction extends AbstractAction implements Printable {
     /**
      * Creates a new PrintAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public PrintAction(String name, String diagramName, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -114,12 +120,9 @@ public class PrintAction extends AbstractAction implements Printable {
     /**
      * Creates a new PrintAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public PrintAction(String name, Icon icon, String diagramName,
             boolean localize) {
@@ -158,7 +161,8 @@ public class PrintAction extends AbstractAction implements Printable {
         fitDiagramToPage = b;
     }
 
-    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
+        throws PrinterException {
         if (pageIndex >= maxPageIndex) {
             return NO_SUCH_PAGE;
         }
@@ -230,8 +234,8 @@ public class PrintAction extends AbstractAction implements Printable {
                 maxPageIndex = 1;
             } else {
                 nCol = Math.max((int) Math.ceil(diagramWidth / pageWidth), 1);
-                int nRow = Math.max(
-                        (int) Math.ceil(diagramHeight / pageHeight), 1);
+                int nRow = Math.max((int) Math.ceil(diagramHeight / pageHeight),
+                        1);
                 maxPageIndex = nCol * nRow;
             }
         }
@@ -239,8 +243,8 @@ public class PrintAction extends AbstractAction implements Printable {
         if (fitDiagramToPage()) {
             if (scale < 1.0) {
                 g2d.scale(scale, scale);
-                g2d.translate((pageX / scale) - diagramX + 1, (pageY / scale)
-                        - diagramY + 1);
+                g2d.translate((pageX / scale) - diagramX + 1,
+                        (pageY / scale) - diagramY + 1);
             } else {
                 g2d.translate(pageX - diagramX + 1, pageY - diagramY + 1);
             }

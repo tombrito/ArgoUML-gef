@@ -40,13 +40,19 @@ public class CmdReorder extends Cmd {
     private static final long serialVersionUID = 1315160037668280033L;
 
     public static final int SEND_TO_BACK = 1;
+
     public static final int BRING_TO_FRONT = 2;
+
     public static final int SEND_BACKWARD = 3;
+
     public static final int BRING_FORWARD = 4;
 
     public static CmdReorder SendToBack = new CmdReorder(SEND_TO_BACK);
+
     public static CmdReorder BringToFront = new CmdReorder(BRING_TO_FRONT);
+
     public static CmdReorder SendBackward = new CmdReorder(SEND_BACKWARD);
+
     public static CmdReorder BringForward = new CmdReorder(BRING_FORWARD);
 
     // //////////////////////////////////////////////////////////////

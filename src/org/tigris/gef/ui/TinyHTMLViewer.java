@@ -124,8 +124,7 @@ class HtmlPane extends JScrollPane implements HyperlinkListener {
      * beep sounded. If an attempt was made to follow a link, but it represented
      * a malformed url, this method will be called with a null argument.
      * 
-     * @param u
-     *                the URL to follow
+     * @param u the URL to follow
      */
     protected void linkActivated(URL u) {
         Cursor c = html.getCursor();
@@ -171,6 +170,7 @@ class HtmlPane extends JScrollPane implements HyperlinkListener {
         }
 
         URL url;
+
         Cursor cursor;
     }
 

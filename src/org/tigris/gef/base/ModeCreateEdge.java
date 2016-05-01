@@ -78,8 +78,7 @@ public class ModeCreateEdge extends ModeCreate {
 
     public ModeCreateEdge() {
         super();
-        if (LOG.isDebugEnabled())
-            LOG.debug("Created ModeCreateEdge");
+        if (LOG.isDebugEnabled()) LOG.debug("Created ModeCreateEdge");
     }
 
     public ModeCreateEdge(Editor par) {
@@ -104,8 +103,8 @@ public class ModeCreateEdge extends ModeCreate {
      * FigLine to show during dragging.
      */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-        return new FigLine(snapX, snapY, 0, 0, Globals.getPrefs()
-                .getRubberbandColor());
+        return new FigLine(snapX, snapY, 0, 0,
+                Globals.getPrefs().getRubberbandColor());
     }
 
     // //////////////////////////////////////////////////////////////
@@ -154,8 +153,7 @@ public class ModeCreateEdge extends ModeCreate {
             return;
         }
         _startPortFig = _sourceFigNode.getPortFig(startPort);
-        if (LOG.isDebugEnabled())
-            LOG.debug("MousePressed start port set");
+        if (LOG.isDebugEnabled()) LOG.debug("MousePressed start port set");
         super.mousePressed(me);
     }
 
@@ -173,9 +171,8 @@ public class ModeCreateEdge extends ModeCreate {
         if (_sourceFigNode == null) {
             done();
             me.consume();
-            if (LOG.isDebugEnabled())
-                LOG
-                        .debug("MouseReleased but no source found so consuming and leaving");
+            if (LOG.isDebugEnabled()) LOG.debug(
+                    "MouseReleased but no source found so consuming and leaving");
             return;
         }
 
@@ -228,13 +225,11 @@ public class ModeCreateEdge extends ModeCreate {
                     fe.setDestFigNode(destFigNode);
                     endAttached(fe);
 
-                    if (fe != null)
-                        ce.getSelectionManager().select(fe);
+                    if (fe != null) ce.getSelectionManager().select(fe);
                     done();
                     me.consume();
-                    if (LOG.isDebugEnabled())
-                        LOG
-                                .debug("MouseReleased Edge created and event consumed");
+                    if (LOG.isDebugEnabled()) LOG.debug(
+                            "MouseReleased Edge created and event consumed");
                     return;
                 }
             }
@@ -261,8 +256,8 @@ public class ModeCreateEdge extends ModeCreate {
     protected void endAttached(FigEdge fe) {
         UndoManager.getInstance().removeMementoLock(this);
         if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(
-                    new CreateEdgeMemento(editor, _newEdge, fe));
+            UndoManager.getInstance()
+                    .addMemento(new CreateEdgeMemento(editor, _newEdge, fe));
         }
         UndoManager.getInstance().addMementoLock(this);
     }
@@ -270,13 +265,15 @@ public class ModeCreateEdge extends ModeCreate {
     class CreateEdgeMemento extends Memento {
 
         private FigEdge edgePlaced;
+
         private Object edge;
+
         private Editor editor;
 
         CreateEdgeMemento(Editor ed, Object edge, FigEdge edgePlaced) {
             this.edgePlaced = edgePlaced;
             this.edge = edge; // Eventually need to pass a collection of
-                                // objects instead...
+                              // objects instead...
             this.editor = ed;
         }
 
@@ -293,8 +290,7 @@ public class ModeCreateEdge extends ModeCreate {
             UndoManager.getInstance().addMementoLock(this);
             editor.add(edgePlaced);
             GraphModel gm = editor.getGraphModel();
-            if (edge != null)
-                ((MutableGraphModel) gm).addEdge(edge);
+            if (edge != null) ((MutableGraphModel) gm).addEdge(edge);
             editor.getSelectionManager().select(edgePlaced);
             UndoManager.getInstance().removeMementoLock(this);
         }

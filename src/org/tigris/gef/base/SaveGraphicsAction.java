@@ -48,17 +48,19 @@ import org.tigris.gef.util.Localizer;
 public abstract class SaveGraphicsAction extends AbstractAction {
 
     private static Log LOG = LogFactory.getLog(LayerDiagram.class);
+
     protected int scale = 1;
+
     protected OutputStream outputStream;
 
     protected abstract void saveGraphics(OutputStream s, Editor ce,
-            Rectangle drawingArea) throws IOException;
+            Rectangle drawingArea)
+        throws IOException;
 
     /**
      * Creates a new SaveGraphicsAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public SaveGraphicsAction(String name) {
         this(name, false);
@@ -67,10 +69,8 @@ public abstract class SaveGraphicsAction extends AbstractAction {
     /**
      * Creates a new SaveGraphicsAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public SaveGraphicsAction(String name, Icon icon) {
         this(name, icon, false);
@@ -79,10 +79,8 @@ public abstract class SaveGraphicsAction extends AbstractAction {
     /**
      * Creates a new SaveGraphicsAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public SaveGraphicsAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -91,12 +89,9 @@ public abstract class SaveGraphicsAction extends AbstractAction {
     /**
      * Creates a new SaveGraphicsAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public SaveGraphicsAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
@@ -106,8 +101,7 @@ public abstract class SaveGraphicsAction extends AbstractAction {
      * Set the outputStream argument. This must be done prior to saving the
      * image.
      * 
-     * @param s
-     *                the OutputStream into which the image will be saved
+     * @param s the OutputStream into which the image will be saved
      */
 
     public void setStream(OutputStream s) {
@@ -118,8 +112,7 @@ public abstract class SaveGraphicsAction extends AbstractAction {
      * Increasing this number effectively improves the resolution of the result
      * in case it is pixel-based.
      * 
-     * @param s
-     *                the scale (default = 1)
+     * @param s the scale (default = 1)
      */
     public void setScale(int s) {
         scale = s;
@@ -146,24 +139,23 @@ public abstract class SaveGraphicsAction extends AbstractAction {
         // trying to figure it out.
         /*
          * int xmin = 99999, ymin = 99999; Fig f = null; Rectangle rectSize =
-         * null; Rectangle drawingArea = new Rectangle( 0, 0 ); Enumeration iter =
-         * ce.figs(); while( iter.hasMoreElements() ) { f = (Fig)
+         * null; Rectangle drawingArea = new Rectangle( 0, 0 ); Enumeration iter
+         * = ce.figs(); while( iter.hasMoreElements() ) { f = (Fig)
          * iter.nextElement(); rectSize = f.getBounds(); xmin = Math.min( xmin,
          * rectSize.x ); ymin = Math.min( ymin, rectSize.y ); drawingArea.add(
          * rectSize ); }
          * 
-         * drawingArea.width -= xmin; drawingArea.height -= ymin; drawingArea.x =
-         * xmin; drawingArea.y = ymin; drawingArea.grow(4,4); // security border
+         * drawingArea.width -= xmin; drawingArea.height -= ymin; drawingArea.x
+         * = xmin; drawingArea.y = ymin; drawingArea.grow(4,4); // security
+         * border
          */
 
         Rectangle drawingArea = ce.getLayerManager().getActiveLayer()
                 .calcDrawingArea();
-        if (LOG.isDebugEnabled())
-            LOG.debug("Bounding box: " + drawingArea);
+        if (LOG.isDebugEnabled()) LOG.debug("Bounding box: " + drawingArea);
 
         if (drawingArea.width <= 0 || drawingArea.height <= 0) {
-            if (LOG.isDebugEnabled())
-                LOG.debug("Graphics generation aborted.");
+            if (LOG.isDebugEnabled()) LOG.debug("Graphics generation aborted.");
             return;
         }
 

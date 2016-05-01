@@ -57,8 +57,7 @@ public class CmdSpawn extends Cmd {
         JGraphFrame jgf = new JGraphFrame(title, ed);
         // use clone because ce may be of a subclass of Editor
         Object d = getArg("dimension");
-        if (d instanceof Dimension)
-            jgf.setSize((Dimension) d);
+        if (d instanceof Dimension) jgf.setSize((Dimension) d);
         jgf.setVisible(true);
     }
 

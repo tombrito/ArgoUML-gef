@@ -224,7 +224,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. See
      *             issue 146. This value is never set.
-     * */
+     */
     private transient boolean _selected = false;
 
     /**
@@ -372,7 +372,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * Adds a new Annotation of type "text" to fig.
      */
     // Only used by PGMLParser
-    final public void addAnnotation(Fig annotation, String type, String context) {
+    final public void addAnnotation(Fig annotation, String type,
+            String context) {
     }
 
     // Unused method
@@ -555,9 +556,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     /**
-     * @deprecated in 0.11.1 use
-     *             org.tigris.gef.persistence.pgml.PgmlUtility.getClassNameAndBounds
-     *             (Fig)
+     * @deprecated in 0.11.1 use org.tigris.gef.persistence.pgml.PgmlUtility.
+     *             getClassNameAndBounds (Fig)
      */
     // USED BY PGML.tee
     public String classNameAndBounds() {
@@ -941,12 +941,13 @@ public abstract class Fig implements DiagramElement, Cloneable,
         if (!dashed)
             g.drawRect(x, y, w, h);
         else {
-            drawDashedRectangle(g, 0, x, y, w, h, lineWidth, dashes, dashPeriod);
+            drawDashedRectangle(g, 0, x, y, w, h, lineWidth, dashes,
+                    dashPeriod);
         }
     }
 
-    private void drawDashedRectangle(Graphics g, int phase, int x, int y,
-            int w, int h, int lineWidth, float dashes[], int dashPeriod) {
+    private void drawDashedRectangle(Graphics g, int phase, int x, int y, int w,
+            int h, int lineWidth, float dashes[], int dashPeriod) {
 
         phase = drawDashedLine(g, lineWidth, x, y, x + w, y, phase, dashes,
                 dashPeriod);
@@ -958,8 +959,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
                 dashPeriod);
     }
 
-    public int drawDashedLine(Graphics g, int lineWidth, int x1, int y1,
-            int x2, int y2, int phase, float[] dashes, int dashPeriod) {
+    public int drawDashedLine(Graphics g, int lineWidth, int x1, int y1, int x2,
+            int y2, int phase, float[] dashes, int dashPeriod) {
         if (g instanceof Graphics2D) {
             return drawDashedLineG2D((Graphics2D) g, lineWidth, phase, x1, y1,
                     x2, y2, dashes, dashPeriod);
@@ -1037,7 +1038,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * Creates a PropertyChangeEvent and calls all registered listeners
      * propertyChanged() method.
      */
-    final public void firePropChange(String propName, Object oldV, Object newV) {
+    final public void firePropChange(String propName, Object oldV,
+            Object newV) {
         Globals.firePropChange(this, propName, oldV, newV);
         if (group != null) {
             PropertyChangeEvent pce = new PropertyChangeEvent(this, propName,
@@ -1046,7 +1048,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
         }
     }
 
-    final public void firePropChange(String propName, boolean oldV, boolean newV) {
+    final public void firePropChange(String propName, boolean oldV,
+            boolean newV) {
         firePropChange(propName, new Boolean(oldV), new Boolean(newV));
     }
 
@@ -1092,7 +1095,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     public boolean getDashed() {
         return (_dashes != null);
     }
-    
+
     public float[] getDashes() {
         return _dashes;
     }
@@ -1244,13 +1247,10 @@ public abstract class Fig implements DiagramElement, Cloneable,
         if (getGroup() != null) {
             String gID = getGroup().getId();
             if (getGroup() instanceof FigGroup) {
-                return gID
-                        + "."
-                        + ((List) ((FigGroup) getGroup()).getFigs())
-                                .indexOf(this);
+                return gID + "." + ((List) ((FigGroup) getGroup()).getFigs())
+                        .indexOf(this);
             } else if (getGroup() instanceof FigEdge) {
-                return gID
-                        + "."
+                return gID + "."
                         + (((List) ((FigEdge) getGroup()).getPathItemFigs())
                                 .indexOf(this) + 1);
             } else {
@@ -1332,10 +1332,11 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = new Vector();
-        JMenu orderMenu = new JMenu(Localizer.localize("PresentationGef",
-                "Ordering"));
-        orderMenu.setMnemonic((Localizer.localize("PresentationGef",
-                "OrderingMnemonic")).charAt(0));
+        JMenu orderMenu = new JMenu(
+                Localizer.localize("PresentationGef", "Ordering"));
+        orderMenu.setMnemonic(
+                (Localizer.localize("PresentationGef", "OrderingMnemonic"))
+                        .charAt(0));
         orderMenu.add(CmdReorder.BringForward);
         orderMenu.add(CmdReorder.SendBackward);
         orderMenu.add(CmdReorder.BringToFront);
@@ -1378,15 +1379,15 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * Get the rectangle bounds of each area in this Fig that can trap and
      * enclose a FigNode.
+     * 
      * @return the list of Rectangles
      */
     public List<Rectangle> getTrapRects(Fig de) {
-        ArrayList<Rectangle> rects = new ArrayList<Rectangle>(1); 
+        ArrayList<Rectangle> rects = new ArrayList<Rectangle>(1);
         rects.add(getTrapRect());
         return rects;
     }
 
-    
     public boolean getUseTrapRect() {
         return false;
     }
@@ -1463,7 +1464,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     public void insertPoint(int i, int x, int y) {
     }
 
-/**
+    /**
      * Reply true if the object intersects the given rectangle. Used for
      * selective redrawing and by ModeSelect to select all Figs that are partly
      * within the selection rectangle.
@@ -1476,7 +1477,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
                 || (r.x > _x + _w) || (r.y > _y + _h));
     }
 
-/**
+    /**
      * Reply true if the object's perimeter intersects the given rectangle. Used
      * for selective redrawing and by ModeSelect to select all Figs that are
      * partly within the selection rectangle.
@@ -1487,8 +1488,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
     public boolean intersectsPerimeter(Rectangle r) {
         return (r.intersectsLine(_x, _y, _x, _y + _h)
                 && r.intersectsLine(_x, _y + _h, _x + _w, _y + _h)
-                && r.intersectsLine(_x + _w, _y + _h, _x + _w, _y) && r
-                .intersectsLine(_x + _w, _y, _x, _y));
+                && r.intersectsLine(_x + _w, _y + _h, _x + _w, _y)
+                && r.intersectsLine(_x + _w, _y, _x, _y));
     }
 
     /**
@@ -1572,13 +1573,13 @@ public abstract class Fig implements DiagramElement, Cloneable,
     abstract public void appendSvg(StringBuffer sb);
 
     protected void appendSvgStyle(StringBuffer sb) {
-        sb.append(" style='fill:rgb(").append(getFillColor().getRed()).append(
-                ",").append(getFillColor().getGreen()).append(",").append(
-                getFillColor().getBlue()).append(");").append("stroke-width:")
-                .append(getLineWidth()).append(";").append("stroke:rgb(")
-                .append(getLineColor().getRed()).append(",").append(
-                        getLineColor().getGreen()).append(",").append(
-                        getLineColor().getBlue()).append(");'");
+        sb.append(" style='fill:rgb(").append(getFillColor().getRed())
+                .append(",").append(getFillColor().getGreen()).append(",")
+                .append(getFillColor().getBlue()).append(");")
+                .append("stroke-width:").append(getLineWidth()).append(";")
+                .append("stroke:rgb(").append(getLineColor().getRed())
+                .append(",").append(getLineColor().getGreen()).append(",")
+                .append(getLineColor().getBlue()).append(");'");
     }
 
     /**
@@ -1647,8 +1648,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * the bounding box plus some margin around all egdes.
      */
     final public Rectangle routingRect() {
-        return new Rectangle(_x - BORDER, _y - BORDER, _w + BORDER * 2, _h
-                + BORDER * 2);
+        return new Rectangle(_x - BORDER, _y - BORDER, _w + BORDER * 2,
+                _h + BORDER * 2);
     }
 
     /**
@@ -1658,8 +1659,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
     final public void setBounds(final int newX, final int newY,
             final int newWidth, final int newHeight) {
 
-        if (group == null
-                && (newX != _x || newY != _y || newWidth != _w || newHeight != _h)) {
+        if (group == null && (newX != _x || newY != _y || newWidth != _w
+                || newHeight != _h)) {
             MutableGraphSupport.enableSaveAction();
             if (UndoManager.getInstance().isGenerateMementos()) {
                 Memento memento = new Memento() {
@@ -2051,8 +2052,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
                 }
             }
             if (UndoManager.getInstance().isGenerateMementos()) {
-                UndoManager.getInstance().addMemento(
-                        new TranslateMemento(_x, _y, _w, _h));
+                UndoManager.getInstance()
+                        .addMemento(new TranslateMemento(_x, _y, _w, _h));
             }
         }
         MutableGraphSupport.enableSaveAction();

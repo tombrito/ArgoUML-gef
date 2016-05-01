@@ -38,14 +38,13 @@ public class FigPolyHandler extends BaseHandler {
      * The Fig for the poly.
      */
     private FigPoly poly;
+
     int _x1, _y1;
 
     /**
-     * @param parser
-     *                The PGMLStackParser for the diagram that contains this
-     *                FigGroup
-     * @param thePoly
-     *                The object corresponding to the element being parsed
+     * @param parser The PGMLStackParser for the diagram that contains this
+     *            FigGroup
+     * @param thePoly The object corresponding to the element being parsed
      */
     public FigPolyHandler(PGMLStackParser parser, FigPoly thePoly) {
         super(parser);
@@ -76,10 +75,10 @@ public class FigPolyHandler extends BaseHandler {
         } else if (qname.equals("lineto")) {
             String x2 = attributes.getValue("x");
             String y2 = attributes.getValue("y");
-            int x2Int = (x2 == null || x2.equals("")) ? _x1 : Integer
-                    .parseInt(x2);
-            int y2Int = (y2 == null || y2.equals("")) ? _y1 : Integer
-                    .parseInt(y2);
+            int x2Int = (x2 == null || x2.equals("")) ? _x1
+                    : Integer.parseInt(x2);
+            int y2Int = (y2 == null || y2.equals("")) ? _y1
+                    : Integer.parseInt(y2);
             poly.addPoint(x2Int, y2Int);
         }
         return null;

@@ -123,16 +123,12 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * {@link #ModeCreateEdgeAndNode(Editor, Object, boolean, SelectionButtons)}
      * below, since it allows a better mechanism to create the node.
      * 
-     * @param ed
-     *                the parent editor of this mode. Each Mode instance belongs
-     *                to exactly one Editor instance.
-     * @param edgeType
-     *                the class of the edge
-     * @param nodeType
-     *                the class of the node
-     * @param post
-     *                if true, then the edge is postprocessed. See
-     *                postProcessEdge().
+     * @param ed the parent editor of this mode. Each Mode instance belongs to
+     *            exactly one Editor instance.
+     * @param edgeType the class of the edge
+     * @param nodeType the class of the node
+     * @param post if true, then the edge is postprocessed. See
+     *            postProcessEdge().
      */
     public ModeCreateEdgeAndNode(Editor ed, Object edgeType, Object nodeType,
             boolean post) {
@@ -146,16 +142,12 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     /**
      * The constructor.
      * 
-     * @param ed
-     *                the parent editor of this mode. Each Mode instance belongs
-     *                to exactly one Editor instance.
-     * @param edgeType
-     *                the class of the edge
-     * @param post
-     *                if true, then the edge is postprocessed. See
-     *                postProcessEdge().
-     * @param nodeCreator
-     *                the SelectionButtons that knows how to create the node
+     * @param ed the parent editor of this mode. Each Mode instance belongs to
+     *            exactly one Editor instance.
+     * @param edgeType the class of the edge
+     * @param post if true, then the edge is postprocessed. See
+     *            postProcessEdge().
+     * @param nodeCreator the SelectionButtons that knows how to create the node
      */
     public ModeCreateEdgeAndNode(Editor ed, Object edgeType, boolean post,
             SelectionButtons nodeCreator) {
@@ -170,17 +162,12 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     // accessors
 
     /**
-     * @param fignode
-     *                the source fignode
-     * @param port
-     *                the port
-     * @param x
-     *                the x to start from
-     * @param y
-     *                the y to start from
-     * @param reverse
-     *                true if the direction is reversed, i.e. from destination
-     *                to source
+     * @param fignode the source fignode
+     * @param port the port
+     * @param x the x to start from
+     * @param y the y to start from
+     * @param reverse true if the direction is reversed, i.e. from destination
+     *            to source
      */
     public void setup(FigNode fignode, Object port, int x, int y,
             boolean reverse) {
@@ -200,7 +187,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * @see org.tigris.gef.base.FigModifyingMode#instructions()
      */
     public String instructions() {
-        return Localizer.localize("GefBase", "ModeCreateEdgeAndNodeInstructions");
+        return Localizer.localize("GefBase",
+                "ModeCreateEdgeAndNodeInstructions");
     }
 
     // //////////////////////////////////////////////////////////////
@@ -317,9 +305,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                         continue;
                     }
                     Rectangle trap = otherFig.getTrapRect();
-                    if (trap != null
-                            && (trap.contains(bbox.x, bbox.y) && trap.contains(
-                                    bbox.x + bbox.width, bbox.y + bbox.height))) {
+                    if (trap != null && (trap.contains(bbox.x, bbox.y)
+                            && trap.contains(bbox.x + bbox.width,
+                                    bbox.y + bbox.height))) {
                         encloser = otherFig;
                     }
                 }
@@ -382,7 +370,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
                     LayerManager lm = ce.getLayerManager();
                     fe = (FigEdge) lm.getActiveLayer().presentationFor(newEdge);
-                    Color c = fe.getLineColor(); //get the original color - issue argouml 6441
+                    Color c = fe.getLineColor(); // get the original color -
+                                                 // issue argouml 6441
                     fe.setFig(_newItem);
                     fe.setLineColor(c); // overwrite the rubberbanding color
                     fe.setSourcePortFig(startPortFig);
@@ -472,8 +461,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     }
 
     /**
-     * @param edge
-     *                the newly created edge
+     * @param edge the newly created edge
      */
     protected void postProcessEdge(Object edge) {
     }

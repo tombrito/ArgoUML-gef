@@ -85,23 +85,22 @@ public class Progress extends Frame implements ActionListener {
 
     /** Constants defining progress bar appearance. */
     private static final int BAR_WIDTH = 250;
+
     private static final int BAR_HEIGHT = 20;
+
     private static final int BORDER = 10;
 
     /**
      * Construct a new Progress object.
      * 
-     * @param header
-     *                Describes the long running task.
-     * @param total
-     *                Number of units of work needed to complete the task.
+     * @param header Describes the long running task.
+     * @param total Number of units of work needed to complete the task.
      */
     public Progress(String header, int total) {
         /* constructor body */
         _header = new Label(header);
         _total = total;
-        if (_total < 1)
-            _total = 1;
+        if (_total < 1) _total = 1;
         build();
         setTitle("Progress");
     }
@@ -206,7 +205,8 @@ public class Progress extends Frame implements ActionListener {
     /** Paint the progress bar and percent complete text. */
     protected void paintBar() {
         Graphics g = _barCanvas.getGraphics();
-        Image off = createImage(BAR_WIDTH + 2 * BORDER, BAR_HEIGHT + 2 * BORDER);
+        Image off = createImage(BAR_WIDTH + 2 * BORDER,
+                BAR_HEIGHT + 2 * BORDER);
         Graphics offG = off.getGraphics();
         offG.setColor(getBackground());
         offG.fillRect(0, 0, BAR_WIDTH + 2 * BORDER, BAR_HEIGHT + 2 * BORDER);
@@ -222,8 +222,8 @@ public class Progress extends Frame implements ActionListener {
         FontMetrics fm = g.getFontMetrics();
         int halfHeight = fm.getHeight() / 2;
         int halfWidth = fm.stringWidth(perString) / 2;
-        offG.drawString(perString, BORDER + BAR_WIDTH / 2 - halfWidth, BORDER
-                + BAR_HEIGHT / 2 + halfHeight);
+        offG.drawString(perString, BORDER + BAR_WIDTH / 2 - halfWidth,
+                BORDER + BAR_HEIGHT / 2 + halfHeight);
         g.drawImage(off, 0, 0, null);
         offG.dispose();
         off.flush();
@@ -235,8 +235,7 @@ public class Progress extends Frame implements ActionListener {
         _p.setVisible(true);
         for (int i = 0; i < 100; i++) {
             System.out.println(i);
-            if (_p.canceled())
-                break;
+            if (_p.canceled()) break;
             _p.advance();
             try {
                 Thread.sleep(100);

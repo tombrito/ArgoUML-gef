@@ -57,10 +57,8 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param dir
-     *                The direction of the selection
+     * @param name The name of the action
+     * @param dir The direction of the selection
      */
     public SelectNearAction(int dir) {
         this(dir, 1);
@@ -69,10 +67,8 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param dir
-     *                The direction of the selection
+     * @param name The name of the action
+     * @param dir The direction of the selection
      */
     public SelectNearAction(int dir, int mag) {
         super("SelectNear" + wordFor(dir)); // needs-more-work: direction
@@ -97,10 +93,8 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param dir
-     *                The direction of the selection
+     * @param name The name of the action
+     * @param dir The direction of the selection
      */
     public SelectNearAction(String name, int dir) {
         this(name, dir, 1, false);
@@ -109,12 +103,9 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param dir
-     *                The direction of the selection
-     * @param mag
-     *                The magnitude of the selection
+     * @param name The name of the action
+     * @param dir The direction of the selection
+     * @param mag The magnitude of the selection
      */
     public SelectNearAction(String name, int dir, int mag) {
         this(name, dir, mag, false);
@@ -123,12 +114,9 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param dir
-     *                The direction of the selection
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param dir The direction of the selection
      */
     public SelectNearAction(String name, Icon icon, int dir) {
         this(name, icon, dir, 1, false);
@@ -137,14 +125,10 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param dir
-     *                The direction of the selection
-     * @param mag
-     *                The magnitude of the selection
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param dir The direction of the selection
+     * @param mag The magnitude of the selection
      */
     public SelectNearAction(String name, Icon icon, int dir, int mag) {
         this(name, icon, dir, mag, false);
@@ -153,12 +137,9 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param dir
-     *                The direction of the selection
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param dir The direction of the selection
+     * @param localize Whether to localize the name or not
      */
     public SelectNearAction(String name, int dir, boolean localize) {
         this(name, dir, 1, false);
@@ -167,14 +148,10 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param dir
-     *                The direction of the selection
-     * @param mag
-     *                The magnitude of the selection
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param dir The direction of the selection
+     * @param mag The magnitude of the selection
+     * @param localize Whether to localize the name or not
      */
     public SelectNearAction(String name, int dir, int mag, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -185,14 +162,10 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param dir
-     *                The direction of the selection
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param dir The direction of the selection
+     * @param localize Whether to localize the name or not
      */
     public SelectNearAction(String name, Icon icon, int dir, boolean localize) {
         this(name, icon, dir, 1, false);
@@ -201,16 +174,11 @@ public class SelectNearAction extends UndoableAction {
     /**
      * Creates a new SelectNearAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param dir
-     *                The direction of the selection
-     * @param mag
-     *                The magnitude of the selection
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param dir The direction of the selection
+     * @param mag The magnitude of the selection
+     * @param localize Whether to localize the name or not
      */
     public SelectNearAction(String name, Icon icon, int dir, int mag,
             boolean localize) {

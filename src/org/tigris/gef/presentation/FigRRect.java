@@ -59,7 +59,8 @@ public class FigRRect extends FigRect {
      * Construct a new FigRRect w/ the given position, size, line color, and
      * fill color
      */
-    public FigRRect(int x, int y, int w, int h, Color lineColor, Color fillColor) {
+    public FigRRect(int x, int y, int w, int h, Color lineColor,
+            Color fillColor) {
         super(x, y, w, h, lineColor, fillColor);
     }
 
@@ -108,11 +109,11 @@ public class FigRRect extends FigRect {
             g.drawRoundRect(_x, _y, _w, _h, _radius, _radius);
             delta = 1;
         }
-        
-        g.setColor(_fillColor);
-        g.fillRoundRect(_x+delta, _y+delta, _w-delta*2, _h-delta*2, _radius, _radius);
 
-        
+        g.setColor(_fillColor);
+        g.fillRoundRect(_x + delta, _y + delta, _w - delta * 2, _h - delta * 2,
+                _radius, _radius);
+
     }
 
     /**
@@ -132,8 +133,8 @@ public class FigRRect extends FigRect {
 
         // Do the actual fill color
         g.setColor(_fillColor);
-        g.fillRoundRect(_x + _lineWidth, _y + _lineWidth, _w - lineWidth2, _h
-                - lineWidth2, _radius, _radius);
+        g.fillRoundRect(_x + _lineWidth, _y + _lineWidth, _w - lineWidth2,
+                _h - lineWidth2, _radius, _radius);
     }
 
     /**

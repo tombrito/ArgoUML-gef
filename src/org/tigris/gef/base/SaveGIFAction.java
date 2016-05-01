@@ -38,8 +38,7 @@ public class SaveGIFAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveGIFAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public SaveGIFAction(String name) {
         this(name, false);
@@ -48,10 +47,8 @@ public class SaveGIFAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveGIFAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public SaveGIFAction(String name, Icon icon) {
         this(name, icon, false);
@@ -60,10 +57,8 @@ public class SaveGIFAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveGIFAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public SaveGIFAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -72,12 +67,9 @@ public class SaveGIFAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveGIFAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public SaveGIFAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
@@ -87,13 +79,14 @@ public class SaveGIFAction extends SaveGraphicsAction {
      * Write the diagram contained by the current editor into an OutputStream as
      * a GIF image.
      */
-    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
-            throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea)
+        throws IOException {
 
         // Create an offscreen image and render the diagram into it.
 
-        Image i = ce.createImage(drawingArea.width * scale, drawingArea.height
-                * scale);
+        Image i = ce.createImage(drawingArea.width * scale,
+                drawingArea.height * scale);
         Graphics g = i.getGraphics();
         if (g instanceof Graphics2D) {
             ((Graphics2D) g).scale(scale, scale);

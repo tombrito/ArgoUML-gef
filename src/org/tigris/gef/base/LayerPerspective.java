@@ -189,8 +189,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
         while (bounds.intersects(bbox)) {
             Enumeration overlappers = nodesIn(bbox);
             // If there is nothing overlapping then we are done:
-            if (!overlappers.hasMoreElements())
-                return;
+            if (!overlappers.hasMoreElements()) return;
             // Idem if the only found fig is the one we try to place:
             if ((overlappers.nextElement() == newFig)
                     && (!overlappers.hasMoreElements()))
@@ -207,13 +206,11 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
                 if (vertical) {
                     col++;
                     x = bbox.x + bbox.width + GAP;
-                    if (stagger)
-                        y += (col % 2) * (bbox.height + GAP) / 2;
+                    if (stagger) y += (col % 2) * (bbox.height + GAP) / 2;
                 } else {
                     row++;
                     y = bbox.y + bbox.height + GAP;
-                    if (stagger)
-                        x += (row % 2) * (bbox.width + GAP) / 2;
+                    if (stagger) x += (row % 2) * (bbox.width + GAP) / 2;
                 }
                 newFig.setLocation(x, y);
                 bbox.setLocation(x, y);
@@ -239,8 +236,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
             if (newFigNode != null) {
                 newFigNode.setLayer(this);
                 putInPosition(newFigNode);
-                if (LOG.isDebugEnabled())
-                    LOG.debug("Adding node");
+                if (LOG.isDebugEnabled()) LOG.debug("Adding node");
                 add(newFigNode);
             }
             // else System.out.println("added node de is null");
@@ -304,8 +300,8 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
     /**
      * Test to determine if a given NetNode should have a FigNode in this layer.
      * Normally checks NetNode class against a list of allowable classes. For
-     * more sophisticated rules, override this method. <A
-     * HREF="../features.html#multiple_perspectives">
+     * more sophisticated rules, override this method.
+     * <A HREF="../features.html#multiple_perspectives">
      * <TT>FEATURE: multiple_perspectives</TT></A>
      */
     public boolean shouldShow(Object obj) {
@@ -321,8 +317,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
     }
 
     /**
-     * @param diagram
-     *                The diagram to set.
+     * @param diagram The diagram to set.
      */
     void setDiagram(Diagram diagram) {
         this.diagram = diagram;
@@ -338,8 +333,8 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
     /**
      * Test to determine if a given NetEdge should have an FigEdge in this
      * layer. Normally checks NetNode class against a list of allowable classes.
-     * For more sophisticated rules, override this method. <A
-     * HREF="../features.html#multiple_perspectives">
+     * For more sophisticated rules, override this method.
+     * <A HREF="../features.html#multiple_perspectives">
      * <TT>FEATURE: multiple_perspectives</TT></A>
      */
     // public boolean shouldShow(NetEdge a) {

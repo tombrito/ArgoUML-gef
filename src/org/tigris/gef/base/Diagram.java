@@ -63,24 +63,29 @@ public class Diagram implements Serializable, GraphListener {
      */
     @Deprecated
     protected String _name = "no title set";
+
     /**
      * @deprecated in 0.13 will become private use getter/setter
      */
     @Deprecated
     protected String _comments = "(no comments given)";
+
     private LayerPerspective layer;
+
     /**
      * @deprecated in 0.13 will become private use getter/setter
      */
     @Deprecated
     protected transient ToolBar _toolBar;
+
     private transient Vector<VetoableChangeListener> vetoListeners;
+
     private transient PropertyChangeSupport changeSupport;
+
     // TODO: Sounds like this isn't needed any more
     // In JDK < 1.4 there is no way to get all listener from the
     // PropertyChangeSupport, so we keep a list here
-    private Set<PropertyChangeListener> propertyChangeListeners = 
-        new HashSet<PropertyChangeListener>();
+    private Set<PropertyChangeListener> propertyChangeListeners = new HashSet<PropertyChangeListener>();
 
     /**
      * The bean property name denoting the scale factor. Value is a Double in
@@ -88,7 +93,9 @@ public class Diagram implements Serializable, GraphListener {
      */
     public static final String SCALE_KEY = "scale";
 
-    /** The bean property name denoting the diagram's name. Value is a String. */
+    /**
+     * The bean property name denoting the diagram's name. Value is a String.
+     */
     public static final String NAME_KEY = "name";
 
     // //////////////////////////////////////////////////////////////
@@ -126,8 +133,7 @@ public class Diagram implements Serializable, GraphListener {
     // accessors
     public ToolBar getToolBar() {
 
-        if (_toolBar == null)
-            initToolBar();
+        if (_toolBar == null) initToolBar();
 
         return _toolBar;
     }
@@ -161,16 +167,16 @@ public class Diagram implements Serializable, GraphListener {
     }
 
     /**
-     * @deprecated this has nothing to do with GEF. Looks like some ArgoUML
-     * code has crept in here. Since GEF0.13.1M1. See issue 331.
+     * @deprecated this has nothing to do with GEF. Looks like some ArgoUML code
+     *             has crept in here. Since GEF0.13.1M1. See issue 331.
      * @param enable
      */
     public void setShowSingleMultiplicity(boolean enable) {
     }
 
     /**
-     * @deprecated this has nothing to do with GEF. Looks like some ArgoUML
-     * code has crept in here. Since GEF0.13.1M1. See issue 331.
+     * @deprecated this has nothing to do with GEF. Looks like some ArgoUML code
+     *             has crept in here. Since GEF0.13.1M1. See issue 331.
      * @param enable
      */
     public boolean getShowSingleMultiplicity() {
@@ -202,8 +208,7 @@ public class Diagram implements Serializable, GraphListener {
 
         GraphModel oldGM = getLayer().getGraphModel();
 
-        if (oldGM != null)
-            oldGM.removeGraphEventListener(this);
+        if (oldGM != null) oldGM.removeGraphEventListener(this);
 
         getLayer().setGraphModel(gm);
         gm.addGraphEventListener(this);
@@ -434,32 +439,32 @@ public class Diagram implements Serializable, GraphListener {
     public synchronized void removeVetoableChangeListener(
             VetoableChangeListener listener) {
 
-        if (vetoListeners == null)
-            return;
+        if (vetoListeners == null) return;
 
         vetoListeners.removeElement(listener);
     }
 
     public void fireVetoableChange(String propertyName, boolean oldValue,
-            boolean newValue) throws PropertyVetoException {
-        fireVetoableChange(propertyName, new Boolean(oldValue), new Boolean(
-                newValue));
+            boolean newValue)
+        throws PropertyVetoException {
+        fireVetoableChange(propertyName, new Boolean(oldValue),
+                new Boolean(newValue));
     }
 
     public void fireVetoableChange(String propertyName, int oldValue,
-            int newValue) throws PropertyVetoException {
-        fireVetoableChange(propertyName, new Integer(oldValue), new Integer(
-                newValue));
+            int newValue)
+        throws PropertyVetoException {
+        fireVetoableChange(propertyName, new Integer(oldValue),
+                new Integer(newValue));
     }
 
     public void fireVetoableChange(String propertyName, Object oldValue,
-            Object newValue) throws PropertyVetoException {
+            Object newValue)
+        throws PropertyVetoException {
 
-        if (vetoListeners == null)
-            return;
+        if (vetoListeners == null) return;
 
-        if (oldValue != null && oldValue.equals(newValue))
-            return;
+        if (oldValue != null && oldValue.equals(newValue)) return;
 
         PropertyChangeEvent evt = new PropertyChangeEvent(this, propertyName,
                 oldValue, newValue);

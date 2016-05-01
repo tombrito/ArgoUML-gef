@@ -41,10 +41,11 @@ import org.tigris.gef.presentation.Fig;
 import junit.framework.TestCase;
 
 public class SelectionManagerTest extends TestCase {
-    
+
     private Editor editor;
+
     private JComponent b;
-    
+
     public SelectionManagerTest() {
         editor = new Editor();
         // this is needed for preventing NPE in damage(),
@@ -54,30 +55,32 @@ public class SelectionManagerTest extends TestCase {
     }
 
     public void testAddFigs() {
-        // this takes only assures that we are using generics 
+        // this takes only assures that we are using generics
         // in the correct way.
-        SelectionManager manager = new SelectionManager(editor);        
+        SelectionManager manager = new SelectionManager(editor);
         Collection<NewFig> figs = new LinkedList<NewFig>();
         manager.addFigs(figs);
-        // test pass.        
+        // test pass.
     }
 
     public void testSelectFigs() {
-        // this takes only assures that we are using generics 
+        // this takes only assures that we are using generics
         // in the correct way.
         SelectionManager manager = new SelectionManager(editor);
         Collection<NewFig> figs = new LinkedList<NewFig>();
         manager.selectFigs(figs);
-        // test pass.   
+        // test pass.
     }
-    
+
     /**
      * Tests that we are using the correct method signatures for enabling
      * extensions of the framework.
-     * <p>Per example, we cannot say Collection<Fig> because our
-     * customer ArgoUML extends Fig with ArgoFig.</p>
+     * <p>
+     * Per example, we cannot say Collection<Fig> because our customer ArgoUML
+     * extends Fig with ArgoFig.
+     * </p>
      */
-    public void testExtensibleGenericCollections () {
+    public void testExtensibleGenericCollections() {
         SelectionManager manager = new SelectionManager(editor);
         Collection<NewFig> figs = new LinkedList<NewFig>();
         manager.selectFigs(figs);
@@ -87,11 +90,10 @@ public class SelectionManagerTest extends TestCase {
         for (Method m : methods) {
             Type[] params = m.getGenericParameterTypes();
 
-            if(params.length > 0
-                    && params[0] instanceof ParameterizedType) {
+            if (params.length > 0 && params[0] instanceof ParameterizedType) {
                 try {
-                    m.invoke(manager, new Object[] {  figs });
-                    System.out.println(m.getName() +" called succesfully.");
+                    m.invoke(manager, new Object[] { figs });
+                    System.out.println(m.getName() + " called succesfully.");
                     ++validMethods;
                 } catch (IllegalArgumentException e) {
                     fail("IllegalArgumentException calling " + m.getName());
@@ -100,19 +102,20 @@ public class SelectionManagerTest extends TestCase {
                 } catch (InvocationTargetException e) {
                     fail("IllegalArgumentException calling " + m.getName());
                 }
-            }   
+            }
         }
-        System.out.println( validMethods +" methods called succesfully.");
+        System.out.println(validMethods + " methods called succesfully.");
     }
 }
 
 class NewFig extends Fig {
     @Override
     public void appendSvg(StringBuffer sb) {
-        // do nothing        
+        // do nothing
     }
+
     @Override
     public void paint(Graphics g) {
-        // do nothing        
+        // do nothing
     }
 }

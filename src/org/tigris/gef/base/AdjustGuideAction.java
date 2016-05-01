@@ -51,8 +51,7 @@ public class AdjustGuideAction extends AbstractAction {
     /**
      * Creates a new AdjustGuideAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public AdjustGuideAction(String name) {
         this(name, false);
@@ -61,10 +60,8 @@ public class AdjustGuideAction extends AbstractAction {
     /**
      * Creates a new AdjustGuideAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public AdjustGuideAction(String name, Icon icon) {
         this(name, icon, false);
@@ -73,10 +70,8 @@ public class AdjustGuideAction extends AbstractAction {
     /**
      * Creates a new AdjustGuideAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public AdjustGuideAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -85,12 +80,9 @@ public class AdjustGuideAction extends AbstractAction {
     /**
      * Creates a new AdjustGuideAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public AdjustGuideAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

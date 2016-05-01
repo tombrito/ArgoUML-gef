@@ -46,8 +46,8 @@ import org.tigris.gef.presentation.Fig;
  * utility methods.
  */
 
-public abstract class MutableGraphSupport implements MutableGraphModel,
-        java.io.Serializable {
+public abstract class MutableGraphSupport
+        implements MutableGraphModel, java.io.Serializable {
 
     private Vector _graphListeners;
 
@@ -129,12 +129,9 @@ public abstract class MutableGraphSupport implements MutableGraphModel,
      * edge. This delegates either to the registered ConnectionConstrainer or if
      * unregistered then ignores edgeClass and calls canConnect(port,port).
      * 
-     * @param fromPort
-     *                the source port for which to test
-     * @param toPort
-     *                the destination port for which to test
-     * @param edgeType
-     *                An identifier indicating the type of edge to create
+     * @param fromPort the source port for which to test
+     * @param toPort the destination port for which to test
+     * @param edgeType An identifier indicating the type of edge to create
      */
     public boolean canConnect(Object fromPort, Object toPort, Object edgeType) {
         boolean canConnect = false;
@@ -152,12 +149,9 @@ public abstract class MutableGraphSupport implements MutableGraphModel,
      * edge. This delegates either to the registered ConnectionConstrainer or if
      * unregistered then ignores edgeClass and calls canConnect(port,port).
      * 
-     * @param fromPort
-     *                the source port for which to test
-     * @param toPort
-     *                the destination port for which to test
-     * @param edgeClass
-     *                The edge class for which test
+     * @param fromPort the source port for which to test
+     * @param toPort the destination port for which to test
+     * @param edgeClass The edge class for which test
      */
     public boolean canConnect(Object fromPort, Object toPort, Class edgeClass) {
         boolean canConnect = false;
@@ -173,8 +167,8 @@ public abstract class MutableGraphSupport implements MutableGraphModel,
     /**
      * Reroutes the connection to the old node to be connected to the new node.
      */
-    public void changeConnectedNode(Object newNode, Object oldNode,
-            Object edge, boolean isSource) {
+    public void changeConnectedNode(Object newNode, Object oldNode, Object edge,
+            boolean isSource) {
     }
 
     /**
@@ -189,19 +183,15 @@ public abstract class MutableGraphSupport implements MutableGraphModel,
      * Construct and add a new edge of the given kind and connect the given
      * ports. By default ignore edgeClass and call connect(port,port).
      * 
-     * @param fromPort
-     *                The originating port to connect
+     * @param fromPort The originating port to connect
      * 
-     * @param toPort
-     *                The destination port to connect
+     * @param toPort The destination port to connect
      * 
-     * @param edgeType
-     *                Some indicator of the type of edge to create. This could
-     *                be a <code>Class</code> or some other value as input to
-     *                a factory to create the required edge model.
+     * @param edgeType Some indicator of the type of edge to create. This could
+     *            be a <code>Class</code> or some other value as input to a
+     *            factory to create the required edge model.
      * 
-     * @param styleAttributes
-     *                key/value pairs from which to create the edge.
+     * @param styleAttributes key/value pairs from which to create the edge.
      * 
      * @return The type of edge created (the same as <code>edgeClass</code> if
      *         we succeeded, <code>null</code> otherwise)

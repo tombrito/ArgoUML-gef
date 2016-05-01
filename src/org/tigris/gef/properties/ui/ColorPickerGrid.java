@@ -47,10 +47,13 @@ public class ColorPickerGrid extends JPanel implements ActionListener {
 
     /** An array printf tiny colored squares. */
     protected ColorTilePanel _tiles = new ColorTilePanel(36);
+
     /** The ColorEditor that is master to this slave window. */
     protected ColorEditor _peColor = null;
+
     /** PATTERN: singleton */
     protected static ColorPickerGrid _theInstance = null;
+
     /** Text to be displayed in the status bar area of this window. */
     protected JLabel _statusLabel = new JLabel("No color selected");
 
@@ -94,8 +97,7 @@ public class ColorPickerGrid extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent ae) {
         updateStatusLabel();
-        if (_peColor != null)
-            _peColor.setValue(_tiles.getColor());
+        if (_peColor != null) _peColor.setValue(_tiles.getColor());
     }
 
     public void updateStatusLabel() {
@@ -107,12 +109,9 @@ public class ColorPickerGrid extends JPanel implements ActionListener {
         String r = Integer.toString(c.getRed(), 16).toUpperCase();
         String b = Integer.toString(c.getBlue(), 16).toUpperCase();
         String g = Integer.toString(c.getGreen(), 16).toUpperCase();
-        if (c.getRed() == 0)
-            r = "00";
-        if (c.getBlue() == 0)
-            b = "00";
-        if (c.getGreen() == 0)
-            g = "00";
+        if (c.getRed() == 0) r = "00";
+        if (c.getBlue() == 0) b = "00";
+        if (c.getGreen() == 0) g = "00";
         _statusLabel.setText("Red:" + r + " Blue:" + b + " Green:" + g);
     }
 

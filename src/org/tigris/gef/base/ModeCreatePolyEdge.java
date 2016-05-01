@@ -77,7 +77,9 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
 
     /** The number of points added so far. */
     protected int _npoints = 0;
+
     protected int _lastX, _lastY, _startX, _startY;
+
     protected Handle _handle = new Handle(-1);
 
     private static Log LOG = LogFactory.getLog(ModeCreatePolyEdge.class);
@@ -87,8 +89,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
 
     public ModeCreatePolyEdge() {
         super();
-        if (LOG.isDebugEnabled())
-            LOG.debug("Created ModeCreatePolyEdge");
+        if (LOG.isDebugEnabled()) LOG.debug("Created ModeCreatePolyEdge");
     }
 
     public ModeCreatePolyEdge(Editor par) {
@@ -132,9 +133,8 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
      */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
-            if (LOG.isDebugEnabled())
-                LOG
-                        .debug("MousePressed detected but rejected as already consumed");
+            if (LOG.isDebugEnabled()) LOG.debug(
+                    "MousePressed detected but rejected as already consumed");
             return;
         }
 
@@ -149,17 +149,15 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         if (underMouse == null && _npoints == 0) {
             done();
             me.consume();
-            if (LOG.isDebugEnabled())
-                LOG
-                        .debug("MousePressed detected but nothing under mouse - consumed anyway");
+            if (LOG.isDebugEnabled()) LOG.debug(
+                    "MousePressed detected but nothing under mouse - consumed anyway");
             return;
         }
         if (!(underMouse instanceof FigNode) && _npoints == 0) {
             done();
             me.consume();
-            if (LOG.isDebugEnabled())
-                LOG
-                        .debug("MousePressed detected but not on a FigNode - consumed anyway");
+            if (LOG.isDebugEnabled()) LOG.debug(
+                    "MousePressed detected but not on a FigNode - consumed anyway");
             return;
         }
         if (sourceFigNode == null) { // _npoints == 0) {
@@ -167,9 +165,8 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
             startPort = sourceFigNode.deepHitPort(x, y);
         }
         if (startPort == null) {
-            if (LOG.isDebugEnabled())
-                LOG
-                        .debug("MousePressed detected but not on a port - consumed anyway");
+            if (LOG.isDebugEnabled()) LOG.debug(
+                    "MousePressed detected but not on a port - consumed anyway");
             done();
             me.consume();
             return;
@@ -179,9 +176,8 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
         if (_npoints == 0) {
             createFig(me);
         }
-        if (LOG.isDebugEnabled())
-            LOG
-                    .debug("MousePressed detected and processed by ancestor - consumed");
+        if (LOG.isDebugEnabled()) LOG.debug(
+                "MousePressed detected and processed by ancestor - consumed");
         me.consume();
     }
 
@@ -311,7 +307,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
     // CreatePolyEdgeMemento(editor,newEdge,fe));
     // }
     // UndoManager.getInstance().setGenerateMementos(wasGenerateMementos);
-    //        
+    //
     // }
 
     public void mouseMoved(MouseEvent me) {
@@ -319,8 +315,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
     }
 
     public void mouseDragged(MouseEvent me) {
-        if (me.isConsumed())
-            return;
+        if (me.isConsumed()) return;
         int x = me.getX(), y = me.getY();
         if (_npoints == 0) {
             me.consume();
@@ -349,8 +344,7 @@ public class ModeCreatePolyEdge extends ModeCreateEdge {
 
     public void done() {
         super.done();
-        if (_newItem != null)
-            editor.damageAll();
+        if (_newItem != null) editor.damageAll();
         _newItem = null; // use this as the fig for the new FigEdge
         _npoints = 0;
         sourceFigNode = null;

@@ -41,6 +41,7 @@ public class ArrowHeadComposite extends ArrowHead {
      * 
      */
     private static final long serialVersionUID = -9079999150349589867L;
+
     protected Vector _arrowHeads = new Vector();
 
     public ArrowHeadComposite() {
@@ -55,12 +56,8 @@ public class ArrowHeadComposite extends ArrowHead {
         _arrowHeads.addElement(ah);
     }
 
-    public void paint(
-            final Graphics g,
-            final Point start,
-            final Point end,
-            final Color lineColor,
-            final Color fillColor) {
+    public void paint(final Graphics g, final Point start, final Point end,
+            final Color lineColor, final Color fillColor) {
         System.out
                 .println("paint3 in ArrowHeadComposite should never be called");
     }
@@ -69,11 +66,10 @@ public class ArrowHeadComposite extends ArrowHead {
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-            ah.paint((Graphics) g, 
+            ah.paint((Graphics) g,
                     path.pointAlongPerimeter((i + 1) * getHeight() * 2),
                     path.pointAlongPerimeter(i * getHeight() * 2),
-                    path.getLineColor(),
-                    path.getFillColor());
+                    path.getLineColor(), path.getFillColor());
         }
     }
 
@@ -82,11 +78,11 @@ public class ArrowHeadComposite extends ArrowHead {
         int size = _arrowHeads.size();
         for (int i = 0; i < size; i++) {
             ArrowHead ah = (ArrowHead) _arrowHeads.elementAt(i);
-            ah.paint((Graphics) g, 
-                    path.pointAlongPerimeter(len - 1 - (i + 1) * getHeight() * 2), 
+            ah.paint((Graphics) g,
+                    path.pointAlongPerimeter(
+                            len - 1 - (i + 1) * getHeight() * 2),
                     path.pointAlongPerimeter(len - 1 - i * getHeight() * 2),
-                    path.getLineColor(),
-                    path.getFillColor());
+                    path.getLineColor(), path.getFillColor());
         }
     }
 } /* end class ArrowHeadComposite */

@@ -63,6 +63,7 @@ public class LayerGrid extends Layer {
      * it looks less cluttered. But lines are more familiar to some people.
      */
     private boolean _paintLines = false;
+
     private boolean _paintDots = true;
 
     /**
@@ -99,6 +100,7 @@ public class LayerGrid extends Layer {
      * @see LayerGrid#adjust
      */
     private int _style = 2;
+
     private final int NUM_STYLES = 5;
 
     // //////////////////////////////////////////////////////////////
@@ -117,8 +119,9 @@ public class LayerGrid extends Layer {
         // The color of the lines and dots should be slightly darker than the
         // background color
         final float scale = 0.9f;
-        _color = new Color((int) (_bgColor.getRed() * scale), (int) (_bgColor
-                .getGreen() * scale), (int) (_bgColor.getBlue() * scale));
+        _color = new Color((int) (_bgColor.getRed() * scale),
+                (int) (_bgColor.getGreen() * scale),
+                (int) (_bgColor.getBlue() * scale));
     }
 
     /**
@@ -154,8 +157,7 @@ public class LayerGrid extends Layer {
     public synchronized void paintContents(Graphics g) {
         // This line is for printing under Java 1.1
         if (g instanceof PrintGraphics) {
-            if (!Globals.getPrefs().getPrintGrid())
-                return;
+            if (!Globals.getPrefs().getPrintGrid()) return;
             if (_paintLines)
                 paintLines(g, Globals.getPrefs().getPrintBackground());
             else
@@ -163,8 +165,7 @@ public class LayerGrid extends Layer {
             return;
         }
         if (_stamp == null) {
-            if (_spacing > _stampHeight)
-                _stampHeight = _stampWidth = _spacing;
+            if (_spacing > _stampHeight) _stampHeight = _stampWidth = _spacing;
             if (Globals.curEditor() == null) {
                 // this is a bad idea, but it works around a very awkward AWT
                 // requirement: that only frames can make Image instances
@@ -180,8 +181,7 @@ public class LayerGrid extends Layer {
             if (_stamp != null) {
                 if (_paintLines)
                     paintLines(_stamp, _paintBackground);
-                else if (_paintDots)
-                    paintDots(_stamp, _paintBackground);
+                else if (_paintDots) paintDots(_stamp, _paintBackground);
             }
         }
 
@@ -316,9 +316,9 @@ public class LayerGrid extends Layer {
      * 
      * Supported are:
      * <ul>
-     * <li> "spacing", Integer : the size of the grid
-     * <li> "paintLines", Boolean : shows grid as lines (overrules dots)
-     * <li> "paintDots", Boolean : shows grid as dots
+     * <li>"spacing", Integer : the size of the grid
+     * <li>"paintLines", Boolean : shows grid as lines (overrules dots)
+     * <li>"paintDots", Boolean : shows grid as dots
      * 
      * @see org.tigris.gef.base.Layer#adjust(java.util.HashMap)
      */
@@ -329,16 +329,13 @@ public class LayerGrid extends Layer {
         setHidden(false);
 
         m = map.get("spacing");
-        if (m instanceof Integer)
-            _spacing = ((Integer) m).intValue();
+        if (m instanceof Integer) _spacing = ((Integer) m).intValue();
 
         m = map.get("paintLines");
-        if (m instanceof Boolean)
-            _paintLines = ((Boolean) m).booleanValue();
+        if (m instanceof Boolean) _paintLines = ((Boolean) m).booleanValue();
 
         m = map.get("paintDots");
-        if (m instanceof Boolean)
-            _paintDots = ((Boolean) m).booleanValue();
+        if (m instanceof Boolean) _paintDots = ((Boolean) m).booleanValue();
 
         refreshEditors();
     }

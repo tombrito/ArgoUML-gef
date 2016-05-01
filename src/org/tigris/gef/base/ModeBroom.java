@@ -47,52 +47,95 @@ import org.tigris.gef.util.Localizer;
 public class ModeBroom extends FigModifyingModeImpl {
 
     private static final long serialVersionUID = -6846688672699867345L;
+
     private static final String resource = "GefBase";
 
     private final int DIRECTION_UNDEFINED = 0;
+
     private final int DIRECTION_UPWARD = 1;
+
     private final int DIRECTION_DOWNWARD = 2;
+
     private final int DIRECTION_RIGHTWARD = 3;
+
     private final int DIRECTION_LEFTWARD = 4;
+
     private final int DEFINE_DIRECTION_TOLERANCE = 10;
+
     private final int BROOM_WIDTH_NORMAL = 200;
+
     private final int BROOM_WIDTH_SMALL = 30;
+
     private final int MAX_TOUCHED_FIGS = 1000;
+
     private final int DISTRIBUTE_EVEN_SPACE = 0;
+
     private final int DISTRIBUTE_PACK = 1;
+
     private final int DISTRIBUTE_SPREAD = 2;
+
     private final int DISTRIBUTE_ORIG = 3;
+
     private final Font HINT_FONT = new Font("Dialog", Font.PLAIN, 9);
+
     // //////////////////////////////////////////////////////////////
     // instance variables
     private Point _start = new Point(0, 0);
+
     private Vector<Fig> _LastTouched = new Vector<Fig>();
+
     private int x1;
+
     private int y1;
+
     private int x2;
+
     private int y2;
+
     private int _lastX1;
+
     private int _lastY1;
+
     private int _lastX2;
+
     private int _lastY2;
+
     private int _lastMX;
+
     private int _lastMY;
+
     private int _dir = DIRECTION_UNDEFINED;
+
     private boolean _magnetic = false;
+
     private boolean _movable = true;
+
     private boolean _draw = false;
+
     private Fig[] _touched = new Fig[MAX_TOUCHED_FIGS];
+
     private int[] _origX = new int[MAX_TOUCHED_FIGS];
+
     private int[] _origY = new int[MAX_TOUCHED_FIGS];
+
     private int[] _offX = new int[MAX_TOUCHED_FIGS];
+
     private int[] _offY = new int[MAX_TOUCHED_FIGS];
+
     private int _nTouched = 0;
+
     private int _broomMargin = 0;
+
     private int _distributeMode = 0;
+
     private Rectangle _addRect = new Rectangle();
+
     private Rectangle _selectRect = new Rectangle();
+
     private Rectangle _bigDamageRect = new Rectangle(0, 0, 400, 400);
+
     private Rectangle _origBBox = null;
+
     private String _hint = null;
 
     // //////////////////////////////////////////////////////////////
@@ -311,7 +354,7 @@ public class ModeBroom extends FigModifyingModeImpl {
                 if (f instanceof FigNode) {
                     FigNode fn = (FigNode) f;
                     fn.superTranslate(dx, dy);
-                    for (FigEdge fe :  fn.getFigEdges(null)) {
+                    for (FigEdge fe : fn.getFigEdges(null)) {
                         if (nonMovingEdges.contains(fe)
                                 && !movingEdges.contains(fe)) {
                             movingEdges.addElement(fe);
@@ -374,8 +417,8 @@ public class ModeBroom extends FigModifyingModeImpl {
         }
 
         int i;
-        _addRect.setBounds(_lastX1, _lastY1, _lastX2 - _lastX1, _lastY2
-                - _lastY1);
+        _addRect.setBounds(_lastX1, _lastY1, _lastX2 - _lastX1,
+                _lastY2 - _lastY1);
         _addRect.add(_selectRect);
         Iterator figs = editor.getFigs().iterator();
         iterateFigs: while (figs.hasNext()) {
@@ -386,11 +429,12 @@ public class ModeBroom extends FigModifyingModeImpl {
                         && figBounds.x + figBounds.width > _addRect.x
                                 + _addRect.width
                         || _dir == DIRECTION_RIGHTWARD
-                        && figBounds.x < _addRect.x
+                                && figBounds.x < _addRect.x
                         || _dir == DIRECTION_UPWARD
-                        && figBounds.y + figBounds.height > _addRect.y
-                                + _addRect.height || _dir == DIRECTION_DOWNWARD
-                        && figBounds.y < _addRect.y) {
+                                && figBounds.y + figBounds.height > _addRect.y
+                                        + _addRect.height
+                        || _dir == DIRECTION_DOWNWARD
+                                && figBounds.y < _addRect.y) {
                     continue iterateFigs; // ####################
                 }
 
@@ -518,7 +562,8 @@ public class ModeBroom extends FigModifyingModeImpl {
             }
 
             if (alignToGrid) {
-                AlignAction a = new AlignAction(AlignAction.ALIGN_TO_GRID, figs);
+                AlignAction a = new AlignAction(AlignAction.ALIGN_TO_GRID,
+                        figs);
                 a.actionPerformed(null);
             }
 
@@ -546,7 +591,7 @@ public class ModeBroom extends FigModifyingModeImpl {
         if (alignToGrid) {
             _hint += "Snap";
         }
-        
+
         _hint = Localizer.localize(resource, _hint);
 
         _distributeMode = (_distributeMode + 1) % 4;

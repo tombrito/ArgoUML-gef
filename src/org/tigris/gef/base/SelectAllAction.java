@@ -53,8 +53,7 @@ public class SelectAllAction extends AbstractAction {
     /**
      * Creates a new SelectAllAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public SelectAllAction(String name) {
         this(name, false);
@@ -63,10 +62,8 @@ public class SelectAllAction extends AbstractAction {
     /**
      * Creates a new SelectAllAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public SelectAllAction(String name, Icon icon) {
         this(name, icon, false);
@@ -75,10 +72,8 @@ public class SelectAllAction extends AbstractAction {
     /**
      * Creates a new SelectAllAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public SelectAllAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -87,12 +82,9 @@ public class SelectAllAction extends AbstractAction {
     /**
      * Creates a new SelectAllAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public SelectAllAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

@@ -73,8 +73,7 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
                 Globals.showStatus("Read " + path + filename);
                 JGraphFrame jgf = new JGraphFrame(path + filename, ed);
                 Object d = getArg("dimension");
-                if (d instanceof Dimension)
-                    jgf.setSize((Dimension) d);
+                if (d instanceof Dimension) jgf.setSize((Dimension) d);
                 jgf.setVisible(true);
             } catch (SAXException murle) {
                 System.out.println("bad URL");

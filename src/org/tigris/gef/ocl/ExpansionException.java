@@ -43,18 +43,15 @@ public class ExpansionException extends Exception {
     /**
      * Constructor
      * 
-     * @param message
-     *                the message
+     * @param message the message
      */
     public ExpansionException(String message) {
         super(message);
     }
 
     /**
-     * @param message
-     *                the message
-     * @param c
-     *                the cause of the exception
+     * @param message the message
+     * @param c the cause of the exception
      */
     public ExpansionException(String message, Throwable c) {
         super(message);
@@ -62,8 +59,7 @@ public class ExpansionException extends Exception {
     }
 
     /**
-     * @param c
-     *                the cause of the exception
+     * @param c the cause of the exception
      */
     public ExpansionException(Throwable c) {
         super();

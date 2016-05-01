@@ -50,8 +50,8 @@ import org.tigris.gef.util.Localizer;
  * @see Editor
  * @author Sean Chen, schen@webex.net
  */
-public class ModeDragScroll extends FigModifyingModeImpl implements
-        ActionListener {
+public class ModeDragScroll extends FigModifyingModeImpl
+        implements ActionListener {
 
     private static final long serialVersionUID = -3744868964626889125L;
 
@@ -59,20 +59,33 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
 
     // attributes for autoscrolling...
     private boolean autoscroll = false;
+
     private javax.swing.Timer autoTimer;
+
     private int recentX, recentY;
+
     private final static int AUTOSCROLL_DELAY = 200;
+
     private static final int SCROLL_INCREMENT = 10;
 
     private boolean _isScrolling = false;
+
     private JViewport _viewport = null;
+
     private Cursor _oldCursor = null;
+
     private JComponent _component = null;
+
     private Dimension componentSize = null;
+
     private Point viewPosition = new Point();
+
     private int deltaX;
+
     private int deltaY;
+
     private int lastX;
+
     private int lastY;
 
     private boolean simpleDrag = false;
@@ -83,8 +96,7 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
     /**
      * Construct a new ModeDragScroll with the given parent.
      * 
-     * @param editor
-     *                The Editor this Mode will drag
+     * @param editor The Editor this Mode will drag
      */
     public ModeDragScroll(Editor editor) {
         super(editor);
@@ -121,19 +133,19 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
      */
     public void mousePressed(MouseEvent me) {
         int onmask = MouseEvent.BUTTON2_DOWN_MASK;
-        int offmask = MouseEvent.ALT_DOWN_MASK 
-            | MouseEvent.CTRL_DOWN_MASK;
-        /* The shift key is used to modify the dragScroll functionality, 
-         * so it is not checked here.*/
-        boolean buttonCondition =  (me.getModifiersEx() & (onmask | offmask)) == onmask;
+        int offmask = MouseEvent.ALT_DOWN_MASK | MouseEvent.CTRL_DOWN_MASK;
+        /*
+         * The shift key is used to modify the dragScroll functionality, so it
+         * is not checked here.
+         */
+        boolean buttonCondition = (me.getModifiersEx()
+                & (onmask | offmask)) == onmask;
 
-        // if only mouse button1 is pressed, activate the auto scrolling        
+        // if only mouse button1 is pressed, activate the auto scrolling
         onmask = MouseEvent.BUTTON1_DOWN_MASK;
-        offmask = MouseEvent.BUTTON2_DOWN_MASK 
-            | MouseEvent.BUTTON3_DOWN_MASK 
-            | MouseEvent.SHIFT_DOWN_MASK 
-            | MouseEvent.CTRL_DOWN_MASK;
-        simpleDrag =  (me.getModifiersEx() & (onmask | offmask)) == onmask;
+        offmask = MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK
+                | MouseEvent.SHIFT_DOWN_MASK | MouseEvent.CTRL_DOWN_MASK;
+        simpleDrag = (me.getModifiersEx() & (onmask | offmask)) == onmask;
 
         if (!buttonCondition) {
             // if (LOG.isDebugEnabled()) LOG.debug("MousePressed detected but
@@ -240,8 +252,10 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
                     - (viewPosition.x + _viewportExtent.width), deltaX);
 
             deltaY = Math.max(-viewPosition.y, deltaY);
-            deltaY = Math.min(componentSize.height
-                    - (viewPosition.y + _viewportExtent.height), deltaY);
+            deltaY = Math.min(
+                    componentSize.height
+                            - (viewPosition.y + _viewportExtent.height),
+                    deltaY);
 
             viewPosition.x += deltaX;
             viewPosition.y += deltaY;
@@ -260,7 +274,8 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
         }
     }
 
-    private final boolean doScroll(JComponent jComponent, int mouseX, int mouseY) {
+    private final boolean doScroll(JComponent jComponent, int mouseX,
+            int mouseY) {
         if (jComponent != null && jComponent.getParent() instanceof JViewport) {
             Dimension componentSize = jComponent.getSize();
             JViewport view = (JViewport) jComponent.getParent();
@@ -271,27 +286,27 @@ public class ModeDragScroll extends FigModifyingModeImpl implements
             // Then auto scrolling is activated but only within the component
             // boundaries
 
-            if (mouseX > viewRight
-                    && !(viewRight > (componentSize.width - SCROLL_INCREMENT))) {
+            if (mouseX > viewRight && !(viewRight > (componentSize.width
+                    - SCROLL_INCREMENT))) {
                 // mouse moves right out of the view -> scroll to right
-                view.setViewPosition(new Point(viewRect.x + SCROLL_INCREMENT,
-                        viewRect.y));
+                view.setViewPosition(
+                        new Point(viewRect.x + SCROLL_INCREMENT, viewRect.y));
                 return true;
             } else if (mouseX < viewRect.x
                     && !(viewRect.x - SCROLL_INCREMENT < 0)) {
                 // mouse moves left out of the viewport -> scroll to left
-                view.setViewPosition(new Point(viewRect.x - SCROLL_INCREMENT,
-                        viewRect.y));
+                view.setViewPosition(
+                        new Point(viewRect.x - SCROLL_INCREMENT, viewRect.y));
                 return true;
             } else if (mouseY > viewY
                     && !(viewY > (componentSize.height - SCROLL_INCREMENT))) {
-                view.setViewPosition(new Point(viewRect.x, viewRect.y
-                        + SCROLL_INCREMENT));
+                view.setViewPosition(
+                        new Point(viewRect.x, viewRect.y + SCROLL_INCREMENT));
                 return true;
             } else if (mouseY < viewRect.y
                     && !(viewRect.y - SCROLL_INCREMENT < 0)) {
-                view.setViewPosition(new Point(viewRect.x, viewRect.y
-                        - SCROLL_INCREMENT));
+                view.setViewPosition(
+                        new Point(viewRect.x, viewRect.y - SCROLL_INCREMENT));
                 return true;
             }
         }

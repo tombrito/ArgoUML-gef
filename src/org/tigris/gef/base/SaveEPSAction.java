@@ -25,8 +25,7 @@ public class SaveEPSAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveEPSAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public SaveEPSAction(String name) {
         this(name, false);
@@ -35,10 +34,8 @@ public class SaveEPSAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveEPSAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public SaveEPSAction(String name, Icon icon) {
         this(name, icon, false);
@@ -47,10 +44,8 @@ public class SaveEPSAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveEPSAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public SaveEPSAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -59,19 +54,17 @@ public class SaveEPSAction extends SaveGraphicsAction {
     /**
      * Creates a new SaveEPSAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public SaveEPSAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
     }
 
-    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
-            throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea)
+        throws IOException {
         PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
         ps.translate(-drawingArea.x, -drawingArea.y);
         ce.print(ps);

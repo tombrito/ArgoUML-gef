@@ -46,11 +46,9 @@ public class FigGroupHandler extends BaseHandler implements Container {
     private FigGroup group;
 
     /**
-     * @param parser
-     *                The PGMLStackParser for the diagram that contains this
-     *                FigGroup
-     * @param theGroup
-     *                The object corresponding to the element being parsed
+     * @param parser The PGMLStackParser for the diagram that contains this
+     *            FigGroup
+     * @param theGroup The object corresponding to the element being parsed
      */
     public FigGroupHandler(PGMLStackParser parser, FigGroup theGroup) {
         super(parser);
@@ -73,7 +71,7 @@ public class FigGroupHandler extends BaseHandler implements Container {
      *      java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String qname)
-            throws SAXException {
+        throws SAXException {
         if (group instanceof FigNode) {
             Object owner = group.getOwner();
             List nodes = getPGMLStackParser().getDiagram().getNodes();
@@ -88,8 +86,8 @@ public class FigGroupHandler extends BaseHandler implements Container {
      * Add the object represented by a sub-element to this group. If a
      * sub-element represents a Fig, the Fig is added to this group's Fig
      * collection. If a sub-element represents a String, it is a
-     * <em>private</em> element that identifies the enclosing Fig of this
-     * group, so set the enclosing Fig.
+     * <em>private</em> element that identifies the enclosing Fig of this group,
+     * so set the enclosing Fig.
      * 
      * @see org.tigris.gef.persistence.pgml.Container#addObject(java.lang.Object)
      */

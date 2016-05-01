@@ -35,8 +35,7 @@ public class SavePNGAction extends SaveGraphicsAction {
     /**
      * Creates a new SavePNGAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public SavePNGAction(String name) {
         this(name, false);
@@ -45,10 +44,8 @@ public class SavePNGAction extends SaveGraphicsAction {
     /**
      * Creates a new SavePNGAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public SavePNGAction(String name, Icon icon) {
         this(name, icon, false);
@@ -57,10 +54,8 @@ public class SavePNGAction extends SaveGraphicsAction {
     /**
      * Creates a new SavePNGAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public SavePNGAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -69,12 +64,9 @@ public class SavePNGAction extends SaveGraphicsAction {
     /**
      * Creates a new SavePNGAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public SavePNGAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
@@ -84,8 +76,9 @@ public class SavePNGAction extends SaveGraphicsAction {
      * Write the diagram contained by the current editor into an OutputStream as
      * a PNG image.
      */
-    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
-            throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea)
+        throws IOException {
 
         // Create an offscreen image and render the diagram into it.
         Image i = new BufferedImage(drawingArea.width * scale,

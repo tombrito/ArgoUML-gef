@@ -38,9 +38,13 @@ import java.awt.*;
 
 public class PropsGridLayout implements LayoutManager {
     int hgap;
+
     int vgap;
+
     int _labelWidth = 100;
+
     int _labelHeight = 22;
+
     int _minPropWidth = 150;
 
     public PropsGridLayout(int hgap, int vgap) {
@@ -51,10 +55,8 @@ public class PropsGridLayout implements LayoutManager {
     /**
      * Adds the specified component with the specified name to the layout.
      * 
-     * @param name
-     *                the name of the component
-     * @param comp
-     *                the component to be added
+     * @param name the name of the component
+     * @param comp the component to be added
      */
     public void addLayoutComponent(String name, Component comp) {
     }
@@ -62,8 +64,7 @@ public class PropsGridLayout implements LayoutManager {
     /**
      * Removes the specified component from the layout. Does not apply.
      * 
-     * @param comp
-     *                the component to be removed
+     * @param comp the component to be removed
      */
     public void removeLayoutComponent(Component comp) {
     }
@@ -72,8 +73,7 @@ public class PropsGridLayout implements LayoutManager {
      * Returns the preferred dimensions for this layout given the components int
      * the specified panel.
      * 
-     * @param parent
-     *                the component which needs to be laid out
+     * @param parent the component which needs to be laid out
      * @see #minimumLayoutSize
      */
     public Dimension preferredLayoutSize(Container parent) {
@@ -86,16 +86,15 @@ public class PropsGridLayout implements LayoutManager {
             Dimension d = comp.getPreferredSize();
             h += d.height + vgap;
         }
-        return new Dimension(insets.left + insets.right + w, insets.top
-                + insets.bottom + h);
+        return new Dimension(insets.left + insets.right + w,
+                insets.top + insets.bottom + h);
     }
 
     /**
      * Returns the minimum dimensions needed to layout the components contained
      * in the specified panel.
      * 
-     * @param parent
-     *                the component which needs to be laid out
+     * @param parent the component which needs to be laid out
      * @see #preferredLayoutSize
      */
     public Dimension minimumLayoutSize(Container parent) {
@@ -108,22 +107,20 @@ public class PropsGridLayout implements LayoutManager {
             Dimension d = comp.getMinimumSize();
             h += d.height + vgap;
         }
-        return new Dimension(insets.left + insets.right + w, insets.top
-                + insets.bottom + h);
+        return new Dimension(insets.left + insets.right + w,
+                insets.top + insets.bottom + h);
     }
 
     /**
      * Lays out the container in the specified panel.
      * 
-     * @param parent
-     *                the specified component being laid out
+     * @param parent the specified component being laid out
      * @see Container
      */
     public void layoutContainer(Container parent) {
         Insets insets = parent.getInsets();
         int ncomponents = parent.getComponentCount();
-        if (ncomponents == 0)
-            return;
+        if (ncomponents == 0) return;
         int used = insets.left + insets.right + hgap + _labelWidth;
         int propWidth = Math.max(parent.getSize().width - used, _minPropWidth);
         Graphics g = parent.getGraphics();

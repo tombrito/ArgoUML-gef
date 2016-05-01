@@ -7,11 +7,17 @@ import org.tigris.gef.base.*;
 public class AnnotationProperties {
 
     private boolean fixedOffset = false;
+
     private boolean fixedRatio = false;
+
     private int offset = 10;
+
     private float ratio = (float) 0.5;
+
     private int connectingLineVisibilityDuration = 300;
+
     private FigLine line = new FigLine(0, 0, 0, 0);
+
     private Color lineColor = Color.red;
 
     public AnnotationProperties() {
@@ -88,7 +94,8 @@ public class AnnotationProperties {
 
     // removes the line from the active diagram
     public synchronized void removeLine() {
-        if (Globals.curEditor().getLayerManager().getContents().contains(line)) {
+        if (Globals.curEditor().getLayerManager().getContents()
+                .contains(line)) {
             line.removeFromDiagram();
         }
     }

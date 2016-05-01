@@ -59,7 +59,8 @@ public class EnumerationComposite implements Enumeration, java.io.Serializable {
         addSub(e2);
     }
 
-    public EnumerationComposite(Enumeration e1, Enumeration e2, Enumeration e3) {
+    public EnumerationComposite(Enumeration e1, Enumeration e2,
+            Enumeration e3) {
         addSub(e1);
         addSub(e2);
         addSub(e3);
@@ -81,8 +82,7 @@ public class EnumerationComposite implements Enumeration, java.io.Serializable {
      * receiving EnumerationComposite.
      */
     public void addSub(Vector v) {
-        if (v != null)
-            addSub(v.elements());
+        if (v != null) addSub(v.elements());
     }
 
     /** Reply true iff this EnumerationComposite has more elements. */
@@ -92,8 +92,7 @@ public class EnumerationComposite implements Enumeration, java.io.Serializable {
 
     /** Reply the next element, or raise an execption if there is none. */
     public Object nextElement() {
-        if (!hasMoreElements())
-            throw new NoSuchElementException();
+        if (!hasMoreElements()) throw new NoSuchElementException();
         Object res = _nextElement;
         _nextElement = null;
         findNext();
@@ -105,8 +104,7 @@ public class EnumerationComposite implements Enumeration, java.io.Serializable {
      * nextElement().
      */
     protected void findNext() {
-        if (_nextElement != null)
-            return;
+        if (_nextElement != null) return;
         while (!_subs.isEmpty()
                 && !((Enumeration) _subs.firstElement()).hasMoreElements())
             _subs.removeElementAt(0);

@@ -143,10 +143,10 @@ public class Prefs {
      * flicker-free, except on JDK 1.0.2 on Sun's appletviewer for Windows.
      * Needs-More-Work: should be a PARAM.
      */
-    private boolean _tryOffScreen = !(System.getProperty("java.vendor").equals(
-            "Sun Microsystems Inc.")
-            && System.getProperty("java.version").equals("102") && System
-            .getProperty("os.name").startsWith("Win"));
+    private boolean _tryOffScreen = !(System.getProperty("java.vendor")
+            .equals("Sun Microsystems Inc.")
+            && System.getProperty("java.version").equals("102")
+            && System.getProperty("os.name").startsWith("Win"));
 
     /**
      * Should off screen images be used to reduce flicker? This is not the

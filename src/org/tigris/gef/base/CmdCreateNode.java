@@ -58,8 +58,7 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
 
     private static final long serialVersionUID = -4746215260464595235L;
 
-    public static Class<?> DEFAULT_NODE_CLASS =
-        org.tigris.gef.graph.presentation.NetNode.class;
+    public static Class<?> DEFAULT_NODE_CLASS = org.tigris.gef.graph.presentation.NetNode.class;
 
     private static Log LOG = LogFactory.getLog(CmdCreateNode.class);
 
@@ -116,22 +115,21 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
     public void doIt() {
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
-        if (!(gm instanceof MutableGraphModel))
-            return;
+        if (!(gm instanceof MutableGraphModel)) return;
         setArg("graphModel", gm);
 
         String instructions = null;
         Object actionName = getValue(javax.swing.Action.NAME);
         if (actionName != null) {
-            instructions = Localizer.localize("GefBase", "ClickToPlace") + " " + actionName.toString();
+            instructions = Localizer.localize("GefBase", "ClickToPlace") + " "
+                    + actionName.toString();
         }
         Mode placeMode = new ModePlace(this, instructions);
 
         Object shouldBeSticky = getArg("shouldBeSticky");
         Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
-        if (LOG.isDebugEnabled())
-            LOG.debug("Mode set to ModePlace with sticky mode "
-                    + shouldBeSticky);
+        if (LOG.isDebugEnabled()) LOG.debug(
+                "Mode set to ModePlace with sticky mode " + shouldBeSticky);
     }
 
     public void undoIt() {

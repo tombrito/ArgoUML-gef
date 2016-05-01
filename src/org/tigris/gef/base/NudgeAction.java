@@ -47,11 +47,15 @@ public class NudgeAction extends UndoableAction {
     private static final long serialVersionUID = 2121611741541853360L;
 
     public static final int LEFT = 1;
+
     public static final int RIGHT = 2;
+
     public static final int UP = 3;
+
     public static final int DOWN = 4;
 
     private int _direction;
+
     private int _magnitude;
 
     public NudgeAction(int dir) {
@@ -60,7 +64,7 @@ public class NudgeAction extends UndoableAction {
 
     public NudgeAction(int dir, int mag) {
         super(Localizer.localize("GefBase", "Nudge" + wordFor(dir))); // needs-more-work:
-                                                                        // direction
+                                                                      // direction
         _direction = dir;
         _magnitude = mag;
     }

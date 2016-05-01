@@ -46,7 +46,9 @@ public class CmdSelectNext extends Cmd {
     private static final long serialVersionUID = -5038323715965138457L;
 
     public static final String DIR = "Direction";
+
     public static final String DIR_NEXT = "Next";
+
     public static final String DIR_PREV = "Previous";
 
     // //////////////////////////////////////////////////////////////
@@ -73,8 +75,7 @@ public class CmdSelectNext extends Cmd {
         Fig newFig = null;
         int offset = 1;
         String dir = (String) getArg(DIR);
-        if (DIR_PREV.equals(dir))
-            offset = -1;
+        if (DIR_PREV.equals(dir)) offset = -1;
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         List diagramContents = ce.getLayerManager().getContents();
@@ -92,8 +93,7 @@ public class CmdSelectNext extends Cmd {
         }
         if (diagramSize > newIndex)
             newFig = (Fig) diagramContents.get(newIndex);
-        if (newFig != null)
-            ce.getSelectionManager().select(newFig);
+        if (newFig != null) ce.getSelectionManager().select(newFig);
     }
 
     public void undoIt() {

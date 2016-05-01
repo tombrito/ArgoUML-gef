@@ -45,21 +45,28 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
     /**
      * True if the FigEdge should be drawn from the nearest point of each port
      * Fig.
+     * 
      * @deprecated in 0.13 will be made private, use getter/setter
      */
     protected boolean _useNearest = false;
 
-    /** True when the FigEdgde should be drawn highlighted.
+    /**
+     * True when the FigEdgde should be drawn highlighted.
+     * 
      * @deprecated in 0.13 will be made private, use getter/setter
      */
     protected boolean _highlight = false;
 
-    /** The ArrowHead at the start of the line
+    /**
+     * The ArrowHead at the start of the line
+     * 
      * @deprecated in 0.13 will be made private, use getter/setter
      */
     protected ArrowHead _arrowHeadStart = ArrowHeadNone.TheInstance;
 
-    /** The ArrowHead at the end of the line
+    /**
+     * The ArrowHead at the end of the line
+     * 
      * @deprecated in 0.13 will be made private, use getter/setter
      */
     protected ArrowHead _arrowHeadEnd = ArrowHeadNone.TheInstance;
@@ -75,7 +82,9 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
     private class PathItem implements java.io.Serializable {
 
         private static final long serialVersionUID = -5298572087861993804L;
+
         final Fig _fig;
+
         final private PathItemPlacementStrategy pathItemPlacementStrategy;
 
         PathItem(final Fig f, final PathConv pc) {
@@ -200,8 +209,8 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
                 }
 
                 public String toString() {
-                    return (isStartChain() ? "*" : " ")
-                            + "ComputeRouteMemento " + Arrays.toString(points);
+                    return (isStartChain() ? "*" : " ") + "ComputeRouteMemento "
+                            + Arrays.toString(points);
                 }
             };
             UndoManager.getInstance().addMemento(memento);
@@ -366,26 +375,27 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
 
         return figs;
     }
-    
+
     /**
-     * Gets the PathItemPlacementStrategy for the given fig.
-     * The given fig must be one of the pathItem figs, otherwise null will be
-     * returned.
+     * Gets the PathItemPlacementStrategy for the given fig. The given fig must
+     * be one of the pathItem figs, otherwise null will be returned.
+     * 
      * @param fig The fig to look for.
      * @return The PathItemPlacementStrategy for fig.
      */
     public PathItemPlacementStrategy getPathItemPlacementStrategy(Fig fig) {
-    for (PathItem pi : _pathItems) {
-        Fig f = getPathItemFig(pi);
-        if (fig.equals(f)) {
-        return pi.getPathItemPlacementStrategy();
+        for (PathItem pi : _pathItems) {
+            Fig f = getPathItemFig(pi);
+            if (fig.equals(f)) {
+                return pi.getPathItemPlacementStrategy();
+            }
         }
-    }
-    // Something bad has happened if we get here, it means the fig that 
-    // we were asked to look for was not on a PathItem.
-    //System.out.println("Could not find PathItemPlacementStrategy for fig '"
-    //    + fig + "'.");
-    return null;
+        // Something bad has happened if we get here, it means the fig that
+        // we were asked to look for was not on a PathItem.
+        // System.out.println("Could not find PathItemPlacementStrategy for fig
+        // '"
+        // + fig + "'.");
+        return null;
     }
 
     /**
@@ -593,7 +603,8 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
 
     final public void paintHighlightLine(Graphics g, int x1, int y1, int x2,
             int y2) {
-        g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
+        g.setColor(
+                Globals.getPrefs().getHighlightColor()); /* needs-more-work */
         double dx = (x2 - x1);
         double dy = (y2 - y1);
         double denom = Math.sqrt(dx * dx + dy * dy);
@@ -736,11 +747,11 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
         setArrowColor(getSourceArrowHead(), c);
         setArrowColor(getDestArrowHead(), c);
     }
-    
+
     private void setArrowColor(ArrowHead arrow, Color c) {
-        if (arrow != null){
+        if (arrow != null) {
             arrow.setLineColor(c);
-        }        
+        }
     }
 
     final public void setLineWidth(int w) {
@@ -828,7 +839,8 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
      */
     final public void setSourcePortFig(Fig fig) {
         if (fig == null) {
-            throw new IllegalArgumentException("A source port must be supplied");
+            throw new IllegalArgumentException(
+                    "A source port must be supplied");
         }
         sourcePortFig = fig;
     }
@@ -848,10 +860,11 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
     }
 
     /**
-     * This is used by the SelectionManager and ModeDrag to move an edge
-     * because its attached node has been dragged or pushed.
-     * TODO: The difference in usage between this and translateImpl is not
-     * clear. Can we move this to some controller class?
+     * This is used by the SelectionManager and ModeDrag to move an edge because
+     * its attached node has been dragged or pushed. TODO: The difference in
+     * usage between this and translateImpl is not clear. Can we move this to
+     * some controller class?
+     * 
      * @param dx
      * @param dy
      */

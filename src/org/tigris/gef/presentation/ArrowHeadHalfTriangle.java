@@ -34,12 +34,8 @@ public class ArrowHeadHalfTriangle extends ArrowHead {
 
     static final long serialVersionUID = -7257932581787201038L;
 
-    public void paint(
-            final Graphics g,
-            final Point start,
-            final Point end,
-            final Color lineColor,
-            final Color fillColor) {
+    public void paint(final Graphics g, final Point start, final Point end,
+            final Color lineColor, final Color fillColor) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon triangle;
@@ -52,8 +48,7 @@ public class ArrowHeadHalfTriangle extends ArrowHead {
         dx = (double) (xTo - xFrom);
         dy = (double) (yTo - yFrom);
         denom = dist(dx, dy);
-        if (denom == 0)
-            return;
+        if (denom == 0) return;
 
         cos = getHeight() / denom;
         sin = getWidth() / denom;

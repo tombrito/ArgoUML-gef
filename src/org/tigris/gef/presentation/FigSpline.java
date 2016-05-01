@@ -34,17 +34,25 @@ public class FigSpline extends FigPoly {
     private static final long serialVersionUID = 8105448783671550399L;
 
     protected int[] _xknots = new int[5];
+
     protected int[] _yknots = new int[5];
+
     protected int _nknots;
 
     protected Polygon _curve;
+
     protected int _threshold = 5;
+
     protected int SPLINE_THRESH = 2;
+
     protected int ARR_WIDTH = 5, ARR_HEIGHT = 16;
+
     protected double _junc_t, _delta0, _delta1, _denom, _d_curve_length;
+
     protected int _juncX, _juncY;
 
     protected int _pattern = 0x88888888;
+
     protected BitSet _style = new BitSet(32);
 
     public FigSpline() {
@@ -192,7 +200,7 @@ public class FigSpline extends FigPoly {
             if (_filled) {
                 g.setColor(_fillColor);
                 g.fillPolygon(_curve); // here the curve gets partially
-                                        // destroyed
+                                       // destroyed
                 g.setColor(_lineColor);
                 g.drawPolyline(_curve.xpoints, _curve.ypoints, _curve.npoints);
             }
@@ -228,8 +236,9 @@ public class FigSpline extends FigPoly {
             curve.addPoint(x3, y3);
         }
     }
-    
-    private void drawLine(Graphics g, int lineWidth, int x1, int y1, int x2, int y2) {
+
+    private void drawLine(Graphics g, int lineWidth, int x1, int y1, int x2,
+            int y2) {
         if (g instanceof Graphics2D && getDashed()) {
             drawDashedLine(g, lineWidth, x1, y1, x2, y2, 0, _dashes,
                     _dashPeriod);
@@ -253,13 +262,12 @@ public class FigSpline extends FigPoly {
     protected void setCount() {
         if (_npoints == 2)
             _nknots = 2;
-        else if (_npoints == 3)
-            _nknots = 3;
+        else if (_npoints == 3) _nknots = 3;
         _nknots = 2 * _npoints - 3;
     }
 
-    protected void setJunctionPoint(int p1x, int p1y, int p2x, int p2y,
-            int p3x, int p3y) {
+    protected void setJunctionPoint(int p1x, int p1y, int p2x, int p2y, int p3x,
+            int p3y) {
         _delta0 = dist(p1x, p1y, p2x, p2y);
         _delta1 = dist(p2x, p2y, p3x, p3y);
         _denom = _delta0 + _delta1;

@@ -131,8 +131,7 @@ public class FigModifyingModeImpl extends ModeImpl implements FigModifyingMode {
 
     /** Set the mouse cursor to some appropriate for this mode. */
     public void setCursor(Cursor c) {
-        if (editor != null)
-            editor.setCursor(c);
+        if (editor != null) editor.setCursor(c);
     }
 
     // //////////////////////////////////////////////////////////////
@@ -168,9 +167,8 @@ public class FigModifyingModeImpl extends ModeImpl implements FigModifyingMode {
     public boolean isFigEnclosedIn(Fig testedFig, Fig enclosingFig) {
         Rectangle bbox = testedFig.getBounds();
         Rectangle trap = enclosingFig.getTrapRect();
-        if (trap != null
-                && (trap.contains(bbox.x, bbox.y) && trap.contains(bbox.x
-                        + bbox.width, bbox.y + bbox.height)))
+        if (trap != null && (trap.contains(bbox.x, bbox.y)
+                && trap.contains(bbox.x + bbox.width, bbox.y + bbox.height)))
             return true;
         return false;
     }

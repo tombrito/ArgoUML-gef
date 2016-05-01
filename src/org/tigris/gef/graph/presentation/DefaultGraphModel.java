@@ -52,8 +52,8 @@ import org.tigris.gef.graph.MutableGraphSupport;
  * @see AdjacencyListGraphModel
  */
 
-public class DefaultGraphModel extends MutableGraphSupport implements
-        java.io.Serializable {
+public class DefaultGraphModel extends MutableGraphSupport
+        implements java.io.Serializable {
 
     private static final long serialVersionUID = 8098329898758384131L;
 
@@ -123,8 +123,7 @@ public class DefaultGraphModel extends MutableGraphSupport implements
 
     /** Return the node or edge that owns the given port */
     public Object getOwner(Object port) {
-        if (port instanceof NetPort)
-            return ((NetPort) port).getParent();
+        if (port instanceof NetPort) return ((NetPort) port).getParent();
         return null; // raise exception
     }
 
@@ -156,15 +155,13 @@ public class DefaultGraphModel extends MutableGraphSupport implements
 
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
-        if (edge instanceof NetEdge)
-            return ((NetEdge) edge).getSourcePort();
+        if (edge instanceof NetEdge) return ((NetEdge) edge).getSourcePort();
         return null; // raise exception
     }
 
     /** Return the other end of an edge */
     public Object getDestPort(Object edge) {
-        if (edge instanceof NetEdge)
-            return ((NetEdge) edge).getDestPort();
+        if (edge instanceof NetEdge) return ((NetEdge) edge).getDestPort();
         return null; // raise exception
     }
 
@@ -344,12 +341,9 @@ public class DefaultGraphModel extends MutableGraphSupport implements
     /**
      * Asks the given edge to attempt to connect itself to the given ports.
      * 
-     * @param s
-     *                source port
-     * @param d
-     *                destination port
-     * @param e
-     *                edge
+     * @param s source port
+     * @param d destination port
+     * @param e edge
      * @return the edge or null if the edge rejects the connection.
      */
     protected Object connectInternal(NetPort s, NetPort d, NetEdge e) {
@@ -374,7 +368,7 @@ public class DefaultGraphModel extends MutableGraphSupport implements
     /**
      * Reroutes the connection to the old node to be connected to the new node.
      */
-    public void changeConnectedNode(Object newNode, Object oldNode,
-            Object edge, boolean isSource) {
+    public void changeConnectedNode(Object newNode, Object oldNode, Object edge,
+            boolean isSource) {
     }
 } /* end class DefaultGraphModel */

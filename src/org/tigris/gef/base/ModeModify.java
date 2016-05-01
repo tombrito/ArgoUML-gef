@@ -62,6 +62,7 @@ public class ModeModify extends FigModifyingModeImpl {
      * really wants to modify something.
      */
     private static final int MIN_DELTA = 4;
+
     private double degrees45 = Math.PI / 4;
 
     /** drag in process */
@@ -78,14 +79,17 @@ public class ModeModify extends FigModifyingModeImpl {
 
     /** The index of the handle that the user is dragging */
     private Handle _curHandle = new Handle(-1);
+
     private Rectangle _highlightTrap = null;
+
     private int _deltaMouseX;
+
     private int _deltaMouseY;
 
     private GraphModel graphModel;
 
     // private ModifyCommand modifyCommand;
-    //    
+    //
     /**
      * Construct a new ModeModify with the given parent, and set the Anchor
      * point to a default location (the _anchor's proper position will be
@@ -181,8 +185,8 @@ public class ModeModify extends FigModifyingModeImpl {
         if (restrict45 && deltaMouseY != 0) {
             double degrees = Math.atan2(deltaMouseY, deltaMouseX);
             degrees = degrees45 * Math.round(degrees / degrees45);
-            double r = Math.sqrt(deltaMouseX * deltaMouseX + deltaMouseY
-                    * deltaMouseY);
+            double r = Math.sqrt(
+                    deltaMouseX * deltaMouseX + deltaMouseY * deltaMouseY);
             deltaMouseX = (int) (r * Math.cos(degrees));
             deltaMouseY = (int) (r * Math.sin(degrees));
         }
@@ -199,7 +203,8 @@ public class ModeModify extends FigModifyingModeImpl {
 
         Point selectionCurrentPosition = null;
         if (selectionManager.size() == 1
-                && ((selectionManager.getFigs().get(0) instanceof FigEdge) || _curHandle.index > 0)) {
+                && ((selectionManager.getFigs().get(0) instanceof FigEdge)
+                        || _curHandle.index > 0)) {
             selectionCurrentPosition = new Point(dragStartMousePosition);
         } else {
             selectionCurrentPosition = selectionManager.getDragLocation();
@@ -310,8 +315,8 @@ public class ModeModify extends FigModifyingModeImpl {
                     }
 
                     // now bbox is where the fig _will_ be
-                    if ((trap.contains(bbox.x, bbox.y) && trap.contains(bbox.x
-                            + bbox.width, bbox.y + bbox.height))) {
+                    if ((trap.contains(bbox.x, bbox.y) && trap.contains(
+                            bbox.x + bbox.width, bbox.y + bbox.height))) {
                         encloser = otherFig;
                     }
                 }
@@ -369,6 +374,7 @@ public class ModeModify extends FigModifyingModeImpl {
     /**
      * Tests if the drag is legal regarding overlap with the bounds of any
      * enclosers.
+     * 
      * @param dx
      * @param dy
      * @param selectionManager
@@ -378,7 +384,8 @@ public class ModeModify extends FigModifyingModeImpl {
         damageHighlightTrap();
 
         _highlightTrap = null;
-        List<FigNode> draggingFigNodes = getNodes(selectionManager.getDraggableFigs());
+        List<FigNode> draggingFigNodes = getNodes(
+                selectionManager.getDraggableFigs());
         int figCount = draggingFigNodes.size();
         Rectangle figBounds = new Rectangle();
         boolean draggedOntoCanvas = true;
@@ -390,12 +397,13 @@ public class ModeModify extends FigModifyingModeImpl {
             draggedFig.getBounds(figBounds);
             figBounds.x += dx;
             figBounds.y += dy;
-            
+
             Layer lay = draggedFig.getLayer();
             List<FigNode> figsInLayer = getNodes(lay.getContents());
             for (Fig otherFig : figsInLayer) {
 
-                if (!draggedFig.getUseTrapRect() && !otherFig.getUseTrapRect()) {
+                if (!draggedFig.getUseTrapRect()
+                        && !otherFig.getUseTrapRect()) {
                     // If neither the item being dragged or the item testing for
                     // overlap is an encloser then ignore and check next one
                     continue;
@@ -428,16 +436,17 @@ public class ModeModify extends FigModifyingModeImpl {
                         continue;
                     }
 
-                    if ((trap.contains(figBounds.x, figBounds.y) && trap.contains(
-                            figBounds.x + figBounds.width, figBounds.y
-                                    + figBounds.height))) {
+                    if ((trap.contains(figBounds.x, figBounds.y)
+                            && trap.contains(figBounds.x + figBounds.width,
+                                    figBounds.y + figBounds.height))) {
                         draggedOntoCanvas = false;
                         encloser = otherFig;
                         continue;
                     }
 
-                    if ((figBounds.contains(trap.x, trap.y) && figBounds.contains(
-                            trap.x + trap.width, trap.y + trap.height))) {
+                    if ((figBounds.contains(trap.x, trap.y)
+                            && figBounds.contains(trap.x + trap.width,
+                                    trap.y + trap.height))) {
                         continue;
                     }
 
@@ -446,9 +455,10 @@ public class ModeModify extends FigModifyingModeImpl {
                     return false;
                 }
             }
-            
+
             if (draggedOntoCanvas) {
-                // If it isn't dragged into any fig but into diagram canvas (null
+                // If it isn't dragged into any fig but into diagram canvas
+                // (null
                 // encloser).
                 if (!((MutableGraphSupport) graphModel).isEnclosable(
                         ((FigNode) draggedFig).getOwner(), null)) {
@@ -457,19 +467,19 @@ public class ModeModify extends FigModifyingModeImpl {
             } else {
                 // If it is dragged into any fig.
                 if (!((MutableGraphSupport) graphModel).isEnclosable(
-                        ((FigNode) draggedFig).getOwner(), ((FigNode) encloser)
-                                .getOwner())) {
+                        ((FigNode) draggedFig).getOwner(),
+                        ((FigNode) encloser).getOwner())) {
                     return false;
                 }
             }
         }
-        
-        
+
         return true;
     }
-    
+
     /**
      * Given a list of Figs returns only those that are FigNode instances
+     * 
      * @param figs
      * @return
      */
@@ -490,11 +500,11 @@ public class ModeModify extends FigModifyingModeImpl {
 // * @author Bob Tarling
 // */
 // class ModifyCommand implements Command {
-//    
+//
 // private Map boundsByFigs = new HashMap();
 // private int xOffset;
 // private int yOffset;
-//    
+//
 // ModifyCommand(List figs) {
 // Iterator it = figs.iterator();
 // while (it.hasNext()) {
@@ -510,10 +520,10 @@ public class ModeModify extends FigModifyingModeImpl {
 // }
 //
 // private class ModifyMemento extends Memento {
-//        
+//
 // ModifyMemento() {
 // }
-//        
+//
 // public void undo() {
 // Iterator it = boundsByFigs.keySet().iterator();
 // while (it.hasNext()) {

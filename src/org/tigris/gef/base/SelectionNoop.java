@@ -54,10 +54,10 @@ public class SelectionNoop extends Selection {
         int w = getContent().getWidth();
         int h = getContent().getHeight();
         g.setColor(Globals.getPrefs().handleColorFor(getContent()));
-        g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
-                w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
-        g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1, w + BORDER_WIDTH
-                * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
+        g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH, w + BORDER_WIDTH * 2 - 1,
+                h + BORDER_WIDTH * 2 - 1);
+        g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
+                w + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
         g.fillOval(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
         g.fillOval(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
         g.fillOval(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);

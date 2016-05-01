@@ -48,8 +48,7 @@ public class CmdAdjustGuide extends Cmd {
     public void doIt() {
         Editor ce = Globals.curEditor();
         Guide guide = ce.getGuide();
-        if (guide != null)
-            guide.adjust();
+        if (guide != null) guide.adjust();
     }
 
     public void undoIt() {

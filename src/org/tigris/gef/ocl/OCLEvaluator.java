@@ -42,26 +42,32 @@ public class OCLEvaluator {
     // //////////////////////////////////////////////////////////////
     // constants
     public static String OCL_START = "<ocl>";
+
     public static String OCL_END = "</ocl>";
+
     public static String GET_NAME_EXPR_1 = "self";
+
     public static String GET_NAME_EXPR_2 = "self.name.body";
+
     public static String GET_OWNER_EXPR = "self.owner";
 
     private static final Log LOG = LogFactory.getLog(OCLEvaluator.class);
 
     protected Map _scratchBindings = new Hashtable();
+
     protected StringBuffer _strBuf = new StringBuffer(100);
 
     protected OCLEvaluator() {
     }
 
     protected synchronized String evalToString(Object self, String expr)
-            throws ExpansionException {
+        throws ExpansionException {
         return evalToString(self, expr, ", ");
     }
 
     protected synchronized String evalToString(Object self, String expr,
-            String sep) throws ExpansionException {
+            String sep)
+        throws ExpansionException {
         _scratchBindings.put("self", self);
         java.util.List values = eval(_scratchBindings, expr);
         _strBuf.setLength(0);
@@ -105,7 +111,7 @@ public class OCLEvaluator {
     } // end of eval()
 
     private List eval(Map bindings, String expr, List targets)
-            throws ExpansionException {
+        throws ExpansionException {
         String partExpr = expr;
         try {
             while (partExpr.length() > 0) {
@@ -132,7 +138,8 @@ public class OCLEvaluator {
         } catch (Exception e) {
             throw new ExpansionException(
                     "Exception while expanding the expression " + expr + " ("
-                            + partExpr + ")", e);
+                            + partExpr + ")",
+                    e);
         }
 
         return targets;
@@ -141,8 +148,7 @@ public class OCLEvaluator {
     /**
      * Return the first character of a string converted to upper case
      * 
-     * @param s
-     *                The string to convert
+     * @param s The string to convert
      * @return the converted string
      */
     private String toTitleCase(String s) {
@@ -161,8 +167,7 @@ public class OCLEvaluator {
      */
     private char toUpperCase(char c) {
         final int pos = "abcdefghijklmnopqrstuvwxyz".indexOf(c);
-        if (pos == -1)
-            return c;
+        if (pos == -1) return c;
         return ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(pos));
     }
 
@@ -174,7 +179,7 @@ public class OCLEvaluator {
      * @return the property value.
      */
     private Object evaluateProperty(Object target, String property)
-            throws ExpansionException {
+        throws ExpansionException {
         if (target == null) {
             return null;
         }
@@ -193,8 +198,8 @@ public class OCLEvaluator {
         }
 
         // First try and find a getter method in the form getProperty()
-        Method method = getMethod(target.getClass(), "get"
-                + toTitleCase(property));
+        Method method = getMethod(target.getClass(),
+                "get" + toTitleCase(property));
         if (method != null) {
             return invokeMethod(method, target, collectionRange);
         }
@@ -230,13 +235,12 @@ public class OCLEvaluator {
         }
     } // end of evaluateProperty
 
-    private Object invokeMethod(
-            final Method method,
-            final Object target,
-            final String collectionRange) throws ExpansionException {
+    private Object invokeMethod(final Method method, final Object target,
+            final String collectionRange)
+        throws ExpansionException {
 
         method.setAccessible(true);
-        
+
         if (method != null) {
             try {
                 Object o = method.invoke(target, null); // getter methods take
@@ -284,11 +288,9 @@ public class OCLEvaluator {
      * return it unchanged. An optional range argument can be provided which
      * will pull out a sub-collection in that range.
      * 
-     * @param o
-     *                the object
-     * @param range
-     *                the range to extract from the collection in the form
-     *                [start,end]
+     * @param o the object
+     * @param range the range to extract from the collection in the form
+     *            [start,end]
      * @return the original object or ArrayList
      */
     private static Object convertCollection(Object o, String range) {
@@ -324,10 +326,8 @@ public class OCLEvaluator {
      * an asterisk. Either the number is returned or the asterisk returns the
      * number of items in the given list.
      * 
-     * @param range
-     *                a numberic value or *
-     * @param list
-     *                the List from which the range refers.
+     * @param range a numberic value or *
+     * @param list the List from which the range refers.
      * @return the range value
      */
     private static final int getValue(String range, List list) {
@@ -344,8 +344,7 @@ public class OCLEvaluator {
      * @param targetClass
      * @param methodName
      * @return the Method
-     * @throws ExpansionException
-     *                 if no such method exists
+     * @throws ExpansionException if no such method exists
      */
     private Method getMethod(Class targetClass, String methodName) {
 

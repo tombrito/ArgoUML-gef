@@ -113,6 +113,7 @@ public abstract class Layer implements java.io.Serializable {
      * Should this layer always stay on top (i.e. always be the active layer)?
      */
     private boolean alwaysOnTop = false;
+
     /**
      * The current zooming scale this layer is displayed in
      */
@@ -121,6 +122,7 @@ public abstract class Layer implements java.io.Serializable {
     /**
      * Should the user be able to hide, lock, or gray this layer?
      * Needs-More-Work.
+     * 
      * @deprecated use getOnMenu
      */
     @Deprecated
@@ -190,8 +192,7 @@ public abstract class Layer implements java.io.Serializable {
 
     /** Get and set methods */
     public String getName() {
-        if (name == null)
-            return "";
+        if (name == null) return "";
         return name;
     }
 
@@ -256,6 +257,7 @@ public abstract class Layer implements java.io.Serializable {
 
     /**
      * Reply the contents of this layer that are of the given type.
+     * 
      * @param figClass the type of Figs required
      * @return the figs
      */
@@ -265,35 +267,38 @@ public abstract class Layer implements java.io.Serializable {
 
     public List<DiagramElement> getDiagramElements() {
         List<Fig> contents = getContents();
-        List<DiagramElement> list = new ArrayList<DiagramElement>(contents.size());
+        List<DiagramElement> list = new ArrayList<DiagramElement>(
+                contents.size());
         for (Fig f : contents) {
             list.add(f);
         }
-        
+
         return list;
     }
 
     public List<GraphEdge> getGraphEdges() {
         List<Fig> contents = getContents();
-        List<GraphEdge> list = new ArrayList<GraphEdge>(contents.size() *8 / 10);
+        List<GraphEdge> list = new ArrayList<GraphEdge>(
+                contents.size() * 8 / 10);
         for (Fig f : contents) {
             if (f instanceof GraphEdge) {
                 list.add((GraphEdge) f);
             }
         }
-        
+
         return list;
     }
 
     public List<GraphNode> getGraphNodes() {
         List<Fig> contents = getContents();
-        List<GraphNode> list = new ArrayList<GraphNode>(contents.size() *8 / 10);
+        List<GraphNode> list = new ArrayList<GraphNode>(
+                contents.size() * 8 / 10);
         for (Fig f : contents) {
             if (f instanceof GraphNode) {
                 list.add((GraphNode) f);
             }
         }
-        
+
         return list;
     }
 
@@ -492,8 +497,7 @@ public abstract class Layer implements java.io.Serializable {
 
     public Rectangle calcDrawingArea() {
         Enumeration iter = elements();
-        if (!iter.hasMoreElements())
-            return new Rectangle();
+        if (!iter.hasMoreElements()) return new Rectangle();
 
         Fig f = (Fig) iter.nextElement();
         Rectangle drawingArea = new Rectangle(f.getBounds());
@@ -515,8 +519,7 @@ public abstract class Layer implements java.io.Serializable {
      * Editors showing this Layer that they should record the damage.
      */
     public void damageAll() {
-        if (editors == null)
-            return;
+        if (editors == null) return;
 
         int count = editors.size();
         for (int editorIndex = 0; editorIndex < count; ++editorIndex) {
@@ -596,8 +599,7 @@ public abstract class Layer implements java.io.Serializable {
      * the grid size. By default, does nothing.
      * 
      * @see LayerGrid
-     * @param map
-     *                a hashmap with properties
+     * @param map a hashmap with properties
      */
     public void adjust(HashMap map) {
     }

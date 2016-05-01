@@ -46,12 +46,13 @@ import javax.swing.event.*;
  * objects.
  */
 
-public class TabPropFrame extends JFrame implements ChangeListener,
-        ActionListener {
+public class TabPropFrame extends JFrame
+        implements ChangeListener, ActionListener {
     // //////////////////////////////////////////////////////////////
     // instance variables
 
     private PropSheet _lastPropSheet = null;
+
     private int _lastTab = -1;
 
     /** The collection of PropSheets shown in this frame. */
@@ -60,25 +61,36 @@ public class TabPropFrame extends JFrame implements ChangeListener,
     // {{DECLARE_CONTROLS
     // private symantec.itools.awt.TabPanel tabPanel;
     private JTabbedPane tabPanel;
+
     // private Panel tabPanel;
     private Panel choicePanel;
+
     private PropSheetCategory PropSheetCategory1;
+
     private PropSheetCategory PropSheetCategory2;
+
     private PropSheetCategory PropSheetCategory3;
+
     private PropSheetCategory PropSheetCategory4;
+
     private PropSheetCategory PropSheetCategory5;
+
     private JPanel buttonPanel;
+
     /**
      * <A HREF="../features.html#property_sheet_auto_apply">
      * <TT>FEATURE: property_sheet_auto_apply</TT></A>
      */
     private JCheckBox autoApplyCheckbox;
+
     private JButton applyButton;
+
     /**
      * <A HREF="../features.html#property_sheet_revert">
      * <TT>FEATURE: property_sheet_revert</TT></A>
      */
     private JButton revertButton;
+
     private JButton closeButton;
     // // private java.awt.Choice universeChoice;
     // }}
@@ -97,8 +109,8 @@ public class TabPropFrame extends JFrame implements ChangeListener,
         getContentPane().setLayout(new BorderLayout(0, 0));
         addNotify();
         Insets insets = getInsets();
-        setSize(insets.left + insets.right + 300, insets.top + insets.bottom
-                + 406);
+        setSize(insets.left + insets.right + 300,
+                insets.top + insets.bottom + 406);
         getContentPane().setFont(new Font("Dialog", Font.PLAIN, 10));
         getContentPane().setBackground(new Color(12632256));
         tabPanel = new JTabbedPane();
@@ -206,8 +218,7 @@ public class TabPropFrame extends JFrame implements ChangeListener,
 
     /** Add a new PropSheet to this window under the name it supplies. */
     public void addPropSheet(PropSheet ps) {
-        if (tabPanel == null)
-            return;
+        if (tabPanel == null) return;
         // tabPanel.addTabPanel(ps.getTabName(), ps.canEdit(_selection),
         // ps);
         int i = tabPanel.getTabCount();
@@ -271,26 +282,21 @@ public class TabPropFrame extends JFrame implements ChangeListener,
 
     public void actionPerformed(ActionEvent ae) {
         Object src = ae.getSource();
-        if (src == closeButton)
-            closeButton_Clicked(ae);
-        if (src == applyButton)
-            applyButton_Clicked(ae);
-        if (src == revertButton)
-            revertButton_Clicked(ae);
+        if (src == closeButton) closeButton_Clicked(ae);
+        if (src == applyButton) applyButton_Clicked(ae);
+        if (src == revertButton) revertButton_Clicked(ae);
     }
 
     public void stateChanged(ChangeEvent ce) {
         Object src = ce.getSource();
-        if (src == autoApplyCheckbox)
-            autoApplyCheckbox_Action(ce);
-        if (src == tabPanel)
-            updateCurSheet();
+        if (src == autoApplyCheckbox) autoApplyCheckbox_Action(ce);
+        if (src == tabPanel) updateCurSheet();
     }
 
     /**
-     * When the user switches tabs, update the newly shown PropSheet. <A
-     * HREF="../bugs.html#switch_tabs_without_apply"> <FONT COLOR=660000><B>BUG:
-     * switch_tabs_without_apply</B></FONT></A>
+     * When the user switches tabs, update the newly shown PropSheet.
+     * <A HREF="../bugs.html#switch_tabs_without_apply"> <FONT COLOR=660000><B>
+     * BUG: switch_tabs_without_apply</B></FONT></A>
      */
     void tabPanel_Action(Event event) {
         updateCurSheet();
@@ -331,22 +337,20 @@ public class TabPropFrame extends JFrame implements ChangeListener,
     }
 
     /**
-     * Ask the currently shown PropSheet to apply any outstanding changes. <A
-     * HREF="../bugs.html#switch_tabs_without_apply">BUG:</A> When auto-apply
+     * Ask the currently shown PropSheet to apply any outstanding changes.
+     * <A HREF="../bugs.html#switch_tabs_without_apply">BUG:</A> When auto-apply
      * is off, if I make changes and then switch tabs and then press Apply,
      * nothing happens.
      */
     void applyButton_Clicked(ActionEvent event) {
         Component sheet = getCurrentSheet();
-        if (sheet instanceof PropSheet)
-            ((PropSheet) sheet).apply();
+        if (sheet instanceof PropSheet) ((PropSheet) sheet).apply();
     }
 
     /** Ask the currently shown PropSheet to apply any outstanding changes. */
     void revertButton_Clicked(ActionEvent event) {
         Component sheet = getCurrentSheet();
-        if (sheet instanceof PropSheet)
-            ((PropSheet) sheet).revert();
+        if (sheet instanceof PropSheet) ((PropSheet) sheet).revert();
     }
 
     // //////////////////////////////////////////////////////////////
@@ -421,8 +425,7 @@ public class TabPropFrame extends JFrame implements ChangeListener,
             if (_lastPropSheet != curPropSheet) {
                 // System.out.println("updateCurSheet2");
                 // org.tigris.gef.properties.ui.ColorPickerGrid.stopEditing();
-                if (_lastPropSheet != null)
-                    _lastPropSheet.setSelection(null);
+                if (_lastPropSheet != null) _lastPropSheet.setSelection(null);
             }
             _lastTab = curTab;
             _lastPropSheet = curPropSheet;

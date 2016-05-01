@@ -42,13 +42,16 @@ public class LayerDiagramTest extends TestCase {
         lay.add(new FigRect(20, 20, 80, 80));
         lay.add(new FigRect(120, 120, 200, 200));
         Rectangle rect = lay.calcDrawingArea();
-        assertEquals("Rectangle is the wrong size", new Rectangle(16,16,308,308), rect);
+        assertEquals("Rectangle is the wrong size",
+                new Rectangle(16, 16, 308, 308), rect);
         // Test a layer containing no figs
         lay = new LayerDiagram();
         rect = lay.calcDrawingArea();
         // this test seems bad to me.
         // what should we expect from a layer without figs?
         // - penyaskito 29/11/2008
-        // assertEquals("Rectangle is the wrong size", new Rectangle(Integer.MAX_VALUE - 4, Integer.MAX_VALUE - 4, 8 - Integer.MAX_VALUE, 8 - Integer.MAX_VALUE), rect);
+        // assertEquals("Rectangle is the wrong size", new
+        // Rectangle(Integer.MAX_VALUE - 4, Integer.MAX_VALUE - 4, 8 -
+        // Integer.MAX_VALUE, 8 - Integer.MAX_VALUE), rect);
     }
 }

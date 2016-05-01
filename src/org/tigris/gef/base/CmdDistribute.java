@@ -45,10 +45,15 @@ public class CmdDistribute extends Cmd {
 
     /** Constants specifying the type of distribution requested. */
     public static final int H_SPACING = 0;
+
     public static final int H_CENTERS = 1;
+
     public static final int H_PACK = 2;
+
     public static final int V_SPACING = 4;
+
     public static final int V_CENTERS = 5;
+
     public static final int V_PACK = 6;
 
     // //////////////////////////////////////////////////////////////
@@ -56,6 +61,7 @@ public class CmdDistribute extends Cmd {
 
     /** Specification of the type of distribution requested */
     protected int _request;
+
     protected Rectangle _bbox = null;
 
     // //////////////////////////////////////////////////////////////
@@ -64,9 +70,8 @@ public class CmdDistribute extends Cmd {
     /**
      * Construct a new CmdDistribute.
      * 
-     * @param r
-     *                The desired alignment direction, one of the constants
-     *                listed above.
+     * @param r The desired alignment direction, one of the constants listed
+     *            above.
      */
     public CmdDistribute(int r) {
         super("Distribute" + wordFor(r));
@@ -99,8 +104,7 @@ public class CmdDistribute extends Cmd {
         Vector figs = (Vector) getArg("figs");
         Integer packGapInt = (Integer) getArg("gap");
         int packGap = 8;
-        if (packGapInt != null)
-            packGap = packGapInt.intValue();
+        if (packGapInt != null) packGap = packGapInt.intValue();
         _bbox = (Rectangle) getArg("bbox");
         if (figs == null) {
             SelectionManager sm = ce.getSelectionManager();
@@ -113,8 +117,7 @@ public class CmdDistribute extends Cmd {
         int leftMostCenter = 0, rightMostCenter = 0;
         int topMostCenter = 0, bottomMostCenter = 0;
         int size = figs.size();
-        if (size == 0)
-            return;
+        if (size == 0) return;
 
         // find the bbox of all selected objects
         Fig f = (Fig) figs.elementAt(0);
@@ -131,8 +134,8 @@ public class CmdDistribute extends Cmd {
                 leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
                 rightMostCenter = Math.max(rightMostCenter, r.x + r.width / 2);
                 topMostCenter = Math.min(topMostCenter, r.y + r.height / 2);
-                bottomMostCenter = Math.max(bottomMostCenter, r.y + r.height
-                        / 2);
+                bottomMostCenter = Math.max(bottomMostCenter,
+                        r.y + r.height / 2);
             }
         }
 
@@ -184,10 +187,8 @@ public class CmdDistribute extends Cmd {
                 Fig fj = (Fig) figs.elementAt(j);
                 if (_request == H_SPACING || _request == H_CENTERS
                         || _request == H_PACK) {
-                    if (fi.getX() > fj.getX())
-                        swap(figs, i, j);
-                } else if (fi.getY() > fj.getY())
-                    swap(figs, i, j);
+                    if (fi.getX() > fj.getX()) swap(figs, i, j);
+                } else if (fi.getY() > fj.getY()) swap(figs, i, j);
             }
         }
 

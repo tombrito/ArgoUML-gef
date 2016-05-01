@@ -45,12 +45,17 @@ public class CmdAlign extends Cmd {
 
     /* Constants specifying the type of alignment requested. */
     public static final int ALIGN_TOPS = 0;
+
     public static final int ALIGN_BOTTOMS = 1;
+
     public static final int ALIGN_LEFTS = 2;
+
     public static final int ALIGN_RIGHTS = 3;
 
     public static final int ALIGN_CENTERS = 4;
+
     public static final int ALIGN_H_CENTERS = 5;
+
     public static final int ALIGN_V_CENTERS = 6;
 
     public static final int ALIGN_TO_GRID = 7;
@@ -67,9 +72,8 @@ public class CmdAlign extends Cmd {
     /**
      * Construct a new CmdAlign.
      * 
-     * @param dir
-     *                The desired alignment direction, one of the constants
-     *                listed above.
+     * @param dir The desired alignment direction, one of the constants listed
+     *            above.
      */
     public CmdAlign(int dir) {
         super("Align" + wordFor(dir)); // needs-more-work: direction
@@ -115,8 +119,7 @@ public class CmdAlign extends Cmd {
             figs = sm.getFigs();
         }
         int size = figs.size();
-        if (size == 0)
-            return;
+        if (size == 0) return;
         Rectangle bbox = ((Fig) figs.elementAt(0)).getBounds();
         for (int i = 1; i < size; i++)
             bbox.add(((Fig) figs.elementAt(i)).getBounds());

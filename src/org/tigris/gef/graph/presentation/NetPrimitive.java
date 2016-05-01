@@ -49,7 +49,9 @@ public abstract class NetPrimitive implements java.io.Serializable {
     // //////////////////////////////////////////////////////////////
     // instance variables
 
-    protected PropertyChangeSupport _changeSup = new PropertyChangeSupport(this);
+    protected PropertyChangeSupport _changeSup = new PropertyChangeSupport(
+            this);
+
     protected boolean _highlight = false;
 
     /** Construct a new net-level object, currently does nothing */
@@ -88,12 +90,13 @@ public abstract class NetPrimitive implements java.io.Serializable {
     }
 
     public void firePropertyChange(String pName, boolean oldV, boolean newV) {
-        _changeSup.firePropertyChange(pName, oldV ? Boolean.TRUE
-                : Boolean.FALSE, newV ? Boolean.TRUE : Boolean.FALSE);
+        _changeSup.firePropertyChange(pName,
+                oldV ? Boolean.TRUE : Boolean.FALSE,
+                newV ? Boolean.TRUE : Boolean.FALSE);
     }
 
     public void firePropertyChange(String pName, int oldV, int newV) {
-        _changeSup.firePropertyChange(pName, new Integer(oldV), new Integer(
-                newV));
+        _changeSup.firePropertyChange(pName, new Integer(oldV),
+                new Integer(newV));
     }
 } /* end class NetPrimitive */

@@ -65,8 +65,9 @@ public class CmdSavePNG extends CmdSaveGraphics {
      * Write the diagram contained by the current editor into an OutputStream as
      * a PNG image.
      */
-    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
-            throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea)
+        throws IOException {
 
         // Create an offscreen image and render the diagram into it.
         Image i = new BufferedImage(drawingArea.width * scale,

@@ -51,6 +51,7 @@ public class LayerPageBreaks extends Layer {
 
     /** The size of the dashes drawn when the Fig is dashed. */
     public final int DASH_LENGTH = 2;
+
     public final int GAP_LENGTH = 7;
 
     // //////////////////////////////////////////////////////////////
@@ -99,12 +100,9 @@ public class LayerPageBreaks extends Layer {
      * 'stamp' onto the given Graphics
      */
     public synchronized void paintContents(Graphics g) {
-        if (g instanceof PrintGraphics)
-            return; // for printing under Java 1.1
-        if (!_paintLines)
-            return;
-        if (_pageSize == null)
-            return;
+        if (g instanceof PrintGraphics) return; // for printing under Java 1.1
+        if (!_paintLines) return;
+        if (_pageSize == null) return;
         Rectangle clip = g.getClipBounds();
         int x = clip.x / _pageSize.width * _pageSize.width - _pageSize.width;
         int y = clip.y / _pageSize.height * _pageSize.height - _pageSize.height;

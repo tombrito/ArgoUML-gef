@@ -28,7 +28,9 @@ public class PredicateType implements Predicate {
     // //////////////////////////////////////////////////////////////
     // instance variables
     Class _patterns[];
+
     int _numPats;
+
     String _printString = null;
 
     // //////////////////////////////////////////////////////////////
@@ -70,19 +72,16 @@ public class PredicateType implements Predicate {
     // //////////////////////////////////////////////////////////////
     // Predicate implementation
     public boolean predicate(Object o) {
-        if (_numPats == 0)
-            return true;
+        if (_numPats == 0) return true;
         for (int i = 0; i < _numPats; i++) {
-            if (_patterns[i].isInstance(o))
-                return true;
+            if (_patterns[i].isInstance(o)) return true;
         }
         return false;
     }
 
     public boolean isPredicateFor(Object o) {
         for (int i = 0; i < _numPats; i++) {
-            if (_patterns[i].equals(o))
-                return true;
+            if (_patterns[i].equals(o)) return true;
         }
         return false;
     }
@@ -91,18 +90,15 @@ public class PredicateType implements Predicate {
     // printing
 
     public String toString() {
-        if (_printString != null)
-            return _printString;
-        if (_numPats == 0)
-            return "Any Type";
+        if (_printString != null) return _printString;
+        if (_numPats == 0) return "Any Type";
         String res = "";
         for (int i = 0; i < _numPats; i++) {
             String clsName = _patterns[i].getName();
             int lastDot = clsName.lastIndexOf(".");
             clsName = clsName.substring(lastDot + 1);
             res += clsName;
-            if (i < _numPats - 1)
-                res += ", ";
+            if (i < _numPats - 1) res += ", ";
         }
         _printString = res;
         return res;

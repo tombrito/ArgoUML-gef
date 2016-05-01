@@ -46,7 +46,9 @@ import org.tigris.gef.util.Localizer;
 public class SetModeAction extends AbstractAction {
 
     private static final long serialVersionUID = -5362721817833001571L;
+
     protected Hashtable modeArgs;
+
     protected Hashtable args;
 
     /**
@@ -67,8 +69,7 @@ public class SetModeAction extends AbstractAction {
     /**
      * Creates a new SetModeAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public SetModeAction(String name) {
         this(name, false);
@@ -77,10 +78,8 @@ public class SetModeAction extends AbstractAction {
     /**
      * Creates a new SetModeAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public SetModeAction(String name, Icon icon) {
         this(name, icon, false);
@@ -89,10 +88,8 @@ public class SetModeAction extends AbstractAction {
     /**
      * Creates a new SetModeAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public SetModeAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -101,12 +98,9 @@ public class SetModeAction extends AbstractAction {
     /**
      * Creates a new SetModeAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public SetModeAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
@@ -144,15 +138,16 @@ public class SetModeAction extends AbstractAction {
         setArg("desiredModeClass", modeClass);
     }
 
-    public SetModeAction(Class modeClass, String arg, Object value, String name) {
+    public SetModeAction(Class modeClass, String arg, Object value,
+            String name) {
         super(name);
         modeArgs = new Hashtable(1);
         modeArgs.put(arg, value);
         setArg("desiredModeClass", modeClass);
     }
 
-    public SetModeAction(Class modeClass, String arg, Object value,
-            String name, ImageIcon icon) {
+    public SetModeAction(Class modeClass, String arg, Object value, String name,
+            ImageIcon icon) {
         super(name, icon);
         modeArgs = new Hashtable(1);
         modeArgs.put(arg, value);

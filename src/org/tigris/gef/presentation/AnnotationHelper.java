@@ -24,8 +24,7 @@ public class AnnotationHelper {
     }
 
     public static AnnotationHelper instance() {
-        if (theInstance == null)
-            theInstance = new AnnotationHelper();
+        if (theInstance == null) theInstance = new AnnotationHelper();
         return theInstance;
     }
 
@@ -34,9 +33,10 @@ public class AnnotationHelper {
         // p0: annotation's position
         // p1: edge's starting point
         // p2: edge's ending point
-        float dd = (float) (((p2.x - p1.x) * (p0.y - p1.y) - (p0.x - p1.x)
-                * (p2.y - p1.y)) / Math.sqrt((p2.x - p1.x) * (p2.x - p1.x)
-                + (p2.y - p1.y) * (p2.y - p1.y)));
+        float dd = (float) (((p2.x - p1.x) * (p0.y - p1.y)
+                - (p0.x - p1.x) * (p2.y - p1.y))
+                / Math.sqrt((p2.x - p1.x) * (p2.x - p1.x)
+                        + (p2.y - p1.y) * (p2.y - p1.y)));
         int offset = -1 * (int) Math.round(dd);
         // System.out.println("distance: " + d);
         return offset;
@@ -48,12 +48,9 @@ public class AnnotationHelper {
      * 
      * It's final so that no one can damage the implementation (and for speed).
      * 
-     * @param from
-     *                The point that sits in space.
-     * @param begin
-     *                The start point of the edge.
-     * @param end
-     *                The end point of the edge.
+     * @param from The point that sits in space.
+     * @param begin The start point of the edge.
+     * @param end The end point of the edge.
      * @return A double: if 0, then the point 'from' sits on the perpendicular
      *         through the point 'begin', if 1, it is on the perpendicular
      *         through 'end'. You figure out the rest.
@@ -66,8 +63,8 @@ public class AnnotationHelper {
 
         // begin + diffToStart*direction is the intersection of the
         // perpendicular
-        float diffToStart = directionX * (from.x - begin.x) + directionY
-                * (from.y - begin.y);
+        float diffToStart = directionX * (from.x - begin.x)
+                + directionY * (from.y - begin.y);
         // dividing by length gives absolute offset, dividing twice gives
         // relative
         return (float) diffToStart / (float) lengthSqr;
@@ -122,12 +119,9 @@ public class AnnotationHelper {
      * 
      * It's final so that no one can damage the implementation (and for speed).
      * 
-     * @param p
-     *                The point that is somewhere near the edge.
-     * @param begin
-     *                The begin point of the edge.
-     * @param end
-     *                The end point of the edge.
+     * @param p The point that is somewhere near the edge.
+     * @param begin The begin point of the edge.
+     * @param end The end point of the edge.
      */
     public static final Point getClosestPointOnEdge(Point p, Point begin,
             Point end) {
@@ -135,16 +129,16 @@ public class AnnotationHelper {
         double directionX = (double) (end.x - begin.x);
         double directionY = (double) (end.y - begin.y);
         // length of the segment
-        double length = Math.sqrt(directionX * directionX + directionY
-                * directionY);
+        double length = Math
+                .sqrt(directionX * directionX + directionY * directionY);
         // normalize direction
         directionX /= length;
         directionY /= length;
 
         // begin + diffToStart*direction is the intersection of the
         // perpendicular
-        double diffToStart = directionX * (p.x - begin.x) + directionY
-                * (p.y - begin.y);
+        double diffToStart = directionX * (p.x - begin.x)
+                + directionY * (p.y - begin.y);
 
         if (diffToStart < 0.0) // use start or end point if too far out
             return begin;
@@ -159,8 +153,8 @@ public class AnnotationHelper {
 
     /** sqr distance of two points; unmodified method */
     public static final int sqr_distance(Point p1, Point p2) {
-        return (int) ((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y)
-                * (p2.y - p1.y));
+        return (int) ((p2.x - p1.x) * (p2.x - p1.x)
+                + (p2.y - p1.y) * (p2.y - p1.y));
     }
 
     public static Point getNormPointOnEdge(Point r1, Point r0, Point r2) {

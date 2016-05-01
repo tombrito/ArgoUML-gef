@@ -7,6 +7,7 @@ import org.tigris.gef.base.Globals;
 public class EdgeAnnotationStrategy extends AnnotationStrategy {
 
     private static final long serialVersionUID = 839904139158340787L;
+
     AnnotationHelper helper = AnnotationHelper.instance();
 
     public EdgeAnnotationStrategy() {
@@ -50,15 +51,10 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy {
             double newX = start.x + ratio * xdirection;
             double newY = start.y + ratio * ydirection;
             // restore offset d
-            newX = newX
-                    + d
-                    * (ydirection / Math.sqrt(xdirection * xdirection
-                            + ydirection * ydirection));
-            newY = newY
-                    + d
-                    * (-1)
-                    * (xdirection / Math.sqrt(xdirection * xdirection
-                            + ydirection * ydirection));
+            newX = newX + d * (ydirection / Math
+                    .sqrt(xdirection * xdirection + ydirection * ydirection));
+            newY = newY + d * (-1) * (xdirection / Math
+                    .sqrt(xdirection * xdirection + ydirection * ydirection));
             // the annotation's new position
             return new Point((int) newX - (annotation.getWidth() / 2),
                     (int) newY - (annotation.getHeight() / 2));
@@ -120,18 +116,20 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy {
         // line from annotation to closest point on owning edge
         try {
             if (owner instanceof FigEdgePoly) {
-                line.setShape(annotation.getCenter(), AnnotationHelper
-                        .getClosestPoint(annotation.getCenter(),
+                line.setShape(annotation.getCenter(),
+                        AnnotationHelper.getClosestPoint(annotation.getCenter(),
                                 (FigEdgePoly) owner));
             } else {
-                line.setShape(annotation.getCenter(), AnnotationHelper
-                        .getClosestPointOnEdge(annotation.getCenter(),
+                line.setShape(annotation.getCenter(),
+                        AnnotationHelper.getClosestPointOnEdge(
+                                annotation.getCenter(),
                                 ((FigEdge) owner).getFirstPoint(),
                                 ((FigEdge) owner).getLastPoint()));
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            line.setShape(annotation.getCenter(), AnnotationHelper
-                    .getClosestPointOnEdge(annotation.getCenter(),
+            line.setShape(annotation.getCenter(),
+                    AnnotationHelper.getClosestPointOnEdge(
+                            annotation.getCenter(),
                             ((FigEdge) owner).getSourcePortFig().getCenter(),
                             ((FigEdge) owner).getDestPortFig().getCenter()));
         }
@@ -149,10 +147,9 @@ public class EdgeAnnotationStrategy extends AnnotationStrategy {
         annotation.damage();
 
         // remove line automatically
-        AnnotationLineRemover.instance()
-                .removeLineIn(
-                        getAnnotationProperties(annotation)
-                                .getLineVisibilityDuration(), annotation);
+        AnnotationLineRemover.instance().removeLineIn(
+                getAnnotationProperties(annotation).getLineVisibilityDuration(),
+                annotation);
     }
 
     /**

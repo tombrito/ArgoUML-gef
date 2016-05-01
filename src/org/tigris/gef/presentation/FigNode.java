@@ -60,20 +60,24 @@ import java.util.List;
 /**
  * Class to present a node (such as a NetNode) in a diagram.
  */
-public class FigNode extends FigGroup implements Highlightable, GraphNode, MouseListener {
+public class FigNode extends FigGroup
+        implements Highlightable, GraphNode, MouseListener {
 
     private static final long serialVersionUID = 5312194520189613781L;
 
     private static final Log LOG = LogFactory.getLog(FigNode.class);
 
     private static final LookupOp SHADOW_LOOKUP_OP;
+
     private static final ConvolveOp SHADOW_CONVOLVE_OP;
 
     // Fields used in paint() for painting shadows
     private BufferedImage shadowImage;
+
     private int cachedWidth = -1;
+
     private int cachedHeight = -1;
-    
+
     private List<Connector> connectors = new ArrayList<Connector>();
 
     /**
@@ -99,8 +103,11 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
      * a port is located on.
      */
     public static final double ang45 = Math.PI / 4;
+
     public static final double ang135 = 3 * Math.PI / 4;
+
     public static final double ang225 = 5 * Math.PI / 4;
+
     public static final double ang315 = 7 * Math.PI / 4;
 
     // //////////////////////////////////////////////////////////////
@@ -149,8 +156,7 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
     /**
      * Constructs a new FigNode on the given node with the given owner.
      * 
-     * @param node
-     *                The model item that this node represents
+     * @param node The model item that this node represents
      */
     public FigNode(Object node) {
         setOwner(node);
@@ -161,10 +167,8 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
     /**
      * Constructs a new FigNode on the given node with the given owner and Figs.
      * 
-     * @param node
-     *                the model item that this node represents
-     * @param figs
-     *                the figs to be contained as a group by this FigNode
+     * @param node the model item that this node represents
+     * @param figs the figs to be contained as a group by this FigNode
      */
     public FigNode(Object node, Collection figs) {
         this(node);
@@ -215,9 +219,10 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
     public void addFigEdge(FigEdge fe) {
         figEdges.add(fe);
     }
-    
+
     /**
      * Add a new connector to this node
+     * 
      * @param connector the connector to add.
      */
     public void addConnector(Connector connector) {
@@ -227,14 +232,14 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
                 connectorFig.getX() + connectorFig.getHalfWidth(),
                 connectorFig.getY() + connectorFig.getHalfHeight());
         Point attachPoint = getClosestPoint(centre);
-        connectorFig.setLocation(
-                attachPoint.x - connectorFig.getHalfWidth(),
+        connectorFig.setLocation(attachPoint.x - connectorFig.getHalfWidth(),
                 attachPoint.y - connectorFig.getHalfHeight());
         connector.setGraphNode(this);
     }
-    
+
     /**
      * Remove a connector from this node
+     * 
      * @param connector the connector to remove.
      */
     public void removeConnector(Connector connector) {
@@ -376,8 +381,7 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
 
     /** Removes a port from the current FigNode. */
     public void removePort(Fig rep) {
-        if (rep.getOwner() != null)
-            rep.setOwner(null);
+        if (rep.getOwner() != null) rep.setOwner(null);
     }
 
     /**
@@ -435,8 +439,7 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
         int figCount = getFigCount();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = getFigAt(figIndex);
-            if (f.getOwner() == np)
-                return f;
+            if (f.getOwner() == np) return f;
         }
         return null;
     }
@@ -548,14 +551,15 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
              * the notch at the corner increases/decreases. Hence also check the
              * "forceRepaint" attribute.
              */
-            if (width != cachedWidth || height != cachedHeight || forceRepaint) {
+            if (width != cachedWidth || height != cachedHeight
+                    || forceRepaint) {
                 forceRepaint = false;
 
                 cachedWidth = width;
                 cachedHeight = height;
 
-                BufferedImage img = new BufferedImage(width + 100,
-                        height + 100, BufferedImage.TYPE_INT_ARGB);
+                BufferedImage img = new BufferedImage(width + 100, height + 100,
+                        BufferedImage.TYPE_INT_ARGB);
 
                 // Paint figure onto offscreen image
                 Graphics ig = img.getGraphics();
@@ -567,14 +571,14 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
                 // figure to the same shadow color.
                 // 2. Apply ConvolveOp which creates blurred effect around
                 // the edges of the shadow.
-                shadowImage = SHADOW_CONVOLVE_OP.filter(SHADOW_LOOKUP_OP
-                        .filter(img, null), null);
+                shadowImage = SHADOW_CONVOLVE_OP
+                        .filter(SHADOW_LOOKUP_OP.filter(img, null), null);
             }
 
             // Paint shadow image onto canvas
             Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(shadowImage, null, x + shadowSize - 50, y
-                    + shadowSize - 50);
+            g2d.drawImage(shadowImage, null, x + shadowSize - 50,
+                    y + shadowSize - 50);
         }
 
         // Paint figure on top of shadow
@@ -660,8 +664,7 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
      * then show ports.
      */
     public void mouseEntered(MouseEvent me) {
-        if (_blinkPorts)
-            showPorts();
+        if (_blinkPorts) showPorts();
     }
 
     /**
@@ -669,8 +672,7 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
      * then hide ports.
      */
     public void mouseExited(MouseEvent me) {
-        if (_blinkPorts)
-            hidePorts();
+        if (_blinkPorts) hidePorts();
     }
 
     /** Do nothing when mouse is pressed in FigNode. */
@@ -744,8 +746,7 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
     }
 
     /**
-     * @param size
-     *                the new shadow size TODO: Move the shadow stuff into GEF
+     * @param size the new shadow size TODO: Move the shadow stuff into GEF
      */
     public void setShadowSize(int size) {
         if (size == shadowSize) {

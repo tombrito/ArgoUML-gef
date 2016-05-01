@@ -38,8 +38,7 @@ class PropertyText extends JTextField implements KeyListener {
         super();
         editor = pe;
         String s = pe.getAsText();
-        if (s != null)
-            setText(s);
+        if (s != null) setText(s);
         addKeyListener(this);
     }
 

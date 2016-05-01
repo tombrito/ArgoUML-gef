@@ -48,6 +48,7 @@ import javax.swing.JSeparator;
 public class ModePopup extends FigModifyingModeImpl {
 
     private static final long serialVersionUID = 288785293995576958L;
+
     private static final Log LOG = LogFactory.getLog(ModePopup.class);
 
     // //////////////////////////////////////////////////////////////
@@ -120,8 +121,7 @@ public class ModePopup extends FigModifyingModeImpl {
                         popup.add((JMenu) a);
                     else if (a instanceof JMenuItem)
                         popup.add((JMenuItem) a);
-                    else if (a instanceof JSeparator)
-                        popup.add((JSeparator) a);
+                    else if (a instanceof JSeparator) popup.add((JSeparator) a);
                 }
 
                 popup.show(editor.getJComponent(), me.getX(), me.getY());
@@ -138,15 +138,16 @@ public class ModePopup extends FigModifyingModeImpl {
      */
     public void mouseReleased(MouseEvent me) {
         boolean popUpDisplayed = false;
-        if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+        if (me.isPopupTrigger()
+                || me.getModifiers() == InputEvent.BUTTON3_MASK) {
             popUpDisplayed = showPopup(me);
             if (LOG.isDebugEnabled()) {
                 if (popUpDisplayed)
-                    LOG
-                            .debug("MouseReleased detected as a popup trigger and popup displayed and event consumed");
+                    LOG.debug(
+                            "MouseReleased detected as a popup trigger and popup displayed and event consumed");
                 else
-                    LOG
-                            .debug("MouseReleased detected as a popup trigger but no popup to display");
+                    LOG.debug(
+                            "MouseReleased detected as a popup trigger but no popup to display");
             }
             return;
         }
@@ -159,15 +160,16 @@ public class ModePopup extends FigModifyingModeImpl {
      */
     public void mousePressed(MouseEvent me) {
         boolean popUpDisplayed = false;
-        if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+        if (me.isPopupTrigger()
+                || me.getModifiers() == InputEvent.BUTTON3_MASK) {
             popUpDisplayed = showPopup(me);
             if (LOG.isDebugEnabled()) {
                 if (popUpDisplayed)
-                    LOG
-                            .debug("MousePressed detected as a popup and popup displayed and event consumed");
+                    LOG.debug(
+                            "MousePressed detected as a popup and popup displayed and event consumed");
                 else
-                    LOG
-                            .debug("MousePressed detected as a popup but no popup to display");
+                    LOG.debug(
+                            "MousePressed detected as a popup but no popup to display");
             }
             return;
         }
@@ -179,15 +181,16 @@ public class ModePopup extends FigModifyingModeImpl {
      */
     public void mouseClicked(MouseEvent me) {
         boolean popUpDisplayed = false;
-        if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+        if (me.isPopupTrigger()
+                || me.getModifiers() == InputEvent.BUTTON3_MASK) {
             popUpDisplayed = showPopup(me);
             if (LOG.isDebugEnabled()) {
                 if (popUpDisplayed)
-                    LOG
-                            .debug("MouseClicked detected as a popup and popup displayed and event consumed");
+                    LOG.debug(
+                            "MouseClicked detected as a popup and popup displayed and event consumed");
                 else
-                    LOG
-                            .debug("MouseClicked detected as a popup but no popup to display");
+                    LOG.debug(
+                            "MouseClicked detected as a popup but no popup to display");
             }
         }
     }

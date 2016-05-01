@@ -60,19 +60,14 @@ public abstract class ArrowHead extends Decoration {
             g2.setStroke(new BasicStroke(path.getLineWidth()));
             int[] xs = path.getXs();
             int[] ys = path.getYs();
-            paint(g2, 
-                    new Point(xs[1], ys[1]), 
-                    new Point(xs[0], ys[0]), 
-                    path.getLineColor(),
-                    path.getFillColor());
+            paint(g2, new Point(xs[1], ys[1]), new Point(xs[0], ys[0]),
+                    path.getLineColor(), path.getFillColor());
             g2.setStroke(oldStroke);
         } else {
             int[] xs = path.getXs();
             int[] ys = path.getYs();
-            paint((Graphics) g, 
-                    new Point(xs[1], ys[1]), 
-                    new Point(xs[0], ys[0]), 
-                    path.getLineColor(),
+            paint((Graphics) g, new Point(xs[1], ys[1]),
+                    new Point(xs[0], ys[0]), path.getLineColor(),
                     path.getFillColor());
         }
     }
@@ -89,21 +84,18 @@ public abstract class ArrowHead extends Decoration {
             int[] xs = path.getXs();
             int[] ys = path.getYs();
             int pointCount = path.getNumPoints();
-            paint(g2,
-                    new Point(xs[pointCount - 2], ys[pointCount - 2]),
+            paint(g2, new Point(xs[pointCount - 2], ys[pointCount - 2]),
                     new Point(xs[pointCount - 1], ys[pointCount - 1]),
-                    path.getLineColor(),
-                    path.getFillColor());
+                    path.getLineColor(), path.getFillColor());
             g2.setStroke(oldStroke);
         } else {
             int pointCount = path.getNumPoints();
             int[] xs = path.getXs();
             int[] ys = path.getYs();
-            paint((Graphics) g, 
+            paint((Graphics) g,
                     new Point(xs[pointCount - 2], ys[pointCount - 2]),
-                    new Point(xs[pointCount - 1], ys[pointCount - 1]), 
-                    path.getLineColor(),
-                    path.getFillColor());
+                    new Point(xs[pointCount - 1], ys[pointCount - 1]),
+                    path.getLineColor(), path.getFillColor());
         }
     }
 } /* end class ArrowHead */

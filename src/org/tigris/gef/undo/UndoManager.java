@@ -15,10 +15,13 @@ import java.util.List;
 public class UndoManager {
 
     private final static String TRUE = Boolean.TRUE.toString();
+
     private final static String FALSE = Boolean.FALSE.toString();
 
     private int undoMax = 100;
+
     private int undoChainCount = 0;
+
     private int redoChainCount = 0;
 
     private Collection mementoLocks = new ArrayList();
@@ -32,6 +35,7 @@ public class UndoManager {
     // TODO: A MementoChainStack may produce some reasuable code for
     // the undoStack and the redoStack/
     protected ArrayList undoStack = new ArrayList();
+
     protected ArrayList redoStack = new ArrayList();
 
     /**
@@ -56,8 +60,7 @@ public class UndoManager {
     /**
      * Adds a new memento to the undo stack.
      * 
-     * @param memento
-     *                the memento.
+     * @param memento the memento.
      */
     public void addMemento(Memento memento) {
         if (undoMax == 0) {
@@ -178,8 +181,7 @@ public class UndoManager {
     /**
      * Empty a list stack disposing of all mementos.
      * 
-     * @param list
-     *                the list of mementos
+     * @param list the list of mementos
      */
     private void emptyStack(List list) {
         for (int i = 0; i < list.size(); ++i) {
@@ -200,8 +202,8 @@ public class UndoManager {
         Iterator i = listeners.iterator();
         while (i.hasNext()) {
             PropertyChangeListener listener = (PropertyChangeListener) i.next();
-            listener.propertyChange(new PropertyChangeEvent(this, "canUndo",
-                    "", getBoolString(undoChainCount > 0)));
+            listener.propertyChange(new PropertyChangeEvent(this, "canUndo", "",
+                    getBoolString(undoChainCount > 0)));
         }
     }
 
@@ -209,8 +211,8 @@ public class UndoManager {
         Iterator i = listeners.iterator();
         while (i.hasNext()) {
             PropertyChangeListener listener = (PropertyChangeListener) i.next();
-            listener.propertyChange(new PropertyChangeEvent(this, "canRedo",
-                    "", getBoolString(redoChainCount > 0)));
+            listener.propertyChange(new PropertyChangeEvent(this, "canRedo", "",
+                    getBoolString(redoChainCount > 0)));
         }
     }
 
@@ -242,8 +244,7 @@ public class UndoManager {
      * Convert a boolean value to a String. This method can be dropped when we
      * move to JRE1.4
      * 
-     * @param b
-     *                a boolean
+     * @param b a boolean
      * @return "true" or "false"
      */
     private String getBoolString(boolean b) {
@@ -274,8 +275,7 @@ public class UndoManager {
      * Maintain list of objects that have requested memento generation to be
      * disabled.
      * 
-     * @param lockOwner
-     *                object that requested a lock on new mementos
+     * @param lockOwner object that requested a lock on new mementos
      */
 
     public void addMementoLock(Object lockOwner) {

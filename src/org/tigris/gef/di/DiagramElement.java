@@ -34,6 +34,6 @@ public interface DiagramElement {
     String getId();
 
     Object getOwner();
-    
+
     Dimension getMinimumSize();
 }

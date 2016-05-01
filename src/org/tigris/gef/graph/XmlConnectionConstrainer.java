@@ -16,8 +16,8 @@ public class XmlConnectionConstrainer extends ConnectionConstrainer {
     public XmlConnectionConstrainer(Document doc) throws GraphModelException {
         try {
             Element root = doc.getDocumentElement();
-            Element connectionsElement = (Element) root.getElementsByTagName(
-                    "connections").item(0);
+            Element connectionsElement = (Element) root
+                    .getElementsByTagName("connections").item(0);
             NodeList connectionNodes = connectionsElement
                     .getElementsByTagName("connection");
 
@@ -51,16 +51,17 @@ public class XmlConnectionConstrainer extends ConnectionConstrainer {
 
     protected void addValidConnection(String edgeClassName,
             String portClassName1, String portClassName2)
-            throws ClassNotFoundException {
+        throws ClassNotFoundException {
         Class edgeClass = Class.forName(edgeClassName);
         Class port1Class = Class.forName(portClassName1);
         Class port2Class = Class.forName(portClassName2);
         addValidConnection(edgeClass, port1Class, port2Class);
     }
 
-    protected void addValidConnection(String edgeClassName, String portClassName)
-            throws ClassNotFoundException {
-        addValidConnection(Class.forName(edgeClassName), Class
-                .forName(portClassName));
+    protected void addValidConnection(String edgeClassName,
+            String portClassName)
+        throws ClassNotFoundException {
+        addValidConnection(Class.forName(edgeClassName),
+                Class.forName(portClassName));
     }
 }

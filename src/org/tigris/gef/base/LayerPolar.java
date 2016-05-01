@@ -55,6 +55,7 @@ public class LayerPolar extends Layer {
 
     /** The painting stlye that should be used. See predefined styles below. */
     private int _style = 0;
+
     private int NUM_STYLES = 5;
 
     /** The color of the grid lines */
@@ -103,8 +104,8 @@ public class LayerPolar extends Layer {
 
     /** return the integer distance between a given point and the origin */
     public int dist(int x, int y) {
-        int sqrd = (_originX - x) * (_originX - x) + (_originY - y)
-                * (_originY - y);
+        int sqrd = (_originX - x) * (_originX - x)
+                + (_originY - y) * (_originY - y);
         return (int) Math.round(Math.sqrt(sqrd));
     }
 

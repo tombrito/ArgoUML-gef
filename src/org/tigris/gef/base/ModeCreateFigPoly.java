@@ -48,7 +48,9 @@ public class ModeCreateFigPoly extends ModeCreate {
 
     /** The number of points added so far. */
     protected int _npoints = 0;
+
     protected int _lastX, _lastY, _startX, _startY;
+
     protected Handle _handle = new Handle(-1);
 
     // //////////////////////////////////////////////////////////////

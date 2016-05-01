@@ -45,6 +45,7 @@ public class ColorFactory {
      * and bbb = blue value int.
      */
     private static final Map USED_COLORS_BY_RGB_STRING = new HashMap();
+
     private static final Map USED_COLORS_BY_RGB_INTEGER = new HashMap();
 
     static {
@@ -65,12 +66,10 @@ public class ColorFactory {
      * A flyweight factory method for reusing the same Color value multiple
      * times.
      * 
-     * @param colorDescr
-     *                A string of RGB values seperated by space or a color name
-     *                recognised by PGML (later to include SVG)
-     * @param defaultColor
-     *                a color to return if the color description can't be
-     *                interpretted.
+     * @param colorDescr A string of RGB values seperated by space or a color
+     *            name recognised by PGML (later to include SVG)
+     * @param defaultColor a color to return if the color description can't be
+     *            interpretted.
      * @return the equivilent Color
      */
     public static Color getColor(String colorDescr, Color defaultColor) {
@@ -87,9 +86,8 @@ public class ColorFactory {
      * A flyweight factory method for reusing the same Color value multiple
      * times.
      * 
-     * @param colorDescr
-     *                A string of RGB values seperated by space or a color name
-     *                recognised by PGML (later to include SVG)
+     * @param colorDescr A string of RGB values seperated by space or a color
+     *            name recognised by PGML (later to include SVG)
      * @return the equivilent Color
      */
     public static Color getColor(String colorDescr) {
@@ -118,9 +116,8 @@ public class ColorFactory {
     /**
      * Get a color based on a space seperated RGB string.
      * 
-     * @param colorDescr
-     *                an RGB description of the color as integers seperated by
-     *                spaces.
+     * @param colorDescr an RGB description of the color as integers seperated
+     *            by spaces.
      * @return the required Color object.
      */
     private static Color getColorByRgb(String colorDescr) {
@@ -140,8 +137,7 @@ public class ColorFactory {
     /**
      * Get a color based on a single RGB integer.
      * 
-     * @param rgbInteger
-     *                the integer value of the color.
+     * @param rgbInteger the integer value of the color.
      * @return the required Color object.
      */
     private static Color getColorByRgb(Integer rgbInteger) {
@@ -176,8 +172,7 @@ public class ColorFactory {
     /**
      * Convert a Color to an single Integer value.
      * 
-     * @param color
-     *                The color
+     * @param color The color
      * @return the single integer value representing the Color
      */
     private static Integer colorToInteger(Color color) {
@@ -192,8 +187,9 @@ public class ColorFactory {
      * @param color
      */
     private static void cacheColor(Integer intIndex, Color color) {
-        cacheColor(color.getRed() + " " + color.getGreen() + " "
-                + color.getBlue(), intIndex, color);
+        cacheColor(
+                color.getRed() + " " + color.getGreen() + " " + color.getBlue(),
+                intIndex, color);
     }
 
     /**

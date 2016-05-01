@@ -47,10 +47,9 @@ public class CmdAdjustPageBreaks extends Cmd {
 
     public void doIt() {
         Editor ce = Globals.curEditor();
-        Layer pageBreaks = (Layer) ce.getLayerManager().findLayerNamed(
-                "PageBreaks");
-        if (pageBreaks != null)
-            pageBreaks.adjust();
+        Layer pageBreaks = (Layer) ce.getLayerManager()
+                .findLayerNamed("PageBreaks");
+        if (pageBreaks != null) pageBreaks.adjust();
     }
 
     public void undoIt() {

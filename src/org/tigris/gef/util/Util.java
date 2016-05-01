@@ -44,8 +44,7 @@ public class Util {
     /**
      * Fixes a platform dependent filename to standard URI form.
      * 
-     * @param str
-     *                The string to fix.
+     * @param str The string to fix.
      * 
      * @return Returns the fixed URI string.
      */
@@ -56,15 +55,14 @@ public class Util {
         if (str.length() >= 2) {
             if (str.charAt(1) == ':') {
                 char ch0 = Character.toUpperCase(str.charAt(0));
-                if (ch0 >= 'A' && ch0 <= 'Z')
-                    str = "/" + str;
+                if (ch0 >= 'A' && ch0 <= 'Z') str = "/" + str;
             }
         }
         return str;
     }
 
-    public static final URL fileToURL(File file) throws MalformedURLException,
-            IOException {
+    public static final URL fileToURL(File file)
+        throws MalformedURLException, IOException {
         return new URL("file", "", filenameToURI(file.getCanonicalPath()));
     }
 
@@ -112,11 +110,9 @@ public class Util {
         int len = s.length();
         int pos = 0;
         for (int i = 0; i < len; i++, pos++) {
-            if (!Character.isJavaIdentifierPart(s.charAt(i)))
-                break;
+            if (!Character.isJavaIdentifierPart(s.charAt(i))) break;
         }
-        if (pos == len)
-            return s;
+        if (pos == len) return s;
 
         StringBuffer buf = new StringBuffer(len);
         for (int i = 0; i < pos; i++)
@@ -125,8 +121,7 @@ public class Util {
         // skip pos, we know it's not a valid char from above
         for (int i = pos + 1; i < len; i++) {
             char c = s.charAt(i);
-            if (Character.isJavaIdentifierPart(c))
-                buf.append(c);
+            if (Character.isJavaIdentifierPart(c)) buf.append(c);
         }
         return buf.toString();
     }
@@ -134,8 +129,7 @@ public class Util {
     /**
      * Fixes a platform dependent filename to standard URI form.
      * 
-     * @param str
-     *                The string to fix.
+     * @param str The string to fix.
      * 
      * @return Returns the fixed URI string.
      */
@@ -144,8 +138,7 @@ public class Util {
         if (str.length() >= 3) {
             if (str.charAt(0) == '/' && str.charAt(2) == ':') {
                 char ch1 = Character.toUpperCase(str.charAt(1));
-                if (ch1 >= 'A' && ch1 <= 'Z')
-                    str = str.substring(1);
+                if (ch1 >= 'A' && ch1 <= 'Z') str = str.substring(1);
             }
         }
         // handle platform dependent strings

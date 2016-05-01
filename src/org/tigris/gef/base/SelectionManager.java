@@ -83,27 +83,34 @@ public class SelectionManager implements Serializable, KeyListener,
      * The collection of Selection instances
      */
     private List<Selection> selections = new ArrayList<Selection>();
+
     private Editor editor;
+
     private EventListenerList _listeners = new EventListenerList();
+
     private DragMemento dragMemento;
 
     private Fig _dragTopMostFig;
+
     private Fig _dragLeftMostFig;
 
     /**
      * All of the nodes being dragged
      */
     private Collection<FigNode> _draggingNodes;
+
     /**
      * All the edges that have both ends attached to nodes that are being
      * dragged (they will also be dragged).
      */
     private List<FigEdge> _draggingMovingEdges;
+
     /**
      * Edges that only have one end attached to an edge being dragged (they will
      * be reshaped)
      */
     private List<FigEdge> _draggingNonMovingEdges;
+
     /**
      * Other Figs that are being dragged (ie primitives)
      */
@@ -185,8 +192,7 @@ public class SelectionManager implements Serializable, KeyListener,
     /**
      * Adds an additional fig to the current selection.
      * 
-     * @param fig
-     *                Additional fig to select.
+     * @param fig Additional fig to select.
      */
     public void addToSelection(Fig fig) {
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -348,12 +354,13 @@ public class SelectionManager implements Serializable, KeyListener,
     }
 
     public List<Selection> getSelections() {
-        return Collections.unmodifiableList(
-                new ArrayList<Selection>(selections));
+        return Collections
+                .unmodifiableList(new ArrayList<Selection>(selections));
     }
 
     /**
      * Reply the collection of all selected Fig's
+     * 
      * @deprecated in 0.13 use getSelectedFigs
      */
     public Vector<Fig> getFigs() {
@@ -658,7 +665,8 @@ public class SelectionManager implements Serializable, KeyListener,
                 _dragLeftMostFig = fig;
             }
 
-            if (_dragTopMostFig == null || fig.getY() < _dragTopMostFig.getY()) {
+            if (_dragTopMostFig == null
+                    || fig.getY() < _dragTopMostFig.getY()) {
                 _dragTopMostFig = fig;
             }
         }
@@ -707,15 +715,15 @@ public class SelectionManager implements Serializable, KeyListener,
         Rectangle figBounds = _dragLeftMostFig.getBounds();
         dx = Math.max(-_dragLeftMostFig.getX(), dx);
         dy = Math.max(-_dragTopMostFig.getY(), dy);
-        
+
         for (FigNode figNode : _draggingNodes) {
             figNode.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
-            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y
-                    + figBounds.height);
-            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y
-                    + figBounds.height + dy);
+            dirtyRegion.add(figBounds.x + figBounds.width,
+                    figBounds.y + figBounds.height);
+            dirtyRegion.add(figBounds.x + figBounds.width + dx,
+                    figBounds.y + figBounds.height + dy);
             figNode.superTranslate(dx, dy);
             // the next one will confuse everything if elements and annotations
             // are selected and moved
@@ -726,10 +734,10 @@ public class SelectionManager implements Serializable, KeyListener,
             fig.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
-            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y
-                    + figBounds.height);
-            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y
-                    + figBounds.height + dy);
+            dirtyRegion.add(figBounds.x + figBounds.width,
+                    figBounds.y + figBounds.height);
+            dirtyRegion.add(figBounds.x + figBounds.width + dx,
+                    figBounds.y + figBounds.height + dy);
             fig.translate(dx, dy);
             fig.translateAnnotations();
         }
@@ -738,10 +746,10 @@ public class SelectionManager implements Serializable, KeyListener,
             figEdge.getBounds(figBounds);
             dirtyRegion.add(figBounds.x, figBounds.y);
             dirtyRegion.add(figBounds.x + dx, figBounds.y + dy);
-            dirtyRegion.add(figBounds.x + figBounds.width, figBounds.y
-                    + figBounds.height);
-            dirtyRegion.add(figBounds.x + figBounds.width + dx, figBounds.y
-                    + figBounds.height + dy);
+            dirtyRegion.add(figBounds.x + figBounds.width,
+                    figBounds.y + figBounds.height);
+            dirtyRegion.add(figBounds.x + figBounds.width + dx,
+                    figBounds.y + figBounds.height + dy);
             figEdge.translateEdge(dx, dy);
             figEdge.translateAnnotations();
         }
@@ -776,14 +784,14 @@ public class SelectionManager implements Serializable, KeyListener,
             for (int editorIndex = 0; editorIndex < editorCount; ++editorIndex) {
                 final Editor ed = (Editor) editors.get(editorIndex);
                 final double editorScale = ed.getScale();
-                dirtyRegionScaled.x = (int) Math.floor(dirtyRegion.x
-                        * editorScale);
-                dirtyRegionScaled.y = (int) Math.floor(dirtyRegion.y
-                        * editorScale);
-                dirtyRegionScaled.width = (int) Math.floor(dirtyRegion.width
-                        * editorScale) + 1;
-                dirtyRegionScaled.height = (int) Math.floor(dirtyRegion.height
-                        * editorScale) + 1;
+                dirtyRegionScaled.x = (int) Math
+                        .floor(dirtyRegion.x * editorScale);
+                dirtyRegionScaled.y = (int) Math
+                        .floor(dirtyRegion.y * editorScale);
+                dirtyRegionScaled.width = (int) Math
+                        .floor(dirtyRegion.width * editorScale) + 1;
+                dirtyRegionScaled.height = (int) Math
+                        .floor(dirtyRegion.height * editorScale) + 1;
                 ed.damaged(dirtyRegionScaled);
             }
         } else {
@@ -1077,8 +1085,8 @@ public class SelectionManager implements Serializable, KeyListener,
                 if (superclasses.containsKey(superClass.getName())) {
                     count = ((Integer) superclasses.get(superClass.getName()))
                             .intValue();
-                    superclasses
-                            .put(superClass.getName(), new Integer(++count));
+                    superclasses.put(superClass.getName(),
+                            new Integer(++count));
                 } else {
                     count = 1;
                     superclasses.put(superClass.getName(), new Integer(count));
@@ -1104,8 +1112,7 @@ public class SelectionManager implements Serializable, KeyListener,
      * Searches for the first appearance of an object of the designated type in
      * the current selection.
      * 
-     * @param type
-     *                Type of selection class to look for.
+     * @param type Type of selection class to look for.
      * @return The first selected object being instance of the designated type.
      */
     public Object findFirstSelectionOfType(Class type) {
@@ -1148,16 +1155,21 @@ public class SelectionManager implements Serializable, KeyListener,
     class DragMemento extends Memento {
 
         Collection draggingNodes;
+
         List draggingOthers;
+
         List bounds;
 
         List movingEdges;
+
         List nonMovingEdges;
+
         List points;
 
         public DragMemento(Collection draggingNodes, List draggingOthers,
                 List movingEdges, List nonMovingEdges) {
-            bounds = new ArrayList(draggingNodes.size() + draggingOthers.size());
+            bounds = new ArrayList(
+                    draggingNodes.size() + draggingOthers.size());
 
             this.draggingNodes = draggingNodes;
             Iterator nodeIt = draggingNodes.iterator();
@@ -1199,8 +1211,8 @@ public class SelectionManager implements Serializable, KeyListener,
             Iterator boundsIt = bounds.iterator();
 
             // Create an array to store each node's current boundaries
-            List oldBounds = new ArrayList(draggingNodes.size()
-                    + draggingOthers.size());
+            List oldBounds = new ArrayList(
+                    draggingNodes.size() + draggingOthers.size());
 
             Iterator nodeIt = draggingNodes.iterator();
             while (nodeIt.hasNext()) {
@@ -1228,8 +1240,8 @@ public class SelectionManager implements Serializable, KeyListener,
             Iterator pointsIt = points.iterator();
 
             // Create an array to store each edge's current points
-            List oldPoints = new ArrayList(nonMovingEdges.size()
-                    + movingEdges.size());
+            List oldPoints = new ArrayList(
+                    nonMovingEdges.size() + movingEdges.size());
 
             Iterator edgeIt = movingEdges.iterator();
             while (edgeIt.hasNext()) {

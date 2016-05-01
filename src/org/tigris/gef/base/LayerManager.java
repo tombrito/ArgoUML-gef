@@ -115,8 +115,7 @@ public class LayerManager implements java.io.Serializable {
 
         _layers.set(oldIndex, newLayer);
         newLayer.addEditor(_editor);
-        if (_activeLayer == oldLayer)
-            setActiveLayer(newLayer);
+        if (_activeLayer == oldLayer) setActiveLayer(newLayer);
     }
 
     public void replaceActiveLayer(Layer layer) {
@@ -144,16 +143,14 @@ public class LayerManager implements java.io.Serializable {
         int count = _layers.size();
         for (int layerIndex = 0; layerIndex < count; ++layerIndex) {
             Layer curLayer = (Layer) _layers.get(layerIndex);
-            if (aName.equals(curLayer.getName()))
-                return curLayer;
+            if (aName.equals(curLayer.getName())) return curLayer;
         }
         return null;
     }
 
     /** Make one of my layers the active one. */
     public void setActiveLayer(Layer lay) {
-        if (_activeLayer != null && _activeLayer.isAlwaysOnTop())
-            return;
+        if (_activeLayer != null && _activeLayer.isAlwaysOnTop()) return;
 
         if (_layers.contains(lay))
             _activeLayer = lay;
@@ -186,6 +183,7 @@ public class LayerManager implements java.io.Serializable {
      * When an editor or some tool wants to look at all the Figs that are
      * contained in this layer, reply the contents of my active layer. Maybe
      * this should really reply _all_ the contents of all layers.
+     * 
      * @deprecated use getContents with no args
      */
     @Deprecated
@@ -206,8 +204,7 @@ public class LayerManager implements java.io.Serializable {
      * all layers.
      */
     public void paint(Graphics g, FigPainter painter) {
-        if (!_paintLayers)
-            return;
+        if (!_paintLayers) return;
 
         if (_paintActiveOnly)
             _activeLayer.paint(g, painter);
@@ -244,18 +241,17 @@ public class LayerManager implements java.io.Serializable {
      * removal along to my active layer.
      */
     public void remove(Fig f) {
-        if (_activeLayer != null)
-            _activeLayer.remove(f);
+        if (_activeLayer != null) _activeLayer.remove(f);
     }
 
     /** See comments above, this message is passed to my active layer. */
     public void removeAll() {
-        if (_activeLayer != null)
-            _activeLayer.removeAll();
+        if (_activeLayer != null) _activeLayer.removeAll();
     }
 
     /**
      * See comments above, this message is passed to my active layer.
+     * 
      * @deprecated in 0.13 use getFigs()
      */
     @Deprecated
@@ -279,40 +275,34 @@ public class LayerManager implements java.io.Serializable {
         for (int layerIndex = 0; layerIndex < count; ++layerIndex) {
             Layer sub = (Layer) _layers.get(layerIndex);
             f = sub.presentationFor(obj);
-            if (f != null)
-                return f;
+            if (f != null) return f;
         }
         return null;
     }
 
     /** See comments above, this message is passed to my active layer. */
     public void sendToBack(Fig f) {
-        if (_activeLayer != null)
-            _activeLayer.sendToBack(f);
+        if (_activeLayer != null) _activeLayer.sendToBack(f);
     }
 
     /** See comments above, this message is passed to my active layer. */
     public void bringForward(Fig f) {
-        if (_activeLayer != null)
-            _activeLayer.bringForward(f);
+        if (_activeLayer != null) _activeLayer.bringForward(f);
     }
 
     /** See comments above, this message is passed to my active layer. */
     public void sendBackward(Fig f) {
-        if (_activeLayer != null)
-            _activeLayer.sendBackward(f);
+        if (_activeLayer != null) _activeLayer.sendBackward(f);
     }
 
     /** See comments above, this message is passed to my active layer. */
     public void bringToFront(Fig f) {
-        if (_activeLayer != null)
-            _activeLayer.bringToFront(f);
+        if (_activeLayer != null) _activeLayer.bringToFront(f);
     }
 
     /** See comments above, this message is passed to my active layer. */
     public void reorder(Fig f, int function) {
-        if (_activeLayer != null)
-            _activeLayer.reorder(f, function);
+        if (_activeLayer != null) _activeLayer.reorder(f, function);
     }
 
     public void setEditor(Editor ed) {

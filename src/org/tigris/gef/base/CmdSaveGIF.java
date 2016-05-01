@@ -64,13 +64,14 @@ public class CmdSaveGIF extends CmdSaveGraphics {
      * Write the diagram contained by the current editor into an OutputStream as
      * a GIF image.
      */
-    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
-            throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea)
+        throws IOException {
 
         // Create an offscreen image and render the diagram into it.
 
-        Image i = ce.createImage(drawingArea.width * scale, drawingArea.height
-                * scale);
+        Image i = ce.createImage(drawingArea.width * scale,
+                drawingArea.height * scale);
         Graphics g = i.getGraphics();
         if (g instanceof Graphics2D) {
             ((Graphics2D) g).scale(scale, scale);

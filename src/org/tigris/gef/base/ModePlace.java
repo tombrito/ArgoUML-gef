@@ -107,8 +107,7 @@ public class ModePlace extends FigModifyingModeImpl {
      * top of the ModeManager.
      */
     public String instructions() {
-        if (_instructions == null)
-            _instructions = "";
+        if (_instructions == null) _instructions = "";
         return _instructions;
     }
 
@@ -166,12 +165,11 @@ public class ModePlace extends FigModifyingModeImpl {
         Point snapPt = new Point(x, y);
         editor.snap(snapPt);
         if (LOG.isDebugEnabled())
-            LOG.debug("mouseMoved: About to set location (" + _pers.getX()
-                    + "," + _pers.getY() + ")");
-        _pers.setLocation(snapPt.x, snapPt.y);
-        if (LOG.isDebugEnabled())
-            LOG.debug("mouseMoved: Location set (" + _pers.getX() + ","
+            LOG.debug("mouseMoved: About to set location (" + _pers.getX() + ","
                     + _pers.getY() + ")");
+        _pers.setLocation(snapPt.x, snapPt.y);
+        if (LOG.isDebugEnabled()) LOG.debug("mouseMoved: Location set ("
+                + _pers.getX() + "," + _pers.getY() + ")");
         editor.damageAll();
         me.consume();
     }
@@ -233,9 +231,8 @@ public class ModePlace extends FigModifyingModeImpl {
                     continue;
                 }
                 Rectangle trap = otherFig.getTrapRect();
-                if (trap != null
-                        && (trap.contains(bbox.x, bbox.y) && trap.contains(
-                                bbox.x + bbox.width, bbox.y + bbox.height))) {
+                if (trap != null && (trap.contains(bbox.x, bbox.y) && trap
+                        .contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
                     encloser = otherFig;
                 }
             }
@@ -281,7 +278,9 @@ public class ModePlace extends FigModifyingModeImpl {
 class PlaceMemento extends Memento {
 
     private FigNode nodePlaced;
+
     private Object node;
+
     private Editor editor;
 
     PlaceMemento(Editor ed, Object node, FigNode nodePlaced) {

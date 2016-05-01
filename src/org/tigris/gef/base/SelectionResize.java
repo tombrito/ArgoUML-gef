@@ -54,8 +54,11 @@ public class SelectionResize extends Selection {
     private static final long serialVersionUID = 1996301098909656022L;
 
     private int cx;
+
     private int cy;
+
     private int cw;
+
     private int ch;
 
     private static Log log = LogFactory.getLog(SelectionResize.class);
@@ -92,11 +95,11 @@ public class SelectionResize extends Selection {
             testRect.setBounds(cx + cw - HAND_SIZE / 2, cy - HAND_SIZE / 2,
                     HAND_SIZE, ch + HAND_SIZE / 2);
             boolean rightEdge = r.intersects(testRect);
-            testRect.setBounds(cx - HAND_SIZE / 2, cy - HAND_SIZE / 2, cw
-                    + HAND_SIZE / 2, HAND_SIZE);
+            testRect.setBounds(cx - HAND_SIZE / 2, cy - HAND_SIZE / 2,
+                    cw + HAND_SIZE / 2, HAND_SIZE);
             boolean topEdge = r.intersects(testRect);
-            testRect.setBounds(cx - HAND_SIZE / 2, cy + ch - HAND_SIZE / 2, cw
-                    + HAND_SIZE / 2, HAND_SIZE);
+            testRect.setBounds(cx - HAND_SIZE / 2, cy + ch - HAND_SIZE / 2,
+                    cw + HAND_SIZE / 2, HAND_SIZE);
             boolean bottomEdge = r.intersects(testRect);
             // needs-more-work: midpoints for side handles
             if (leftEdge && topEdge) {
@@ -160,10 +163,10 @@ public class SelectionResize extends Selection {
             final int w = fig.getWidth();
             final int h = fig.getHeight();
             g.setColor(Globals.getPrefs().handleColorFor(fig));
-            g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH, w + BORDER_WIDTH * 2
-                    - 1, h + BORDER_WIDTH * 2 - 1);
-            g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1, w
-                    + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
+            g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
+                    w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
+            g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
+                    w + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
             g.fillRect(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
             g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
             g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
@@ -179,9 +182,8 @@ public class SelectionResize extends Selection {
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
         final Fig fig = getContent();
         if (!fig.isResizable()) {
-            if (log.isDebugEnabled())
-                log.debug("Handle " + hand
-                        + " dragged but no action as fig is not resizable");
+            if (log.isDebugEnabled()) log.debug("Handle " + hand
+                    + " dragged but no action as fig is not resizable");
             return;
         }
 
@@ -195,72 +197,72 @@ public class SelectionResize extends Selection {
         Dimension minSize = fig.getMinimumSize();
         int minWidth = minSize.width, minHeight = minSize.height;
         switch (hand.index) {
-            case -1:
-                fig.translate(anX - mX, anY - mY);
-                return;
-            case Handle.NORTHWEST:
-                newWidth = x + w - mX;
-                newWidth = (newWidth < minWidth) ? minWidth : newWidth;
-                newHeight = y + h - mY;
-                newHeight = (newHeight < minHeight) ? minHeight : newHeight;
-                newX = x + w - newWidth;
-                newY = y + h - newHeight;
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
-                if ((newX + newWidth) != (x + w)) {
-                    newX += (newX + newWidth) - (x + w);
-                }
-                if ((newY + newHeight) != (y + h)) {
-                    newY += (newY + newHeight) - (y + h);
-                }
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
-                return;
-            case Handle.NORTH:
-                break;
-            case Handle.NORTHEAST:
-                newWidth = mX - x;
-                newWidth = (newWidth < minWidth) ? minWidth : newWidth;
-                newHeight = y + h - mY;
-                newHeight = (newHeight < minHeight) ? minHeight : newHeight;
-                newY = y + h - newHeight;
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
-                if ((newY + newHeight) != (y + h)) {
-                    newY += (newY + newHeight) - (y + h);
-                }
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
-                break;
-            case Handle.WEST:
-                break;
-            case Handle.EAST:
-                break;
-            case Handle.SOUTHWEST:
-                newWidth = x + w - mX;
-                newWidth = (newWidth < minWidth) ? minWidth : newWidth;
-                newHeight = mY - y;
-                newHeight = (newHeight < minHeight) ? minHeight : newHeight;
-                newX = x + w - newWidth;
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
-                if ((newX + newWidth) != (x + w)) {
-                    newX += (newX + newWidth) - (x + w);
-                }
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
-                break;
-            case Handle.SOUTH:
-                break;
-            case Handle.SOUTHEAST:
-                newWidth = mX - x;
-                newWidth = (newWidth < minWidth) ? minWidth : newWidth;
-                newHeight = mY - y;
-                newHeight = (newHeight < minHeight) ? minHeight : newHeight;
-                fig.setHandleBox(newX, newY, newWidth, newHeight);
-                break;
-            default:
-                log.error("invalid handle number for resizing fig");
-                return;
+        case -1:
+            fig.translate(anX - mX, anY - mY);
+            return;
+        case Handle.NORTHWEST:
+            newWidth = x + w - mX;
+            newWidth = (newWidth < minWidth) ? minWidth : newWidth;
+            newHeight = y + h - mY;
+            newHeight = (newHeight < minHeight) ? minHeight : newHeight;
+            newX = x + w - newWidth;
+            newY = y + h - newHeight;
+            fig.setHandleBox(newX, newY, newWidth, newHeight);
+            if ((newX + newWidth) != (x + w)) {
+                newX += (newX + newWidth) - (x + w);
+            }
+            if ((newY + newHeight) != (y + h)) {
+                newY += (newY + newHeight) - (y + h);
+            }
+            fig.setHandleBox(newX, newY, newWidth, newHeight);
+            return;
+        case Handle.NORTH:
+            break;
+        case Handle.NORTHEAST:
+            newWidth = mX - x;
+            newWidth = (newWidth < minWidth) ? minWidth : newWidth;
+            newHeight = y + h - mY;
+            newHeight = (newHeight < minHeight) ? minHeight : newHeight;
+            newY = y + h - newHeight;
+            fig.setHandleBox(newX, newY, newWidth, newHeight);
+            if ((newY + newHeight) != (y + h)) {
+                newY += (newY + newHeight) - (y + h);
+            }
+            fig.setHandleBox(newX, newY, newWidth, newHeight);
+            break;
+        case Handle.WEST:
+            break;
+        case Handle.EAST:
+            break;
+        case Handle.SOUTHWEST:
+            newWidth = x + w - mX;
+            newWidth = (newWidth < minWidth) ? minWidth : newWidth;
+            newHeight = mY - y;
+            newHeight = (newHeight < minHeight) ? minHeight : newHeight;
+            newX = x + w - newWidth;
+            fig.setHandleBox(newX, newY, newWidth, newHeight);
+            if ((newX + newWidth) != (x + w)) {
+                newX += (newX + newWidth) - (x + w);
+            }
+            fig.setHandleBox(newX, newY, newWidth, newHeight);
+            break;
+        case Handle.SOUTH:
+            break;
+        case Handle.SOUTHEAST:
+            newWidth = mX - x;
+            newWidth = (newWidth < minWidth) ? minWidth : newWidth;
+            newHeight = mY - y;
+            newHeight = (newHeight < minHeight) ? minHeight : newHeight;
+            fig.setHandleBox(newX, newY, newWidth, newHeight);
+            break;
+        default:
+            log.error("invalid handle number for resizing fig");
+            return;
         }
         if (fig instanceof FigNode) {
             FigNode figNode = (FigNode) fig;
             for (Connector connector : figNode.getConnectors()) {
-                
+
                 Fig connectorFig = (Fig) connector;
                 Point centre = new Point(
                         connectorFig.getX() + connectorFig.getHalfWidth(),

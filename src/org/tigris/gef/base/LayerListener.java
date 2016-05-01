@@ -7,5 +7,5 @@ public interface LayerListener {
     void figAdded(EventObject event);
 
     void figRemoved(EventObject event);
-    
+
 }

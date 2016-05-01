@@ -52,5 +52,5 @@ public interface HandlerFactory {
      */
     DefaultHandler getHandler(HandlerStack stack, Object container, String uri,
             String localname, String qname, Attributes attributes)
-            throws SAXException;
+        throws SAXException;
 }

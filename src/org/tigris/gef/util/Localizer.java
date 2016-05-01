@@ -54,8 +54,11 @@ import org.apache.commons.logging.LogFactory;
 
 public class Localizer {
     private static Map resourcesByLocale = new HashMap();
+
     private static Map resourceNames = new HashMap();
+
     private static Locale defaultLocale = Locale.getDefault();
+
     private static Map defaultResources = new HashMap();
 
     static {
@@ -67,8 +70,7 @@ public class Localizer {
     /**
      * This method tests, if a resource with the given name is registered.
      * 
-     * @param resource
-     *                Name of the resource to be tested.
+     * @param resource Name of the resource to be tested.
      * @return True, if a resource with the given name is registered, otherwise
      *         false.
      */
@@ -79,8 +81,7 @@ public class Localizer {
     /**
      * This method tests, if the given locale is registered.
      * 
-     * @param locale
-     *                Locale to be tested.
+     * @param locale Locale to be tested.
      * @return True, if the given locale is registered, otherwise false.
      */
     public static boolean containsLocale(Locale locale) {
@@ -105,8 +106,7 @@ public class Localizer {
                 String resourceName = (String) resourceNames.get(binding);
                 ResourceBundle bundle = ResourceBundle.getBundle(resourceName,
                         locale);
-                if (bundle == null)
-                    continue;
+                if (bundle == null) continue;
 
                 if (bundle instanceof ResourceBundle)
                     resources.put(binding, bundle);
@@ -125,8 +125,7 @@ public class Localizer {
      * @see java.util.Locale
      */
     public static void switchCurrentLocale(Locale locale) {
-        if (!resourcesByLocale.containsKey(locale))
-            addLocale(locale);
+        if (!resourcesByLocale.containsKey(locale)) addLocale(locale);
 
         if (!defaultLocale.equals(locale)) {
             defaultLocale = locale;
@@ -146,13 +145,11 @@ public class Localizer {
     /**
      * The method returns all resources for the given locale.
      * 
-     * @param locale
-     *                Resources are searched for this locale.
+     * @param locale Resources are searched for this locale.
      * @return Map of all resources and their names bound to the given locale.
      */
     public static Map getResourcesFor(Locale locale) {
-        if (!containsLocale(locale))
-            return null;
+        if (!containsLocale(locale)) return null;
 
         return (Map) resourcesByLocale.get(locale);
     }
@@ -161,21 +158,19 @@ public class Localizer {
      * The method adds a new resource under the given name. The resource is
      * preloaded and bound to every registered locale.
      * 
-     * @param resourceName
-     *                Name of the resource to be registered.
-     * @param binding
-     *                Name under which the resource should be registered.
+     * @param resourceName Name of the resource to be registered.
+     * @param binding Name under which the resource should be registered.
      */
     public static synchronized void addResource(String binding,
-            String resourceName) throws MissingResourceException {
+            String resourceName)
+        throws MissingResourceException {
         addResource(binding, resourceName, Localizer.class.getClassLoader());
     }
 
     public static synchronized void addResource(String binding,
             String resourceName, ClassLoader loader)
-            throws MissingResourceException {
-        if (containsResource(resourceName))
-            return;
+        throws MissingResourceException {
+        if (containsResource(resourceName)) return;
 
         Iterator iter = resourcesByLocale.keySet().iterator();
 
@@ -185,14 +180,15 @@ public class Localizer {
     }
 
     public static synchronized void addResource(String binding,
-            String resourceName, Locale locale) throws MissingResourceException {
-        addResource(binding, resourceName, locale, Localizer.class
-                .getClassLoader());
+            String resourceName, Locale locale)
+        throws MissingResourceException {
+        addResource(binding, resourceName, locale,
+                Localizer.class.getClassLoader());
     }
 
     public static synchronized void addResource(String binding,
             String resourceName, Locale locale, ClassLoader loader)
-            throws MissingResourceException {
+        throws MissingResourceException {
         ResourceBundle resource = null;
         if (containsLocale(locale)) {
             Map resources = (Map) resourcesByLocale.get(locale);
@@ -201,8 +197,8 @@ public class Localizer {
             if (!resourceNames.containsValue(resourceName))
                 resourceNames.put(binding, resourceName);
         } else
-            throw new MissingResourceException("Locale not found!", locale
-                    .toString(), resourceName);
+            throw new MissingResourceException("Locale not found!",
+                    locale.toString(), resourceName);
     }
 
     /**
@@ -210,8 +206,7 @@ public class Localizer {
      * the locale is the current locale, the current locale is switched to the
      * systems default locale.
      * 
-     * @param locale
-     *                Locale to be removed.
+     * @param locale Locale to be removed.
      */
     public static void removeLocale(Locale locale) {
         if (defaultLocale.equals(locale)) {
@@ -225,8 +220,7 @@ public class Localizer {
      * The method removes the given resource from the list of used resources.
      * Any binding from any locale to that resource is also removed.
      * 
-     * @param binding
-     *                Name under which the resource to be removed is registered.
+     * @param binding Name under which the resource to be removed is registered.
      */
     public static void removeResource(String binding) {
         Iterator iter = resourcesByLocale.keySet().iterator();
@@ -242,10 +236,8 @@ public class Localizer {
      * This function returns a localized string corresponding to the specified
      * key. Searching goes through all registered ResourceBundles
      * 
-     * @param binding
-     *                ResourceBundles to search in.
-     * @param key
-     *                String to be localized.
+     * @param binding ResourceBundles to search in.
+     * @param key String to be localized.
      * @return First localization for the given string found in the registered
      *         ResourceBundles, the key itself if no localization has been
      *         found.
@@ -254,8 +246,10 @@ public class Localizer {
         return localize(binding, key, defaultLocale, defaultResources);
     }
 
-    public static String localize(String binding, String key, boolean localize) {
-        return localize(binding, key, defaultLocale, defaultResources, localize);
+    public static String localize(String binding, String key,
+            boolean localize) {
+        return localize(binding, key, defaultLocale, defaultResources,
+                localize);
     }
 
     public static String localize(String binding, String key, Locale locale,
@@ -329,8 +323,8 @@ public class Localizer {
         return containsKey(binding, key, defaultLocale, defaultResources);
     }
 
-    public static boolean containsKey(String binding, String key,
-            Locale locale, Map resources) {
+    public static boolean containsKey(String binding, String key, Locale locale,
+            Map resources) {
         if (locale == null || resources == null || !containsLocale(locale)) {
             return false;
         }
@@ -352,8 +346,7 @@ public class Localizer {
      * Returns a Set that contains all keys (strings) defined in the given
      * resource (for the current default locale)
      * 
-     * @param binding
-     *                the resource name whose keys should be returned
+     * @param binding the resource name whose keys should be returned
      * @return a Set containing all keys. Will never return null, but an empty
      *         Set if no resource was found or it contains no keys.
      */
@@ -392,10 +385,8 @@ public class Localizer {
     /**
      * This function returns a localized menu shortcut key to the specified key.
      * 
-     * @param binding
-     *                Name of resource to be searched.
-     * @param key
-     *                Shortcut string to be localized.
+     * @param binding Name of resource to be searched.
+     * @param key Shortcut string to be localized.
      * @return Localized KeyStroke object.
      */
     public static KeyStroke getShortcut(String binding, String key) {
@@ -429,9 +420,9 @@ public class Localizer {
                     }
                 }
                 stroke = KeyStroke.getKeyStroke(shortcutBuf.toString());
-                int modifiers = stroke.getModifiers()
-                        | (hasShortcutModifier ? Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask() : 0);
+                int modifiers = stroke.getModifiers() | (hasShortcutModifier
+                        ? Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+                        : 0);
                 int keyCode = stroke.getKeyCode();
                 stroke = KeyStroke.getKeyStroke(keyCode, modifiers);
             }

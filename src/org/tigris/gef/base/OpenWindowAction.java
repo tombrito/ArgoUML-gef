@@ -45,13 +45,13 @@ import org.tigris.gef.util.Localizer;
 public class OpenWindowAction extends UndoableAction {
 
     private static final long serialVersionUID = 8660792603517868506L;
+
     private String className;
 
     /**
      * Creates a new OpenWindowAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public OpenWindowAction(String name, String className) {
         this(name, className, false);
@@ -60,10 +60,8 @@ public class OpenWindowAction extends UndoableAction {
     /**
      * Creates a new OpenWindowAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public OpenWindowAction(String name, String className, Icon icon) {
         this(name, icon, className, false);
@@ -72,10 +70,8 @@ public class OpenWindowAction extends UndoableAction {
     /**
      * Creates a new OpenWindowAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public OpenWindowAction(String name, String className, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -85,12 +81,9 @@ public class OpenWindowAction extends UndoableAction {
     /**
      * Creates a new OpenWindowAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public OpenWindowAction(String name, Icon icon, String className,
             boolean localize) {

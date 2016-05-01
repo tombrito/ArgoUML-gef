@@ -39,6 +39,7 @@ import java.util.EventObject;
 
 public class MutableGraphEvent extends EventObject {
     private static final long serialVersionUID = -9143159532643088192L;
+
     /** The specific node, port, or arc that was modified. */
     private Object _arg;
 

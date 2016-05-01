@@ -65,13 +65,19 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener,
         DocumentListener, KeyListener, FocusListener, TextEditor {
 
     private static final long serialVersionUID = 7350660058167121420L;
+
     private FigText figText;
+
     private JPanel drawingPanel;
+
     private JLayeredPane layeredPane;
 
     private static int _extraSpace = 2;
+
     private static Border _border = BorderFactory.createLineBorder(Color.gray);
+
     private static boolean _makeBrighter = false;
+
     private static Color _backgroundColor = null;
 
     private static Log LOG = LogFactory.getLog(FigTextEditor.class);
@@ -125,8 +131,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener,
         bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, layeredPane);
 
         // bounds will be overwritten later in updateFigText anyway...
-        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width
-                + _extraSpace * 2, bbox.height + _extraSpace * 2);
+        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace,
+                bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
         layeredPane.add(this, JLayeredPane.POPUP_LAYER, 0);
         final String text = ft.getTextFriend();
 
@@ -271,7 +277,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener,
 
         figText.setTextFriend(text, getGraphics());
 
-        if (figText.getReturnAction() == FigText.INSERT && figText.isWordWrap()) {
+        if (figText.getReturnAction() == FigText.INSERT
+                && figText.isWordWrap()) {
             return;
         }
 
@@ -288,8 +295,8 @@ public class FigTextEditor extends JTextPane implements PropertyChangeListener,
 
         bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, layeredPane);
 
-        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width
-                + _extraSpace * 2, bbox.height + _extraSpace * 2);
+        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace,
+                bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
         setFont(figText.getFont());
     }
 

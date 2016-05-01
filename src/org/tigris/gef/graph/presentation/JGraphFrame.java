@@ -41,19 +41,24 @@ import org.tigris.gef.util.*;
  * status bar.
  */
 
-public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
-        ModeChangeListener {
+public class JGraphFrame extends JFrame
+        implements IStatusBar, Cloneable, ModeChangeListener {
 
     private static final long serialVersionUID = -8167010467922210977L;
+
     /** The toolbar (shown at top of window). */
     private ToolBar _toolbar = new PaletteFig();
+
     /** The graph pane (shown in middle of window). */
     private JGraph _graph;
+
     /** A statusbar (shown at bottom ow window). */
     private JLabel _statusbar = new JLabel(" ");
 
     private JPanel _mainPanel = new JPanel(new BorderLayout());
+
     private JPanel _graphPanel = new JPanel(new BorderLayout());
+
     private JMenuBar _menubar = new JMenuBar();
 
     /**
@@ -66,8 +71,7 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
 
     public JGraphFrame(boolean init_later) {
         super("untitled");
-        if (!init_later)
-            init(new JGraph());
+        if (!init_later) init(new JGraph());
     }
 
     /**
@@ -219,14 +223,14 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
         edit.setMnemonic('E');
         _menubar.add(edit);
 
-        JMenuItem undoItem = edit.add(new UndoAction(Localizer.localize(
-                "GefBase", "Undo")));
-        undoItem.setMnemonic(Localizer.localize("GefBase", "UndoMnemonic")
-                .charAt(0));
-        JMenuItem redoItem = edit.add(new RedoAction(Localizer.localize(
-                "GefBase", "Redo")));
-        redoItem.setMnemonic(Localizer.localize("GefBase", "RedoMnemonic")
-                .charAt(0));
+        JMenuItem undoItem = edit
+                .add(new UndoAction(Localizer.localize("GefBase", "Undo")));
+        undoItem.setMnemonic(
+                Localizer.localize("GefBase", "UndoMnemonic").charAt(0));
+        JMenuItem redoItem = edit
+                .add(new RedoAction(Localizer.localize("GefBase", "Redo")));
+        redoItem.setMnemonic(
+                Localizer.localize("GefBase", "RedoMnemonic").charAt(0));
 
         JMenu select = new JMenu(Localizer.localize("GefBase", "Select"));
         edit.add(select);
@@ -280,8 +284,8 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
         align.add(new AlignAction(AlignAction.ALIGN_V_CENTERS));
         align.add(new AlignAction(AlignAction.ALIGN_TO_GRID));
 
-        JMenu distribute = new JMenu(Localizer
-                .localize("GefBase", "Distribute"));
+        JMenu distribute = new JMenu(
+                Localizer.localize("GefBase", "Distribute"));
         arrange.add(distribute);
         distribute.add(new DistributeAction(DistributeAction.H_SPACING));
         distribute.add(new DistributeAction(DistributeAction.H_CENTERS));
@@ -359,8 +363,7 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
 
     public void setVisible(boolean b) {
         super.setVisible(b);
-        if (b)
-            Globals.setStatusBar(this);
+        if (b) Globals.setStatusBar(this);
     }
 
     // //////////////////////////////////////////////////////////////
@@ -368,7 +371,6 @@ public class JGraphFrame extends JFrame implements IStatusBar, Cloneable,
 
     /** Show a message in the statusbar. */
     public void showStatus(String msg) {
-        if (_statusbar != null)
-            _statusbar.setText(msg);
+        if (_statusbar != null) _statusbar.setText(msg);
     }
 } /* end class JGraphFrame */

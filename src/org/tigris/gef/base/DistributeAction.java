@@ -42,26 +42,34 @@ import org.tigris.gef.util.Localizer;
 public class DistributeAction extends UndoableAction {
 
     private static final long serialVersionUID = 3630014084522093432L;
+
     /** Constants specifying the type of distribution requested. */
     public static final int H_SPACING = 0;
+
     public static final int H_CENTERS = 1;
+
     public static final int H_PACK = 2;
+
     public static final int V_SPACING = 4;
+
     public static final int V_CENTERS = 5;
+
     public static final int V_PACK = 6;
 
     /** Specification of the type of distribution requested */
     private int _request;
+
     private Rectangle _bbox = null;
+
     private List<Fig> figs;
+
     private Integer gap;
 
     /**
      * Construct a new DistributeAction.
      * 
-     * @param r
-     *                The desired alignment direction, one of the constants
-     *                listed above.
+     * @param r The desired alignment direction, one of the constants listed
+     *            above.
      */
     public DistributeAction(int r) {
         super(Localizer.localize("GefBase", "Distribute" + wordFor(r)));
@@ -122,8 +130,7 @@ public class DistributeAction extends UndoableAction {
         int leftMostCenter = 0, rightMostCenter = 0;
         int topMostCenter = 0, bottomMostCenter = 0;
         int size = targets.size();
-        if (size == 0)
-            return;
+        if (size == 0) return;
 
         // find the bbox of all selected objects
         Fig f = targets.get(0);
@@ -140,8 +147,8 @@ public class DistributeAction extends UndoableAction {
                 leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
                 rightMostCenter = Math.max(rightMostCenter, r.x + r.width / 2);
                 topMostCenter = Math.min(topMostCenter, r.y + r.height / 2);
-                bottomMostCenter = Math.max(bottomMostCenter, r.y + r.height
-                        / 2);
+                bottomMostCenter = Math.max(bottomMostCenter,
+                        r.y + r.height / 2);
             }
         }
 

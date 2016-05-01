@@ -36,8 +36,8 @@ import javax.swing.Icon;
  * 
  * @author Bob Tarling
  */
-public class UndoAction extends AbstractAction implements
-        PropertyChangeListener {
+public class UndoAction extends AbstractAction
+        implements PropertyChangeListener {
 
     /**
      * Construct the undo action with a display name

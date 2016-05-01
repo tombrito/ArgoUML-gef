@@ -11,8 +11,7 @@ public abstract class Memento {
      * Set by the undo framework to flag the first memento of a chain of
      * mementos that represent a single user interaction with the application.
      * 
-     * @param b
-     *                true if this memento is the start of a chain.
+     * @param b true if this memento is the start of a chain.
      */
     boolean startChain;
 

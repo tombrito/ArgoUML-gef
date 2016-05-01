@@ -43,6 +43,7 @@ public class ColorEditor extends JPanel implements PropertyEditor { // ,
     // instance variables
 
     public Color _color = Color.white;
+
     private java.util.Vector listeners;
 
     // //////////////////////////////////////////////////////////////
@@ -51,8 +52,8 @@ public class ColorEditor extends JPanel implements PropertyEditor { // ,
     public ColorEditor() {
         setLayout(null);
         // addNotify();
-        setSize(getInsets().left + getInsets().right + 20, getInsets().top
-                + getInsets().bottom + 20);
+        setSize(getInsets().left + getInsets().right + 20,
+                getInsets().top + getInsets().bottom + 20);
         setForeground(Color.lightGray);
     }
 
@@ -60,8 +61,7 @@ public class ColorEditor extends JPanel implements PropertyEditor { // ,
     // accessors
 
     public void setValue(Object c) {
-        if (!(c instanceof Color))
-            return;
+        if (!(c instanceof Color)) return;
         _color = (Color) c;
         repaint();
         firePropertyChange();
@@ -190,8 +190,7 @@ public class ColorEditor extends JPanel implements PropertyEditor { // ,
         java.util.Vector targets;
         PropertyChangeListener target;
         synchronized (this) {
-            if (listeners == null)
-                return;
+            if (listeners == null) return;
             targets = (java.util.Vector) listeners.clone();
         }
         // Tell our listeners that "everything" has changed.

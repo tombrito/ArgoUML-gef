@@ -52,8 +52,7 @@ public class FontUtility {
     /**
      * Gets the font metrics for the specified font.
      * 
-     * @param font
-     *                The font for which font metrics is to be obtained.
+     * @param font The font for which font metrics is to be obtained.
      * @return the FontMetrics
      */
     public static FontMetrics getFontMetrics(Font font) {

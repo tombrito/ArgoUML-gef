@@ -48,8 +48,11 @@ public class FigLine extends Fig {
      * _y1, _x2, or _y2 change.
      */
     protected int _x1;
+
     protected int _y1;
+
     protected int _x2;
+
     protected int _y2;
 
     // //////////////////////////////////////////////////////////////
@@ -172,9 +175,8 @@ public class FigLine extends Fig {
      * PropertyChange with "bounds".
      */
     public void setPoints(Point[] ps) {
-        if (ps.length != 2)
-            throw new IllegalArgumentException(
-                    "FigLine must have exactly 2 points");
+        if (ps.length != 2) throw new IllegalArgumentException(
+                "FigLine must have exactly 2 points");
         _x1 = ps[0].x;
         _y1 = ps[0].y;
         _x2 = ps[1].x;
@@ -304,10 +306,8 @@ public class FigLine extends Fig {
     /**
      * Translate this Fig. Fires PropertyChange with "bounds".
      * 
-     * @param dx
-     *                the x offset
-     * @param dy
-     *                the y offset
+     * @param dx the x offset
+     * @param dy the y offset
      */
     protected void translateImpl(int dx, int dy) {
         _x1 += dx;
@@ -356,9 +356,11 @@ public class FigLine extends Fig {
         } else {
             if (g instanceof Graphics2D) {
                 /* In this case, line-width is supported. */
-                /* TODO: This used to cause loss of separators between 
-                 * compartments in FigClass in ArgoUML. That problem has 
-                 * been solved, but there may still be unexpected results. */
+                /*
+                 * TODO: This used to cause loss of separators between
+                 * compartments in FigClass in ArgoUML. That problem has been
+                 * solved, but there may still be unexpected results.
+                 */
                 Graphics2D g2 = (Graphics2D) g;
                 // dashes == null gives solid line
                 drawDashedLine(g2, lineWidth, _x1, _y1, _x2, _y2, 0, null, 1);
@@ -371,8 +373,8 @@ public class FigLine extends Fig {
     }
 
     public void appendSvg(StringBuffer sb) {
-        sb.append("<line id='").append(getId()).append("' class='").append(
-                getClass().getName()).append("'");
+        sb.append("<line id='").append(getId()).append("' class='")
+                .append(getClass().getName()).append("'");
         appendSvgStyle(sb);
         sb.append(" x1 = '").append(getX1()).append("'").append(" y1 = '")
                 .append(getY1()).append("'").append(" x2 = '").append(getX2())
@@ -386,8 +388,8 @@ public class FigLine extends Fig {
      * so recip is - (p1.x - p2.x) / (p1.y - p2.y)
      * 
      * int recipnumerator = (p1.x - p2.x) * -1; int recipdenominator = (p1.y -
-     * p2.y);
-     *  // find the point offset on the line that gives a // correct offset
+     * p2.y); // find the point offset on the line that gives a // correct
+     * offset
      * 
      * double a = offset / Math.sqrt(recipnumerator * recipnumerator +
      * recipdenominator * recipdenominator); Point newPoint = new Point((int)
@@ -444,8 +446,7 @@ public class FigLine extends Fig {
      * polygon. For this implementation the polygon is just a 2 dimensional
      * straight line. So this method is the same as intersects.
      * 
-     * @param rect
-     *                The rectangle to be tested.
+     * @param rect The rectangle to be tested.
      * @return True, if the rectangle intersects the perimeter, otherwise false.
      */
     public boolean intersectsPerimeter(Rectangle rect) {
@@ -455,8 +456,7 @@ public class FigLine extends Fig {
     /**
      * Tests, if the given rectangle intersects with this line
      * 
-     * @param rect
-     *                The rectangle to be tested.
+     * @param rect The rectangle to be tested.
      * @return True, if the rectangle intersects the perimeter, otherwise false.
      */
     public boolean intersects(Rectangle rect) {

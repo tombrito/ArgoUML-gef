@@ -40,8 +40,8 @@ import java.util.*;
  * Netscape Navigator (TM) tries to allocate when it starts.
  */
 
-public class ColorTilePanel extends JPanel implements MouseListener,
-        MouseMotionListener {
+public class ColorTilePanel extends JPanel
+        implements MouseListener, MouseMotionListener {
     // //////////////////////////////////////////////////////////////
     // constants
     public final static int TILESIZE = 6;
@@ -105,8 +105,7 @@ public class ColorTilePanel extends JPanel implements MouseListener,
      * displayed colors.
      */
     public void setColor(Color c) {
-        if (!_colors.contains(c))
-            return;
+        if (!_colors.contains(c)) return;
         setSelectionIndex(_colors.indexOf(c));
     }
 
@@ -148,12 +147,11 @@ public class ColorTilePanel extends JPanel implements MouseListener,
         else
             sc = Color.white;
         g.setColor(sc);
-        g.drawRect((_selected % _nCols) * TILESIZE, (_selected / _nCols)
-                * TILESIZE, TILESIZE - 1, TILESIZE - 1);
-        if (TILESIZE >= 8)
-            g.drawRect((_selected % _nCols) * TILESIZE + 1,
-                    (_selected / _nCols) * TILESIZE + 1, TILESIZE - 3,
-                    TILESIZE - 3);
+        g.drawRect((_selected % _nCols) * TILESIZE,
+                (_selected / _nCols) * TILESIZE, TILESIZE - 1, TILESIZE - 1);
+        if (TILESIZE >= 8) g.drawRect((_selected % _nCols) * TILESIZE + 1,
+                (_selected / _nCols) * TILESIZE + 1, TILESIZE - 3,
+                TILESIZE - 3);
     }
 
     public Dimension getMinimumSize() {
@@ -167,10 +165,8 @@ public class ColorTilePanel extends JPanel implements MouseListener,
     }
 
     public boolean setSelectionIndex(int s) {
-        if (s < 0 || s > _colors.size())
-            return false;
-        if (s == _selected)
-            return false;
+        if (s < 0 || s > _colors.size()) return false;
+        if (s == _selected) return false;
         _selected = s;
         repaint();
         return true;
@@ -255,13 +251,11 @@ public class ColorTilePanel extends JPanel implements MouseListener,
     }
 
     public void removeActionListener(ActionListener list) {
-        if (_onlyListener == list)
-            _onlyListener = null;
+        if (_onlyListener == list) _onlyListener = null;
     }
 
     public void fireActionEvent(ActionEvent ae) {
-        if (_onlyListener != null)
-            _onlyListener.actionPerformed(ae);
+        if (_onlyListener != null) _onlyListener.actionPerformed(ae);
     }
 
 } /* end class ColorTilePanel */

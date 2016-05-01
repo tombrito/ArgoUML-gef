@@ -39,7 +39,9 @@ import java.util.*;
 
 public class ResourceLoader {
     private static HashMap _resourceCache = new HashMap();
+
     private static List _resourceLocations = new ArrayList();
+
     private static List _resourceExtensions = new ArrayList();
 
     public static ImageIcon lookupIconResource(String resource) {
@@ -60,13 +62,10 @@ public class ResourceLoader {
      * locations. The file extension of the used image file can be any of the
      * known extensions.
      * 
-     * @param resource
-     *                Name of the image to be looked after.
-     * @param desc
-     *                A description for the ImageIcon.
-     * @param loader
-     *                The class loader that should be used for loading the
-     *                resource.
+     * @param resource Name of the image to be looked after.
+     * @param desc A description for the ImageIcon.
+     * @param loader The class loader that should be used for loading the
+     *            resource.
      * @return ImageIcon for the given name, null if no image could be found.
      */
     public static ImageIcon lookupIconResource(String resource, String desc,
@@ -79,11 +78,11 @@ public class ResourceLoader {
         ImageIcon res = null;
         java.net.URL imgURL = null;
         try {
-            for (Iterator extensions = _resourceExtensions.iterator(); extensions
-                    .hasNext();) {
+            for (Iterator extensions = _resourceExtensions
+                    .iterator(); extensions.hasNext();) {
                 String tmpExt = (String) extensions.next();
-                for (Iterator locations = _resourceLocations.iterator(); locations
-                        .hasNext();) {
+                for (Iterator locations = _resourceLocations
+                        .iterator(); locations.hasNext();) {
                     String imageName = (String) locations.next() + "/"
                             + strippedName + "." + tmpExt;
                     // System.out.println("[ResourceLoader] try loading " +
@@ -119,30 +118,25 @@ public class ResourceLoader {
     /**
      * This method adds a new location to the list of known locations.
      * 
-     * @param location
-     *                String representation of the new location.
+     * @param location String representation of the new location.
      */
     public static void addResourceLocation(String location) {
-        if (!containsLocation(location))
-            _resourceLocations.add(location);
+        if (!containsLocation(location)) _resourceLocations.add(location);
     }
 
     /**
      * This method adds a new extension to the list of known extensions.
      * 
-     * @param extension
-     *                String representation of the new extension.
+     * @param extension String representation of the new extension.
      */
     public static void addResourceExtension(String extension) {
-        if (!containsExtension(extension))
-            _resourceExtensions.add(extension);
+        if (!containsExtension(extension)) _resourceExtensions.add(extension);
     }
 
     /**
      * This method removes a location from the list of known locations.
      * 
-     * @param location
-     *                String representation of the location to be removed.
+     * @param location String representation of the location to be removed.
      */
     public static void removeResourceLocation(String location) {
         for (Iterator iter = _resourceLocations.iterator(); iter.hasNext();) {
@@ -157,8 +151,7 @@ public class ResourceLoader {
     /**
      * This method removes a extension from the list of known extensions.
      * 
-     * @param extension
-     *                String representation of the extension to be removed.
+     * @param extension String representation of the extension to be removed.
      */
     public static void removeResourceExtension(String extension) {
         for (Iterator iter = _resourceExtensions.iterator(); iter.hasNext();) {

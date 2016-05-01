@@ -150,8 +150,7 @@ public abstract class Selection implements Serializable, MouseListener,
     }
 
     public boolean contains(int x, int y) {
-        if (content.contains(x, y))
-            return true;
+        if (content.contains(x, y)) return true;
         Handle h = new Handle(-1);
         hitHandle(x, y, 0, 0, h);
         return (h.index != -1);
@@ -159,8 +158,7 @@ public abstract class Selection implements Serializable, MouseListener,
 
     /** Reply true if the given Rectangle is inside or overlapps me */
     public boolean hit(Rectangle r) {
-        if (content.hit(r))
-            return true;
+        if (content.hit(r)) return true;
         Handle h = new Handle(-1);
         hitHandle(r, h);
         return (h.index != -1);
@@ -199,10 +197,9 @@ public abstract class Selection implements Serializable, MouseListener,
      * added space for the handles.
      */
     public Rectangle getBounds() {
-        return new Rectangle(content.getX() - HAND_SIZE / 2, content.getY()
-                - HAND_SIZE / 2, content.getWidth() + HAND_SIZE, content
-                .getHeight()
-                + HAND_SIZE);
+        return new Rectangle(content.getX() - HAND_SIZE / 2,
+                content.getY() - HAND_SIZE / 2, content.getWidth() + HAND_SIZE,
+                content.getHeight() + HAND_SIZE);
     }
 
     /**
@@ -213,9 +210,9 @@ public abstract class Selection implements Serializable, MouseListener,
         if (r == null) {
             return getBounds();
         }
-        r.setBounds(content.getX() - HAND_SIZE / 2, content.getY() - HAND_SIZE
-                / 2, content.getWidth() + HAND_SIZE, content.getHeight()
-                + HAND_SIZE);
+        r.setBounds(content.getX() - HAND_SIZE / 2,
+                content.getY() - HAND_SIZE / 2, content.getWidth() + HAND_SIZE,
+                content.getHeight() + HAND_SIZE);
         return r;
     }
 
@@ -235,7 +232,8 @@ public abstract class Selection implements Serializable, MouseListener,
     }
 
     /** Move one of the handles of a selected Fig. */
-    public abstract void dragHandle(int mx, int my, int an_x, int an_y, Handle h);
+    public abstract void dragHandle(int mx, int my, int an_x, int an_y,
+            Handle h);
 
     /**
      * Reply the bounding box of the selected Figs, does not include space used

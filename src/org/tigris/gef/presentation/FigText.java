@@ -50,16 +50,16 @@ import org.tigris.gef.undo.UndoManager;
 /**
  * This class handles painting and editing text Fig's in a LayerDiagram.
  * <p>
- * Within a text fig's outer dimensions, 
- * there is a colored border with a certain width (0 or more),
- * an internal margin between the text and the border,
- * and the text area itself. 
+ * Within a text fig's outer dimensions, there is a colored border with a
+ * certain width (0 or more), an internal margin between the text and the
+ * border, and the text area itself.
  * <p>
- * The internal margin and the text area are both colored in the text-fill color.
+ * The internal margin and the text area are both colored in the text-fill
+ * color.
  * <p>
  * The fill-color inherited from the Fig class is used to draw the whole figure,
- * i.e. including the border. Hence it is only visible if either the border 
- * or the text area are transparent. 
+ * i.e. including the border. Hence it is only visible if either the border or
+ * the text area are transparent.
  * 
  * @author ics125 spring 1996
  */
@@ -69,15 +69,20 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     private static final long serialVersionUID = 4659312817576456477L;
 
     public static final int IGNORE = 0;
+
     public static final int INSERT = 1;
+
     public static final int END_EDITING = 2;
 
     private int returnAction = IGNORE;
+
     private int tabAction = IGNORE;
 
     /** Constants to specify text justification. */
     public static final int JUSTIFY_LEFT = 0;
+
     public static final int JUSTIFY_RIGHT = 1;
+
     public static final int JUSTIFY_CENTER = 2;
 
     /** Minimum size of a FigText object. */
@@ -87,6 +92,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * The internal representation of a return character.
      */
     private static final char HARD_RETURN = '\n';
+
     /**
      * The internal representation of a return due to word wrap.
      */
@@ -94,7 +100,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
     /** Font info. */
     private Font _font = new Font("TimesRoman", Font.PLAIN, 10);
+
     private transient FontMetrics _fm;
+
     private int _lineHeight;
 
     /** Color of the actual text characters. */
@@ -131,8 +139,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
     /** Internal margins between the text and the edge of the rectangle. */
     private int _topMargin = 0;
+
     private int _botMargin = 0;
+
     private int _leftMargin = 0;
+
     private int _rightMargin = 0;
 
     /** True if the FigText can only grow in size, never shrink. */
@@ -140,7 +151,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
     private boolean _editMode = false;
 
-    /** Text justification can be JUSTIFY_LEFT, JUSTIFY_RIGHT, or JUSTIFY_CENTER. */
+    /**
+     * Text justification can be JUSTIFY_LEFT, JUSTIFY_RIGHT, or JUSTIFY_CENTER.
+     */
     private int _justification = JUSTIFY_LEFT;
 
     /**
@@ -226,7 +239,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         lineSeparator = System.getProperty("line.separator");
     }
 
-    /** Construct a new FigText with the given position, size, and attributes. */
+    /**
+     * Construct a new FigText with the given position, size, and attributes.
+     */
     public FigText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h);
         _x = x;
@@ -251,8 +266,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             return "Left";
         else if (_justification == JUSTIFY_CENTER)
             return "Center";
-        else if (_justification == JUSTIFY_RIGHT)
-            return "Right";
+        else if (_justification == JUSTIFY_RIGHT) return "Right";
         LOG.error("internal error, unknown text alignment");
         return "Unknown";
     }
@@ -266,8 +280,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             _justification = JUSTIFY_LEFT;
         else if (justifyString.equals("Center"))
             _justification = JUSTIFY_CENTER;
-        else if (justifyString.equals("Right"))
-            _justification = JUSTIFY_RIGHT;
+        else if (justifyString.equals("Right")) _justification = JUSTIFY_RIGHT;
         _fm = null;
     }
 
@@ -336,7 +349,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     public void setJustification(int align) {
         if (_justification == align) {
             return;
-        }        
+        }
         firePropChange("justification", getJustification(), align);
         _justification = align;
     }
@@ -481,12 +494,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /**
      * Configure the characters interpret as line separators
      * 
-     * @param lineSeparator
-     *                the characters to treat as a return press. This can be
-     *                System.getProperty("lineSeparator") or some specific
-     *                string if the application requires this value to work
-     *                across different platforms. The only valid values are
-     *                "\r\n", "\r" or "\n".
+     * @param lineSeparator the characters to treat as a return press. This can
+     *            be System.getProperty("lineSeparator") or some specific string
+     *            if the application requires this value to work across
+     *            different platforms. The only valid values are "\r\n", "\r" or
+     *            "\n".
      */
     public void setLineSeparator(String lineSeparator) {
         this.lineSeparator = lineSeparator;
@@ -507,8 +519,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /**
      * Specifies what action the control should take on return press.
      * 
-     * @param action
-     *                values are IGNORE, INSERT or END_EDITING
+     * @param action values are IGNORE, INSERT or END_EDITING
      */
     public void setReturnAction(int action) {
         returnAction = action;
@@ -517,8 +528,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /**
      * Specifies what action the control should take on tab press.
      * 
-     * @param action
-     *                values are IGNORE, INSERT or END_EDITING
+     * @param action values are IGNORE, INSERT or END_EDITING
      */
     public void setTabAction(int action) {
         tabAction = action;
@@ -545,8 +555,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /**
      * Allow tab presses to be inserted into text during edit
      * 
-     * @param b
-     *                true if return presses are insertable
+     * @param b true if return presses are insertable
      * @deprecated use setTabAction(...)
      */
     public void setAllowsTab(boolean b) {
@@ -560,8 +569,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /**
      * Turn on/off word wrapping of text.
      * 
-     * @param b
-     *                true if word wrap is to take place
+     * @param b true if word wrap is to take place
      */
     public void setWordWrap(boolean b) {
         wordWrap = b;
@@ -609,10 +617,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * Sets the given string to be the current string of this fig. Update the
      * current font and font metrics first.
      * 
-     * @param str
-     *                String to be set at this object.
-     * @param graphics
-     *                Graphics context for the operation.
+     * @param str String to be set at this object.
+     * @param graphics Graphics context for the operation.
      */
     public void setText(String str, Graphics graphics) {
         if (graphics != null) {
@@ -641,10 +647,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * Sets the given string to be the current string of this fig. Update the
      * current font and font metrics first.
      * 
-     * @param str
-     *                String to be set at this object.
-     * @param graphics
-     *                Graphics context for the operation.
+     * @param str String to be set at this object.
+     * @param graphics Graphics context for the operation.
      */
     void setTextFriend(String str, Graphics graphics) {
         if (graphics != null) {
@@ -735,11 +739,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /**
-     * Paint the FigText. 
-     * This comprises <ul>
-     * <li>the color of the whole box of the Fig if it is filled, 
-     * <li>the border colour (which has a linewidth of 1 or more), 
-     * <li>the text background colour if textfill is true, 
+     * Paint the FigText. This comprises
+     * <ul>
+     * <li>the color of the whole box of the Fig if it is filled,
+     * <li>the border colour (which has a linewidth of 1 or more),
+     * <li>the text background colour if textfill is true,
      * <li>and the text itself.
      * </ul>
      */
@@ -751,15 +755,19 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         StringTokenizer lines;
         int lineWidth = getLineWidth();
 
-        /* Paint the fill colour of the box. This only becomes visible
-         * when either the border or the text area are transparent: */
+        /*
+         * Paint the fill colour of the box. This only becomes visible when
+         * either the border or the text area are transparent:
+         */
         if (isFilled()) {
             g.setColor(getFillColor());
             g.fillRect(_x, _y, _w, _h);
         }
-        
-        /* Paint the line border at the inner edge of the box 
-         * with the correct line-width and colour: */
+
+        /*
+         * Paint the line border at the inner edge of the box with the correct
+         * line-width and colour:
+         */
         if (lineWidth > 0) {
             g.setColor(getLineColor());
             // test linewidth
@@ -771,16 +779,20 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 // just like Graphics.drawRect():
                 g.fillRect(_x, _y, _w - lineWidth, lineWidth);
                 g.fillRect(_x + _w - lineWidth, _y, lineWidth, _h - lineWidth);
-                g.fillRect(_x + lineWidth, _y + _h - lineWidth, _w - lineWidth, lineWidth);
+                g.fillRect(_x + lineWidth, _y + _h - lineWidth, _w - lineWidth,
+                        lineWidth);
                 g.fillRect(_x, _y + lineWidth, lineWidth, _h - lineWidth);
             }
         }
 
-        /* Paint the fill colour of the text area, 
-         * which is everything inside the border: */
+        /*
+         * Paint the fill colour of the text area, which is everything inside
+         * the border:
+         */
         if (_textFilled) {
             g.setColor(textFillColor);
-            g.fillRect(_x + lineWidth, _y + lineWidth, _w - 2 * lineWidth, _h - 2 * lineWidth);
+            g.fillRect(_x + lineWidth, _y + lineWidth, _w - 2 * lineWidth,
+                    _h - 2 * lineWidth);
         }
 
         /* Paint the text: */
@@ -793,7 +805,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
         g.setColor(_textColor);
         int chunkX = _x + _leftMargin + lineWidth;
-        // The first line of text has its "baseline" y coordinate at the "ascent" position
+        // The first line of text has its "baseline" y coordinate at the
+        // "ascent" position
         int chunkY = _y + _topMargin + lineWidth + _fm.getAscent();
 
         lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN,
@@ -806,10 +819,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             case JUSTIFY_LEFT:
                 break;
             case JUSTIFY_CENTER:
-                chunkX = _x  + _leftMargin + (_w - _leftMargin - _rightMargin - chunkW) / 2;
+                chunkX = _x + _leftMargin
+                        + (_w - _leftMargin - _rightMargin - chunkW) / 2;
                 break;
             case JUSTIFY_RIGHT:
-                chunkX = _x  + _w - lineWidth - _rightMargin - chunkW;
+                chunkX = _x + _w - lineWidth - _rightMargin - chunkW;
                 break;
             }
             if (isHardReturn(curLine) || isSoftReturn(curLine)) {
@@ -825,23 +839,23 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
     public void appendSvg(StringBuffer sb) {
         sb.append("<text id ='").append(getId()).append("' x='").append(getX())
-                .append("' y='").append(getY()).append(
-                        "' transform='translate(").append(getFontSize())
+                .append("' y='").append(getY())
+                .append("' transform='translate(").append(getFontSize())
                 .append(',').append(getFontSize()).append(")'");
         appendSvgStyle(sb);
         sb.append(">").append(getText()).append("</text>");
     }
 
     protected void appendSvgStyle(StringBuffer sb) {
-        sb.append(" style='fill:rgb(").append(getFillColor().getRed()).append(
-                ",").append(getFillColor().getGreen()).append(",").append(
-                getFillColor().getBlue()).append(");").append("stroke-width:")
-                .append(getLineWidth()).append(";").append("stroke:rgb(")
-                .append(getLineColor().getRed()).append(",").append(
-                        getLineColor().getGreen()).append(",").append(
-                        getLineColor().getBlue()).append(");'").append("font:")
-                .append(getFontFamily()).append("; font-size:").append(
-                        getFontSize()).append("'");
+        sb.append(" style='fill:rgb(").append(getFillColor().getRed())
+                .append(",").append(getFillColor().getGreen()).append(",")
+                .append(getFillColor().getBlue()).append(");")
+                .append("stroke-width:").append(getLineWidth()).append(";")
+                .append("stroke:rgb(").append(getLineColor().getRed())
+                .append(",").append(getLineColor().getGreen()).append(",")
+                .append(getLineColor().getBlue()).append(");'").append("font:")
+                .append(getFontFamily()).append("; font-size:")
+                .append(getFontSize()).append("'");
     }
 
     /**
@@ -849,14 +863,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * indicates the baseline of the text. This method enables subclasses of
      * FigText to either change the displayed text or the starting position.
      * 
-     * @param graphics
-     *                Graphic context for drawing the string.
-     * @param curLine
-     *                The current text to be drawn.
-     * @param xPos
-     *                X-Coordinate of the starting point.
-     * @param yPos
-     *                Y-Coordinate of the starting point.
+     * @param graphics Graphic context for drawing the string.
+     * @param curLine The current text to be drawn.
+     * @param xPos X-Coordinate of the starting point.
+     * @param yPos Y-Coordinate of the starting point.
      */
     protected void drawString(Graphics graphics, String curLine, int xPos,
             int yPos) {
@@ -877,10 +887,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * @return the distance between the baseline of adjacent lines of text
      */
     public int getMinimumHeight() {
-        if (_fm != null)
-            return _fm.getHeight();
-        if (_font != null)
-            return _font.getSize();
+        if (_fm != null) return _fm.getHeight();
+        if (_font != null) return _font.getSize();
         return 0;
     }
 
@@ -906,13 +914,13 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         /* Calculate the width based on the widest line of a multi-line text: */
         int overallW = 0;
         int numLines = 1;
-        StringTokenizer lines = new StringTokenizer(_curText, "" + HARD_RETURN
-                + SOFT_RETURN, true);
-        
+        StringTokenizer lines = new StringTokenizer(_curText,
+                "" + HARD_RETURN + SOFT_RETURN, true);
+
         if (_fm == null) {
             _fm = new JLabel().getFontMetrics(_font);
         }
-        
+
         while (lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
             int chunkW = _fm.stringWidth(curLine);
@@ -978,8 +986,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     // event handlers: KeyListener implemtation
 
     public void mouseClicked(MouseEvent me) {
-        if (me.isConsumed())
-            return;
+        if (me.isConsumed()) return;
         if (me.getClickCount() >= 2 && editable) {
             startTextEditor(me);
             me.consume();
@@ -1039,8 +1046,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         /* Calculate the width based on the widest line of a multi-line text: */
         int overallW = 0;
         int numLines = 1;
-        StringTokenizer lines = new StringTokenizer(_curText, "" + HARD_RETURN
-                + SOFT_RETURN, true);
+        StringTokenizer lines = new StringTokenizer(_curText,
+                "" + HARD_RETURN + SOFT_RETURN, true);
         while (lines.hasMoreTokens()) {
             String curLine = lines.nextToken();
             int chunkW = _fm.stringWidth(curLine);
@@ -1050,7 +1057,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
             } else {
                 overallW = Math.max(chunkW, overallW);
             }
-        }    
+        }
 
         /* Calculate the height based on the number of lines: */
         int overallH = (_lineHeight + _lineSpacing) * numLines;
@@ -1069,13 +1076,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 break;
 
             case JUSTIFY_CENTER:
-                if (_w < overallW)
-                    _x -= (overallW - _w) / 2;
+                if (_w < overallW) _x -= (overallW - _w) / 2;
                 break;
 
             case JUSTIFY_RIGHT:
-                if (_w < overallW)
-                    _x -= (overallW - _w);
+                if (_w < overallW) _x -= (overallW - _w);
                 break;
             }
         }
@@ -1091,9 +1096,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * inserting '\r' characters where ever word wrap occurs. The client code
      * should never see this internal representation.
      * 
-     * @param the
-     *                text containing platform specific line ends an no word
-     *                wrap.
+     * @param the text containing platform specific line ends an no word wrap.
      * @return the text containing GEF specific line ends and word wrap.
      */
     private String encode(String text, String lineTerminator) {
@@ -1118,8 +1121,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /**
      * Position '\r' as soft return points to indicate word wrap positions.
      * 
-     * @param text
-     *                the string to wrap
+     * @param text the string to wrap
      * @return the text with soft returns wrapping in the correct position.
      */
     private String wordWrap(String text) {
@@ -1137,8 +1139,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
         int x = 0;
 
-        StringTokenizer st = new StringTokenizer(text, " " + HARD_RETURN
-                + SOFT_RETURN, true);
+        StringTokenizer st = new StringTokenizer(text,
+                " " + HARD_RETURN + SOFT_RETURN, true);
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
             tokenWidth = fm.stringWidth(token);
@@ -1213,17 +1215,15 @@ public class FigText extends Fig implements KeyListener, MouseListener {
      * inserting '\r' characters where ever word wrap occurs. The client code
      * should never see this internal representation.
      * 
-     * @param the
-     *                text containing platform specific line ends an no word
-     *                wrap.
+     * @param the text containing platform specific line ends an no word wrap.
      * @return the text containing GEF specific line ends and word wrap.
      */
     private String decode(String text, String lineSeparator) {
 
         StringBuffer buffer = new StringBuffer(text.length());
 
-        StringTokenizer st = new StringTokenizer(text, "" + HARD_RETURN
-                + SOFT_RETURN, true);
+        StringTokenizer st = new StringTokenizer(text,
+                "" + HARD_RETURN + SOFT_RETURN, true);
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
 

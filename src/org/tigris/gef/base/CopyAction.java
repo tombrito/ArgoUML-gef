@@ -60,8 +60,7 @@ public class CopyAction extends AbstractAction {
     /**
      * Creates a new CopyAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public CopyAction(String name) {
         this(name, false);
@@ -70,10 +69,8 @@ public class CopyAction extends AbstractAction {
     /**
      * Creates a new CopyAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public CopyAction(String name, Icon icon) {
         this(name, icon, false);
@@ -82,10 +79,8 @@ public class CopyAction extends AbstractAction {
     /**
      * Creates a new CopyAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public CopyAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -94,12 +89,9 @@ public class CopyAction extends AbstractAction {
     /**
      * Creates a new CopyAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public CopyAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
@@ -113,8 +105,7 @@ public class CopyAction extends AbstractAction {
         while (copies.hasMoreElements()) {
             Selection s = (Selection) copies.nextElement();
             Fig f = s.getContent();
-            if (f instanceof FigEdge)
-                continue;
+            if (f instanceof FigEdge) continue;
             // needs-more-work: add support for cut-and-paste of edges
             f = (Fig) f.clone();
             figs.addElement(f);
@@ -141,6 +132,7 @@ public class CopyAction extends AbstractAction {
      * Copy the current scribble and store it in a SimpleSelection object
      * (defined below). Then put that object on the clipboard for pasting.
      */
+
     // Going to have to wait for jdk 1.2 for this code to work.
     // public void copy(Fig fig) {
     // Get system clipboard
@@ -163,6 +155,7 @@ public class CopyAction extends AbstractAction {
     // Awaiting jdk 1.2
     static class SimpleSelection implements Transferable, ClipboardOwner {
         protected Fig selection; // The data to be transferred.
+
         protected DataFlavor flavor; // The one data flavor supported.
 
         public SimpleSelection(Fig selection, DataFlavor flavor) {
@@ -182,7 +175,7 @@ public class CopyAction extends AbstractAction {
 
         /** If the flavor is right, transfer the data (i.e. return it) */
         public Object getTransferData(DataFlavor f)
-                throws UnsupportedFlavorException {
+            throws UnsupportedFlavorException {
             if (f.equals(flavor))
                 return selection;
             else

@@ -36,8 +36,8 @@ import javax.swing.Icon;
  * 
  * @author mvw@tigris.org
  */
-public class RedoAction extends AbstractAction implements
-        PropertyChangeListener {
+public class RedoAction extends AbstractAction
+        implements PropertyChangeListener {
 
     /**
      * Construct the redo action with a display name

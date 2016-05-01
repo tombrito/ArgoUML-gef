@@ -51,8 +51,7 @@ public class UseReshapeAction extends UndoableAction {
     /**
      * Creates a new UseReshapeAction
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public UseReshapeAction(String name) {
         this(name, false);
@@ -61,10 +60,8 @@ public class UseReshapeAction extends UndoableAction {
     /**
      * Creates a new UseReshapeAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public UseReshapeAction(String name, Icon icon) {
         this(name, icon, false);
@@ -73,10 +70,8 @@ public class UseReshapeAction extends UndoableAction {
     /**
      * Creates a new UseReshapeAction
      * 
-     * @param name
-     *                The name of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param localize Whether to localize the name or not
      */
     public UseReshapeAction(String name, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -85,12 +80,9 @@ public class UseReshapeAction extends UndoableAction {
     /**
      * Creates a new UseReshapeAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param localize Whether to localize the name or not
      */
     public UseReshapeAction(String name, Icon icon, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);

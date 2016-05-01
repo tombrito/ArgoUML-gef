@@ -15,6 +15,7 @@ import org.tigris.gef.util.Localizer;
 
 public class CmdZoom extends Cmd {
     private static final long serialVersionUID = 8472508088519383941L;
+
     protected double _magnitude;
 
     // //////////////////////////////////////////////////////////////
@@ -29,10 +30,9 @@ public class CmdZoom extends Cmd {
      * Each time <code>doIt()</code> is invoked, adjust scaling by a factor of
      * <code>magnitude</code>.
      * 
-     * @param magnitude
-     *                the factor by which to adjust the Editor's scaling. Must
-     *                be greater than or equal to zero. If zero, resets the
-     *                Editor's scale factor to 1.
+     * @param magnitude the factor by which to adjust the Editor's scaling. Must
+     *            be greater than or equal to zero. If zero, resets the Editor's
+     *            scale factor to 1.
      */
     public CmdZoom(double magnitude) {
         super(wordFor(magnitude));
@@ -52,14 +52,13 @@ public class CmdZoom extends Cmd {
             return Localizer.localize("GefBase", "ZoomOut");
         else
             return Localizer.localize("GefBase", "DoNothing"); // Not a very
-                                                                // useful option
+                                                               // useful option
     }
 
     /** Adjust the scale factor of the current editor. */
     public void doIt() {
         Editor ed = (Editor) Globals.curEditor();
-        if (ed == null)
-            return;
+        if (ed == null) return;
 
         if (_magnitude > 0.0) {
             ed.setScale(ed.getScale() * _magnitude);
@@ -76,8 +75,7 @@ public class CmdZoom extends Cmd {
      */
     public void undoIt() {
         Editor ed = (Editor) Globals.curEditor();
-        if (ed == null)
-            return;
+        if (ed == null) return;
 
         if (_magnitude > 0.0) {
             ed.setScale(ed.getScale() / _magnitude);

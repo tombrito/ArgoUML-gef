@@ -40,11 +40,15 @@ public class OCLExpander {
     // //////////////////////////////////////////////////////////////
     // constants
     public static String OCL_START = "<ocl";
+
     public static String OCL_END = "</ocl>";
+
     // //////////////////////////////////////////////////////////////
     // instance variables
     public Map _templates = new Hashtable();
+
     public Hashtable _bindings = new Hashtable();
+
     public boolean _useXMLEscapes = true;
 
     protected OCLEvaluator evaluator;
@@ -64,12 +68,14 @@ public class OCLExpander {
 
     // //////////////////////////////////////////////////////////////
     // template expansion
-    public void expand(OutputStream w, Object target) throws ExpansionException {
+    public void expand(OutputStream w, Object target)
+        throws ExpansionException {
         expandContent(new PrintWriter(w), target, "", "");
     }
 
     private void expand(OutputStream w, Object target, String prefix,
-            String suffix) throws ExpansionException {
+            String suffix)
+        throws ExpansionException {
         expandContent(new PrintWriter(w), target, prefix, suffix);
     }
 
@@ -78,12 +84,12 @@ public class OCLExpander {
     }
 
     public void expand(Writer w, Object target, String prefix)
-            throws ExpansionException {
+        throws ExpansionException {
         expand(w, target, prefix, "");
     }
 
     private void expand(Writer w, Object target, String prefix, String suffix)
-            throws ExpansionException {
+        throws ExpansionException {
         PrintWriter pw;
         if (w instanceof PrintWriter) {
             pw = (PrintWriter) w;
@@ -94,7 +100,8 @@ public class OCLExpander {
     }
 
     private void expandContent(PrintWriter printWriter, Object target,
-            String prefix, String suffix) throws ExpansionException {
+            String prefix, String suffix)
+        throws ExpansionException {
 
         if (target == null) {
             return;
@@ -161,9 +168,11 @@ public class OCLExpander {
     } // end of expand
 
     private void expandLine(PrintWriter pw, String line, Object target,
-            String prefix, String suffix, int lineNo) throws ExpansionException {
+            String prefix, String suffix, int lineNo)
+        throws ExpansionException {
         // if no embedded expression then output line else
-        // then loop over all values of expr and call recursively for each result
+        // then loop over all values of expr and call recursively for each
+        // result
         int startTagPos = line.indexOf(OCL_START, 0);
         int endTagPos = line.indexOf(OCL_END, 0);
         if (startTagPos == -1 || endTagPos == -1) { // no embedded expr's
@@ -175,8 +184,8 @@ public class OCLExpander {
             while (startTagPos >= 0) {
                 // There are multiple embedded expressions on a line.
                 int expressionPos = line.indexOf('>', startTagPos) + 1;
-                boolean ignoreNull = isIgnoreNull(line.substring(
-                        startTagPos + 4, expressionPos));
+                boolean ignoreNull = isIgnoreNull(
+                        line.substring(startTagPos + 4, expressionPos));
                 String before = line.substring(0, startTagPos);
                 String expr = line.substring(expressionPos, endTagPos);
                 String after = line.substring(endTagPos + OCL_END.length());
@@ -216,8 +225,8 @@ public class OCLExpander {
         } else {
             // assume one embedded expression on line
             int expressionPos = line.indexOf('>', startTagPos) + 1;
-            boolean ignoreNull = isIgnoreNull(line.substring(startTagPos + 4,
-                    expressionPos));
+            boolean ignoreNull = isIgnoreNull(
+                    line.substring(startTagPos + 4, expressionPos));
             prefix = prefix + line.substring(0, startTagPos);
 
             String expr = line.substring(expressionPos, endTagPos);
@@ -226,8 +235,8 @@ public class OCLExpander {
             _bindings.put("self", target);
             if (target == null) {
                 throw new ExpansionException(
-                        "Target is null when evaluating the expression '"
-                                + expr + "' at line " + lineNo);
+                        "Target is null when evaluating the expression '" + expr
+                                + "' at line " + lineNo);
             }
             List results = evaluate(_bindings, expr);
             Iterator iter = results.iterator();
@@ -317,8 +326,8 @@ public class OCLExpander {
      * <p>
      * Note - {} indicates an optional repeating expression part
      * <p>
-     * The first <i>expressionpart</i> should be the keyword "self" which
-     * refers to the first bound object in the bindings map. Any further
+     * The first <i>expressionpart</i> should be the keyword "self" which refers
+     * to the first bound object in the bindings map. Any further
      * <i>expressionparts</i> are either attributes, methods or properties of
      * the preceding part.
      * 
@@ -329,8 +338,8 @@ public class OCLExpander {
      * variable from Point</li>
      * <li>Given a List <code>self.size</code> would return the result of the
      * size() method on that List</li>
-     * <li>Given a Color <code>self.red</code> would return the red property
-     * of that Color (by calling the getRed() method)</li>
+     * <li>Given a Color <code>self.red</code> would return the red property of
+     * that Color (by calling the getRed() method)</li>
      * </ul>
      * 
      * <p>
@@ -357,12 +366,13 @@ public class OCLExpander {
      * first form to be passed to some static method.
      * 
      * For example, given a Color, the expression
-     * <code>org.tigris.gef.util.PgmlUtility.getPgmlColor(self)</code> will
-     * pass the Color as an argument to the getPgmlColor method of PgmlUtility
-     * in order to format the Color according to PGML style.
+     * <code>org.tigris.gef.util.PgmlUtility.getPgmlColor(self)</code> will pass
+     * the Color as an argument to the getPgmlColor method of PgmlUtility in
+     * order to format the Color according to PGML style.
      * 
      * @param bindings A map of expression part to object bindings. This is
-     * expected to be prepopulated with "self" bound to the main target object.
+     *            expected to be prepopulated with "self" bound to the main
+     *            target object.
      * @param expr The expression to evaluate.
      * @return A list of resulting items that satisfy the expression.
      * 
@@ -438,11 +448,11 @@ public class OCLExpander {
      * @param parameterClass
      * @param methodName
      * @return the Method
-     * @throws ExpansionException
-     *                 if no such method exists
+     * @throws ExpansionException if no such method exists
      */
     private Method getMethod(Class targetClass, Class parameterClass,
-            String methodName) throws ExpansionException {
+            String methodName)
+        throws ExpansionException {
 
         Class parameter = parameterClass;
 

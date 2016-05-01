@@ -69,6 +69,7 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
 
     // All instance variables are stored in the _args Hashtable
     private Hashtable args;
+
     protected String resource;
 
     // //////////////////////////////////////////////////////////////
@@ -139,15 +140,16 @@ public class CreateNodeAction extends UndoableAction implements GraphFactory {
         String instructions = null;
         Object actionName = getValue(javax.swing.Action.NAME);
         if (actionName != null) {
-            instructions = Localizer.localize("GefBase", "ClickToPlace") + " " + actionName.toString();
+            instructions = Localizer.localize("GefBase", "ClickToPlace") + " "
+                    + actionName.toString();
         }
         Mode placeMode = createMode(instructions);
 
         Object shouldBeSticky = getArg("shouldBeSticky");
         Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Mode set to ModePlace with sticky mode "
-                    + shouldBeSticky);
+            LOG.debug(
+                    "Mode set to ModePlace with sticky mode " + shouldBeSticky);
         }
     }
 

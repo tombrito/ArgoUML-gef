@@ -47,11 +47,9 @@ public class FigEdgeHandler extends BaseHandler implements Container {
     private FigEdge edge;
 
     /**
-     * @param parser
-     *                The overall parser object.
-     * @param theEdge
-     *                The FigEdge object created to correspond to the current
-     *                XML element.
+     * @param parser The overall parser object.
+     * @param theEdge The FigEdge object created to correspond to the current
+     *            XML element.
      */
     public FigEdgeHandler(PGMLStackParser parser, FigEdge theEdge) {
         super(parser);
@@ -73,7 +71,7 @@ public class FigEdgeHandler extends BaseHandler implements Container {
      *      java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String qname)
-            throws SAXException {
+        throws SAXException {
         Object owner = edge.getOwner();
         List edges = getPGMLStackParser().getDiagram().getEdges();
         if (!edges.contains(owner)) {
@@ -143,9 +141,9 @@ public class FigEdgeHandler extends BaseHandler implements Container {
             }
 
             if (spf == null || dpf == null || sfn == null || dfn == null) {
-                throw new SAXException("Can't find nodes for FigEdge: "
-                        + (String) o + ":" + edge.getId() + ":"
-                        + edge.toString());
+                throw new SAXException(
+                        "Can't find nodes for FigEdge: " + (String) o + ":"
+                                + edge.getId() + ":" + edge.toString());
             } else {
                 edge.setSourcePortFig(spf);
                 edge.setDestPortFig(dpf);

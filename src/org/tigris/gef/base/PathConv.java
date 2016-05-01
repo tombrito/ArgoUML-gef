@@ -42,8 +42,8 @@ import org.tigris.gef.presentation.*;
  * FigEdge and have the label stay in the right place, even if the FigEdge
  * moves.
  */
-public abstract class PathConv implements PathItemPlacementStrategy,
-        Serializable {
+public abstract class PathConv
+        implements PathItemPlacementStrategy, Serializable {
 
     /**
      * @deprecated use getPathFig()
@@ -70,19 +70,21 @@ public abstract class PathConv implements PathItemPlacementStrategy,
         applyOffsetAmount(p1, p2, offset, res);
         return res;
     }
-  
-  /**
-   * Used when manually adjusting a previously created PathConv object (e.g.
-   * while dragging the Fig which this PathConv object anchors).
-   * The actual decision about which parameters to set (e.g. angles/offset) 
-   * is up to the implementation of this method.
-   * @param newPoint The new location of the anchored Fig.
-   */
-  public void setPoint(Point newPoint) {
-      
-  }
-  
-    protected void applyOffsetAmount(Point p1, Point p2, int offset, Point res) {
+
+    /**
+     * Used when manually adjusting a previously created PathConv object (e.g.
+     * while dragging the Fig which this PathConv object anchors). The actual
+     * decision about which parameters to set (e.g. angles/offset) is up to the
+     * implementation of this method.
+     * 
+     * @param newPoint The new location of the anchored Fig.
+     */
+    public void setPoint(Point newPoint) {
+
+    }
+
+    protected void applyOffsetAmount(Point p1, Point p2, int offset,
+            Point res) {
         // slope of the line we're finding the normal to
         // is slope, and the normal is the negative reciprocal
         // slope is (p1.y - p2.y) / (p1.x - p2.x)
@@ -90,8 +92,7 @@ public abstract class PathConv implements PathItemPlacementStrategy,
         int recipnumerator = (p1.x - p2.x) * -1;
         int recipdenominator = (p1.y - p2.y);
 
-        if (recipdenominator == 0 && recipnumerator == 0)
-            return;
+        if (recipdenominator == 0 && recipnumerator == 0) return;
         // find the point offset on the line that gives a
         // correct offset
 

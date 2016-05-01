@@ -66,6 +66,7 @@ public class Globals {
     // applet related methods
 
     protected static Applet _applet;
+
     protected static MediaTracker _tracker;
 
     // protected static TabPropFrame _tabPropFrame;
@@ -199,8 +200,7 @@ public class Globals {
         if (getAppletContext() != null) {
             img = getAppletContext().getImage(url);
         }
-        if (_tracker != null && img != null)
-            _tracker.addImage(img, 1);
+        if (_tracker != null && img != null) _tracker.addImage(img, 1);
         return img;
     }
 
@@ -210,8 +210,7 @@ public class Globals {
             Image img = null;
             if (getAppletContext() != null)
                 img = getAppletContext().getImage(new URL(urlStr));
-            if (_tracker != null && img != null)
-                _tracker.addImage(img, 1);
+            if (_tracker != null && img != null) _tracker.addImage(img, 1);
             return img;
         } catch (java.net.MalformedURLException e) {
             return null;
@@ -220,8 +219,7 @@ public class Globals {
 
     /** Wait for all images to download. */
     public static void waitForImages() {
-        if (_tracker == null)
-            return;
+        if (_tracker == null) return;
         try {
             _tracker.waitForAll();
         } catch (InterruptedException e) {
@@ -234,7 +232,7 @@ public class Globals {
      */
     public static void quit() {
         showStatus("Quiting"); // Needs-More-Work: put up "are you sure?"
-                                // dialog
+                               // dialog
         if (_applet.getAppletContext() != null) {
             _applet.destroy();
         }
@@ -279,6 +277,7 @@ public class Globals {
     // if (_tabPropFrame != null) _tabPropFrame.select(f);
     // }
     /** Static initialisation: set up the prop sheet. */
+
     // static {
     // if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
     // _tabPropFrame.show();
@@ -289,8 +288,7 @@ public class Globals {
      */
     public static Frame someFrame() {
         Editor ce = curEditor();
-        if (ce == null)
-            return null;
+        if (ce == null) return null;
         Component c = ce.getJComponent();
         while (c != null && !(c instanceof Frame))
             c = c.getParent();
@@ -319,6 +317,7 @@ public class Globals {
     }
 
     private static ModeFactory defaultModeFactory = new ModeSelectFactory();
+
     private static List<ModeFactory> defaultModeFactories = new ArrayList<ModeFactory>();
     static {
         defaultModeFactories.add(new ModeSelectFactory());
@@ -342,7 +341,8 @@ public class Globals {
      * 
      * @param modeFactory
      */
-    public static void setDefaultModeFactories(List<ModeFactory> modeFactories) {
+    public static void setDefaultModeFactories(
+            List<ModeFactory> modeFactories) {
         defaultModeFactories = modeFactories;
     }
 
@@ -374,8 +374,7 @@ public class Globals {
 
     /** Reply the next global mode. */
     public static Mode mode() {
-        if (_mode == null)
-            _mode = defaultMode();
+        if (_mode == null) _mode = defaultMode();
         return _mode;
     }
 
@@ -388,8 +387,7 @@ public class Globals {
      * @see Mode#done
      */
     public static Mode nextMode() {
-        if (!_sticky)
-            _mode = defaultMode();
+        if (!_sticky) _mode = defaultMode();
         return _mode;
     }
 
@@ -425,6 +423,7 @@ public class Globals {
      */
 
     protected static Hashtable _pcListeners = new Hashtable();
+
     protected static PropertyChangeListener universalListener = null;
 
     /** The most listeners a Fig can have, 4. */
@@ -451,8 +450,7 @@ public class Globals {
                 listeners[i] = l;
                 return;
             }
-        if (LOG.isDebugEnabled())
-            LOG.debug("ran out of listeners!");
+        if (LOG.isDebugEnabled()) LOG.debug("ran out of listeners!");
     }
 
     public static void addUniversalPropertyChangeListener(
@@ -469,8 +467,7 @@ public class Globals {
         PropertyChangeListener listeners[] = (PropertyChangeListener[]) _pcListeners
                 .get(s);
         boolean found = false;
-        if (listeners == null)
-            return;
+        if (listeners == null) return;
         for (int i = 0; i < MAX_LISTENERS; ++i) {
             if (listeners[i] == listener) {
                 listeners[i] = null;
@@ -481,15 +478,14 @@ public class Globals {
             LOG.debug("listener not found!");
         }
         for (int i = 0; i < MAX_LISTENERS; ++i)
-            if (listeners[i] != null)
-                return;
+            if (listeners[i] != null) return;
         // s has no listeners, keep Hashtable size reasonable
         _pcListeners.remove(s);
     }
 
     /** Send a property change event to listeners of the src Fig. */
-    public static void firePropChange(Object src, String propName,
-            boolean oldV, boolean newV) {
+    public static void firePropChange(Object src, String propName, boolean oldV,
+            boolean newV) {
         firePropChange(src, propName, new Boolean(oldV), new Boolean(newV));
     }
 
@@ -502,23 +498,19 @@ public class Globals {
     /** Send a property change event to listeners of the src Fig. */
     public static void firePropChange(Object src, String propName,
             Object oldValue, Object newValue) {
-        if (oldValue != null && oldValue.equals(newValue))
-            return;
+        if (oldValue != null && oldValue.equals(newValue)) return;
         PropertyChangeListener listeners[] = (PropertyChangeListener[]) _pcListeners
                 .get(src);
-        if (listeners == null && universalListener == null)
-            return;
+        if (listeners == null && universalListener == null) return;
         PropertyChangeEvent evt = new PropertyChangeEvent(src, propName,
                 oldValue, newValue);
         if (listeners != null) {
             // needs-more-work: should be thread safe, clone array?
             for (int i = 0; i < MAX_LISTENERS; ++i) {
-                if (listeners[i] != null)
-                    listeners[i].propertyChange(evt);
+                if (listeners[i] != null) listeners[i].propertyChange(evt);
             }
         }
-        if (universalListener != null)
-            universalListener.propertyChange(evt);
+        if (universalListener != null) universalListener.propertyChange(evt);
     }
 
 } /* end class Globals */

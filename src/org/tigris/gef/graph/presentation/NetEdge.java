@@ -42,8 +42,8 @@ import org.tigris.gef.graph.*;
  * user your own application-specific objects as edges.
  */
 
-public abstract class NetEdge extends NetPrimitive implements GraphEdgeHooks,
-        java.io.Serializable {
+public abstract class NetEdge extends NetPrimitive
+        implements GraphEdgeHooks, java.io.Serializable {
 
     private static final Log LOG = LogFactory.getLog(NetEdge.class);
 
@@ -52,6 +52,7 @@ public abstract class NetEdge extends NetPrimitive implements GraphEdgeHooks,
 
     /** The start and end ports of this edge. */
     protected NetPort _sourcePort;
+
     protected NetPort _destPort;
 
     /**
@@ -122,10 +123,8 @@ public abstract class NetEdge extends NetPrimitive implements GraphEdgeHooks,
     public boolean connect(GraphModel gm, Object srcPort, Object destPort) {
         NetPort srcNetPort = (NetPort) srcPort;
         NetPort destNetPort = (NetPort) destPort;
-        if (!srcNetPort.canConnectTo(gm, destPort))
-            return false;
-        if (!destNetPort.canConnectTo(gm, srcPort))
-            return false;
+        if (!srcNetPort.canConnectTo(gm, destPort)) return false;
+        if (!destNetPort.canConnectTo(gm, srcPort)) return false;
 
         setSourcePort(srcNetPort);
         setDestPort(destNetPort);
@@ -167,8 +166,7 @@ public abstract class NetEdge extends NetPrimitive implements GraphEdgeHooks,
         FigEdge fe;
         if (lay != null) {
             fe = (FigEdge) lay.presentationFor(this);
-            if (fe != null)
-                return fe;
+            if (fe != null) return fe;
         }
         NetNode sourceNode = _sourcePort.getParentNode();
         NetNode destNode = _destPort.getParentNode();

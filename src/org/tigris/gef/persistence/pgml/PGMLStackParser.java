@@ -75,9 +75,13 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     private static final Log LOG = LogFactory.getLog(PGMLStackParser.class);
 
     private Stack handlerStack;
+
     private XMLReader xmlReader;
+
     private Map ownerRegistry;
+
     private Diagram diagram;
+
     private HashMap figRegistry;
 
     private HashMap translationTable = new HashMap();
@@ -93,9 +97,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * diagram, a mapping between these unique strings and the objects in the
      * external model allows the association to be rebuilt.
      * 
-     * @param modelElementsByUuid
-     *                A map that associates the unique string identifier for the
-     *                model objects with the model objects themselves
+     * @param modelElementsByUuid A map that associates the unique string
+     *            identifier for the model objects with the model objects
+     *            themselves
      */
     public PGMLStackParser(Map modelElementsByUuid) {
         ownerRegistry = modelElementsByUuid;
@@ -107,19 +111,16 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * ContentHandler, {@link InitialHandler InitialHandler}. is set to be the
      * initial ContentHandler for the SAX parser.
      * 
-     * @param is
-     *                Stream that will deliver the PGML file
-     * @param closeStream
-     *                If true, the stream will be closed after the PGML file is
-     *                parsed
+     * @param is Stream that will deliver the PGML file
+     * @param closeStream If true, the stream will be closed after the PGML file
+     *            is parsed
      * @see #readDiagram(InputStream, boolean, DefaultHandler)
      * 
      * @return The read diagram.
-     * @throws SAXException
-     *                 if something goes wrong.
+     * @throws SAXException if something goes wrong.
      */
     public Diagram readDiagram(InputStream is, boolean closeStream)
-            throws SAXException {
+        throws SAXException {
 
         if (UndoManager.getInstance().isGenerateMementos()) {
             UndoManager.getInstance().addMementoLock(this);
@@ -136,23 +137,19 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * as the initial ContentHandler for the SAX parser. This allows the caller
      * to completely control the processing of the PGML file.
      * 
-     * @param is
-     *                Stream that will deliver the PGML file
-     * @param closeStream
-     *                If true, the stream will be closed after the PGML file is
-     *                parsed
-     * @param initialHandler
-     *                The top level ContentHandler. In order for this method to
-     *                work as expected, this ContentHandler must call the
-     *                {@link #setDiagram} method on this object with the read
-     *                diagram.
+     * @param is Stream that will deliver the PGML file
+     * @param closeStream If true, the stream will be closed after the PGML file
+     *            is parsed
+     * @param initialHandler The top level ContentHandler. In order for this
+     *            method to work as expected, this ContentHandler must call the
+     *            {@link #setDiagram} method on this object with the read
+     *            diagram.
      * @return The read diagram.
-     * @throws SAXException
-     *                 if something goes wrong.
+     * @throws SAXException if something goes wrong.
      */
     private synchronized Diagram readDiagram(InputStream is,
             boolean closeStream, DefaultHandler initialHandler)
-            throws SAXException {
+        throws SAXException {
         handlerStack = new Stack();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -183,19 +180,16 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * ContentHandler, {@link InitialHandler InitialHandler}. is set to be the
      * initial ContentHandler for the SAX parser.
      * 
-     * @param is
-     *                Stream that will deliver the PGML file
-     * @param closeStream
-     *                If true, the stream will be closed after the PGML file is
-     *                parsed
+     * @param is Stream that will deliver the PGML file
+     * @param closeStream If true, the stream will be closed after the PGML file
+     *            is parsed
      * @see #readDiagram(InputStream, boolean, DefaultHandler)
      * 
      * @return The read diagram.
-     * @throws SAXException
-     *                 if something goes wrong.
+     * @throws SAXException if something goes wrong.
      */
     public Diagram readDiagram(Reader reader, boolean closeStream)
-            throws SAXException {
+        throws SAXException {
         boolean wasGenerateMementos = UndoManager.getInstance()
                 .isGenerateMementos();
 
@@ -214,23 +208,19 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * as the initial ContentHandler for the SAX parser. This allows the caller
      * to completely control the processing of the PGML file.
      * 
-     * @param is
-     *                Stream that will deliver the PGML file
-     * @param closeStream
-     *                If true, the stream will be closed after the PGML file is
-     *                parsed
-     * @param initialHandler
-     *                The top level ContentHandler. In order for this method to
-     *                work as expected, this ContentHandler must call the
-     *                {@link #setDiagram} method on this object with the read
-     *                diagram.
+     * @param is Stream that will deliver the PGML file
+     * @param closeStream If true, the stream will be closed after the PGML file
+     *            is parsed
+     * @param initialHandler The top level ContentHandler. In order for this
+     *            method to work as expected, this ContentHandler must call the
+     *            {@link #setDiagram} method on this object with the read
+     *            diagram.
      * @return The read diagram.
-     * @throws SAXException
-     *                 if something goes wrong.
+     * @throws SAXException if something goes wrong.
      */
-    private synchronized Diagram readDiagram(Reader reader,
-            boolean closeStream, DefaultHandler initialHandler)
-            throws SAXException {
+    private synchronized Diagram readDiagram(Reader reader, boolean closeStream,
+            DefaultHandler initialHandler)
+        throws SAXException {
         handlerStack = new Stack();
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -272,8 +262,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * to a pgml element must call this method to set the diagram associated
      * with the parsing.
      * 
-     * @param theDiagram
-     *                The diagram.
+     * @param theDiagram The diagram.
      */
     public void setDiagram(Diagram theDiagram) {
         diagram = theDiagram;
@@ -284,8 +273,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * 
      * @see #PGMLStackParser(Map)
      * 
-     * @param id
-     *                The id to search for.
+     * @param id The id to search for.
      * @return The found object.
      */
     public Object findOwner(String id) {
@@ -293,11 +281,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     }
 
     /**
-     * @param from
-     *                the type name to be "translated", i.e. replaced by
-     *                something else
-     * @param to
-     *                the resulting name
+     * @param from the type name to be "translated", i.e. replaced by something
+     *            else
+     * @param to the resulting name
      */
     public void addTranslation(String from, String to) {
         translationTable.put(from, to);
@@ -335,8 +321,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * method. The default implementation of the method passes the names through
      * by a map in order to determine if translation is required.
      * 
-     * @param oldName
-     *                Class name as it appears in PGML file
+     * @param oldName Class name as it appears in PGML file
      * @return Class name appropriate for the current code base
      */
     public String translateType(String oldName) {
@@ -374,21 +359,15 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * element name is unknown, null is returned.
      * <p>
      * 
-     * @param stack
-     *                Implementation of the stack of content handlers
-     * @param container
-     *                An object that provides context for the element (most
-     *                often by providing an implementation of the
-     *                {@link Container} interface.
-     * @param uri
-     *                SAX uri argument
-     * @param localname
-     *                SAX local element name
-     * @param qname
-     *                SAX qualified element name
-     * @param attributes
-     *                The attributes that the SAX parser have identified for the
-     *                element.
+     * @param stack Implementation of the stack of content handlers
+     * @param container An object that provides context for the element (most
+     *            often by providing an implementation of the {@link Container}
+     *            interface.
+     * @param uri SAX uri argument
+     * @param localname SAX local element name
+     * @param qname SAX qualified element name
+     * @param attributes The attributes that the SAX parser have identified for
+     *            the element.
      * @return ContentHandler object appropriate for the element, or null if the
      *         element can be skipped
      * 
@@ -398,7 +377,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      */
     public DefaultHandler getHandler(HandlerStack stack, Object container,
             String uri, String localname, String qname, Attributes attributes)
-            throws SAXException {
+        throws SAXException {
 
         String href = attributes.getValue("href");
 
@@ -543,10 +522,10 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
                 setAttrs(f, attributes);
                 String rx = attributes.getValue("rx");
                 String ry = attributes.getValue("ry");
-                int rxInt = (rx == null || rx.equals("")) ? 10 : Integer
-                        .parseInt(rx);
-                int ryInt = (ry == null || ry.equals("")) ? 10 : Integer
-                        .parseInt(ry);
+                int rxInt = (rx == null || rx.equals("")) ? 10
+                        : Integer.parseInt(rx);
+                int ryInt = (ry == null || ry.equals("")) ? 10
+                        : Integer.parseInt(ry);
                 f.setBounds(f.getX() - rxInt, f.getY() - ryInt, rxInt * 2,
                         ryInt * 2);
                 if (container instanceof Container) {
@@ -588,8 +567,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * @return The Fig
      * @throws SAXException
      */
-    protected Fig constructFig(String className, String href, Rectangle bounds, Attributes attributes)
-            throws SAXException {
+    protected Fig constructFig(String className, String href, Rectangle bounds,
+            Attributes attributes)
+        throws SAXException {
         try {
             Class figClass = Class.forName(className);
 
@@ -671,11 +651,9 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * value of the <em>name</em> attribute as the name parameter.
      * 
      * @see #setAttrs(Fig, Attributes)
-     * @param fig
-     *                Newly create Fig object
-     * @param name
-     *                String that may be used to reference Fig object later in
-     *                the PGML file
+     * @param fig Newly create Fig object
+     * @param name String that may be used to reference Fig object later in the
+     *            PGML file
      */
     public void registerFig(Fig fig, String name) {
         figRegistry.put(name, fig);
@@ -685,8 +663,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * Find a Fig object with a name that has been previously registered with
      * {@link #registerFig registerFig}.
      * 
-     * @param name
-     *                The name.
+     * @param name The name.
      * @return The Fig object found.
      */
     public Fig findFig(String name) {
@@ -763,8 +740,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * 
      * @param f
      * @param attrList
-     * @throws SAXException
-     *                 if something goes wrong.
+     * @throws SAXException if something goes wrong.
      */
     protected void setAttrs(Fig f, Attributes attrList) throws SAXException {
         String name = attrList.getValue("name");
@@ -800,12 +776,13 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
      * @throws SAXException
      */
     private DefaultHandler getGroupHandler(Object container, FigGroup group,
-            Attributes attributes) throws SAXException {
+            Attributes attributes)
+        throws SAXException {
         if (container instanceof Container) {
             ((Container) container).addObject(group);
         }
-        StringTokenizer st = new StringTokenizer(attributes
-                .getValue("description"), ",;[] ");
+        StringTokenizer st = new StringTokenizer(
+                attributes.getValue("description"), ",;[] ");
         setAttrs(group, attributes);
         if (st.hasMoreElements()) {
             st.nextToken();
@@ -840,8 +817,7 @@ public class PGMLStackParser implements HandlerStack, HandlerFactory {
     Rectangle getBounds(String boundsDescription) {
         try {
             int bracketPosn = boundsDescription.indexOf('[');
-            if (bracketPosn < 0)
-                return null;
+            if (bracketPosn < 0) return null;
             boundsDescription = boundsDescription.substring(bracketPosn + 1);
             StringTokenizer st = new StringTokenizer(boundsDescription, ", ]");
             String xStr = null;

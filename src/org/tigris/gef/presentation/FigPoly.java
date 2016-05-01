@@ -254,8 +254,8 @@ public class FigPoly extends Fig {
      * unless ov is true to override the fixed * handles.
      */
     protected boolean canMoveVertex(int i, boolean ov) {
-        return (i >= 0 && i < _npoints && (ov || i >= _fixedHandles
-                && i < _npoints - _fixedHandles));
+        return (i >= 0 && i < _npoints
+                && (ov || i >= _fixedHandles && i < _npoints - _fixedHandles));
     }
 
     /**
@@ -282,8 +282,7 @@ public class FigPoly extends Fig {
                 i += 2;
             }
 
-            if (i == _npoints - _fixedHandles - 1)
-                appendTwoPoints();
+            if (i == _npoints - _fixedHandles - 1) appendTwoPoints();
 
             if (i % 2 == 0) {
 
@@ -368,8 +367,7 @@ public class FigPoly extends Fig {
                     "Point not found in LayerDiagram");
         }
 
-        if (_npoints < 3)
-            return;
+        if (_npoints < 3) return;
 
         int[] tmp = new int[_npoints];
 
@@ -435,8 +433,7 @@ public class FigPoly extends Fig {
      * This results in a new object instantiation on every call, if multiple
      * calls are required consider getXs() and getYs() for performance.
      * 
-     * @param i
-     *                the position of the point to return
+     * @param i the position of the point to return
      * @return the point at position i
      */
     public Point getPoint(int i) {
@@ -497,7 +494,8 @@ public class FigPoly extends Fig {
     }
 
     public void cleanUp() {
-        for (int handleNumber = 1; handleNumber < _npoints - 1; handleNumber++) {
+        for (int handleNumber = 1; handleNumber < _npoints
+                - 1; handleNumber++) {
             Point start = new Point(_xpoints[handleNumber - 1],
                     _ypoints[handleNumber - 1]);
             Point middle = new Point(_xpoints[handleNumber],
@@ -516,8 +514,7 @@ public class FigPoly extends Fig {
             double difference = Geometry.diffAngle(startToMiddleAngle,
                     middleToEndAngle);
 
-            if (difference < FUDGEFACTOR)
-                removePoint(handleNumber);
+            if (difference < FUDGEFACTOR) removePoint(handleNumber);
         }
 
         calcBounds();
@@ -580,22 +577,22 @@ public class FigPoly extends Fig {
 
     private void drawDashedPerimeter(Graphics g, int lineWidth, int pointCount,
             int xPoints[], int yPoints[], float dashes[], int dashPeriod) {
-    	
-    	if (g instanceof Graphics2D) {
-            drawPolyLine((Graphics2D) g, (float) lineWidth, pointCount,
-                    xPoints, yPoints, dashes, 0f);
+
+        if (g instanceof Graphics2D) {
+            drawPolyLine((Graphics2D) g, (float) lineWidth, pointCount, xPoints,
+                    yPoints, dashes, 0f);
             return;
-    	}
+        }
         int phase = 0;
         for (int i = 1; i < pointCount; i++) {
-            phase = drawDashedLine(g, lineWidth, xPoints[i - 1],
-                    yPoints[i - 1], xPoints[i], yPoints[i], phase, dashes,
-                    dashPeriod);
+            phase = drawDashedLine(g, lineWidth, xPoints[i - 1], yPoints[i - 1],
+                    xPoints[i], yPoints[i], phase, dashes, dashPeriod);
         }
     }
 
     /**
      * Draw a polyline
+     * 
      * @param g2 graphics context
      * @param width line width
      * @param pointCount number of points in line
@@ -604,8 +601,7 @@ public class FigPoly extends Fig {
      * @param dashes array of dash lengths
      */
     private void drawPolyLine(Graphics2D g2, float width, int pointCount,
-            int[] xPoints,
-            int[] yPoints, float[] dashes, float dash_phase) {
+            int[] xPoints, int[] yPoints, float[] dashes, float dash_phase) {
 
         GeneralPath gp = new GeneralPath();
         gp.reset();
@@ -624,9 +620,9 @@ public class FigPoly extends Fig {
         sb.append("<path id='").append(getId()).append("' class='")
                 .append(getClass().getName())
                 .append("' style='fill:none; stroke-width:")
-                .append(getLineWidth())
-                .append("; stroke:rgb(").append(getLineColor().getRed())
-                .append(",").append(getLineColor().getGreen()).append(',')
+                .append(getLineWidth()).append("; stroke:rgb(")
+                .append(getLineColor().getRed()).append(",")
+                .append(getLineColor().getGreen()).append(',')
                 .append(getLineColor().getBlue()).append(" ;' d='");
         for (int i = 0; i < getPoints().length; ++i) {
             if (i == 0) {
@@ -771,8 +767,7 @@ public class FigPoly extends Fig {
      */
     public boolean isPerimeterClosed() {
 
-        if (_xpoints.length < 1 || _npoints < 1)
-            return false;
+        if (_xpoints.length < 1 || _npoints < 1) return false;
 
         if (_npoints <= _xpoints.length)
             return (_xpoints[0] == _xpoints[_npoints - 1])
@@ -801,23 +796,18 @@ public class FigPoly extends Fig {
      */
     protected int countCornersContained(int x, int y, int w, int h) {
 
-        if (!isPerimeterClosed())
-            return 0;
+        if (!isPerimeterClosed()) return 0;
 
         Polygon p = getPolygon();
         int cornersHit = 0;
 
-        if (p.contains(x, y))
-            cornersHit++;
+        if (p.contains(x, y)) cornersHit++;
 
-        if (p.contains(x + w, y))
-            cornersHit++;
+        if (p.contains(x + w, y)) cornersHit++;
 
-        if (p.contains(x, y + h))
-            cornersHit++;
+        if (p.contains(x, y + h)) cornersHit++;
 
-        if (p.contains(x + w, y + h))
-            cornersHit++;
+        if (p.contains(x + w, y + h)) cornersHit++;
 
         return cornersHit;
     }
@@ -825,14 +815,12 @@ public class FigPoly extends Fig {
     /**
      * Tests, if the given rectangle hits this polygon.
      * 
-     * @param rect
-     *                The rectangle to be tested.
+     * @param rect The rectangle to be tested.
      * @return True, if the rectangle hit this polygon, otherwise false.
      */
     public boolean hit(Rectangle rect) {
 
-        if (super.hit(rect))
-            return true;
+        if (super.hit(rect)) return true;
 
         return intersectsPerimeter(rect);
     }
@@ -841,8 +829,7 @@ public class FigPoly extends Fig {
      * Tests, if the given rectangle intersects with the perimeter of this
      * polygon.
      * 
-     * @param rect
-     *                The rectangle to be tested.
+     * @param rect The rectangle to be tested.
      * @return True, if the rectangle intersects the perimeter, otherwise false.
      */
     public boolean intersectsPerimeter(Rectangle rect) {

@@ -36,14 +36,11 @@ import java.awt.Point;
 public class ArrowHeadNone extends ArrowHead {
 
     private static final long serialVersionUID = -5863903990732263244L;
+
     public static ArrowHeadNone TheInstance = new ArrowHeadNone();
 
-    public void paint(
-            final Graphics g,
-            final Point start,
-            final Point end,
-            final Color lineColor,
-            final Color fillColor) {
+    public void paint(final Graphics g, final Point start, final Point end,
+            final Color lineColor, final Color fillColor) {
     }
 
 } /* end class ArrowHeadNone */

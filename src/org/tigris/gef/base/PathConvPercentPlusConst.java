@@ -39,8 +39,11 @@ import org.tigris.gef.presentation.*;
 
 public class PathConvPercentPlusConst extends PathConv {
     private static final long serialVersionUID = 365473229021070199L;
+
     private int percent = 0;
+
     private int _delta = 0;
+
     private int offset = 0;
 
     public PathConvPercentPlusConst(Fig theFig, int newPercent, int delta,
@@ -71,8 +74,8 @@ public class PathConvPercentPlusConst extends PathConv {
         // System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
         // " figLen=" + figLength);
 
-        applyOffsetAmount(pathFig.pointAlongPerimeter(pointToGet + 5), pathFig
-                .pointAlongPerimeter(pointToGet - 5), offset, res);
+        applyOffsetAmount(pathFig.pointAlongPerimeter(pointToGet + 5),
+                pathFig.pointAlongPerimeter(pointToGet - 5), offset, res);
     }
 
     public void setPercentOffset(int newPercent, int newOffset) {

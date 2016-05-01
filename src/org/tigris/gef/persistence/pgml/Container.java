@@ -34,10 +34,8 @@ public interface Container {
     /**
      * Add an object to the container.
      * 
-     * @param toAdd
-     *                The object to add.
-     * @throws SAXException
-     *                 if there was a problem.
+     * @param toAdd The object to add.
+     * @throws SAXException if there was a problem.
      */
     void addObject(Object toAdd) throws SAXException;
 }

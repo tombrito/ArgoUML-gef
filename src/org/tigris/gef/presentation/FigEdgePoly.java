@@ -58,11 +58,12 @@ public class FigEdgePoly extends FigEdge {
      * 
      */
     private static final long serialVersionUID = -5534202173807357676L;
-    
+
     /**
      * True if the edge has been laid out automatically once. It will not be
      * done automatically again since the user may have edited the edge and I
      * don't want to undo that work.
+     * 
      * @deprecated in 0.13 use getter/setter
      */
     @Deprecated
@@ -113,14 +114,14 @@ public class FigEdgePoly extends FigEdge {
             if (p.getNumPoints() == 2) {
                 // ? two iterations of refinement, maybe should be a for-loop
                 srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p
-                        .getPoint(p.getNumPoints() - 2));
+                dstPt = destPortFig
+                        .connectionPoint(p.getPoint(p.getNumPoints() - 2));
                 srcPt = sourcePortFig.connectionPoint(dstPt);
                 dstPt = destPortFig.connectionPoint(srcPt);
             } else if (p.getNumPoints() > 2) {
                 srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p
-                        .getPoint(p.getNumPoints() - 2));
+                dstPt = destPortFig
+                        .connectionPoint(p.getPoint(p.getNumPoints() - 2));
             }
         }
 
@@ -132,8 +133,7 @@ public class FigEdgePoly extends FigEdge {
      * Internal function to actually compute the layout of the line if it has
      * never been done on that line before.
      * 
-     * @throws IllegalStateException
-     *                 if the edge is not connected to 2 ports
+     * @throws IllegalStateException if the edge is not connected to 2 ports
      */
     protected void layoutEdge() {
         int npoints = 0;
@@ -288,32 +288,32 @@ public class FigEdgePoly extends FigEdge {
         int rright = avoid1.x + avoid1.width;
         int rbot = avoid1.y + avoid1.height;
         if (x1 == x2) { // vertical
-            if (x1 > avoid1.x
-                    && x1 < rright
-                    && ((ymin < avoid1.y && ymax > avoid1.y) || (ymin < rbot && ymax > rbot))) {
+            if (x1 > avoid1.x && x1 < rright
+                    && ((ymin < avoid1.y && ymax > avoid1.y)
+                            || (ymin < rbot && ymax > rbot))) {
                 return false;
             }
         }
         if (y1 == y2) { // horizontal
-            if (y1 > avoid1.y
-                    && y1 < rbot
-                    && ((xmin < avoid1.x && xmax > avoid1.x) || (xmin < rright && xmax > rright)))
+            if (y1 > avoid1.y && y1 < rbot
+                    && ((xmin < avoid1.x && xmax > avoid1.x)
+                            || (xmin < rright && xmax > rright)))
                 return false;
         }
 
         rright = avoid2.x + avoid2.width;
         rbot = avoid2.y + avoid2.height;
         if (x1 == x2) { // vertical
-            if (x1 > avoid2.x
-                    && x1 < rright
-                    && ((ymin < avoid2.y && ymax > avoid2.y) || (ymin < rbot && ymax > rbot))) {
+            if (x1 > avoid2.x && x1 < rright
+                    && ((ymin < avoid2.y && ymax > avoid2.y)
+                            || (ymin < rbot && ymax > rbot))) {
                 return false;
             }
         }
         if (y1 == y2) { // horizontal
-            if (y1 > avoid2.y
-                    && y1 < rbot
-                    && ((xmin < avoid2.x && xmax > avoid2.x) || (xmin < rright && xmax > rright))) {
+            if (y1 > avoid2.y && y1 < rbot
+                    && ((xmin < avoid2.x && xmax > avoid2.x)
+                            || (xmin < rright && xmax > rright))) {
                 return false;
             }
         }
@@ -358,9 +358,8 @@ public class FigEdgePoly extends FigEdge {
                         srcPt = sourcePortFig.connectionPoint(handlePoint);
                         dstPt = destPortFig.connectionPoint(handlePoint);
                         p.moveVertex(new Handle(0), srcPt.x, srcPt.y, true);
-                        p
-                                .moveVertex(new Handle(np - 1), dstPt.x,
-                                        dstPt.y, true);
+                        p.moveVertex(new Handle(np - 1), dstPt.x, dstPt.y,
+                                true);
                         calcBounds();
                     } else if (i == 1) {
                         srcPt = sourcePortFig.connectionPoint(handlePoint);
@@ -368,9 +367,8 @@ public class FigEdgePoly extends FigEdge {
                         calcBounds();
                     } else if (i == (np - 2)) {
                         dstPt = destPortFig.connectionPoint(handlePoint);
-                        p
-                                .moveVertex(new Handle(np - 1), dstPt.x,
-                                        dstPt.y, true);
+                        p.moveVertex(new Handle(np - 1), dstPt.x, dstPt.y,
+                                true);
                         calcBounds();
                     }
                 }

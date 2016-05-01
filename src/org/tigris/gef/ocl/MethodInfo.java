@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
  */
 class MethodInfo {
     Object object;
+
     Method method;
 
     MethodInfo(Object o, Method m) {

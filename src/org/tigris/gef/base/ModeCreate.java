@@ -71,6 +71,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
      * out a size.
      */
     protected int _defaultWidth = 32;
+
     protected int _defaultHeight = 32;
 
     // //////////////////////////////////////////////////////////////
@@ -120,8 +121,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
     }
 
     protected void createFig(MouseEvent me) {
-        if (me.isConsumed())
-            return;
+        if (me.isConsumed()) return;
         start();
         synchronized (snapPt) {
             snapPt.setLocation(me.getX(), me.getY());
@@ -146,8 +146,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
      * _newItem.damage(), instead use editor.damageAll(_newItem).
      */
     public void mouseDragged(MouseEvent me) {
-        if (me.isConsumed())
-            return;
+        if (me.isConsumed()) return;
         if (_newItem != null) {
             editor.damageAll();
             creationDrag(me.getX(), me.getY());
@@ -162,8 +161,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
      * it. Then exit this mode.
      */
     public void mouseReleased(MouseEvent me) {
-        if (me.isConsumed())
-            return;
+        if (me.isConsumed()) return;
         if (_newItem != null) {
             editor.damageAll();
             creationDrag(me.getX(), me.getY());
@@ -191,8 +189,7 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
      * @see ModeCreateFigLine#creationDrag
      */
     protected void creationDrag(int x, int y) {
-        if (_newItem == null)
-            return;
+        if (_newItem == null) return;
         int snapX, snapY;
         synchronized (snapPt) {
             snapPt.setLocation(x, y);
@@ -201,9 +198,9 @@ public abstract class ModeCreate extends FigModifyingModeImpl {
             snapY = snapPt.y;
         }
         if (anchorX == snapX && anchorY == snapY)
-            _newItem.createDrag(anchorX, anchorY, x + _defaultWidth, y
-                    + _defaultHeight, snapX + _defaultWidth, snapY
-                    + _defaultHeight);
+            _newItem.createDrag(anchorX, anchorY, x + _defaultWidth,
+                    y + _defaultHeight, snapX + _defaultWidth,
+                    snapY + _defaultHeight);
         else {
             _newItem.createDrag(anchorX, anchorY, x, y, snapX, snapY);
             _defaultWidth = snapX - anchorX;

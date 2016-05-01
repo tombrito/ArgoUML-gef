@@ -47,6 +47,7 @@ public abstract class BaseHandler extends DefaultHandler {
      * element and provided in the {@link #characters} call.
      */
     private StringBuffer elementContents;
+
     private PGMLStackParser parser;
 
     // ////////////////////////////////////////////////////////////////////////
@@ -54,8 +55,7 @@ public abstract class BaseHandler extends DefaultHandler {
     /**
      * Constructor.
      * 
-     * @param theParser
-     *                The parser for this handler.
+     * @param theParser The parser for this handler.
      */
     public BaseHandler(PGMLStackParser theParser) {
         elementContents = new StringBuffer();
@@ -75,10 +75,8 @@ public abstract class BaseHandler extends DefaultHandler {
      * Override this to do processing when we have all the information about the
      * element.
      * 
-     * @param contents
-     *                The text contents of the element.
-     * @throws SAXException
-     *                 on error
+     * @param contents The text contents of the element.
+     * @throws SAXException on error
      */
     public void gotElement(String contents) throws SAXException {
     }
@@ -104,7 +102,8 @@ public abstract class BaseHandler extends DefaultHandler {
      */
     protected DefaultHandler getElementOrUnknownHandler(HandlerStack stack,
             Object container, String uri, String localname, String qname,
-            Attributes attributes) throws SAXException {
+            Attributes attributes)
+        throws SAXException {
 
         DefaultHandler result = getElementHandler(stack, container, uri,
                 localname, qname, attributes);
@@ -132,10 +131,11 @@ public abstract class BaseHandler extends DefaultHandler {
      */
     protected DefaultHandler getElementHandler(HandlerStack stack,
             Object container, String uri, String localname, String qname,
-            Attributes attributes) throws SAXException {
+            Attributes attributes)
+        throws SAXException {
 
-        return getPGMLStackParser().getHandler(stack, container, uri,
-                localname, qname, attributes);
+        return getPGMLStackParser().getHandler(stack, container, uri, localname,
+                qname, attributes);
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -145,7 +145,8 @@ public abstract class BaseHandler extends DefaultHandler {
      *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(String uri, String localname, String qname,
-            Attributes attributes) throws SAXException {
+            Attributes attributes)
+        throws SAXException {
         DefaultHandler handler = getElementOrUnknownHandler(
                 getPGMLStackParser(), this, uri, localname, qname, attributes);
         getPGMLStackParser().pushHandlerStack(handler);
@@ -156,7 +157,7 @@ public abstract class BaseHandler extends DefaultHandler {
      *      java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String qname)
-            throws SAXException {
+        throws SAXException {
         getPGMLStackParser().popHandlerStack();
         gotElement(elementContents.toString());
     }

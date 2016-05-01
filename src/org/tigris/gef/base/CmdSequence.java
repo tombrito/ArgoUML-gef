@@ -41,6 +41,7 @@ import java.util.*;
 public class CmdSequence extends Cmd {
 
     private static final long serialVersionUID = -2124763382521376440L;
+
     private Vector _cmds;
 
     /** Construct a new CmdSequence */
@@ -80,8 +81,7 @@ public class CmdSequence extends Cmd {
         while (acts.hasMoreElements()) {
             Cmd a = (Cmd) acts.nextElement();
             n = n + a.getName();
-            if (acts.hasMoreElements())
-                n = n + ", ";
+            if (acts.hasMoreElements()) n = n + ", ";
         }
         return n;
     }

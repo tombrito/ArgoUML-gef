@@ -56,10 +56,10 @@ public class SelectionMove extends Selection {
         int w = fig.getWidth();
         int h = fig.getHeight();
         g.setColor(Globals.getPrefs().handleColorFor(fig));
-        g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH,
-                w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
-        g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1, w + BORDER_WIDTH
-                * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
+        g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH, w + BORDER_WIDTH * 2 - 1,
+                h + BORDER_WIDTH * 2 - 1);
+        g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
+                w + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
         g.fillRect(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
         g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
         g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
@@ -91,9 +91,9 @@ public class SelectionMove extends Selection {
      * contents.
      */
     public Rectangle getBounds() {
-        return new Rectangle(getContent().getX() - BORDER_WIDTH, getContent()
-                .getY()
-                - BORDER_WIDTH, getContent().getWidth() + BORDER_WIDTH * 2 + 2,
+        return new Rectangle(getContent().getX() - BORDER_WIDTH,
+                getContent().getY() - BORDER_WIDTH,
+                getContent().getWidth() + BORDER_WIDTH * 2 + 2,
                 getContent().getHeight() + BORDER_WIDTH * 2 + 2);
     }
 } /* end class SelectionMove */

@@ -44,9 +44,8 @@ public class InitialHandler extends DefaultHandler {
     private PGMLStackParser parser;
 
     /**
-     * @param theParser
-     *                The PGMLStackParser object associated with the diagram
-     *                that is to be read.
+     * @param theParser The PGMLStackParser object associated with the diagram
+     *            that is to be read.
      */
     InitialHandler(PGMLStackParser theParser) {
         parser = theParser;
@@ -60,7 +59,8 @@ public class InitialHandler extends DefaultHandler {
      *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(String uri, String localname, String qname,
-            Attributes attributes) throws SAXException {
+            Attributes attributes)
+        throws SAXException {
         if (qname.equals("pgml")) {
             parser.pushHandlerStack(new PGMLHandler(parser, attributes));
         }
@@ -68,8 +68,8 @@ public class InitialHandler extends DefaultHandler {
 
     public InputSource resolveEntity(String publicId, String systemId) {
         if (systemId.endsWith("pgml.dtd")) {
-            URL dtdUrl = this.getClass().getResource(
-                    "/org/tigris/gef/xml/dtd/pgml.dtd");
+            URL dtdUrl = this.getClass()
+                    .getResource("/org/tigris/gef/xml/dtd/pgml.dtd");
             if (dtdUrl != null) {
                 return new InputSource(dtdUrl.toExternalForm());
             } else {

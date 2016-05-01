@@ -46,6 +46,7 @@ public abstract class AdjacencyListGraphModel extends MutableGraphSupport
     // instance variables
 
     protected Vector _nodes = new Vector();
+
     protected Vector _edges = new Vector();
 
     // //////////////////////////////////////////////////////////////
@@ -58,16 +59,13 @@ public abstract class AdjacencyListGraphModel extends MutableGraphSupport
     // invariants
 
     public boolean OK() {
-        if (_nodes == null)
-            return false;
-        if (_edges == null)
-            return false;
+        if (_nodes == null) return false;
+        if (_edges == null) return false;
         // all edges must start and end on some port on a node in this graph
         Enumeration edgeNum = _edges.elements();
         while (edgeNum.hasMoreElements()) {
             Object[] e = (Object[]) edgeNum.nextElement();
-            if (!containsPort(e[0]) || !containsPort(e[1]))
-                return false;
+            if (!containsPort(e[0]) || !containsPort(e[1])) return false;
         }
         return true;
     }
@@ -102,8 +100,7 @@ public abstract class AdjacencyListGraphModel extends MutableGraphSupport
         Enumeration edgeEnum = _edges.elements();
         while (edgeEnum.hasMoreElements()) {
             Object[] e = (Object[]) edgeEnum.nextElement();
-            if (port == e[1])
-                res.addElement(e);
+            if (port == e[1]) res.addElement(e);
         }
         return res;
     }
@@ -113,8 +110,7 @@ public abstract class AdjacencyListGraphModel extends MutableGraphSupport
         Enumeration edgeEnum = _edges.elements();
         while (edgeEnum.hasMoreElements()) {
             Object[] e = (Object[]) edgeEnum.nextElement();
-            if (port == e[0])
-                res.addElement(e);
+            if (port == e[0]) res.addElement(e);
         }
         return res;
     }
@@ -137,8 +133,7 @@ public abstract class AdjacencyListGraphModel extends MutableGraphSupport
     }
 
     public void addEdge(Object edge) {
-        if (canAddEdge(edge))
-            _edges.addElement(edge);
+        if (canAddEdge(edge)) _edges.addElement(edge);
     }
 
     public void removeNode(Object node) {
@@ -166,7 +161,8 @@ public abstract class AdjacencyListGraphModel extends MutableGraphSupport
         return labeledEgde[2];
     }
 
-    public Object addLabeledEdge(Object srcPort, Object destPort, Object label) {
+    public Object addLabeledEdge(Object srcPort, Object destPort,
+            Object label) {
         Object[] e = new Object[3];
         e[0] = srcPort;
         e[1] = destPort;
@@ -180,8 +176,7 @@ public abstract class AdjacencyListGraphModel extends MutableGraphSupport
         Enumeration edgeEnum = _edges.elements();
         while (edgeEnum.hasMoreElements()) {
             Object[] e = (Object[]) edgeEnum.nextElement();
-            if (label == getEdgeLabel(e))
-                res.addElement(e);
+            if (label == getEdgeLabel(e)) res.addElement(e);
         }
         return res;
     }

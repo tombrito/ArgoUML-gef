@@ -81,8 +81,7 @@ public abstract class AnnotationStrategy implements Serializable {
 
     public void removeAnnotation(Fig annotation) {
         AnnotationProperties props = getAnnotationProperties(annotation);
-        if (props != null)
-            props.removeLine();
+        if (props != null) props.removeLine();
         annotation.unsetAnnotationOwner();
         annotations.remove(annotation);
     }
@@ -104,8 +103,8 @@ public abstract class AnnotationStrategy implements Serializable {
             AnnotationProperties prop = (AnnotationProperties) annotations
                     .get(annotation);
             FigLine line = prop.getConnectingLine();
-            if (Globals.curEditor().getLayerManager().getContents().contains(
-                    line)) {
+            if (Globals.curEditor().getLayerManager().getContents()
+                    .contains(line)) {
                 Globals.curEditor().remove(line);
             }
         }

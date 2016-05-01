@@ -49,8 +49,8 @@ import org.tigris.gef.graph.*;
  * @see NetPort
  */
 
-public abstract class NetNode extends NetPrimitive implements GraphNodeHooks,
-        java.io.Serializable {
+public abstract class NetNode extends NetPrimitive
+        implements GraphNodeHooks, java.io.Serializable {
     // //////////////////////////////////////////////////////////////
     // instance variables
 
@@ -142,8 +142,7 @@ public abstract class NetNode extends NetPrimitive implements GraphNodeHooks,
         FigNode fn;
         if (lay != null) {
             fn = (FigNode) lay.presentationFor(this);
-            if (fn != null)
-                return fn;
+            if (fn != null) return fn;
         }
         fn = makePresentation(lay);
         return fn;
@@ -174,8 +173,8 @@ public abstract class NetNode extends NetPrimitive implements GraphNodeHooks,
      * from another node. the arguments contain some info about what ports were
      * connected.
      */
-    public void postDisconnect(GraphModel gm, Object anotherNode,
-            Object myPort, Object otherPort) {
+    public void postDisconnect(GraphModel gm, Object anotherNode, Object myPort,
+            Object otherPort) {
     }
 
     // //////////////////////////////////////////////////////////////

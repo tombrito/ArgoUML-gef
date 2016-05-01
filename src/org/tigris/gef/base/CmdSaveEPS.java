@@ -51,8 +51,9 @@ public class CmdSaveEPS extends CmdSaveGraphics {
         super("SaveEncapsulatedPostScript");
     }
 
-    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
-            throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea)
+        throws IOException {
         PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
         ps.translate(-drawingArea.x, -drawingArea.y);
         ce.print(ps);

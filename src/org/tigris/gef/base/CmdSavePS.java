@@ -51,8 +51,9 @@ public class CmdSavePS extends CmdSaveGraphics {
         super("SavePostScript");
     }
 
-    protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea)
-            throws IOException {
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea)
+        throws IOException {
         PostscriptWriter ps = new PostscriptWriter(s);
         ps.translate(32, 32 + 778);
         double scale = Math.min(535.0 / drawingArea.width,

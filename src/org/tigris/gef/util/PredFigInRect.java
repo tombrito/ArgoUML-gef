@@ -56,8 +56,7 @@ public class PredFigInRect implements Predicate {
     // Predicate API
 
     public boolean predicate(Object o) {
-        if (!(o instanceof Fig))
-            return false;
+        if (!(o instanceof Fig)) return false;
         return ((Fig) o).intersects(_r);
     }
 } /* end class PredFigInRect */

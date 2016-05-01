@@ -81,8 +81,7 @@ public class EnumerationPredicate implements Enumeration, java.io.Serializable {
      * predicate.
      */
     public Object nextElement() {
-        if (!hasMoreElements())
-            throw (new NoSuchElementException());
+        if (!hasMoreElements()) throw (new NoSuchElementException());
         Object res = _nextElement;
         findNext();
         return res;
@@ -96,8 +95,7 @@ public class EnumerationPredicate implements Enumeration, java.io.Serializable {
         _nextElement = null;
         while (_enum.hasMoreElements() && _nextElement == null) {
             Object o = _enum.nextElement();
-            if (_filter.predicate(o))
-                _nextElement = o;
+            if (_filter.predicate(o)) _nextElement = o;
         }
     }
 } /* end class EnumerationPredicate */

@@ -278,21 +278,24 @@ public class ModeManager implements Serializable, MouseListener,
                 Object startPort = ((FigNode) underMouse).hitPort(x, y);
                 if (startPort != null) {
                     if (LOG.isDebugEnabled()) {
-                        LOG.debug("ModeManager mousepressed detected on a draggable port");
+                        LOG.debug(
+                                "ModeManager mousepressed detected on a draggable port");
                     }
                     // user clicked on a port, now drag an edge
-                    FigModifyingModeImpl createArc =
-                        (FigModifyingModeImpl) new ModeCreateEdge(editor);
+                    FigModifyingModeImpl createArc = (FigModifyingModeImpl) new ModeCreateEdge(
+                            editor);
                     push(createArc);
                     createArc.mousePressed(me);
                 } else {
                     if (LOG.isDebugEnabled()) {
-                        LOG.debug("ModeManager mousepressed detected but not on a port");
+                        LOG.debug(
+                                "ModeManager mousepressed detected but not on a port");
                     }
                 }
             } else {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("ModeManager mousepressed detected but not on a port dragable node");
+                    LOG.debug(
+                            "ModeManager mousepressed detected but not on a port dragable node");
                 }
             }
         }

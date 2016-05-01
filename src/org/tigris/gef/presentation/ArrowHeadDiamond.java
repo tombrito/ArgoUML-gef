@@ -59,12 +59,8 @@ public class ArrowHeadDiamond extends ArrowHead {
     // //////////////////////////////////////////////////////////////
     // display methods
 
-    public void paint(
-            final Graphics g,
-            final Point start,
-            final Point end,
-            final Color lineColor,
-            final Color fillColor) {
+    public void paint(final Graphics g, final Point start, final Point end,
+            final Color lineColor, final Color fillColor) {
         double denom, x, y, dx, dy, cos, sin;
         Polygon diamond;
 
@@ -76,8 +72,7 @@ public class ArrowHeadDiamond extends ArrowHead {
         dx = (double) (xTo - xFrom);
         dy = (double) (yTo - yFrom);
         denom = dist(dx, dy);
-        if (denom == 0)
-            return;
+        if (denom == 0) return;
 
         cos = (getHeight() / 2) / denom;
         sin = getWidth() / denom;

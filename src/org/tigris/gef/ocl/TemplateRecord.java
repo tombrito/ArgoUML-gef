@@ -25,8 +25,11 @@ package org.tigris.gef.ocl;
 
 public class TemplateRecord {
     private Class key;
+
     private String guard;
+
     String body;
+
     private StringBuffer _buf = null;
 
     TemplateRecord(Class k, String g, String b) {

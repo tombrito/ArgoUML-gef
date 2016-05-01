@@ -55,6 +55,7 @@ public class FigEdgeRectiline extends FigEdge {
      * 
      */
     private static final long serialVersionUID = 82233091447851020L;
+
     /**
      * True if the edge has been laid out automatically once. It will not be
      * done automatically again since the user may have edited the edge and I
@@ -100,8 +101,8 @@ public class FigEdgeRectiline extends FigEdge {
 
         if (_useNearest) {
             srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-            dstPt = destPortFig.connectionPoint(p
-                    .getPoint(p.getNumPoints() - 2));
+            dstPt = destPortFig
+                    .connectionPoint(p.getPoint(p.getNumPoints() - 2));
         } else {
             srcPt = sourcePortFig.getCenter();
             dstPt = destPortFig.getCenter();
@@ -152,9 +153,8 @@ public class FigEdgeRectiline extends FigEdge {
         xpoints[npoints] = srcRRPt.x;
         ypoints[npoints++] = srcRRPt.y;
 
-        npoints = npoints
-                + tryRoute(dstRRPt.x, dstRRPt.y, npoints, xpoints, ypoints,
-                        srcRR, dstRR, srcSector, dstSector);
+        npoints = npoints + tryRoute(dstRRPt.x, dstRRPt.y, npoints, xpoints,
+                ypoints, srcRR, dstRR, srcSector, dstSector);
 
         xpoints[npoints] = dstRRPt.x;
         ypoints[npoints++] = dstRRPt.y;
@@ -193,8 +193,7 @@ public class FigEdgeRectiline extends FigEdge {
      */
     protected int tryRoute(int x, int y, int np, int xs[], int ys[],
             Rectangle avoid1, Rectangle avoid2, int srcSector, int dstSector) {
-        if (np > 12)
-            return 0;
+        if (np > 12) return 0;
         int fx = xs[np - 1], fy = ys[np - 1];
         if ((fx == x || fy == y) && segOK(fx, fy, x, y, avoid1, avoid2)) {
             xs[np] = x;
@@ -275,29 +274,29 @@ public class FigEdgeRectiline extends FigEdge {
         int rright = avoid1.x + avoid1.width;
         int rbot = avoid1.y + avoid1.height;
         if (x1 == x2) { // vertical
-            if (x1 > avoid1.x
-                    && x1 < rright
-                    && ((ymin < avoid1.y && ymax > avoid1.y) || (ymin < rbot && ymax > rbot)))
+            if (x1 > avoid1.x && x1 < rright
+                    && ((ymin < avoid1.y && ymax > avoid1.y)
+                            || (ymin < rbot && ymax > rbot)))
                 return false;
         }
         if (y1 == y2) { // horizontal
-            if (y1 > avoid1.y
-                    && y1 < rbot
-                    && ((xmin < avoid1.x && xmax > avoid1.x) || (xmin < rright && xmax > rright)))
+            if (y1 > avoid1.y && y1 < rbot
+                    && ((xmin < avoid1.x && xmax > avoid1.x)
+                            || (xmin < rright && xmax > rright)))
                 return false;
         }
         rright = avoid2.x + avoid2.width;
         rbot = avoid2.y + avoid2.height;
         if (x1 == x2) { // vertical
-            if (x1 > avoid2.x
-                    && x1 < rright
-                    && ((ymin < avoid2.y && ymax > avoid2.y) || (ymin < rbot && ymax > rbot)))
+            if (x1 > avoid2.x && x1 < rright
+                    && ((ymin < avoid2.y && ymax > avoid2.y)
+                            || (ymin < rbot && ymax > rbot)))
                 return false;
         }
         if (y1 == y2) { // horizontal
-            if (y1 > avoid2.y
-                    && y1 < rbot
-                    && ((xmin < avoid2.x && xmax > avoid2.x) || (xmin < rright && xmax > rright)))
+            if (y1 > avoid2.y && y1 < rbot
+                    && ((xmin < avoid2.x && xmax > avoid2.x)
+                            || (xmin < rright && xmax > rright)))
                 return false;
         }
         return true;

@@ -22,24 +22,18 @@ public class PostscriptWriter extends Graphics2D {
             + "%%EndProcSet: ellipse 1.0 0 \n";
 
     private static final String reencodeDef = "%%BeginProcSet: reencode 1.0 0 \n"
-            + "/RE \n"
-            + "{  findfont begin \n"
+            + "/RE \n" + "{  findfont begin \n"
             + "  currentdict dup length dict begin \n"
             + "  {1 index /FID ne {def} {pop pop} ifelse} forall \n"
             + "  /FontName exch def dup length 0 ne \n"
-            + "  { /Encoding Encoding 256 array copy def \n"
-            + "      0 exch \n"
+            + "  { /Encoding Encoding 256 array copy def \n" + "      0 exch \n"
             + "      { dup type /nametype eq \n"
             + "        { Encoding 2 index 2 index put \n"
-            + "          pop 1 add \n"
-            + "        } \n"
-            + "        { exch pop \n"
-            + "        } ifelse \n"
-            + "      } forall \n"
-            + "  } if pop \n"
+            + "          pop 1 add \n" + "        } \n"
+            + "        { exch pop \n" + "        } ifelse \n"
+            + "      } forall \n" + "  } if pop \n"
             + "  currentdict dup end end \n"
-            + "  /FontName get exch definefont pop \n"
-            + "    } bind def \n"
+            + "  /FontName get exch definefont pop \n" + "    } bind def \n"
             + "%%EndProcSet: reencode 1.0 0 \n";
 
     private static final String isolatin1encoding = "/isolatin1encoding \n"
@@ -88,7 +82,7 @@ public class PostscriptWriter extends Graphics2D {
     }
 
     public PostscriptWriter(String filename, Rectangle boundingBox)
-            throws IOException {
+        throws IOException {
         this(new FileOutputStream(filename), boundingBox);
         autoClose = true;
     }
@@ -98,7 +92,7 @@ public class PostscriptWriter extends Graphics2D {
     }
 
     public PostscriptWriter(OutputStream stream, Rectangle bb)
-            throws IOException {
+        throws IOException {
         fontmap.put("Dialog", "Helvetica");
         fontmap.put("SansSerif", "Helvetica");
         fontmap.put("DialogInput", "Monospaced");
@@ -154,8 +148,7 @@ public class PostscriptWriter extends Graphics2D {
         if (replaceColor != null) {
             c = replaceColor;
         }
-        if (c.equals(fColor))
-            return;
+        if (c.equals(fColor)) return;
         fColor = c;
         final float maxColor = 255;
         p.print(((float) c.getRed()) / maxColor + " ");
@@ -179,14 +172,11 @@ public class PostscriptWriter extends Graphics2D {
             fFont = font;
             FontMetrics metrics = getFontMetrics();
             String name = font.getName();
-            if (fontmap.containsKey(name))
-                name = (String) fontmap.get(name);
+            if (fontmap.containsKey(name)) name = (String) fontmap.get(name);
             if (font.isBold() || font.isItalic()) {
                 name += "-";
-                if (font.isBold())
-                    name += "Bold";
-                if (font.isItalic())
-                    name += "Oblique";
+                if (font.isBold()) name += "Bold";
+                if (font.isItalic()) name += "Oblique";
             }
 
             p.println("isolatin1encoding /_" + name + " /" + name + " RE");
@@ -264,8 +254,7 @@ public class PostscriptWriter extends Graphics2D {
             for (int i = 0; i < iw; i++) {
                 handlesinglepixel(i, j, pixels[j * iw + i]);
             }
-            if (iw % 2 == 1)
-                p.print("0");
+            if (iw % 2 == 1) p.print("0");
             p.println();
         }
         if (ih % 2 == 1) {
@@ -372,12 +361,14 @@ public class PostscriptWriter extends Graphics2D {
         p.println("eofill");
     }
 
-    public void drawArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
+    public void drawArc(int x, int y, int w, int h, int startAngle,
+            int arcAngle) {
         writeEllipsePath(x, y, w + 1, h + 1, startAngle, arcAngle);
         p.println("stroke");
     }
 
-    public void fillArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
+    public void fillArc(int x, int y, int w, int h, int startAngle,
+            int arcAngle) {
         writeEllipsePath(x, y, w, h, startAngle, arcAngle);
         p.println("eofill");
     }

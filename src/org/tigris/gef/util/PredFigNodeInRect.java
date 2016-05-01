@@ -55,8 +55,7 @@ public class PredFigNodeInRect implements Predicate {
     // Predicate API
 
     public boolean predicate(Object o) {
-        if (!(o instanceof FigNode))
-            return false;
+        if (!(o instanceof FigNode)) return false;
         return ((Fig) o).intersects(_r);
     }
 

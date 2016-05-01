@@ -36,12 +36,8 @@ public class ArrowHeadQualifier extends ArrowHead {
 
     private static final long serialVersionUID = -4833472749443682549L;
 
-    public void paint(
-            final Graphics g,
-            final Point start,
-            final Point end,
-            final Color lineColor,
-            final Color fillColor) {
+    public void paint(final Graphics g, final Point start, final Point end,
+            final Color lineColor, final Color fillColor) {
         int xFrom, xTo, yFrom, yTo;
         double denom, x, y, dx, dy, cos, sin;
         Polygon qualifier;
@@ -57,8 +53,7 @@ public class ArrowHeadQualifier extends ArrowHead {
         dx = (double) (xTo - xFrom);
         dy = (double) (yTo - yFrom);
         denom = dist(dx, dy);
-        if (denom == 0)
-            return;
+        if (denom == 0) return;
         cos = (box_height) / denom;
         sin = box_width / denom;
         x = xTo - cos * dx;
@@ -89,7 +84,7 @@ public class ArrowHeadQualifier extends ArrowHead {
         graphics.fillPolygon(qualifier);
         graphics.setColor(lineColor);
         graphics.drawPolygon(qualifier);
-        
+
         FigText temp;
         temp = new FigText(x3, y3, x2, y2, Color.blue, "Times", 8);
         temp.setText("qualifier");

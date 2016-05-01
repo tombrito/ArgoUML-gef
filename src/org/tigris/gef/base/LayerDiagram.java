@@ -127,10 +127,8 @@ public class LayerDiagram extends Layer {
      * Add a Fig to the contents of this layer. Items are added on top of all
      * other items.
      * 
-     * @param f
-     *                the fig to add
-     * @throws IllegalArgumentException
-     *                 if the fig is null
+     * @param f the fig to add
+     * @throws IllegalArgumentException if the fig is null
      */
     public void add(Fig f) {
         if (f == null) {
@@ -153,10 +151,8 @@ public class LayerDiagram extends Layer {
      * Add a Fig to the contents of this layer. Items are added on top of all
      * other items.
      * 
-     * @param f
-     *                the fig to insert
-     * @throws IllegalArgumentException
-     *                 if the fig is null
+     * @param f the fig to insert
+     * @throws IllegalArgumentException if the fig is null
      */
     public void insertAt(Fig f, int index) {
         if (f == null) {
@@ -181,10 +177,8 @@ public class LayerDiagram extends Layer {
      * Add a Fig to the contents of this layer. Items are added on top of all
      * other items.
      * 
-     * @param f
-     *                the fig to insert
-     * @throws IllegalArgumentException
-     *                 if the fig is null
+     * @param f the fig to insert
+     * @throws IllegalArgumentException if the fig is null
      */
     public int indexOf(Fig f) {
         if (f == null) {
@@ -226,6 +220,7 @@ public class LayerDiagram extends Layer {
 
     /**
      * Reply the contents of this layer that are of the given type.
+     * 
      * @param figClass the type of Figs required
      * @return the figs
      */
@@ -474,8 +469,8 @@ public class LayerDiagram extends Layer {
                 return false;
             } else if (f.getLayer() != this) {
                 // TODO: Once JRE1.4 is minimum support we should use assertions
-                LOG
-                        .error("A fig has been found that doesn't refer back to the correct layer "
+                LOG.error(
+                        "A fig has been found that doesn't refer back to the correct layer "
                                 + f.toString() + " - " + f.getLayer());
                 f.setLayer(this);
                 return false;
@@ -495,13 +490,13 @@ public class LayerDiagram extends Layer {
             ((Fig) this.contents.get(i)).postLoad();
         }
     }
-    
+
     public void addLayerListener(LayerListener listener) {
         listeners.add(listener);
     }
-    
+
     public void removeLayerListener(LayerListener listener) {
         listeners.remove(listener);
     }
-   
+
 }

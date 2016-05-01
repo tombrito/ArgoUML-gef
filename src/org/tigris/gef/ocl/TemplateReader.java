@@ -45,9 +45,11 @@ public class TemplateReader extends DefaultHandler {
     private static final Log LOG = LogFactory.getLog(TemplateReader.class);
 
     private Hashtable _templates; /* Class -> Vector of TemplateRecord */
+
     private Vector _macros;
 
     private TemplateRecord _currentTemplate = null;
+
     private MacroRecord _currentMacro = null;
 
     private String filename;
@@ -80,8 +82,8 @@ public class TemplateReader extends DefaultHandler {
             factory.setValidating(false);
             SAXParser pc = factory.newSAXParser();
             InputSource source = new InputSource(in);
-            source.setSystemId(new java.net.URL("file", null, filename)
-                    .toString());
+            source.setSystemId(
+                    new java.net.URL("file", null, filename).toString());
             pc.parse(source, this);
         } catch (Exception ex) {
             throw new ExpansionException(ex);
@@ -109,7 +111,8 @@ public class TemplateReader extends DefaultHandler {
     }
 
     public void startElement(String uri, String localname, String elementName,
-            Attributes atts) throws SAXException {
+            Attributes atts)
+        throws SAXException {
         if (elementName.equals("template")) {
             String guard = atts.getValue("guard");
             String className = atts.getValue("class");
@@ -155,7 +158,7 @@ public class TemplateReader extends DefaultHandler {
      *      java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String elementName)
-            throws SAXException {
+        throws SAXException {
         if (_currentTemplate != null && elementName.equals("template")) {
             String body = _currentTemplate.getBody().trim();
             body = expandMacros(body);
@@ -219,8 +222,7 @@ public class TemplateReader extends DefaultHandler {
                     resultBuffer.append(prefix);
                     resultBuffer.append(st.nextToken());
                     resultBuffer.append(suffix);
-                    if (st.hasMoreElements())
-                        resultBuffer.append("\n");
+                    if (st.hasMoreElements()) resultBuffer.append("\n");
                 }
                 return resultBuffer.toString();
             }
@@ -231,7 +233,9 @@ public class TemplateReader extends DefaultHandler {
 
 class MacroRecord {
     String name;
+
     String body;
+
     private StringBuffer _buf = null;
 
     MacroRecord(String n, String b) {

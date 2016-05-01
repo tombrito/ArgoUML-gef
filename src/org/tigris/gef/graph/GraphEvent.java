@@ -39,6 +39,7 @@ import java.util.EventObject;
 
 public class GraphEvent extends EventObject implements java.io.Serializable {
     private static final long serialVersionUID = -7003555460670540322L;
+
     /** The specific node, port, or arc that was modified. */
     private Object _arg;
 

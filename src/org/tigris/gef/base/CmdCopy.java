@@ -52,15 +52,14 @@ public class CmdCopy extends Cmd {
 
     public void doIt() {
         Editor ce = Globals.curEditor();
-        List<Selection> copiedElements =
-            ce.getSelectionManager().getSelections();
+        List<Selection> copiedElements = ce.getSelectionManager()
+                .getSelections();
         List<Fig> figs = new ArrayList<Fig>();
         Iterator<Selection> copies = copiedElements.iterator();
         while (copies.hasNext()) {
             Selection s = copies.next();
             Fig f = s.getContent();
-            if (f instanceof FigEdge)
-                continue;
+            if (f instanceof FigEdge) continue;
             // needs-more-work: add support for cut-and-paste of edges
             f = (Fig) f.clone();
             figs.add(f);
@@ -87,6 +86,7 @@ public class CmdCopy extends Cmd {
      * Copy the current scribble and store it in a SimpleSelection object
      * (defined below). Then put that object on the clipboard for pasting.
      */
+
     // Going to have to wait for jdk 1.2 for this code to work.
     // public void copy(Fig fig) {
     // Get system clipboard
@@ -109,6 +109,7 @@ public class CmdCopy extends Cmd {
     // Awaiting jdk 1.2
     static class SimpleSelection implements Transferable, ClipboardOwner {
         protected Fig selection; // The data to be transferred.
+
         protected DataFlavor flavor; // The one data flavor supported.
 
         public SimpleSelection(Fig selection, DataFlavor flavor) {
@@ -128,7 +129,7 @@ public class CmdCopy extends Cmd {
 
         /** If the flavor is right, transfer the data (i.e. return it) */
         public Object getTransferData(DataFlavor f)
-                throws UnsupportedFlavorException {
+            throws UnsupportedFlavorException {
             if (f.equals(flavor))
                 return selection;
             else

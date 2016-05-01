@@ -43,8 +43,7 @@ class TransFilter extends RGBImageFilter {
 
     public int filterRGB(int x, int y, int rgb) {
         // background color w/any alpha level? make it transparent
-        if ((rgb & 0x00ffffff) == _transBG)
-            return _transBG;
+        if ((rgb & 0x00ffffff) == _transBG) return _transBG;
         return 0xff000000 | rgb; // make it 100% opaque
     }
 } /* end class TransFilter */

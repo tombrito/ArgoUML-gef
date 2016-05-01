@@ -38,8 +38,11 @@ import java.awt.Point;
 
 public abstract class Decoration implements java.io.Serializable {
     private int arrowWidth = 7;
+
     private int arrowHeight = 12;
+
     private Color arrowLineColor = Color.black;
+
     private Color arrowFillColor = Color.black;
 
     public Decoration() {
@@ -66,14 +69,15 @@ public abstract class Decoration implements java.io.Serializable {
         arrowFillColor = newColor;
     }
 
-    public abstract void paint(Graphics g, Point start, Point end, Color lineColor, Color fillColor);
-    
+    public abstract void paint(Graphics g, Point start, Point end,
+            Color lineColor, Color fillColor);
+
     /**
      * @deprecated use paint(Graphics, start, end)
      */
-//    public final void paint(Object g, Point start, Point end) {
-//        paint((Graphics) g, start, end);
-//    }
+    // public final void paint(Object g, Point start, Point end) {
+    // paint((Graphics) g, start, end);
+    // }
 
     /** return the approximate arc length of the path in pixel units */
     public int getLineLength(Point one, Point two) {
@@ -89,8 +93,8 @@ public abstract class Decoration implements java.io.Serializable {
         if (len == 0) {
             return one;
         }
-        return new Point(one.x + ((two.x - one.x) * p) / len, one.y
-                + ((two.y - one.y) * p) / len);
+        return new Point(one.x + ((two.x - one.x) * p) / len,
+                one.y + ((two.y - one.y) * p) / len);
     }
 
     public double dist(int x0, int y0, int x1, int y1) {

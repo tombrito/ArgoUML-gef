@@ -41,11 +41,11 @@ public class UnknownHandler extends DefaultHandler {
     private static final Log LOG = LogFactory.getLog(UnknownHandler.class);
 
     private int depthCount;
+
     private HandlerStack stack;
 
     /**
-     * @param theStack
-     *                The stack of ContentHandler's for this parsing operation
+     * @param theStack The stack of ContentHandler's for this parsing operation
      */
     public UnknownHandler(HandlerStack theStack) {
         depthCount = 1;

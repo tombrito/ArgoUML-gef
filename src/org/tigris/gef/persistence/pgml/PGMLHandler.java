@@ -51,18 +51,15 @@ public class PGMLHandler extends BaseHandler implements Container {
      * the PGMLStackParser object that is parsing the file. Handlers of
      * sub-elements use this association to find the diagram object.
      * 
-     * @param parser
-     *                The object that is parsing the PGML file
-     * @param attrList
-     *                The attributes identified by the SAX parser for the pgml
-     *                element. The name, scale, description, and
-     *                showSingleMultiplicity attributes are used to construct
-     *                the appropriate GED diagram object and set its properties.
-     * @throws SAXException
-     *                 if something goes wrong.
+     * @param parser The object that is parsing the PGML file
+     * @param attrList The attributes identified by the SAX parser for the pgml
+     *            element. The name, scale, description, and
+     *            showSingleMultiplicity attributes are used to construct the
+     *            appropriate GED diagram object and set its properties.
+     * @throws SAXException if something goes wrong.
      */
     public PGMLHandler(PGMLStackParser parser, Attributes attrList)
-            throws SAXException {
+        throws SAXException {
         super(parser);
         String name = attrList.getValue("name");
         LOG.info("Got a diagram name of " + name);
@@ -88,8 +85,8 @@ public class PGMLHandler extends BaseHandler implements Container {
 
             if (showSingleMultiplicity != null
                     && !"".equals(showSingleMultiplicity)) {
-                diagram.setShowSingleMultiplicity(Boolean.valueOf(
-                        showSingleMultiplicity).booleanValue());
+                diagram.setShowSingleMultiplicity(
+                        Boolean.valueOf(showSingleMultiplicity).booleanValue());
             }
         } catch (PropertyVetoException ex) {
             throw new SAXException(ex);
@@ -110,8 +107,8 @@ public class PGMLHandler extends BaseHandler implements Container {
             Class cls = Class.forName(clsName);
             getPGMLStackParser().setDiagram((Diagram) cls.newInstance());
             if (initStr != null && !initStr.equals("")) {
-                getPGMLStackParser().getDiagram().initialize(
-                        getPGMLStackParser().findOwner(initStr));
+                getPGMLStackParser().getDiagram()
+                        .initialize(getPGMLStackParser().findOwner(initStr));
             }
         } catch (Exception ex) {
             LOG.error("Exception caught", ex);
@@ -122,8 +119,7 @@ public class PGMLHandler extends BaseHandler implements Container {
     /**
      * Adds a Fig object to the diagram represented by the pgml element.
      * 
-     * @param toAdd
-     *                The Fig object to be added to the diagram.
+     * @param toAdd The Fig object to be added to the diagram.
      */
     public void addObject(Object toAdd) {
         Diagram diagram = getPGMLStackParser().getDiagram();

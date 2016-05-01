@@ -85,8 +85,7 @@ public class ModeCreateFigInk extends ModeCreate {
 
     /** Dragging adds points to the ink. */
     public void mouseDragged(MouseEvent me) {
-        if (me.isConsumed())
-            return;
+        if (me.isConsumed()) return;
         int x = me.getX(), y = me.getY();
         FigInk ink = (FigInk) _newItem;
         if (!nearLast(x, y)) {

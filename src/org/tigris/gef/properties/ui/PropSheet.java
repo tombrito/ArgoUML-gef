@@ -53,19 +53,24 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
 
     /** The changes to that object that have not been carried out yet. */
     protected Hashtable _pendingStores = new Hashtable();
+
     // //protected Hashtable _propertyDescriptors = new Hashtable();
     protected Hashtable _pdsEditors = new Hashtable();
+
     protected Hashtable _editorsPds = new Hashtable();
 
     /** True iff every change shold be immeadiatly carried out. */
     protected boolean _autoApply = true;
+
     protected boolean _ignorePropChanges = false;
 
     /** Name used to identify this sheet to the user. */
     protected String _tabName = "Misc";
 
     protected Font _propertiesFont = new Font("Dialog", Font.PLAIN, 10);
+
     protected long _lastUpdateTime = System.currentTimeMillis();
+
     public static final int MIN_UPDATE = 200;
 
     // //////////////////////////////////////////////////////////////
@@ -78,20 +83,17 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
     // accessors
 
     public void setSelection(Object s) {
-        if (_sel == s)
-            return;
+        if (_sel == s) return;
         if (_sel instanceof Fig)
             ((Fig) _sel).removePropertyChangeListener(this);
         _sel = s;
-        if (_sel instanceof Fig)
-            ((Fig) _sel).addPropertyChangeListener(this);
+        if (_sel instanceof Fig) ((Fig) _sel).addPropertyChangeListener(this);
         updateComponents();
     }
 
     public void setAutoApply(boolean aa) {
         _autoApply = aa;
-        if (_autoApply)
-            apply();
+        if (_autoApply) apply();
     }
 
     public String getTabName() {
@@ -108,8 +110,7 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
 
     public void setVisible(boolean b) {
         super.setVisible(b);
-        if (!b)
-            setSelection(null);
+        if (!b) setSelection(null);
     }
 
     public Font getPropertiesFont() {
@@ -128,11 +129,9 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
      * next apply (which may be done immeadiatly).
      */
     public void store(PropertyDescriptor pd, Object value) {
-        if (pd == null || value == null)
-            return;
+        if (pd == null || value == null) return;
         _pendingStores.put(pd, value);
-        if (_autoApply)
-            apply();
+        if (_autoApply) apply();
     }
 
     /**
@@ -151,8 +150,7 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
                 }
             }
             // _sel.put(_pendingStores);
-            if (_sel instanceof Fig)
-                ((Fig) _sel).endTrans();
+            if (_sel instanceof Fig) ((Fig) _sel).endTrans();
             _pendingStores.clear();
         } finally {
             updateComponents();
@@ -212,8 +210,7 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
     // }
     // }
     public void propertyChange(PropertyChangeEvent e) {
-        if (_ignorePropChanges)
-            return; // HACK!
+        if (_ignorePropChanges) return; // HACK!
         // special case for bounding box, because too many updates make dragging
         // choppy
         String pName = e.getPropertyName();
@@ -229,8 +226,7 @@ public class PropSheet extends JPanel implements PropertyChangeListener {
             _lastUpdateTime = now;
         } else {
             PropertyDescriptor pd = (PropertyDescriptor) _editorsPds.get(src);
-            if (pd != null)
-                store(pd, ((PropertyEditor) src).getValue());
+            if (pd != null) store(pd, ((PropertyEditor) src).getValue());
         }
     }
 

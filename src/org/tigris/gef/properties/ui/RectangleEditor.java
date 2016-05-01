@@ -44,18 +44,22 @@ public class RectangleEditor extends JPanel implements PropertyEditor {
     // //////////////////////////////////////////////////////////////
     // instance variables
     protected Rectangle _rect = null;
+
     private java.util.Vector listeners;
 
     protected JTextField xField;
+
     protected JTextField yField;
+
     protected JTextField wField;
+
     protected JTextField hField;
 
     public RectangleEditor() { // //Rectangle r
         setLayout(new GridLayout(1, 4));
         // addNotify();
-        setSize(getInsets().left + getInsets().right + 20, getInsets().top
-                + getInsets().bottom + 20);
+        setSize(getInsets().left + getInsets().right + 20,
+                getInsets().top + getInsets().bottom + 20);
         xField = new JTextField("0", 4);
         yField = new JTextField("0", 4);
         hField = new JTextField("0", 4);
@@ -67,8 +71,7 @@ public class RectangleEditor extends JPanel implements PropertyEditor {
     }
 
     public void setValue(Object v) {
-        if (!(v instanceof Rectangle))
-            return;
+        if (!(v instanceof Rectangle)) return;
         _rect = (Rectangle) v;
         updateWidgets();
     }
@@ -179,8 +182,7 @@ public class RectangleEditor extends JPanel implements PropertyEditor {
         java.util.Vector targets;
         PropertyChangeListener target;
         synchronized (this) {
-            if (listeners == null)
-                return;
+            if (listeners == null) return;
             targets = (java.util.Vector) listeners.clone();
         }
         // Tell our listeners that "everything" has changed.

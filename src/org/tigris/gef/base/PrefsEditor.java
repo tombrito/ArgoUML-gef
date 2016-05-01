@@ -55,6 +55,7 @@ public class PrefsEditor extends Frame {
 
     /** A check box for using straight or rectilinear arcs */
     private Checkbox _printGridCB;
+
     private Checkbox _printBackgroundCB;
 
     /**

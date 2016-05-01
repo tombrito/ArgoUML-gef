@@ -52,7 +52,7 @@ public class SVGWriter extends Graphics {
     private SvgWriter writer;
 
     public SVGWriter(OutputStream stream, Rectangle drawingArea)
-            throws IOException, Exception {
+        throws IOException, Exception {
         writer = new SvgWriter(stream, drawingArea);
     }
 
@@ -84,8 +84,7 @@ public class SVGWriter extends Graphics {
     /**
      * Set the current color for drawing operations.
      * 
-     * @param c
-     *                The new color for drawing operations.
+     * @param c The new color for drawing operations.
      */
     public void setColor(Color c) {
         writer.setColor(c);
@@ -171,11 +170,13 @@ public class SVGWriter extends Graphics {
         writer.fillOval(x, y, w, h);
     }
 
-    public void drawArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
+    public void drawArc(int x, int y, int w, int h, int startAngle,
+            int arcAngle) {
         writer.drawArc(x, y, w, h, startAngle, arcAngle);
     }
 
-    public void fillArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
+    public void fillArc(int x, int y, int w, int h, int startAngle,
+            int arcAngle) {
         writer.fillArc(x, y, w, h, startAngle, arcAngle);
     }
 
@@ -242,12 +243,9 @@ public class SVGWriter extends Graphics {
     /**
      * Draw a string at a given position.
      * 
-     * @param t
-     *                The string to draw.
-     * @param x
-     *                The horizontal position of the text.
-     * @param y
-     *                The vertical position of the text.
+     * @param t The string to draw.
+     * @param x The horizontal position of the text.
+     * @param y The vertical position of the text.
      */
     public void drawString(String t, int x, int y) {
         writer.drawString(t, x, y);

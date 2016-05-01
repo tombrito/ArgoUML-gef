@@ -18,6 +18,7 @@ import org.tigris.gef.util.Localizer;
 public class ZoomAction extends AbstractAction {
 
     private static final long serialVersionUID = -952853421722122499L;
+
     private double _magnitude;
 
     // //////////////////////////////////////////////////////////////
@@ -32,10 +33,9 @@ public class ZoomAction extends AbstractAction {
      * Each time <code>doIt()</code> is invoked, adjust scaling by a factor of
      * <code>magnitude</code>.
      * 
-     * @param magnitude
-     *                the factor by which to adjust the Editor's scaling. Must
-     *                be greater than or equal to zero. If zero, resets the
-     *                Editor's scale factor to 1.
+     * @param magnitude the factor by which to adjust the Editor's scaling. Must
+     *            be greater than or equal to zero. If zero, resets the Editor's
+     *            scale factor to 1.
      */
     public ZoomAction(double magnitude) {
         super(wordFor(magnitude));
@@ -55,13 +55,12 @@ public class ZoomAction extends AbstractAction {
             return Localizer.localize("GefBase", "ZoomOut");
         else
             return Localizer.localize("GefBase", "DoNothing"); // Not a very
-                                                                // useful option
+                                                               // useful option
     }
 
     public void actionPerformed(ActionEvent e) {
         Editor ed = (Editor) Globals.curEditor();
-        if (ed == null)
-            return;
+        if (ed == null) return;
 
         if (_magnitude > 0.0) {
             ed.setScale(ed.getScale() * _magnitude);

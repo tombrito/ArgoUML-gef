@@ -42,7 +42,8 @@ import java.util.StringTokenizer;
 import org.tigris.gef.di.DiagramElement;
 
 /**
- * A FigGroup is a collection of Figs to all be treated as a single item. <p>
+ * A FigGroup is a collection of Figs to all be treated as a single item.
+ * <p>
  * 
  * Any Fig can be in one FigGroup only.
  * 
@@ -80,7 +81,7 @@ public class FigGroup extends Fig {
      * TextColor.
      */
     private boolean textFilled = false;
-    
+
     private Font font = new Font("TimesRoman", Font.PLAIN, 10);
 
     /**
@@ -102,7 +103,7 @@ public class FigGroup extends Fig {
     /**
      * Construct a new FigGroup that holds the given Figs.
      */
-    public FigGroup (List<Fig> figs) {
+    public FigGroup(List<Fig> figs) {
         super();
         this.figs = Collections.synchronizedList(figs);
         calcBounds();
@@ -123,8 +124,7 @@ public class FigGroup extends Fig {
      * Removes from any other group it may have been in already. New Figs are
      * added on the top.
      * 
-     * @param fig
-     *                the Fig to add to this group
+     * @param fig the Fig to add to this group
      */
     public void addFig(Fig fig) {
         Fig group = fig.getGroup();
@@ -141,8 +141,7 @@ public class FigGroup extends Fig {
     /**
      * Add a collection of figs to the group.
      * 
-     * @param figs
-     *                Collection of figs to be added.
+     * @param figs Collection of figs to be added.
      */
     public void addFigs(Collection<Fig> figs) {
         Iterator figIter = figs.iterator();
@@ -155,8 +154,7 @@ public class FigGroup extends Fig {
     /**
      * Sets a new collection of figs. The old collection is removed.
      * 
-     * @param figs
-     *                Collection of figs to be set.
+     * @param figs Collection of figs to be set.
      */
     public void setFigs(Collection<Fig> figs) {
         this.figs.clear();
@@ -199,16 +197,16 @@ public class FigGroup extends Fig {
         _w = boundingBox.width;
         _h = boundingBox.height + extraFrameSpace;
     }
-    
+
     /**
      * Returns the bounds of the given subfig. This method can be overwritten in
      * order to use different strategies on determining the overall bounds of
-     * the FigGroup. <p>
+     * the FigGroup.
+     * <p>
      * 
      * This does not get called for the first Fig in the Group!
      * 
-     * @param subFig
-     *                Subfig of this group to calculate the bounds for.
+     * @param subFig Subfig of this group to calculate the bounds for.
      * @return Rectangle representing the bounds of the subfig.
      */
     protected Rectangle getSubFigBounds(Fig subFig) {
@@ -240,6 +238,7 @@ public class FigGroup extends Fig {
 
     /**
      * Reply an Iterator of the Figs contained in this FigGroup.
+     * 
      * @deprecated use getFigs() and create your own iterator.
      */
     @Deprecated
@@ -250,8 +249,7 @@ public class FigGroup extends Fig {
     /**
      * Get the fig within this group with the given index position
      * 
-     * @param i
-     *                position of fig within this group
+     * @param i position of fig within this group
      */
     public Fig getFigAt(int i) {
         return (Fig) figs.get(i);
@@ -272,20 +270,19 @@ public class FigGroup extends Fig {
     }
 
     /**
-     * Get the child figs that make up this group.
-     * USED BY PGML.tee
+     * Get the child figs that make up this group. USED BY PGML.tee
      * 
      * @return the figs of this group
      */
     public List<Fig> getFigs() {
         return Collections.unmodifiableList(figs);
     }
-    
+
     public List<DiagramElement> getDiagramElements() {
-        return Collections.unmodifiableList(new ArrayList<DiagramElement>(figs));
+        return Collections
+                .unmodifiableList(new ArrayList<DiagramElement>(figs));
     }
-    
-    
+
     public Font getFont() {
         return font;
     }
@@ -346,14 +343,12 @@ public class FigGroup extends Fig {
      * FigGroup is invisible.
      */
     public Fig hitFig(Rectangle r) {
-        if (!isVisible())
-            return null;
+        if (!isVisible()) return null;
         Fig res = null;
         int figCount = this.figs.size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig f = (Fig) this.figs.get(figIndex);
-            if (f.hit(r))
-                res = f;
+            if (f.hit(r)) res = f;
         }
 
         return res;
@@ -392,8 +387,8 @@ public class FigGroup extends Fig {
     }
 
     public void appendSvg(StringBuffer sb) {
-        sb.append("<g id='").append(getId()).append("' class='").append(
-                getClass().getName()).append("'");
+        sb.append("<g id='").append(getId()).append("' class='")
+                .append(getClass().getName()).append("'");
         appendSvgStyle(sb);
         for (Iterator it = getFigs().iterator(); it.hasNext();) {
             Fig fig = (Fig) it.next();
@@ -417,8 +412,7 @@ public class FigGroup extends Fig {
 
     /** Remove a Fig from the group. Fires PropertyChange with "bounds". */
     public void removeFig(Fig f) {
-        if (!this.figs.contains(f))
-            return;
+        if (!this.figs.contains(f)) return;
         Rectangle oldBounds = getBounds();
         this.figs.remove(f);
         f.setGroup(null);
@@ -431,8 +425,7 @@ public class FigGroup extends Fig {
      * enclosed Figs, without the Compartments that should not be displayed.
      */
     public Collection getDisplayedFigs(Collection c) {
-        if (c == null)
-            c = new ArrayList();
+        if (c == null) c = new ArrayList();
 
         int figCount = this.figs.size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
@@ -449,14 +442,10 @@ public class FigGroup extends Fig {
      * Set the bounding box to the given rect. Figs in the group are scaled to
      * fit. Fires PropertyChange with "bounds"
      * 
-     * @param x
-     *                new X co ordinate for fig
-     * @param y
-     *                new Y co ordinate for fig
-     * @param w
-     *                new width for fig
-     * @param h
-     *                new height for fig
+     * @param x new X co ordinate for fig
+     * @param y new Y co ordinate for fig
+     * @param w new width for fig
+     * @param h new height for fig
      */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
@@ -616,8 +605,7 @@ public class FigGroup extends Fig {
     /**
      * Sets the extra spacing for the frame around the elements
      * 
-     * @param extraSpace
-     *                Num of pixels added as additional spacing
+     * @param extraSpace Num of pixels added as additional spacing
      */
     public void setExtraFrameSpace(int extraSpace) {
         extraFrameSpace = extraSpace;
@@ -640,8 +628,7 @@ public class FigGroup extends Fig {
      * Let the group decide if it should be selected itself or the hitten
      * grouped fig instead.
      * 
-     * @param hitRect
-     *                Rectangle surrounding the current mouse position.
+     * @param hitRect Rectangle surrounding the current mouse position.
      * @return The fig that should be selected.
      */
     public Fig deepSelect(Rectangle hitRect) {

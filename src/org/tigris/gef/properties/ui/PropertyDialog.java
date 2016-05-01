@@ -34,8 +34,11 @@ import java.beans.*;
 class PropertyDialog extends JFrame implements ActionListener {
 
     private JButton doneButton;
+
     private Component body;
+
     private final static int vPad = 5;
+
     private final static int hPad = 4;
 
     public PropertyDialog(JFrame frame, PropertyEditor pe, int x, int y) {

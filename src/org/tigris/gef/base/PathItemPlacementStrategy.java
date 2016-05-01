@@ -53,10 +53,11 @@ public interface PathItemPlacementStrategy {
      * be responsible.
      */
     void paint(Graphics g);
-    
+
     /**
-     * Method for setting new locations of path item Figs by specifying
-     * a new point in the x,y coordinate space.
+     * Method for setting new locations of path item Figs by specifying a new
+     * point in the x,y coordinate space.
+     * 
      * @param newPoint
      */
     public void setPoint(Point newPoint);

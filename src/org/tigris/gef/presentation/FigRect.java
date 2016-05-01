@@ -40,11 +40,7 @@ public class FigRect extends Fig implements Serializable {
     private static final long serialVersionUID = -6171328584588911037L;
 
     /** Construct a new resizable FigRect with the given position and size. */
-    public FigRect(
-            final int x, 
-            final int y, 
-            final int w, 
-            final int h) {
+    public FigRect(final int x, final int y, final int w, final int h) {
         super(x, y, w, h);
     }
 
@@ -52,22 +48,13 @@ public class FigRect extends Fig implements Serializable {
      * Construct a new resizable FigRect with the given position, size, line
      * color, and fill color.
      */
-    public FigRect(
-            final int x, 
-            final int y, 
-            final int w, 
-            final int h, 
-            final Color lColor, 
-            final Color fColor) {
+    public FigRect(final int x, final int y, final int w, final int h,
+            final Color lColor, final Color fColor) {
         super(x, y, w, h, lColor, fColor);
     }
 
     /** Construct a new FigRect w/ the given position and size. */
-    public FigRect(
-            final int x, 
-            final int y, 
-            final int w, 
-            final int h, 
+    public FigRect(final int x, final int y, final int w, final int h,
             final boolean resizable) {
         super(x, y, w, h);
         this.resizable = resizable;
@@ -77,14 +64,8 @@ public class FigRect extends Fig implements Serializable {
      * Construct a new FigRect w/ the given position, size, line color, and fill
      * color.
      */
-    public FigRect(
-            final int x, 
-            final int y, 
-            final int w, 
-            final int h, 
-            final boolean resizable, 
-            final Color lColor,
-            final Color fColor) {
+    public FigRect(final int x, final int y, final int w, final int h,
+            final boolean resizable, final Color lColor, final Color fColor) {
         super(x, y, w, h, lColor, fColor);
         this.resizable = resizable;
     }
@@ -94,25 +75,15 @@ public class FigRect extends Fig implements Serializable {
 
     /** Paint this FigRect */
     public void paint(final Graphics g) {
-        drawRect(
-                g, 
-                isFilled(), 
-                getFillColor(), 
-                getLineWidth(), 
-                getLineColor(), 
-                getX(), 
-                getY(), 
-                getWidth(),
-                getHeight(), 
-                getDashed(), 
-                _dashes, 
+        drawRect(g, isFilled(), getFillColor(), getLineWidth(), getLineColor(),
+                getX(), getY(), getWidth(), getHeight(), getDashed(), _dashes,
                 _dashPeriod);
     }
 
     public void appendSvg(StringBuffer sb) {
         sb.append("<rect id='").append(getId()).append("' x='").append(getX())
-                .append("' y='").append(getY()).append("' width='").append(
-                        getWidth()).append("' height='").append(getHeight())
+                .append("' y='").append(getY()).append("' width='")
+                .append(getWidth()).append("' height='").append(getHeight())
                 .append("'");
         appendSvgStyle(sb);
         sb.append(" />");

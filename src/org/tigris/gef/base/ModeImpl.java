@@ -42,8 +42,8 @@ import java.util.Hashtable;
  * @see FigModifyingModeImpl
  */
 
-public class ModeImpl implements Mode, Serializable, KeyListener,
-        MouseListener, MouseMotionListener {
+public class ModeImpl implements Mode, Serializable, KeyListener, MouseListener,
+        MouseMotionListener {
 
     private static final long serialVersionUID = -3707221186028816573L;
 
@@ -82,8 +82,7 @@ public class ModeImpl implements Mode, Serializable, KeyListener,
     }
 
     public void setArg(String key, Object value) {
-        if (_args == null)
-            _args = new Hashtable();
+        if (_args == null) _args = new Hashtable();
         _args.put(key, value);
     }
 
@@ -92,8 +91,7 @@ public class ModeImpl implements Mode, Serializable, KeyListener,
     }
 
     public Object getArg(String s) {
-        if (_args == null)
-            return null;
+        if (_args == null) return null;
         return _args.get(s);
     }
 

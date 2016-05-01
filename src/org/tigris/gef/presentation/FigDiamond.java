@@ -114,9 +114,9 @@ public class FigDiamond extends Fig {
         sb.append("<path id='").append(getId()).append("' class='")
                 .append(getClass().getName())
                 .append("' style='fill:none; stroke-width:")
-                .append(getLineWidth())
-                .append("; stroke:rgb(").append(getLineColor().getRed())
-                .append(",").append(getLineColor().getGreen()).append(',')
+                .append(getLineWidth()).append("; stroke:rgb(")
+                .append(getLineColor().getRed()).append(",")
+                .append(getLineColor().getGreen()).append(',')
                 .append(getLineColor().getBlue()).append(" ;' d='");
         for (int i = 0; i < getPoints().length; ++i) {
             if (i == 0) {

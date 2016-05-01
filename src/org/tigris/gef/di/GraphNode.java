@@ -33,5 +33,6 @@ import java.util.List;
 public interface GraphNode extends GraphElement {
 
     List<GraphEdge> getGraphEdges();
+
     Rectangle getNodeBounds();
 }

@@ -57,8 +57,7 @@ public class CmdCut extends Cmd {
         while (copies.hasNext()) {
             Selection s = copies.next();
             Fig f = s.getContent();
-            if (f instanceof FigEdge)
-                continue;
+            if (f instanceof FigEdge) continue;
             // needs-more-work: add support for cut-and-paste of edges
             f = (Fig) f.clone();
             figs.add(f);

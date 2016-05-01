@@ -27,7 +27,7 @@ public class PostscriptWriter extends Graphics2D {
     }
 
     public PostscriptWriter(String filename, Rectangle boundingBox)
-            throws IOException {
+        throws IOException {
         psWriter = new org.tigris.gef.persistence.export.PostscriptWriter(
                 filename, boundingBox);
     }
@@ -39,7 +39,7 @@ public class PostscriptWriter extends Graphics2D {
     }
 
     public PostscriptWriter(OutputStream stream, Rectangle bb)
-            throws IOException {
+        throws IOException {
         psWriter = new org.tigris.gef.persistence.export.PostscriptWriter(
                 stream, bb);
     }
@@ -160,11 +160,13 @@ public class PostscriptWriter extends Graphics2D {
         psWriter.fillOval(x, y, w, h);
     }
 
-    public void drawArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
+    public void drawArc(int x, int y, int w, int h, int startAngle,
+            int arcAngle) {
         psWriter.drawArc(x, y, w, h, startAngle, arcAngle);
     }
 
-    public void fillArc(int x, int y, int w, int h, int startAngle, int arcAngle) {
+    public void fillArc(int x, int y, int w, int h, int startAngle,
+            int arcAngle) {
         psWriter.fillArc(x, y, w, h, startAngle, arcAngle);
     }
 

@@ -28,18 +28,21 @@ import org.tigris.gef.di.GraphNode;
 
 /**
  * An interface for any diagram element that connects the bounds of some node.
+ * 
  * @author Bob Tarling
  */
 public interface Connector {
 
     /**
      * Get theGraphNode this connector is connected to.
+     * 
      * @return
      */
     GraphNode getGraphNode();
 
     /**
      * Assign a GraphNode to this connector
+     * 
      * @param node the GraphNode to assign
      */
     void setGraphNode(GraphNode node);

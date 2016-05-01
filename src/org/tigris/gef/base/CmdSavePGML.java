@@ -86,8 +86,8 @@ public class CmdSavePGML extends Cmd implements FilenameFilter {
     public void doIt() {
         // @@@ just for easy debugging
         try {
-            _expander = new OCLExpander(TemplateReader.getInstance().read(
-                    "/org/tigris/gef/xml/dtd/PGML.tee"));
+            _expander = new OCLExpander(TemplateReader.getInstance()
+                    .read("/org/tigris/gef/xml/dtd/PGML.tee"));
 
             Editor ce = Globals.curEditor();
             Diagram d = new Diagram("junk", ce.getGraphModel(),

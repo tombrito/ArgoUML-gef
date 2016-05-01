@@ -44,7 +44,7 @@ public class Geometry {
      * Rectangle that is closest to the given point.
      */
     public static void ptClosestTo(Rectangle r, Point p, Point res) {
-        
+
         final int NORTHWEST = 0;
         final int NORTH = 1;
         final int NORTHEAST = 2;
@@ -54,7 +54,7 @@ public class Geometry {
         final int SOUTHWEST = 6;
         final int SOUTH = 7;
         final int SOUTHEAST = 8;
-        
+
         int x1 = Math.min(r.x, r.x + (r.width - 1));
         int y1 = Math.min(r.y, r.y + (r.height - 1));
         int x2 = Math.max(r.x, r.x + (r.width - 1));
@@ -201,8 +201,7 @@ public class Geometry {
      */
     public static double diffAngle(double angle1, double angle2) {
         double diff = Math.abs(angle1 - angle2);
-        if (diff > 180)
-            diff = 360 - diff;
+        if (diff > 180) diff = 360 - diff;
         return diff;
     }
 
@@ -305,8 +304,8 @@ public class Geometry {
             Point p, Point res) {
         res.x = xs[0];
         res.y = ys[0];
-        int bestDist = (res.x - p.x) * (res.x - p.x) + (res.y - p.y)
-                * (res.y - p.y);
+        int bestDist = (res.x - p.x) * (res.x - p.x)
+                + (res.y - p.y) * (res.y - p.y);
         int tDist;
         tempPoint.x = 0;
         tempPoint.y = 0;
@@ -344,8 +343,7 @@ public class Geometry {
         for (int i = 0; i < n - 1; ++i) {
             int x1 = xs[i], y1 = ys[i];
             int x2 = xs[i + 1], y2 = ys[i + 1];
-            if (Geometry.nearSegment(x1, y1, x2, y2, x, y, grip))
-                return true;
+            if (Geometry.nearSegment(x1, y1, x2, y2, x, y, grip)) return true;
         }
         return false;
     }
@@ -383,14 +381,10 @@ public class Geometry {
         int dy1 = y2 - y1;
         int dx2 = x - x1;
         int dy2 = y - y1;
-        if (dx1 * dy2 > dy1 * dx2)
-            return +1;
-        if (dx1 * dy2 < dy1 * dx2)
-            return -1;
-        if ((dx1 * dx2 < 0) || (dy1 * dy2 < 0))
-            return -1;
-        if ((dx1 * dx1 + dy1 * dy1) < (dx2 * dx2 + dy2 * dy2))
-            return +1;
+        if (dx1 * dy2 > dy1 * dx2) return +1;
+        if (dx1 * dy2 < dy1 * dx2) return -1;
+        if ((dx1 * dx2 < 0) || (dy1 * dy2 < 0)) return -1;
+        if ((dx1 * dx1 + dy1 * dy1) < (dx2 * dx2 + dy2 * dy2)) return +1;
         return 0;
     }
 } /* end class Geometry */

@@ -72,8 +72,7 @@ public class SelectNextAction extends AbstractAction {
     /**
      * Creates a new SelectNextAction (direction is next, by default)
      * 
-     * @param name
-     *                The name of the action
+     * @param name The name of the action
      */
     public SelectNextAction(String name) {
         this(name, true);
@@ -82,10 +81,8 @@ public class SelectNextAction extends AbstractAction {
     /**
      * Creates a new SelectNextAction
      * 
-     * @param name
-     *                The name of the action
-     * @param next
-     *                Whether the direction is next or previous
+     * @param name The name of the action
+     * @param next Whether the direction is next or previous
      */
     public SelectNextAction(String name, boolean next) {
         this(name, next ? DIR_NEXT : DIR_PREV, false);
@@ -94,10 +91,8 @@ public class SelectNextAction extends AbstractAction {
     /**
      * Creates a new SelectNextAction
      * 
-     * @param name
-     *                The name of the action
-     * @param direction
-     *                The direction of the selection
+     * @param name The name of the action
+     * @param direction The direction of the selection
      */
     public SelectNextAction(String name, String direction) {
         this(name, direction, false);
@@ -106,10 +101,8 @@ public class SelectNextAction extends AbstractAction {
     /**
      * Creates a new SelectNextAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
+     * @param name The name of the action
+     * @param icon The icon of the action
      */
     public SelectNextAction(String name, Icon icon) {
         this(name, icon, DIR_NEXT);
@@ -118,12 +111,9 @@ public class SelectNextAction extends AbstractAction {
     /**
      * Creates a new SelectNextAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param next
-     *                Whether the direction is next or previous
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param next Whether the direction is next or previous
      */
     public SelectNextAction(String name, Icon icon, boolean next) {
         this(name, icon, next ? DIR_NEXT : DIR_PREV, false);
@@ -132,12 +122,9 @@ public class SelectNextAction extends AbstractAction {
     /**
      * Creates a new SelectNextAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param direction
-     *                The direction of the selection
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param direction The direction of the selection
      */
     public SelectNextAction(String name, Icon icon, String direction) {
         this(name, icon, direction, false);
@@ -146,12 +133,9 @@ public class SelectNextAction extends AbstractAction {
     /**
      * Creates a new SelectNextAction
      * 
-     * @param name
-     *                The name of the action
-     * @param direction
-     *                The direction of the selection
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param direction The direction of the selection
+     * @param localize Whether to localize the name or not
      */
     public SelectNextAction(String name, String direction, boolean localize) {
         super(localize ? Localizer.localize("GefBase", name) : name);
@@ -160,14 +144,10 @@ public class SelectNextAction extends AbstractAction {
     /**
      * Creates a new SelectNextAction
      * 
-     * @param name
-     *                The name of the action
-     * @param icon
-     *                The icon of the action
-     * @param direction
-     *                The direction of the selection
-     * @param localize
-     *                Whether to localize the name or not
+     * @param name The name of the action
+     * @param icon The icon of the action
+     * @param direction The direction of the selection
+     * @param localize Whether to localize the name or not
      */
     public SelectNextAction(String name, Icon icon, String direction,
             boolean localize) {

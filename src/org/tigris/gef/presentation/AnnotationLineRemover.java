@@ -7,7 +7,9 @@ import java.util.Hashtable;
 public class AnnotationLineRemover implements ActionListener {
 
     private Hashtable timers; // FIG | Timer
+
     private Hashtable figs; // Timer | Fig (nur der bequemlichkeit wegen ;-)
+
     private static AnnotationLineRemover theInstance = null;
 
     private AnnotationLineRemover() {
@@ -16,8 +18,7 @@ public class AnnotationLineRemover implements ActionListener {
     }
 
     public static AnnotationLineRemover instance() {
-        if (theInstance == null)
-            theInstance = new AnnotationLineRemover();
+        if (theInstance == null) theInstance = new AnnotationLineRemover();
         return theInstance;
     }
 

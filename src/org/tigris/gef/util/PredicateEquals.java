@@ -36,8 +36,7 @@ public class PredicateEquals implements Predicate {
     }
 
     public boolean predicate(Object obj) {
-        if (_pattern == null)
-            return obj == null;
+        if (_pattern == null) return obj == null;
         return _pattern.equals(obj);
     }
 } /* end class PredicateEquals */

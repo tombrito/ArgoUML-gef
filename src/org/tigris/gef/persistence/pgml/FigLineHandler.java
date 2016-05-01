@@ -38,14 +38,13 @@ public class FigLineHandler extends BaseHandler {
      * The Fig for the line.
      */
     private FigLine line;
+
     int _x1, _y1, _x2, _y2;
 
     /**
-     * @param parser
-     *                The PGMLStackParser for the diagram that contains this
-     *                FigLine
-     * @param theLine
-     *                The object corresponding to the element being parsed
+     * @param parser The PGMLStackParser for the diagram that contains this
+     *            FigLine
+     * @param theLine The object corresponding to the element being parsed
      */
     public FigLineHandler(PGMLStackParser parser, FigLine theLine) {
         super(parser);

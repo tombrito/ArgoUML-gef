@@ -42,8 +42,8 @@ import org.tigris.gef.graph.GraphPortHooks;
  * your own application-specific objects as ports.
  */
 
-public class NetPort extends NetPrimitive implements GraphPortHooks,
-        java.io.Serializable {
+public class NetPort extends NetPrimitive
+        implements GraphPortHooks, java.io.Serializable {
 
     private static final long serialVersionUID = -3506978147166333303L;
 
@@ -147,9 +147,8 @@ public class NetPort extends NetPrimitive implements GraphPortHooks,
     public void postConnect(GraphModel gm, Object otherPort) {
         NetPort otherNetPort = (NetPort) otherPort;
         NetNode parent = getParentNode();
-        parent
-                .postConnect(gm, otherNetPort.getParentNode(), this,
-                        otherNetPort);
+        parent.postConnect(gm, otherNetPort.getParentNode(), this,
+                otherNetPort);
     }
 
     /**

@@ -60,15 +60,15 @@ import org.tigris.gef.util.ResourceLoader;
  * </p>
  */
 
-public abstract class Cmd extends AbstractAction implements
-        java.io.Serializable {
+public abstract class Cmd extends AbstractAction
+        implements java.io.Serializable {
 
     // Arguments that configure the Cmd instance.
     /**
      * @deprecated in 0.13 will become private use getArg()
      */
     protected Hashtable _args;
-    
+
     /**
      * @deprecated in 0.13 will become private use getResource()
      */
@@ -188,8 +188,8 @@ public abstract class Cmd extends AbstractAction implements
     // Cmd API
 
     /**
-     * Return a URL that has user and programmer documentation. <A
-     * HREF="../features.html#view_Cmd_documentation">
+     * Return a URL that has user and programmer documentation.
+     * <A HREF="../features.html#view_Cmd_documentation">
      * <TT>FEATURE: view_Cmd_documentation</TT></A>
      */
     public String about() {

@@ -55,14 +55,20 @@ public class PropSheetCategory extends PropSheet {
 
     /** Given a property name, which AWT component edits its value. */
     protected Hashtable _keysComps;
+
     /** Given an AWT component, what is the name of the property it edits. */
     protected Hashtable _compsKeys;
+
     protected Hashtable _inUse; // used as a set
+
     protected Hashtable _labels;
+
     protected Hashtable _shown; // used as a set
+
     protected String _category = "Misc";
 
     protected PropertyDescriptor _properties[];
+
     protected JFrame _jframe;
 
     // protected JScrollPane _scroller = new JScrollPane();
@@ -81,8 +87,8 @@ public class PropSheetCategory extends PropSheet {
         // setLayout(new GridLayout(0, 2, 4, 4));
         // setLayout(new FlowLayout());
         // addNotify();
-        setSize(getInsets().left + getInsets().right + 250, getInsets().top
-                + getInsets().bottom + 300);
+        setSize(getInsets().left + getInsets().right + 250,
+                getInsets().top + getInsets().bottom + 300);
         setFont(getPropertiesFont());
         // _scroller.add(_innerPanel);
         // add(_scroller, BorderLayout.CENTER);
@@ -114,8 +120,7 @@ public class PropSheetCategory extends PropSheet {
     }
 
     public void setCategory(String cat) {
-        if (_category.equals(cat))
-            return;
+        if (_category.equals(cat)) return;
         _category = cat;
         setTabName(cat);
         if (_sel != null) {
@@ -139,16 +144,15 @@ public class PropSheetCategory extends PropSheet {
 
     public void updateKeysComps() {
         _inUse.clear();
-        if (_sel == null)
-            return;
+        if (_sel == null) return;
         Class selClass = _sel.getClass();
         // @
         try {
             BeanInfo bi = Introspector.getBeanInfo(selClass);
             _properties = bi.getPropertyDescriptors();
         } catch (IntrospectionException ex) {
-            System.out.println("PropertySheet: Couldn't introspect\n"
-                    + ex.toString());
+            System.out.println(
+                    "PropertySheet: Couldn't introspect\n" + ex.toString());
             return;
         }
         for (int i = 0; i < _properties.length; i++) {
@@ -169,8 +173,7 @@ public class PropSheetCategory extends PropSheet {
         JLabel lab = (JLabel) _labels.get(pd);
         Component comp = (Component) _keysComps.get(pd);
         setComponentValue(pd, comp);
-        if (_shown.containsKey(pd))
-            return;
+        if (_shown.containsKey(pd)) return;
         // _innerPanel.add(lab);
         // _innerPanel.add(comp);
         add(lab);
@@ -181,8 +184,7 @@ public class PropSheetCategory extends PropSheet {
     }
 
     public void hide(PropertyDescriptor pd) {
-        if (!_shown.containsKey(pd))
-            return;
+        if (!_shown.containsKey(pd)) return;
         JLabel lab = (JLabel) _labels.get(pd);
         Component comp = (Component) _keysComps.get(pd);
         lab.setVisible(false);
@@ -275,8 +277,7 @@ public class PropSheetCategory extends PropSheet {
     public void setComponentValue(PropertyDescriptor pd, Component comp) {
         // System.out.println("setComponentValue");
 
-        if (inRecursion)
-            return;
+        if (inRecursion) return;
 
         Object value = null;
         try {
@@ -293,8 +294,7 @@ public class PropSheetCategory extends PropSheet {
         }
         // System.out.println("set component value");
 
-        if (comp == null)
-            System.out.println("tag is null");
+        if (comp == null) System.out.println("tag is null");
 
         inRecursion = true;
         if (comp instanceof PropertyEditor)
@@ -310,8 +310,7 @@ public class PropSheetCategory extends PropSheet {
                 else
                     tag = "False";
             }
-            if (tag == null)
-                System.out.println("tag is null");
+            if (tag == null) System.out.println("tag is null");
             ((PropertySelector) comp).setSelectedItem(tag);
             // Vector items = (Vector) _enumProps.get(pd);
             // if (items != null && items.contains(value))
@@ -344,8 +343,7 @@ public class PropSheetCategory extends PropSheet {
     // update methods
 
     public void addNotify() {
-        if (_keysComps != null)
-            super.addNotify();
+        if (_keysComps != null) super.addNotify();
     }
 
     public boolean canEdit(Object item) {
@@ -370,8 +368,7 @@ public class PropSheetCategory extends PropSheet {
     public void updateComponent(PropertyDescriptor pd) {
         // System.out.println("updateComponent");
         Component comp = (Component) _keysComps.get(pd);
-        if (comp != null)
-            setComponentValue(pd, comp);
+        if (comp != null) setComponentValue(pd, comp);
     }
 
 } /* end class PropSheetCategory */

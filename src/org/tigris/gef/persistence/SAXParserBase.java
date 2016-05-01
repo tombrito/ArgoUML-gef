@@ -86,16 +86,17 @@ public abstract class SAXParserBase extends DefaultHandler {
      * stack end endElement removes it.
      */
     private XMLElement[] freeElements = new XMLElement[100];
+
     private int nFreeElements = 0;
 
     private boolean stats = true;
+
     private long parseTime = 0;
 
     private static Log LOG = LogFactory.getLog(SAXParserBase.class);
 
     /**
-     * @param s
-     *                true if statistics have to be shown
+     * @param s true if statistics have to be shown
      */
     public void setStats(boolean s) {
         stats = s;
@@ -119,10 +120,8 @@ public abstract class SAXParserBase extends DefaultHandler {
     // main parsing method
 
     /**
-     * @param is
-     *                the inputstream of the project to read
-     * @throws SAXException
-     *                 when parsing xml
+     * @param is the inputstream of the project to read
+     * @throws SAXException when parsing xml
      */
     public void parse(InputStream is) throws SAXException {
 
@@ -158,22 +157,18 @@ public abstract class SAXParserBase extends DefaultHandler {
      * Implement in the concrete class to handle reaching the start tag of an
      * element of interest.
      * 
-     * @param e
-     *                the element.
-     * @throws SAXException
-     *                 on any error parsing the element.
+     * @param e the element.
+     * @throws SAXException on any error parsing the element.
      */
     protected abstract void handleStartElement(XMLElement e)
-            throws SAXException;
+        throws SAXException;
 
     /**
      * Implement in the concrete class to handle reaching the end tag of an
      * element of interest.
      * 
-     * @param e
-     *                the element.
-     * @throws SAXException
-     *                 on any error parsing the element.
+     * @param e the element.
+     * @throws SAXException on any error parsing the element.
      */
     protected abstract void handleEndElement(XMLElement e) throws SAXException;
 
@@ -185,7 +180,8 @@ public abstract class SAXParserBase extends DefaultHandler {
      *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(String uri, String localname, String name,
-            Attributes atts) throws SAXException {
+            Attributes atts)
+        throws SAXException {
         if (isElementOfInterest(name)) {
 
             XMLElement element = createXmlElement(name, atts);
@@ -194,8 +190,8 @@ public abstract class SAXParserBase extends DefaultHandler {
                 StringBuffer buf = new StringBuffer();
                 buf.append("START: ").append(name).append(' ').append(element);
                 for (int i = 0; i < atts.getLength(); i++) {
-                    buf.append("   ATT: ").append(atts.getLocalName(i)).append(
-                            ' ').append(atts.getValue(i));
+                    buf.append("   ATT: ").append(atts.getLocalName(i))
+                            .append(' ').append(atts.getValue(i));
                 }
                 LOG.debug(buf.toString());
             }
@@ -209,10 +205,8 @@ public abstract class SAXParserBase extends DefaultHandler {
      * Factory method to return an XMLElement. This will reuse previously
      * created elements when possible.
      * 
-     * @param name
-     *                The element name.
-     * @param atts
-     *                The element attributes.
+     * @param name The element name.
+     * @param atts The element attributes.
      * @return the element.
      */
     private XMLElement createXmlElement(String name, Attributes atts) {
@@ -231,13 +225,13 @@ public abstract class SAXParserBase extends DefaultHandler {
      *      java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String name)
-            throws SAXException {
+        throws SAXException {
         if (isElementOfInterest(name)) {
             XMLElement e = elements[--nElements];
             if (LOG.isDebugEnabled()) {
                 StringBuffer buf = new StringBuffer();
-                buf.append("END: " + e.getName() + " [" + e.getText() + "] "
-                        + e + "\n");
+                buf.append("END: " + e.getName() + " [" + e.getText() + "] " + e
+                        + "\n");
                 for (int i = 0; i < e.getNumAttributes(); i++) {
                     buf.append("   ATT: " + e.getAttributeName(i) + " "
                             + e.getAttributeValue(i) + "\n");
@@ -252,8 +246,7 @@ public abstract class SAXParserBase extends DefaultHandler {
      * Determine if an element of the given name is of interest to the parser.
      * The base implementation assumes always true.
      * 
-     * @param name
-     *                the element name.
+     * @param name the element name.
      * @return true if the element name is of interest.
      */
     protected boolean isElementOfInterest(String name) {
@@ -264,7 +257,7 @@ public abstract class SAXParserBase extends DefaultHandler {
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
     public void characters(char[] ch, int start, int length)
-            throws SAXException {
+        throws SAXException {
         for (int i = 0; i < nElements; i++) {
             XMLElement e = elements[i];
             String test = e.getText();
@@ -280,7 +273,7 @@ public abstract class SAXParserBase extends DefaultHandler {
      *      java.lang.String)
      */
     public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException {
+        throws SAXException {
         try {
             URL testIt = new URL(systemId);
             InputSource s = new InputSource(testIt.openStream());
@@ -304,8 +297,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     }
 
     /**
-     * @param cls
-     *                the class
+     * @param cls the class
      * @return the jar
      */
     public String getJarResource(String cls) {
@@ -332,8 +324,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     // convenience methods
 
     /**
-     * @param e
-     *                the element
+     * @param e the element
      */
     public void ignoreElement(XMLElement e) {
         if (LOG.isDebugEnabled()) {
@@ -342,8 +333,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     }
 
     /**
-     * @param e
-     *                the element
+     * @param e the element
      */
     public void notImplemented(XMLElement e) {
         if (LOG.isDebugEnabled()) {

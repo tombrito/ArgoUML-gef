@@ -39,8 +39,11 @@ import java.util.Vector;
 
 public class ToolBar extends JToolBar implements MouseListener {
     protected Vector _lockable = new Vector();
+
     protected Vector _modeButtons = new Vector();
+
     private static final Color selectedBack = new Color(153, 153, 153);
+
     private static final Color buttonBack = new Color(204, 204, 204);
 
     public ToolBar() {
@@ -51,8 +54,7 @@ public class ToolBar extends JToolBar implements MouseListener {
     /**
      * Add a new JButton which dispatches the action.
      * 
-     * @param a
-     *                the Action object to add as a new menu item
+     * @param a the Action object to add as a new menu item
      */
     public JButton add(Action a) {
         String name = (String) a.getValue(Action.NAME);
@@ -120,7 +122,8 @@ public class ToolBar extends JToolBar implements MouseListener {
         return addToggle(a, name, icon);
     }
 
-    public JToggleButton addToggle(Action a, String name, String iconResourceStr) {
+    public JToggleButton addToggle(Action a, String name,
+            String iconResourceStr) {
         Icon icon = ResourceLoader.lookupIconResource(iconResourceStr, name);
         // System.out.println(icon);
         return addToggle(a, name, icon);
@@ -132,7 +135,8 @@ public class ToolBar extends JToolBar implements MouseListener {
         b.setEnabled(a.isEnabled());
         b.addActionListener(a);
         add(b);
-        PropertyChangeListener actionPropertyChangeListener = createActionToggleListener(b);
+        PropertyChangeListener actionPropertyChangeListener = createActionToggleListener(
+                b);
         a.addPropertyChangeListener(actionPropertyChangeListener);
         // needs-more-work: should buttons appear stuck down while action
         // executes?
@@ -149,7 +153,8 @@ public class ToolBar extends JToolBar implements MouseListener {
         b.addActionListener(a);
         b.setMargin(new Insets(0, 0, 0, 0));
         add(b);
-        PropertyChangeListener actionPropertyChangeListener = createActionToggleListener(b);
+        PropertyChangeListener actionPropertyChangeListener = createActionToggleListener(
+                b);
         a.addPropertyChangeListener(actionPropertyChangeListener);
         // needs-more-work: should buttons appear stuck down while action
         // executes?
@@ -157,7 +162,8 @@ public class ToolBar extends JToolBar implements MouseListener {
     }
 
     public ButtonGroup addRadioGroup(String name1, ImageIcon oneUp,
-            ImageIcon oneDown, String name2, ImageIcon twoUp, ImageIcon twoDown) {
+            ImageIcon oneDown, String name2, ImageIcon twoUp,
+            ImageIcon twoDown) {
         JRadioButton b1 = new JRadioButton(oneUp, true);
         b1.setSelectedIcon(oneDown);
         b1.setToolTipText(name1 + " ");
@@ -186,11 +192,13 @@ public class ToolBar extends JToolBar implements MouseListener {
         return bg;
     }
 
-    protected PropertyChangeListener createActionToggleListener(JToggleButton b) {
+    protected PropertyChangeListener createActionToggleListener(
+            JToggleButton b) {
         return new ActionToggleChangedListener(b);
     }
 
-    private class ActionToggleChangedListener implements PropertyChangeListener {
+    private class ActionToggleChangedListener
+            implements PropertyChangeListener {
         JToggleButton button;
 
         ActionToggleChangedListener(JToggleButton b) {
@@ -237,13 +245,11 @@ public class ToolBar extends JToolBar implements MouseListener {
         if (isModeButton(src)) {
             unpressAllButtonsExcept(src);
             Editor ce = Globals.curEditor();
-            if (ce != null)
-                ce.finishMode();
+            if (ce != null) ce.finishMode();
             Globals.setSticky(false);
         }
         if (me.getClickCount() >= 2) {
-            if (!(src instanceof JButton))
-                return;
+            if (!(src instanceof JButton)) return;
             JButton b = (JButton) src;
             if (canLock(b)) {
                 b.getModel().setPressed(true);
@@ -273,10 +279,8 @@ public class ToolBar extends JToolBar implements MouseListener {
         int size = getComponentCount();
         for (int i = 0; i < size; i++) {
             Component c = getComponent(i);
-            if (!(c instanceof JButton))
-                continue;
-            if (c == src)
-                continue;
+            if (!(c instanceof JButton)) continue;
+            if (c == src) continue;
             ((JButton) c).getModel().setArmed(false);
             ((JButton) c).getModel().setPressed(false);
             ((JButton) c).setBackground(buttonBack);
@@ -287,8 +291,7 @@ public class ToolBar extends JToolBar implements MouseListener {
         int size = getComponentCount();
         for (int i = 0; i < size; i++) {
             Component c = getComponent(i);
-            if (!(c instanceof JButton))
-                continue;
+            if (!(c instanceof JButton)) continue;
             ((JButton) c).getModel().setArmed(false);
             ((JButton) c).getModel().setPressed(false);
             ((JButton) c).setBackground(buttonBack);
@@ -296,8 +299,7 @@ public class ToolBar extends JToolBar implements MouseListener {
         // press the first button (usually ModeSelect)
         for (int i = 0; i < size; i++) {
             Component c = getComponent(i);
-            if (!(c instanceof JButton))
-                continue;
+            if (!(c instanceof JButton)) continue;
             JButton select = (JButton) c;
             select.getModel().setArmed(true);
             select.getModel().setPressed(true);

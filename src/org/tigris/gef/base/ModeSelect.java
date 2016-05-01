@@ -46,13 +46,12 @@ import org.tigris.gef.presentation.Handle;
 /**
  * This class implements a Mode that interprets user input as selecting one or
  * more Figs. Clicking on a Fig will select it. Shift-clicking will toggle
- * whether it is selected. Control-clicking will toggle
- * whether it is selected.  Alt-clicking will start the broom (ModeBroom).
- * Alt-Gr-clicking also invokes the broom.
- * Dragging in open space will draw a selection
- * rectangle. Dragging on a Fig will switch to ModeModify. Dragging from a port
- * will switch to ModeCreateEdge. ModeSelect paints itself by displaying its
- * selection rectangle if any.
+ * whether it is selected. Control-clicking will toggle whether it is selected.
+ * Alt-clicking will start the broom (ModeBroom). Alt-Gr-clicking also invokes
+ * the broom. Dragging in open space will draw a selection rectangle. Dragging
+ * on a Fig will switch to ModeModify. Dragging from a port will switch to
+ * ModeCreateEdge. ModeSelect paints itself by displaying its selection
+ * rectangle if any.
  * <p>
  * 
  * Needs-More-Work: this mode has more responsibility than just making
@@ -120,17 +119,17 @@ public class ModeSelect extends FigModifyingModeImpl {
             return;
         }
 
-        int onmask = MouseEvent.BUTTON1_DOWN_MASK
-            | MouseEvent.ALT_DOWN_MASK;
+        int onmask = MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.ALT_DOWN_MASK;
         int onmask2 = MouseEvent.BUTTON1_DOWN_MASK
-            | MouseEvent.ALT_GRAPH_DOWN_MASK;
-        int offmask = MouseEvent.BUTTON2_DOWN_MASK 
-            | MouseEvent.BUTTON3_DOWN_MASK
-            | MouseEvent.CTRL_DOWN_MASK;
-        /* The broom uses the shift key to adapt its functionality, 
-         * so it is not checked here.*/
+                | MouseEvent.ALT_GRAPH_DOWN_MASK;
+        int offmask = MouseEvent.BUTTON2_DOWN_MASK
+                | MouseEvent.BUTTON3_DOWN_MASK | MouseEvent.CTRL_DOWN_MASK;
+        /*
+         * The broom uses the shift key to adapt its functionality, so it is not
+         * checked here.
+         */
         if (((me.getModifiersEx() & (onmask | offmask)) == onmask)
-                || ((me.getModifiersEx() & (onmask2 | offmask)) == onmask2)){
+                || ((me.getModifiersEx() & (onmask2 | offmask)) == onmask2)) {
             gotoBroomMode(me);
             if (LOG.isDebugEnabled())
                 LOG.debug("MousePressed with alt key pressed");
@@ -139,9 +138,8 @@ public class ModeSelect extends FigModifyingModeImpl {
 
         if (me.getModifiers() == InputEvent.BUTTON3_MASK) {
             selectAnchor = new Point(me.getX(), me.getY());
-            if (LOG.isDebugEnabled())
-                LOG
-                        .debug("MousePressed detected button 3 so setting anchor point");
+            if (LOG.isDebugEnabled()) LOG.debug(
+                    "MousePressed detected button 3 so setting anchor point");
             // TODO should we not consume here?
             return;
         }
@@ -150,13 +148,14 @@ public class ModeSelect extends FigModifyingModeImpl {
         int y = me.getY();
         selectAnchor = new Point(x, y);
         selectRect.setBounds(x, y, 0, 0);
-        toggleSelection = ((me.isControlDown() || me.isShiftDown()) 
-                && !me.isPopupTrigger())
-                    || me.isMetaDown();
+        toggleSelection = ((me.isControlDown() || me.isShiftDown())
+                && !me.isPopupTrigger()) || me.isMetaDown();
         SelectionManager sm = editor.getSelectionManager();
         Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
 
-        /* Check if multiple things are selected and user clicked one of them. */
+        /*
+         * Check if multiple things are selected and user clicked one of them.
+         */
         Fig underMouse = editor.hit(selectAnchor);
         Rectangle smallHitRect = new Rectangle(x - 1, y - 1, 3, 3);
         if (underMouse instanceof FigGroup) {
@@ -174,9 +173,8 @@ public class ModeSelect extends FigModifyingModeImpl {
         if (h.index >= 0) {
             gotoModifyMode(me);
             me.consume();
-            if (LOG.isDebugEnabled())
-                LOG
-                        .debug("MousePressed with hit handle, going to Modify mode and consumed event");
+            if (LOG.isDebugEnabled()) LOG.debug(
+                    "MousePressed with hit handle, going to Modify mode and consumed event");
             return;
         }
 
@@ -264,10 +262,9 @@ public class ModeSelect extends FigModifyingModeImpl {
         Iterator figs = editor.getFigs().iterator();
         while (figs.hasNext()) {
             Fig f = (Fig) figs.next();
-            if (f.isSelectable()
-                    && ((!toggleSelection && selectRect.isEmpty() && f
-                            .hit(hitRect)) || (!selectRect.isEmpty() && f
-                            .within(selectRect)))) {
+            if (f.isSelectable() && ((!toggleSelection && selectRect.isEmpty()
+                    && f.hit(hitRect))
+                    || (!selectRect.isEmpty() && f.within(selectRect)))) {
                 selectList.addElement(f);
             }
         }
@@ -297,8 +294,7 @@ public class ModeSelect extends FigModifyingModeImpl {
             return;
         }
 
-        if (LOG.isDebugEnabled())
-            LOG.debug("MouseReleased and consumed");
+        if (LOG.isDebugEnabled()) LOG.debug("MouseReleased and consumed");
         me.consume();
     }
 

@@ -36,6 +36,7 @@ import java.io.Serializable;
 public class FigCube extends Fig implements Serializable {
 
     private static final long serialVersionUID = 7798364480460523733L;
+
     private int D = 20;
 
     public FigCube(int x, int y, int w, int h, Color lColor, Color fColor) {
@@ -61,11 +62,11 @@ public class FigCube extends Fig implements Serializable {
         g.drawRect(x, y, w, h);
 
         g.setColor(fillColor);
-        g.fillPolygon(new int[] { x, x + D, x + w + D, x + w }, new int[] { y,
-                y - D, y - D, y }, 4);
+        g.fillPolygon(new int[] { x, x + D, x + w + D, x + w },
+                new int[] { y, y - D, y - D, y }, 4);
         g.setColor(lineColor);
-        g.drawPolygon(new int[] { x, x + D, x + w + D, x + w }, new int[] { y,
-                y - D, y - D, y }, 4);
+        g.drawPolygon(new int[] { x, x + D, x + w + D, x + w },
+                new int[] { y, y - D, y - D, y }, 4);
 
         g.setColor(fillColor);
         g.fillPolygon(new int[] { x + w + D, x + w + D, x + w, x + w },
@@ -83,8 +84,7 @@ public class FigCube extends Fig implements Serializable {
     }
 
     /**
-     * @param d
-     *                the depth (the 3rd dimension) of the cube
+     * @param d the depth (the 3rd dimension) of the cube
      */
     public void setDepth(int depth) {
         D = depth;
