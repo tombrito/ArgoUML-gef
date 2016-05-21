@@ -155,15 +155,6 @@ public class LayerGrid extends Layer {
      * 'stamp' onto the given Graphics
      */
     public synchronized void paintContents(Graphics g) {
-        // This line is for printing under Java 1.1
-        if (g instanceof PrintGraphics) {
-            if (!Globals.getPrefs().getPrintGrid()) return;
-            if (_paintLines)
-                paintLines(g, Globals.getPrefs().getPrintBackground());
-            else
-                paintDots(g, Globals.getPrefs().getPrintBackground());
-            return;
-        }
         if (_stamp == null) {
             if (_spacing > _stampHeight) _stampHeight = _stampWidth = _spacing;
             if (Globals.curEditor() == null) {

@@ -123,6 +123,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     /** True if the text should be editable. False for read-only. */
     private boolean editable = true;
 
+    @Deprecated
     private Class _textEditorClass = FigTextEditor.class;
 
     /** True if the text should be underlined. needs-more-work. */
@@ -965,9 +966,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         // if it is not some control character.
         if (isStartEditingKey(ke) && editable) {
             ke.consume();
-            TextEditor te = startTextEditor(ke);
+            startTextEditor(ke);
             if (!Character.isISOControl(ke.getKeyChar())) {
-                te.setText(te.getText() + ke.getKeyChar());
+                textEditor.setText(textEditor.getText() + ke.getKeyChar());
             }
         }
     }
@@ -1005,15 +1006,52 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     public void mouseExited(MouseEvent me) {
     }
 
-    public TextEditor startTextEditor(InputEvent ie) {
-        textEditor = new FigTextEditor(this, ie);
+    public void startTextEditor(InputEvent ie) {
+        
+        // XXX TESTE
+        boolean testeTextEditorNull = false;
+        
+        if (testeTextEditorNull) {
+            textEditor = new TextEditor() {
+                
+                public void setText(String text) {
+                    System.out.println("setText");
+                }
+                
+                public void requestFocus() {
+                    System.out.println("requestFocus() ");
+                }
+                
+                public String getText() {
+                    System.out.println("getText");
+                    return "ESSE TEXTO APARECE ONDE???";
+                }
+                
+                public void endEditing() {
+                    System.out.println("endEditing");
+                }
+                
+                public void cancelEditing() {
+                    System.out.println("cancelEditing");
+                }
+            };
+        } else {
+            textEditor = new FigTextEditor(this, ie);
+        }
         activeTextEditor = textEditor;
         _editMode = true;
-        return textEditor;
     }
 
-    public static TextEditor getActiveTextEditor() {
-        return activeTextEditor;
+    public static void endActiveEditing() {
+        if (activeTextEditor != null) {
+            activeTextEditor.endEditing();
+        }
+    }
+
+    public static void requestFocusActiveEditor() {
+        if (activeTextEditor != null) {
+            activeTextEditor.requestFocus();
+        }
     }
 
     public void endTextEditor() {

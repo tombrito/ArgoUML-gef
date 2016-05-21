@@ -122,9 +122,7 @@ public class ModeManager implements Serializable, MouseListener,
         }
         FigModifyingMode res = top();
         if (res.canExit()) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Removing mode " + res);
-            }
+            LOG.trace("Removing mode " + res);
             modes.removeElement(res);
             fireModeChanged();
         }
@@ -222,10 +220,7 @@ public class ModeManager implements Serializable, MouseListener,
     public void mousePressed(MouseEvent me) {
         checkModeTransitions(me);
         for (int i = modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("MousePressed testing mode "
-                        + modes.get(i).getClass().getName());
-            }
+            LOG.trace("MousePressed testing mode " + modes.get(i).getClass().getName());
             FigModifyingModeImpl m = ((FigModifyingModeImpl) modes.get(i));
             m.mousePressed(me);
         }
@@ -277,26 +272,17 @@ public class ModeManager implements Serializable, MouseListener,
                     && ((FigNode) underMouse).isDragConnectable()) {
                 Object startPort = ((FigNode) underMouse).hitPort(x, y);
                 if (startPort != null) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                                "ModeManager mousepressed detected on a draggable port");
-                    }
+                    LOG.trace("ModeManager mousepressed detected on a draggable port");
                     // user clicked on a port, now drag an edge
                     FigModifyingModeImpl createArc = (FigModifyingModeImpl) new ModeCreateEdge(
                             editor);
                     push(createArc);
                     createArc.mousePressed(me);
                 } else {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                                "ModeManager mousepressed detected but not on a port");
-                    }
+                    LOG.trace("ModeManager mousepressed detected but not on a port");
                 }
             } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(
-                            "ModeManager mousepressed detected but not on a port dragable node");
-                }
+                LOG.trace("ModeManager mousepressed detected but not on a port dragable node");
             }
         }
     }

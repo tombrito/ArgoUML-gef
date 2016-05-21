@@ -28,20 +28,6 @@
 
 package org.tigris.gef.base;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.tigris.gef.event.GraphSelectionListener;
-import org.tigris.gef.event.ModeChangeListener;
-import org.tigris.gef.graph.GraphEdgeRenderer;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
-import org.tigris.gef.presentation.FigTextEditor;
-import org.tigris.gef.presentation.TextEditor;
-
-import javax.swing.*;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -53,9 +39,28 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
 import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.tigris.gef.event.GraphSelectionListener;
+import org.tigris.gef.event.ModeChangeListener;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * This class provides an editor for manipulating graphical documents. The
@@ -188,8 +193,6 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     private transient JPopupMenu _popup = null;
 
     private static Log LOG = LogFactory.getLog(Editor.class);
-
-    private FigTextEditor _activeTextEditor = null;
 
     // //////////////////////////////////////////////////////////////
     // constructors and related functions
@@ -644,7 +647,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     // Frame and panel related methods
 
     public JComponent getJComponent() {
-        return jComponent;
+        return jComponent; // setado no construtor e no set
     }
 
     public void setJComponent(JComponent c) {
@@ -703,18 +706,8 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         return jComponent.getBackground();
     }
 
-    public void setActiveTextEditor(FigTextEditor fte) {
-        FigTextEditor oldTextEditor = _activeTextEditor;
-        _activeTextEditor = fte;
-        if (oldTextEditor != null) oldTextEditor.endEditing();
-    }
-
-    public TextEditor getActiveTextEditor() {
-        if (_activeTextEditor != null) {
-            return FigText.getActiveTextEditor();
-        } else {
-            return null;
-        }
+    protected void requestFocusActiveTextEditor() {
+        FigText.requestFocusActiveEditor();
     }
 
     /**
@@ -797,11 +790,17 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         Globals.curEditor(this);
 
         // setUnderMouse(me);
-        if (_canSelectElements) {
-            _selectionManager.mouseClicked(me);
+        if (_canSelectElements) { // sempre(?) entra aqui
+            LOG.debug("_canSelectElements");
+            _selectionManager.mouseClicked(me); // XXX esse...
         }
-        if (_curFig instanceof MouseListener)
-            ((MouseListener) _curFig).mouseClicked(me);
+        if (_curFig instanceof MouseListener) { // qnd é figura/classe entra aqui
+            LOG.debug("_curFig instanceof MouseListener");
+            
+            // casting: bote fé, que quem está implementando isso, implementa MouseListener
+            // target=FigCompartmentBox.java
+            ((MouseListener) _curFig).mouseClicked(me); // ...mais esse = duplo clique na classe
+        }
         if (_canSelectElements) {
             _modeManager.mouseClicked(me);
         }
@@ -815,10 +814,7 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
             return;
         }
         translateMouseEvent(me);
-        TextEditor textEditor = FigText.getActiveTextEditor();
-        if (textEditor != null) {
-            textEditor.endEditing();
-        }
+        FigText.endActiveEditing();
 
         Globals.curEditor(this);
         // setUnderMouse(me);
@@ -827,7 +823,8 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
         }
         if (_canSelectElements) {
             _selectionManager.mousePressed(me);
-            _modeManager.mousePressed(me);
+            // XXX independente disso, consigo editar com duplo clique
+             _modeManager.mousePressed(me);
         }
     }
 

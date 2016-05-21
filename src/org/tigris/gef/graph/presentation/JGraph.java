@@ -24,10 +24,8 @@
 package org.tigris.gef.graph.presentation;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
@@ -35,7 +33,6 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
@@ -46,15 +43,14 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 import javax.swing.KeyStroke;
-import javax.swing.ToolTipManager;
 
+import org.tigris.gef.JavaFXTest;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.NudgeAction;
 import org.tigris.gef.base.SelectNearAction;
 import org.tigris.gef.base.SelectNextAction;
@@ -65,9 +61,6 @@ import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
-import org.tigris.gef.presentation.TextEditor;
-
-import javafx.embed.swing.JFXPanel;
 
 /**
  * JGraph is a Swing component that displays a connected graph and allows
@@ -85,7 +78,7 @@ public class JGraph extends JPanel
      */
     private Editor editor;
 
-    private JGraphInternalPane drawingPane;
+    private JComponent drawingPane;
 
     private JScrollPane scrollPane;
 
@@ -139,7 +132,10 @@ public class JGraph extends JPanel
     public JGraph(Editor ed) {
         super(false); // not double buffered. I do my own flicker-free redraw.
         editor = ed;
-        drawingPane = new JGraphInternalPane(editor);
+        if (JavaFXTest.ON)
+            drawingPane = new JGraphFXInternalPane(editor);
+        else
+            drawingPane = new JGraphInternalPane(editor);
         setDrawingSize(getDefaultSize());
 
         scrollPane = new JScrollPane(drawingPane);
@@ -472,10 +468,7 @@ public class JGraph extends JPanel
     }
 
     public void adjustmentValueChanged(AdjustmentEvent e) {
-        TextEditor textEditor = FigText.getActiveTextEditor();
-        if (textEditor != null) {
-            textEditor.endEditing();
-        }
+        FigText.endActiveEditing();
         editor.damageAll();
     }
 
@@ -497,150 +490,6 @@ public class JGraph extends JPanel
         }
     }
 } /* end class JGraph */
-
-class JGraphInternalPane extends JPanel {
-
-    static final long serialVersionUID = -5067026168452437942L;
-
-    private Editor _editor;
-
-    private boolean registeredWithTooltip;
-
-    public JGraphInternalPane(Editor e) {
-        _editor = e;
-        setLayout(null);
-        setDoubleBuffered(false);
-    }
-
-    public void paintComponent(Graphics g) {
-        _editor.paint(g);
-    }
-
-    public Graphics getGraphics() {
-        Graphics res = super.getGraphics();
-        if (res == null) {
-            return res;
-        }
-        Component parent = getParent();
-
-        if (parent instanceof JViewport) {
-            JViewport view = (JViewport) parent;
-            Rectangle bounds = view.getBounds();
-            Point pos = view.getViewPosition();
-            res.clipRect(bounds.x + pos.x - 1, bounds.y + pos.y - 1,
-                    bounds.width + 1, bounds.height + 1);
-        }
-        return res;
-    }
-
-    public Point getToolTipLocation(MouseEvent event) {
-        event = Globals.curEditor().retranslateMouseEvent(event);
-        return (super.getToolTipLocation(event));
-    }
-
-    public void setToolTipText(String text) {
-        if ("".equals(text)) text = null;
-        putClientProperty(TOOL_TIP_TEXT_KEY, text);
-        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
-        // if (text != null) {
-        if (!registeredWithTooltip) {
-            toolTipManager.registerComponent(this);
-            registeredWithTooltip = true;
-        }
-    }
-
-    protected void processMouseEvent(MouseEvent e) {
-        if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-            requestFocus();
-        }
-
-        super.processMouseEvent(e); // XXX só essa cara é responsavel pelo
-                                    // clique neste aquivo Java... Onde trata?
-                                    // Editor#mousePressed
-    }
-
-    /** Tell Swing/AWT that JGraph handles tab-order itself. */
-    public boolean isManagingFocus() {
-        return true;
-    }
-
-    /** Tell Swing/AWT that JGraph can be tabbed into. */
-    public boolean isFocusTraversable() {
-        return true;
-    }
-
-} /* end class JGraphInternalPane */
-
-class JGraphFXInternalPane extends JFXPanel {
-
-    static final long serialVersionUID = -5067026168452437942L;
-
-    private Editor _editor;
-
-    private boolean registeredWithTooltip;
-
-    public JGraphFXInternalPane(Editor e) {
-        _editor = e;
-        setLayout(null);
-        setDoubleBuffered(false);
-    }
-
-    public void paintComponent(Graphics g) {
-        _editor.paint(g);
-    }
-
-    public Graphics getGraphics() {
-        Graphics res = super.getGraphics();
-        if (res == null) {
-            return res;
-        }
-        Component parent = getParent();
-
-        if (parent instanceof JViewport) {
-            JViewport view = (JViewport) parent;
-            Rectangle bounds = view.getBounds();
-            Point pos = view.getViewPosition();
-            res.clipRect(bounds.x + pos.x - 1, bounds.y + pos.y - 1,
-                    bounds.width + 1, bounds.height + 1);
-        }
-        return res;
-    }
-
-    public Point getToolTipLocation(MouseEvent event) {
-        event = Globals.curEditor().retranslateMouseEvent(event);
-        return (super.getToolTipLocation(event));
-    }
-
-    public void setToolTipText(String text) {
-        if ("".equals(text)) text = null;
-        putClientProperty(TOOL_TIP_TEXT_KEY, text);
-        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
-        // if (text != null) {
-        if (!registeredWithTooltip) {
-            toolTipManager.registerComponent(this);
-            registeredWithTooltip = true;
-        }
-    }
-
-    protected void processMouseEvent(MouseEvent e) {
-        // if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-        // requestFocus();
-        // }
-        //
-        // super.processMouseEvent(e);
-    }
-
-    /** Tell Swing/AWT that JGraph handles tab-order itself. */
-    public boolean isManagingFocus() {
-        return true;
-    }
-
-    /** Tell Swing/AWT that JGraph can be tabbed into. */
-    public boolean isFocusTraversable() {
-        return true;
-    }
-
-}
 
 class WheelKeyListenerToggleAction implements KeyListener {
 

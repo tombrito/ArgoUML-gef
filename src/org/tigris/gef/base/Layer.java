@@ -441,17 +441,17 @@ public abstract class Layer implements java.io.Serializable {
     // painting methods
 
     /** Draw the Layer on a PrintGraphics. By default, just calls paint(g). */
-    public void print(Graphics g) {
-        paint(g);
-    }
+//    public void print(Graphics g) {
+//        paint(g);
+//    }
 
     /**
      * Paint this Layer on the given Graphics. Sublasses should define methods
      * for paintContents, which is called from here if the Layer is not hidden.
      */
-    public void paint(Graphics g) { // kept for backwards compatibility
-        paint(g, null);
-    }
+//    public void paint(Graphics g) { // kept for backwards compatibility
+//        paint(g, null);
+//    }
 
     /**
      * Paint this Layer on the given Graphics using the given FigPainter.
