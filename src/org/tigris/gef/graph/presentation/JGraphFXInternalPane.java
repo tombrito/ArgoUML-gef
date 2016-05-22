@@ -1,6 +1,5 @@
 package org.tigris.gef.graph.presentation;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -30,9 +29,8 @@ public class JGraphFXInternalPane extends JFXPanel {
     }
 
     public void paintComponent(Graphics g) {
-     // XXX mesmo comentando (na versao nao-fx), o JTextEditor ainda pinta
         _editor.paint(g);
-        super.paintComponent(g); // agora o FX aparece!!! :D
+        super.paintComponent(g); // now FX shows!!! :D
 //        g.setColor(Color.blue);
 //        g.fillRect(0, 0, 6000, 6000);
     }
