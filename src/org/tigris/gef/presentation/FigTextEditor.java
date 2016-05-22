@@ -30,13 +30,10 @@ import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
@@ -57,10 +54,15 @@ import org.tigris.gef.graph.presentation.JGraphFXInternalPane;
 import org.tigris.gef.undo.UndoManager;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
 /**
@@ -69,331 +71,358 @@ import javafx.scene.paint.Color;
  * @author jrobbins
  */
 public class FigTextEditor extends JTextPane
-        implements PropertyChangeListener, DocumentListener, KeyListener,
-        FocusListener, TextEditor {
+		implements PropertyChangeListener, DocumentListener, KeyListener, FocusListener, TextEditor {
 
-    private TextField new_this;
+	private TextField new_this;
 
-    /*************************************************************************/
-    
-    private static final long serialVersionUID = 7350660058167121420L;
+	Group group;
 
-    private static TextEditor _activeTextEditor = null;
+	Scene scene;
 
-    public static void setActiveTextEditor(TextEditor fte) {
-        if (_activeTextEditor != null) {
-            _activeTextEditor.endEditing();
-        }
-        _activeTextEditor = fte;
-    }
-    
-    /*************************************************************************/
-    
-    private static Log LOG = LogFactory.getLog(FigTextEditor.class);
+	private static FigTextEditor _activeTextEditorFX = null;
 
-    private static int _extraSpace = 2;
+	public static void setActiveTextEditorFX(FigTextEditor fte) {
+		if (_activeTextEditor != null) {
+			_activeTextEditor.endEditing();
+		}
+		_activeTextEditor = fte;
+	}
 
-    private static Border _border = BorderFactory.createLineBorder(java.awt.Color.gray);
+	/*************************************************************************/
 
-    private static boolean _makeBrighter = false;
+	private static final long serialVersionUID = 7350660058167121420L;
 
-    private static java.awt.Color _backgroundColor = null;
+	private static FigTextEditor _activeTextEditor = null;
 
-    /*************************************************************************/
+	public static void setActiveTextEditor(FigTextEditor fte) {
+		if (_activeTextEditor != null) {
+			_activeTextEditor.endEditing();
+		}
+		_activeTextEditor = fte;
+	}
 
-    private FigText figText;
+	/*************************************************************************/
 
-    private JComponent drawingPanel;
+	private static Log LOG = LogFactory.getLog(FigTextEditor.class);
 
-    private Container diagramPane;
+	private static int _extraSpace = 2;
 
-    /*************************************************************************/
+	/*************************************************************************/
 
-    public FigTextEditor(FigText ft, InputEvent ie) {
+	private FigText figText;
 
-        if (JavaFXTest.ON) {
-            new_this  =  new TextField();
-        }
-        
-        setVisible(true);
-        figText = ft;
-        final Editor currEditor = Globals.curEditor();
+	private Container drawingPanel;
 
-        // o mesmo JGraphFXInternalPane BLZ !!!
-        drawingPanel = (JComponent) currEditor.getJComponent();
+	/*************************************************************************/
 
-        UndoManager.getInstance().startChain();
-        figText.firePropChange("editing", false, true);
-        figText.addPropertyChangeListener(this);
+	public FigTextEditor(final FigText ft, InputEvent ie) {
 
-        // XXX Why not using the drawingPanel?
-        // walk up and add to glass pane
-//        Component awtComp = drawingPanel;
-//        while (!(awtComp instanceof RootPaneContainer) && awtComp != null) {
-//            awtComp = awtComp.getParent();
-//        }
-//        if (!(awtComp instanceof RootPaneContainer)) {
-//            LOG.warn("no RootPaneContainer");
-//            return;
-//        }
-//        diagramPane = ((RootPaneContainer) awtComp).getLayeredPane();
-        diagramPane = drawingPanel;
+		if (JavaFXTest.ON) {
+			new_this = new TextField();
+			group = new Group();
+			scene = new Scene(group, Color.YELLOW);
+		} else {
 
-        ft.calcBounds();
+		}
 
-        final java.awt.Color figTextBackgroundColor = ft.getFillColor();
-        final java.awt.Color myBackground;
-        if (_makeBrighter && !figTextBackgroundColor.equals(java.awt.Color.white)) {
-            myBackground = figTextBackgroundColor.brighter();
-        } else if (_backgroundColor != null) {
-            myBackground = _backgroundColor;
-        } else {
-            myBackground = figTextBackgroundColor;
-        }
+		figText = ft;
+		final Editor currEditor = Globals.curEditor();
 
-        setBackground(myBackground);
+		// o mesmo JGraphFXInternalPane BLZ !!!
+		drawingPanel = currEditor.getJComponent();
 
-        setBorder(_border);
+		UndoManager.getInstance().startChain();
+		figText.firePropChange("editing", false, true);
+		figText.addPropertyChangeListener(this);
 
-        Rectangle bbox = ft.getBounds();
-        final double scale = currEditor.getScale();
-        bbox.x = (int) Math.round(bbox.x * scale);
-        bbox.y = (int) Math.round(bbox.y * scale);
+		ft.calcBounds();
 
-        if (scale > 1) {
-            bbox.width = (int) Math.round(bbox.width * scale);
-            bbox.height = (int) Math.round(bbox.height * scale);
-        }
+		Rectangle bbox = ft.getBounds();
+		final double scale = currEditor.getScale();
+		bbox.x = (int) Math.round(bbox.x * scale);
+		bbox.y = (int) Math.round(bbox.y * scale);
 
-        final Rectangle rect = SwingUtilities.convertRectangle(drawingPanel, bbox, diagramPane);
+		if (scale > 1) {
+			bbox.width = (int) Math.round(bbox.width * scale);
+			bbox.height = (int) Math.round(bbox.height * scale);
+		}
 
-        // bounds will be overwritten later in updateFigText anyway...
-//        setBounds(rect.x - _extraSpace, rect.y - _extraSpace,
-//                rect.width + _extraSpace * 2, rect.height + _extraSpace * 2);
-        
-        // XXX AQUI ADICIONA NA TELA !
-        if (JavaFXTest.ON) {
+		final Rectangle rect = SwingUtilities.convertRectangle(drawingPanel, bbox, drawingPanel);
 
-            Platform.runLater(new Runnable() {
-                public void run() {
-                    // This method is invoked on the JavaFX thread
-                    Group  root  =  new  Group();
-                    Scene  scene  =  new  Scene(root, Color.YELLOW);
-                    scene.setFill(Color.TRANSPARENT);
-                    
-//                  text.setX(40);
-//                  text.setY(100);
-                  int w = rect.width + _extraSpace * 2;
-                  int h = rect.height + _extraSpace * 2;
-                  new_this.setMinWidth(w);
-                  new_this.setMaxWidth(w);
-                  new_this.setMinHeight(h);
-                  new_this.setMaxHeight(h);
-                  new_this.setFont(new javafx.scene.text.Font(12));
-                  new_this.setText("Welcome JavaFX!");
-                  root.getChildren().add(new_this);
+		// bounds will be overwritten later in updateFigText anyway...
+		// setBounds(rect.x - _extraSpace, rect.y - _extraSpace,
+		// rect.width + _extraSpace * 2, rect.height + _extraSpace * 2);
 
-                  // TODO get rid of the casting and reduce class visibility
-                  JFXPanel fxPanel = ((JGraphFXInternalPane)diagramPane);
-                  fxPanel.setScene(scene);
+		// XXX AQUI ADICIONA NA TELA !
+		drawingPanel.add(this, JLayeredPane.POPUP_LAYER, 0);
+		setText(ft.getTextFriend());
+		addKeyListener(this);
+		requestFocus();
+		getDocument().addDocumentListener(this);
+		setActiveTextEditor(this);
+		setSelectionStart(0);
+		setSelectionEnd(getDocument().getLength());
 
-                  System.out.println(w);
-                  System.out.println(new_this.getWidth());
-                  System.out.println(h);
-                  System.out.println(new_this.getHeight());
+		// XXX refazer no FX
+		MutableAttributeSet attr = new SimpleAttributeSet();
+		if (ft.getJustification() == FigText.JUSTIFY_CENTER)
+			StyleConstants.setAlignment(attr, StyleConstants.ALIGN_CENTER);
+		if (ft.getJustification() == FigText.JUSTIFY_RIGHT)
+			StyleConstants.setAlignment(attr, StyleConstants.ALIGN_RIGHT);
+		final Font font = ft.getFont();
+		StyleConstants.setFontFamily(attr, font.getFamily());
+		StyleConstants.setFontSize(attr, font.getSize());
+		setParagraphAttributes(attr, true);
 
-                  System.out.println("JavaFX started!");
-                    
-                }
-            });
-            
-        } else {
-            diagramPane.add(this, JLayeredPane.POPUP_LAYER, 0);
-        }
-        
-        setText(ft.getTextFriend());
+		if (ie instanceof java.awt.event.KeyEvent) {
+			setSelectionStart(getDocument().getLength());
+			setSelectionEnd(getDocument().getLength());
+		}
 
-        addKeyListener(this);
-        requestFocus();
-        getDocument().addDocumentListener(this);
-        setActiveTextEditor(this);
-        setSelectionStart(0);
-        setSelectionEnd(getDocument().getLength());
+		addFocusListener(this);
 
-        // XXX refazer no FX
-         MutableAttributeSet attr = new SimpleAttributeSet();
-         if (ft.getJustification() == FigText.JUSTIFY_CENTER)
-         StyleConstants.setAlignment(attr, StyleConstants.ALIGN_CENTER);
-         if (ft.getJustification() == FigText.JUSTIFY_RIGHT)
-         StyleConstants.setAlignment(attr, StyleConstants.ALIGN_RIGHT);
-         final Font font = ft.getFont();
-         StyleConstants.setFontFamily(attr, font.getFamily());
-         StyleConstants.setFontSize(attr, font.getSize());
-         setParagraphAttributes(attr, true);
+	}
 
-        if (ie instanceof KeyEvent) {
-            setSelectionStart(getDocument().getLength());
-            setSelectionEnd(getDocument().getLength());
-        }
-        addFocusListener(this);
-    }
+	/** everything else **/
+	/*************************************************************************/
 
-    /**everything else**/
-    /*************************************************************************/
+	public static void configure(final int extraSpace, final Border b, final boolean makeBrighter,
+			final java.awt.Color backgroundColor) {
+		_extraSpace = extraSpace;
+	}
 
-    public static void configure(final int extraSpace, final Border b,
-            final boolean makeBrighter, final java.awt.Color backgroundColor) {
-        _extraSpace = extraSpace;
-        _border = b;
-        _makeBrighter = makeBrighter;
-        _backgroundColor = backgroundColor;
-    }
+	public void propertyChange(final PropertyChangeEvent pve) {
+		updateFigText();
+	}
 
-    public void propertyChange(final PropertyChangeEvent pve) {
-        updateFigText();
-    }
+	public void endEditing() {
+		if (figText == null) {
+			return;
+		}
+		updateFigText();
+		final FigText t = figText;
 
-    public void endEditing() {
-        if (figText == null) {
-            return;
-        }
-        updateFigText();
-        final FigText t = figText;
+		cancelEditingInternal();
 
-        cancelEditingInternal();
+		t.firePropChange("editing", true, false);
 
-        t.firePropChange("editing", true, false);
-        // This will cause a recursive call back to us, but things
-        // are organized so it won't be infinite recursion.
-        setActiveTextEditor(null);
-    }
+		// This will cause a recursive call back to us, but things
+		// are organized so it won't be infinite recursion.
+		if (JavaFXTest.ON) {
+			Platform.runLater(new Runnable() {
+				public void run() {
+					setActiveTextEditorFX(null);
+				}
+			});
+		} else {
+			setActiveTextEditor(null);
+		}
+	}
 
-    public void cancelEditing() {
-        if (figText == null) {
-            return;
-        }
-        cancelEditingInternal();
-        // TODO: Should this be firing a property to tell listeners
-        // that we cancelled editing? - tfm
-    }
+	public void cancelEditing() {
+		if (figText == null) {
+			return;
+		}
+		cancelEditingInternal();
+	}
 
-    /**
-     * Exit editing mode. Code which is common to both cancelEditing() and
-     * endEditing(). It undoes everything which was done in init().
-     */
-    private void cancelEditingInternal() {
-        removeFocusListener(this);
-        setVisible(false);
-        figText.endTrans();
-        Container parent = getParent();
-        if (parent != null) {
-            parent.remove(this);
-        }
-        figText.removePropertyChangeListener(this);
-        removeKeyListener(this);
-        diagramPane.remove(this);
-        drawingPanel.requestFocus();
-        figText = null;
-    }
+	/**
+	 * Exit editing mode. Code which is common to both cancelEditing() and
+	 * endEditing(). It undoes everything which was done in init().
+	 */
+	private void cancelEditingInternal() {
 
-    // //////////////////////////////////////////////////////////////
-    // event handlers for KeyListener implementaion
-    public void keyTyped(KeyEvent ke) {
-    }
+		System.out.println("cancelEditingInternal()");
 
-    public void keyReleased(KeyEvent ke) {
-    }
+		if (JavaFXTest.ON) {
+			Platform.runLater(new Runnable() {
+				public void run() {
 
-    /**
-     * End editing on enter or tab if configured. Also ends on escape or F2.
-     * This is coded on keypressed rather than keyTyped as keyTyped may already
-     * have applied the key to the underlying document.
-     */
-    public void keyPressed(KeyEvent ke) {
-        if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (figText.getReturnAction() == FigText.END_EDITING) {
-                endEditing();
-                ke.consume();
-            }
-        } else if (ke.getKeyCode() == KeyEvent.VK_TAB) {
-            if (figText.getTabAction() == FigText.END_EDITING) {
-                endEditing();
-                ke.consume();
-            }
-        } else if (ke.getKeyCode() == KeyEvent.VK_F2) {
-            endEditing();
-            ke.consume();
-        } else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            // needs-more-work: should revert to orig text.
-            cancelEditing();
-            ke.consume();
-        }
-    }
+					if (figText == null) {
+						System.err.println("cancelEditingInternal() ia cancelar, mas figText está nulo...");
+						return;
+					}
 
-    // //////////////////////////////////////////////////////////////
-    // event handlers for DocumentListener implementaion
+					figText.endTrans();
 
-    public void insertUpdate(DocumentEvent e) {
-        updateFigText();
-    }
+					// Container parent = getParent();
+					// if (parent != null) {
+					// parent.remove(this);
+					// }
+					group.getChildren().remove(new_this);
 
-    public void removeUpdate(DocumentEvent e) {
-        updateFigText();
-    }
+					figText.removePropertyChangeListener(FigTextEditor.this);
 
-    public void changedUpdate(DocumentEvent e) {
-        updateFigText();
-    }
+					// TODO create a memory leak test to check the need of this
+					// (swing old code)
+					// removeKeyListener(this);
 
-    // //////////////////////////////////////////////////////////////
-    // internal utility methods
+					// drawingPanel.remove(this);
+					drawingPanel.requestFocus();
 
-    protected void updateFigText() {
-        if (figText == null) {
-            return;
-        }
+					System.out.println("cancelEditingInternal() (FX) setando figText para NULL");
+					figText = null;
+				}
+			});
+		} else {
+			removeFocusListener(this);
+			setVisible(false);
+			figText.endTrans();
+			Container parent = getParent();
+			if (parent != null) {
+				parent.remove(this);
+			}
+			figText.removePropertyChangeListener(this);
+			removeKeyListener(this);
+			drawingPanel.remove(this);
+			drawingPanel.requestFocus();
 
-        String text = getText();
+			System.out.println("cancelEditingInternal() setando figText para NULL");
+			figText = null;
+		}
+	}
 
-        figText.setTextFriend(text, getGraphics());
+	// //////////////////////////////////////////////////////////////
+	// event handlers for KeyListener implementaion
+	public void keyTyped(java.awt.event.KeyEvent ke) {
+	}
 
-        if (figText.getReturnAction() == FigText.INSERT
-                && figText.isWordWrap()) {
-            return;
-        }
+	public void keyReleased(java.awt.event.KeyEvent ke) {
+	}
 
-        Rectangle bbox = figText.getBounds();
-        Editor ce = Globals.curEditor();
-        double scale = ce.getScale();
-        bbox.x = (int) Math.round(bbox.x * scale);
-        bbox.y = (int) Math.round(bbox.y * scale);
+	/**
+	 * End editing on enter or tab if configured. Also ends on escape or F2.
+	 * This is coded on keypressed rather than keyTyped as keyTyped may already
+	 * have applied the key to the underlying document.
+	 */
+	public void fxKeyPressed(KeyEvent ke) {
 
-        if (scale > 1) {
-            bbox.width = (int) Math.round(bbox.width * scale);
-            bbox.height = (int) Math.round(bbox.height * scale);
-        }
+		System.out.println("Key Typed: " + ke.getCode());
 
-        bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, diagramPane);
+		if (ke.getCode() == KeyCode.ENTER) {
+			if (figText.getReturnAction() == FigText.END_EDITING) {
+				endEditing();
+				ke.consume();
+			}
+		} else if (ke.getCode() == KeyCode.TAB) {
+			if (figText.getTabAction() == FigText.END_EDITING) {
+				endEditing();
+				ke.consume();
+			}
+		} else if (ke.getCode() == KeyCode.F2) {
+			endEditing();
+			ke.consume();
+		} else if (ke.getCode() == KeyCode.ESCAPE) {
+			// needs-more-work: should revert to orig text.
+			cancelEditing();
+			ke.consume();
+		}
+	}
 
-        setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace,
-                bbox.width + _extraSpace * 2, bbox.height + _extraSpace * 2);
-        setFont(figText.getFont());
-    }
+	/**
+	 * End editing on enter or tab if configured. Also ends on escape or F2.
+	 * This is coded on keypressed rather than keyTyped as keyTyped may already
+	 * have applied the key to the underlying document.
+	 */
+	public void keyPressed(java.awt.event.KeyEvent ke) {
+		if (ke.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+			if (figText.getReturnAction() == FigText.END_EDITING) {
+				endEditing();
+				ke.consume();
+			}
+		} else if (ke.getKeyCode() == java.awt.event.KeyEvent.VK_TAB) {
+			if (figText.getTabAction() == FigText.END_EDITING) {
+				endEditing();
+				ke.consume();
+			}
+		} else if (ke.getKeyCode() == java.awt.event.KeyEvent.VK_F2) {
+			endEditing();
+			ke.consume();
+		} else if (ke.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
+			// needs-more-work: should revert to orig text.
+			cancelEditing();
+			ke.consume();
+		}
+	}
 
-    /**
-     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
-     */
-    public void focusGained(FocusEvent e) {
-    }
+	// //////////////////////////////////////////////////////////////
+	// event handlers for DocumentListener implementaion
 
-    /**
-     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-     */
-    public void focusLost(FocusEvent e) {
-        endEditing();
-    }
+	public void insertUpdate(DocumentEvent e) {
+		updateFigText();
+	}
 
-    public FigText getFigText() {
-        return figText;
-    }
+	public void removeUpdate(DocumentEvent e) {
+		updateFigText();
+	}
+
+	public void changedUpdate(DocumentEvent e) {
+		// XXX nao posso fazer isso só no enter? tem q ser a cada tecla?
+		updateFigText();
+	}
+
+	// //////////////////////////////////////////////////////////////
+	// internal utility methods
+
+	protected void updateFigText() {
+		if (figText == null) {
+			return;
+		}
+
+		if (JavaFXTest.ON) {
+			Platform.runLater(new Runnable() {
+				public void run() {
+					if (figText == null) {
+						return;
+					}
+					String text;
+					text = new_this.getText();
+					figText.setTextFriend(text);
+				}
+			});
+		} else {
+			String text;
+			text = getText();
+			figText.setTextFriend(text);
+		}
+
+		if (figText.getReturnAction() == FigText.INSERT && figText.isWordWrap()) {
+			return;
+		}
+
+		Rectangle bbox = figText.getBounds();
+		Editor ce = Globals.curEditor();
+		double scale = ce.getScale();
+		bbox.x = (int) Math.round(bbox.x * scale);
+		bbox.y = (int) Math.round(bbox.y * scale);
+
+		if (scale > 1) {
+			bbox.width = (int) Math.round(bbox.width * scale);
+			bbox.height = (int) Math.round(bbox.height * scale);
+		}
+
+		bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, drawingPanel);
+
+		// XXX needed for FX?
+		setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2,
+				bbox.height + _extraSpace * 2);
+		setFont(figText.getFont());
+	}
+
+	/**
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
+	public void focusGained(FocusEvent e) {
+	}
+
+	/**
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
+	public void focusLost(FocusEvent e) {
+		endEditing();
+	}
+
+	public FigText getFigText() {
+		return figText;
+	}
 }

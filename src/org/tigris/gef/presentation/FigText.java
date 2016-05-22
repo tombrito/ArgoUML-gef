@@ -42,6 +42,7 @@ import javax.swing.JLabel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.tigris.gef.JavaFXTest;
 import org.tigris.gef.persistence.export.FontUtility;
 import org.tigris.gef.properties.PropCategoryManager;
 import org.tigris.gef.undo.Memento;
@@ -124,7 +125,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     private boolean editable = true;
 
     @Deprecated
-    private Class _textEditorClass = FigTextEditor.class;
+    private Class _textEditorClass;
+    {
+        if (JavaFXTest.ON) {
+            _textEditorClass = FigTextEditorFX.class;
+        } else {
+            _textEditorClass = FigTextEditor.class;
+        }
+    }
 
     /** True if the text should be underlined. needs-more-work. */
     private boolean _underline = false;
@@ -645,21 +653,6 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
 
     /**
-     * Sets the given string to be the current string of this fig. Update the
-     * current font and font metrics first.
-     * 
-     * @param str String to be set at this object.
-     * @param graphics Graphics context for the operation.
-     */
-    void setTextFriend(String str, Graphics graphics) {
-        if (graphics != null) {
-            _fm = graphics.getFontMetrics(_font);
-        }
-
-        setTextFriend(str);
-    }
-
-    /**
      * Sets the given string to the current string of this fig.
      * 
      * @param s
@@ -964,13 +957,15 @@ public class FigText extends Fig implements KeyListener, MouseListener {
         // key to the editor when it opens others do not.
         // Using keyTyped it is not automatically added and we do so ourselves
         // if it is not some control character.
-        if (isStartEditingKey(ke) && editable) {
-            ke.consume();
-            startTextEditor(ke);
-            if (!Character.isISOControl(ke.getKeyChar())) {
-                textEditor.setText(textEditor.getText() + ke.getKeyChar());
-            }
-        }
+    	
+    	//XXX ver depois no FX como fica
+//        if (isStartEditingKey(ke) && editable) {
+//            ke.consume();
+//            startTextEditor(ke);
+//            if (!Character.isISOControl(ke.getKeyChar())) {
+//                textEditor.setText(textEditor.getText() + ke.getKeyChar());
+//            }
+//        }
     }
 
     public void keyPressed(KeyEvent ke) {
@@ -1036,7 +1031,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
                 }
             };
         } else {
-            textEditor = new FigTextEditor(this, ie);
+            if (JavaFXTest.ON) {
+                textEditor = new FigTextEditorFX(this);
+            } else {
+                textEditor = new FigTextEditor(this, ie);
+            }
         }
         activeTextEditor = textEditor;
         _editMode = true;

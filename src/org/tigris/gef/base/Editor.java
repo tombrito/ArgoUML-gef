@@ -215,6 +215,10 @@ public class Editor implements Serializable, MouseListener, MouseMotionListener,
     }
 
     public Editor(GraphModel gm, JComponent jComponent, Layer lay) {
+    	LOG.trace("***trace");
+    	LOG.debug("***debug");
+    	LOG.error("***error");
+    	LOG.info("***info");
         this.jComponent = jComponent;
         defineLayers(gm, lay);
 
