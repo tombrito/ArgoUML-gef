@@ -118,13 +118,8 @@ public class PropsGridLayout implements LayoutManager {
      * @see Container
      */
     public void layoutContainer(Container parent) {
-//        Insets insets = parent.getInsets();
         int ncomponents = parent.getComponentCount();
         if (ncomponents == 0) return;
-        // nao faz nada
-//        int used = insets.left + insets.right + hgap + _labelWidth;
-//        int propWidth = Math.max(parent.getSize().width - used, _minPropWidth);
-//        Graphics g = parent.getGraphics();
         int h = 0;
         for (int i = 0; i < ncomponents; i++) {
             Component comp = parent.getComponent(i);
