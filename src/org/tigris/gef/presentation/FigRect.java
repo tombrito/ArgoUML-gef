@@ -30,12 +30,11 @@ package org.tigris.gef.presentation;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.Serializable;
 
 /**
  * Primitive Fig to paint rectangles on a LayerDiagram.
  */
-public class FigRect extends Fig implements Serializable {
+public class FigRect extends Fig {
 
     private static final long serialVersionUID = -6171328584588911037L;
 
@@ -57,7 +56,7 @@ public class FigRect extends Fig implements Serializable {
     public FigRect(final int x, final int y, final int w, final int h,
             final boolean resizable) {
         super(x, y, w, h);
-        this.resizable = resizable;
+        setResizable(resizable);
     }
 
     /**
@@ -67,7 +66,7 @@ public class FigRect extends Fig implements Serializable {
     public FigRect(final int x, final int y, final int w, final int h,
             final boolean resizable, final Color lColor, final Color fColor) {
         super(x, y, w, h, lColor, fColor);
-        this.resizable = resizable;
+        setResizable(resizable);
     }
 
     // //////////////////////////////////////////////////////////////

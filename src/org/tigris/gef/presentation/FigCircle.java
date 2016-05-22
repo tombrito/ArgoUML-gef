@@ -74,7 +74,7 @@ public class FigCircle extends Fig {
     /** Construct a new FigCircle w/ the given position and size. */
     public FigCircle(int x, int y, int w, int h, boolean resizable) {
         super(x, y, w, h);
-        this.resizable = resizable;
+        setResizable(resizable);
     }
 
     /**
@@ -84,7 +84,7 @@ public class FigCircle extends Fig {
     public FigCircle(int x, int y, int w, int h, boolean resizable,
             Color lColor, Color fColor) {
         super(x, y, w, h, lColor, fColor);
-        this.resizable = resizable;
+        setResizable(resizable);
     }
 
     // //////////////////////////////////////////////////////////////

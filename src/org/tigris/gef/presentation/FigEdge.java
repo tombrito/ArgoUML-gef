@@ -758,11 +758,6 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
         routeFig.setLineWidth(w);
     }
 
-    final public void setNumPoints(int npoints) {
-        routeFig.setNumPoints(npoints);
-        calcBounds();
-    }
-
     /**
      * Set the edge (some object in an underlying model) that this FigEdge
      * should represent.
@@ -847,11 +842,6 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
 
     final public void setXs(int[] xs) {
         routeFig.setXs(xs);
-        calcBounds();
-    }
-
-    final public void setYs(int[] ys) {
-        routeFig.setYs(ys);
         calcBounds();
     }
 

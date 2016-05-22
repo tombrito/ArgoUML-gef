@@ -26,6 +26,24 @@ package org.tigris.gef.ui;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import javax.swing.JMenu;
+
+import org.tigris.gef.base.CmdReorder;
+import org.tigris.gef.util.Localizer;
+
 public interface PopupGenerator {
-    public Vector getPopUpActions(MouseEvent me);
-} /* end interface PopupGenerator */
+	
+	@SuppressWarnings("unused")
+	default public Vector getPopUpActions(MouseEvent me) {
+		Vector popUpActions = new Vector();
+		JMenu orderMenu = new JMenu(Localizer.localize("PresentationGef", "Ordering"));
+		orderMenu.setMnemonic((Localizer.localize("PresentationGef", "OrderingMnemonic")).charAt(0));
+		orderMenu.add(CmdReorder.BringForward);
+		orderMenu.add(CmdReorder.SendBackward);
+		orderMenu.add(CmdReorder.BringToFront);
+		orderMenu.add(CmdReorder.SendToBack);
+		popUpActions.addElement(orderMenu);
+		return popUpActions;
+	}
+	
+}

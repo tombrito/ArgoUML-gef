@@ -40,14 +40,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
-import javax.swing.JMenu;
+
 import org.tigris.gef.base.AlignAction;
-import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.di.DiagramElement;
@@ -59,7 +57,6 @@ import org.tigris.gef.properties.PropCategoryManager;
 import org.tigris.gef.ui.PopupGenerator;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
-import org.tigris.gef.util.Localizer;
 
 /**
  * This class is the base class for basic drawing objects such as rectangles,
@@ -70,8 +67,10 @@ import org.tigris.gef.util.Localizer;
 public abstract class Fig implements DiagramElement, Cloneable,
         java.io.Serializable, PropertyChangeListener, PopupGenerator {
 
-    /** The smallest size that the user can drag this Fig. */
-    public static final int MIN_SIZE = 4;
+	private static final long serialVersionUID = -6374649235011908787L;
+
+	/** The smallest size that the user can drag this Fig. */
+    private static final int MIN_SIZE = 4;
 
     /** The size of the dashes drawn when the Fig is dashed. */
     private static final String[] DASHED_CHOICES = { "Solid", "Dashed",
@@ -93,13 +92,13 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * Indicates whether this fig can be moved
      */
-    boolean movable = true;
+    private boolean movable = true;
 
     /**
      * Indicates whether this fig can be resized
      */
-    boolean resizable = true;
-
+    private boolean resizable = true;
+    
     /**
      * The Layer that this Fig is in. Each Fig can be in exactly one Layer, but
      * there can be multiple Editors on a given Layer.
@@ -188,11 +187,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
     protected float[] _dashes = null;
 
     /**
-     * @deprecated this is not used
-     */
-    protected int _dashStyle = 0;
-
-    /**
      * @deprecated in 0.13.4 use getDashePeriod
      */
     protected int _dashPeriod = 0;
@@ -209,17 +203,12 @@ public abstract class Fig implements DiagramElement, Cloneable,
      */
     private Fig group = null;
 
-    protected String _context = "";
+    private String _context = "";
 
     /**
      * True if the Fig is visible
      */
     private boolean visible = true;
-
-    /**
-     * @deprecated this is not used
-     */
-    protected boolean _allowsSaving = true;
 
     /**
      * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. See
@@ -253,7 +242,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     // geometric manipulations
 
     /** Margin between this Fig and automatically routed arcs. */
-    public static final int BORDER = 8;
+    private static final int BORDER = 8;
 
     /**
      * Most subclasses will not use this constructor, it is only useful for
@@ -265,13 +254,13 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     /** Construct a new Fig with the given bounds. */
-    public Fig(int x, int y, int w, int h) {
+    Fig(int x, int y, int w, int h) {
         /* Do not set the owner to null when none is given: */
         this(x, y, w, h, Color.black, Color.white);
     }
 
     /** Construct a new Fig with the given bounds and colors. */
-    public Fig(int x, int y, int w, int h, Color lineColor, Color fillColor) {
+    Fig(int x, int y, int w, int h, Color lineColor, Color fillColor) {
         /* Do not set the owner to null when none is given: */
         this();
         _x = x;
@@ -292,15 +281,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
     }
 
-    /** Construct a new Fig with the given bounds, colors, and owner. */
-    public Fig(int x, int y, int w, int h, Color lineColor, Color fillColor,
-            Object own) {
-        this(x, y, w, h, lineColor, fillColor);
-
-        setOwner(own);
-        // annotation related
-    }
-
     /**
      * @deprecated Feature removed. It is unrealistic that different Figs will
      *             have different locales.
@@ -319,11 +299,11 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
     // --------------------------------
     // annotation related
-    protected AnnotationStrategy an = NoAnnotationStrategy.getInstance();
+    private AnnotationStrategy an = NoAnnotationStrategy.getInstance();
 
-    protected boolean annotationStatus = false;
+    private boolean annotationStatus = false;
 
-    protected Fig annotationOwner;
+    private Fig annotationOwner;
 
     // specifies the AnnotationOwner
     public void setAnnotationOwner(Fig f) {
@@ -332,7 +312,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     // fig is not an annotation any longer
-    public void unsetAnnotationOwner() {
+    void unsetAnnotationOwner() {
         annotationOwner = null;
         setAnnotationStatus(false);
     }
@@ -368,20 +348,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
         annotationStatus = newValue;
     }
 
-    /**
-     * Adds a new Annotation of type "text" to fig.
-     */
-    // Only used by PGMLParser
-    final public void addAnnotation(Fig annotation, String type,
-            String context) {
-    }
-
-    // Unused method
-    //
-    // final public void removeAnnotation(String context) {
-    // }
-
-    final public void removeAnnotation(Fig annotationFig) {
+    final private void removeAnnotation(Fig annotationFig) {
         if (annotationFig.isAnnotation()
                 && (this == annotationFig.getAnnotationOwner())) {
             Globals.curEditor().remove(annotationFig);
@@ -440,7 +407,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * Add a point to this fig. sub classes should implement. TODO: Why isn't
      * this extended by FigEdgePoly?
      */
-    public void addPoint(int x, int y) {
+    @SuppressWarnings("unused")
+	public void addPoint(int x, int y) {
     }
 
     /**
@@ -537,17 +505,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
     /**
      * Return the center of the given Fig. By default the center is the center
      * of its bounding box. Subclasses may want to define something else.
-     * 
-     * @deprecated in 0.11.1 Use getCenter();
-     */
-    // USED BY PGML.tee
-    final public Point center() {
-        return getCenter();
-    }
-
-    /**
-     * Return the center of the given Fig. By default the center is the center
-     * of its bounding box. Subclasses may want to define something else.
      */
     // USED BY PGML.tee
     public Point getCenter() {
@@ -572,6 +529,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
+        	e.printStackTrace();
             return null;
         }
     }
@@ -640,14 +598,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     /**
-     * Reply true if the all four corners of the given rectangle are inside this
-     * Fig, as determined by contains(int x, int y).
-     */
-    final public boolean contains(Rectangle r) {
-        return countCornersContained(r.x, r.y, r.width, r.height) == 4;
-    }
-
-    /**
      * Reply the number of corners of the given rectangle that are inside this
      * Fig, as determined by contains(int x, int y).
      */
@@ -679,7 +629,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * 
      * @see FigLine#createDrag
      */
-    public void createDrag(int anchorX, int anchorY, int x, int y, int snapX,
+    @SuppressWarnings("unused")
+	public void createDrag(int anchorX, int anchorY, int x, int y, int snapX,
             int snapY) {
         int newX = Math.min(anchorX, snapX);
         int newY = Math.min(anchorY, snapY);
@@ -743,15 +694,12 @@ public abstract class Fig implements DiagramElement, Cloneable,
         if (UndoManager.getInstance().isGenerateMementos()) {
             class FigRemoveMemento extends Memento {
 
-                Layer lay;
+                private Layer lay;
+                private Fig fig;
+                private Fig encFig;
+                private boolean vis;
 
-                Fig fig;
-
-                Fig encFig;
-
-                boolean vis;
-
-                public FigRemoveMemento(Fig f) {
+                private FigRemoveMemento(Fig f) {
                     fig = f;
                     lay = fig.getLayer();
                     encFig = f.getEnclosingFig();
@@ -772,7 +720,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
                     UndoManager.getInstance().removeMementoLock(this);
                 }
             }
-            ;
             UndoManager.getInstance().addMemento(new FigRemoveMemento(this));
         }
 
@@ -841,7 +788,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     // }
     //
 
-    public void drawRect(final Graphics g, final boolean filled,
+    void drawRect(final Graphics g, final boolean filled,
             final Color fillColor, final int lineWidth, final Color lineColor,
             final int x, final int y, final int w, final int h,
             final boolean dashed, final float dashes[], final int dashPeriod) {
@@ -1030,7 +977,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
         return (length + phase) % dashPeriod;
     }
 
-    final public void firePropChange(String propName, int oldV, int newV) {
+    final void firePropChange(String propName, int oldV, int newV) {
         firePropChange(propName, new Integer(oldV), new Integer(newV));
     }
 
@@ -1162,15 +1109,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     /**
-     * Does this Fig support the concept of "line color" in principle
-     * 
-     * @return true if the Fig can have a line color
-     */
-    public boolean hasLineColor() {
-        return true;
-    }
-
-    /**
      * USED BY SVG.tee
      */
     public Color getLineColor() {
@@ -1263,7 +1201,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
             return "LAYER_NULL";
         }
 
-        List c = (List) layer.getContents();
+        List c = layer.getContents();
         int index = c.indexOf(this);
         return "Fig" + index;
     }
@@ -1326,23 +1264,9 @@ public abstract class Fig implements DiagramElement, Cloneable,
         return new Point[0];
     }
 
+	@SuppressWarnings("unused")
     public Point getPoint(int i) {
         return null;
-    }
-
-    public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = new Vector();
-        JMenu orderMenu = new JMenu(
-                Localizer.localize("PresentationGef", "Ordering"));
-        orderMenu.setMnemonic(
-                (Localizer.localize("PresentationGef", "OrderingMnemonic"))
-                        .charAt(0));
-        orderMenu.add(CmdReorder.BringForward);
-        orderMenu.add(CmdReorder.SendBackward);
-        orderMenu.add(CmdReorder.BringToFront);
-        orderMenu.add(CmdReorder.SendToBack);
-        popUpActions.addElement(orderMenu);
-        return popUpActions;
     }
 
     /**
@@ -1367,6 +1291,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
         return new Dimension(_w, _h);
     }
 
+	@SuppressWarnings("unused")
     public String getTipString(MouseEvent me) {
         if (owner == null) return toString();
         return owner.toString();
@@ -1382,6 +1307,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * 
      * @return the list of Rectangles
      */
+	@SuppressWarnings("unused")
     public List<Rectangle> getTrapRects(Fig de) {
         ArrayList<Rectangle> rects = new ArrayList<Rectangle>(1);
         rects.add(getTrapRect());
@@ -1461,6 +1387,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
         }
     }
 
+	@SuppressWarnings("unused")
     public void insertPoint(int i, int x, int y) {
     }
 
@@ -1603,13 +1530,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     /**
-     * Draw the Fig on a PrintGraphics. This just calls paint.
-     */
-    final public void print(Graphics g) {
-        paint(g);
-    }
-
-    /**
      * By default just pass it up to enclosing groups. Subclasses of FigNode may
      * want to override this method.
      */
@@ -1629,25 +1549,15 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     // TODO: Make sure this is extended in FigEdgePoly and FigPoly
-    public void removePoint(int i) {
-    }
-
-    /**
-     * Change the back-to-front ordering of a Fig in LayerDiagram. Should the
-     * Fig have any say in it?
-     * 
-     * @see LayerDiagram#reorder
-     * @see CmdReorder
-     */
-    final public void reorder(int func, Layer lay) {
-        lay.reorder(this, func);
+    @SuppressWarnings("unused")
+	public void removePoint(int i) {
     }
 
     /**
      * Reply a rectangle that arcs should not route through. Basically this is
      * the bounding box plus some margin around all egdes.
      */
-    final public Rectangle routingRect() {
+    final Rectangle routingRect() {
         return new Rectangle(_x - BORDER, _y - BORDER, _w + BORDER * 2,
                 _h + BORDER * 2);
     }
@@ -1859,9 +1769,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
         locked = b;
     }
 
-    public void setNumPoints(int npoints) {
-    }
-
     /**
      * Sets the owner object of this Fig. Fires PropertyChangeEvent "owner"
      */
@@ -1871,22 +1778,16 @@ public abstract class Fig implements DiagramElement, Cloneable,
     }
 
     /** Get and set the points along a path for Figs that are path-like. */
-    public void setPoints(Point[] ps) {
+    @SuppressWarnings("unused")
+	public void setPoints(Point[] ps) {
     }
 
-    public void setPoint(int i, int x, int y) {
-    }
-
-    final public void setPoint(int i, Point p) {
-        setPoint(i, p.x, p.y);
+    @SuppressWarnings("unused")
+	public void setPoint(int i, int x, int y) {
     }
 
     public void setPoint(Handle h, int x, int y) {
         setPoint(h.index, x, y);
-    }
-
-    final public void setPoint(Handle h, Point p) {
-        setPoint(h, p.x, p.y);
     }
 
     /**
@@ -1894,7 +1795,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * 
      * @deprecated in 0.11.1 this should not form part of the API
      */
-    public void setPrivateData(String data) {
+    @SuppressWarnings("unused")
+	public void setPrivateData(String data) {
     }
 
     /** Sets the size of the Fig. Fires property "bounds". */
@@ -1952,7 +1854,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
         setBounds(x, _y, _w, _h);
     }
 
-    public void setXs(int[] xs) {
+    @SuppressWarnings("unused")
+	public void setXs(int[] xs) {
     }
 
     /**
@@ -1968,18 +1871,6 @@ public abstract class Fig implements DiagramElement, Cloneable,
      */
     final public void setY(int y) {
         setBounds(_x, y, _w, _h);
-    }
-
-    public void setYs(int[] ys) {
-    }
-
-    /**
-     * Reshape the given rectangle to be my bounding box.
-     * 
-     * @deprecated use getBounds(Rectangle r)
-     */
-    final public void stuffBounds(Rectangle r) {
-        r.setBounds(_x, _y, _w, _h);
     }
 
     public void stuffPointAlongPerimeter(int dist, Point res) {
@@ -2020,15 +1911,12 @@ public abstract class Fig implements DiagramElement, Cloneable,
 
             class TranslateMemento extends Memento {
 
-                int oldX;
+                private int oldX;
+                private int oldY;
+                private int oldWidth;
+                private int oldHeight;
 
-                int oldY;
-
-                int oldWidth;
-
-                int oldHeight;
-
-                TranslateMemento(int currentX, int currentY, int currentWidth,
+                private TranslateMemento(int currentX, int currentY, int currentWidth,
                         int currentHeight) {
                     oldX = currentX;
                     oldY = currentY;
@@ -2129,7 +2017,7 @@ public abstract class Fig implements DiagramElement, Cloneable,
     protected Stroke getDefaultStroke(float lineWidth, float[] dashes,
             float phase) {
         return new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
-                BasicStroke.JOIN_MITER, 10.0f, dashes, (float) phase);
+                BasicStroke.JOIN_MITER, 10.0f, dashes, phase);
     }
 
     /**
@@ -2137,7 +2025,8 @@ public abstract class Fig implements DiagramElement, Cloneable,
      * 
      * @return the Paint to use
      */
-    protected Paint getDefaultPaint(Color fillColor, Color lineColor, int x,
+    @SuppressWarnings("unused")
+	protected Paint getDefaultPaint(Color fillColor, Color lineColor, int x,
             int y, int w, int h) {
         Paint p = fillColor; // solid fill
         // simple vertical gradient
@@ -2153,4 +2042,4 @@ public abstract class Fig implements DiagramElement, Cloneable,
         return p;
     }
 
-} /* end class Fig */
+}
