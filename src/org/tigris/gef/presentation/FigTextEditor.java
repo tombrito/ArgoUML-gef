@@ -44,20 +44,12 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.tigris.gef.JavaFXTest;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.graph.presentation.JGraphFXInternalPane;
 import org.tigris.gef.undo.UndoManager;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.JFXPanel;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -78,8 +70,6 @@ public class FigTextEditor extends JTextPane
 	Group group;
 
 	Scene scene;
-
-	private static FigTextEditor _activeTextEditorFX = null;
 
 	public static void setActiveTextEditorFX(FigTextEditor fte) {
 		if (_activeTextEditor != null) {
@@ -102,8 +92,6 @@ public class FigTextEditor extends JTextPane
 	}
 
 	/*************************************************************************/
-
-	private static Log LOG = LogFactory.getLog(FigTextEditor.class);
 
 	private static int _extraSpace = 2;
 
@@ -128,7 +116,6 @@ public class FigTextEditor extends JTextPane
 		figText = ft;
 		final Editor currEditor = Globals.curEditor();
 
-		// o mesmo JGraphFXInternalPane BLZ !!!
 		drawingPanel = currEditor.getJComponent();
 
 		UndoManager.getInstance().startChain();
@@ -147,13 +134,6 @@ public class FigTextEditor extends JTextPane
 			bbox.height = (int) Math.round(bbox.height * scale);
 		}
 
-		final Rectangle rect = SwingUtilities.convertRectangle(drawingPanel, bbox, drawingPanel);
-
-		// bounds will be overwritten later in updateFigText anyway...
-		// setBounds(rect.x - _extraSpace, rect.y - _extraSpace,
-		// rect.width + _extraSpace * 2, rect.height + _extraSpace * 2);
-
-		// XXX AQUI ADICIONA NA TELA !
 		drawingPanel.add(this, JLayeredPane.POPUP_LAYER, 0);
 		setText(ft.getTextFriend());
 		addKeyListener(this);
@@ -163,7 +143,6 @@ public class FigTextEditor extends JTextPane
 		setSelectionStart(0);
 		setSelectionEnd(getDocument().getLength());
 
-		// XXX refazer no FX
 		MutableAttributeSet attr = new SimpleAttributeSet();
 		if (ft.getJustification() == FigText.JUSTIFY_CENTER)
 			StyleConstants.setAlignment(attr, StyleConstants.ALIGN_CENTER);
@@ -186,6 +165,7 @@ public class FigTextEditor extends JTextPane
 	/** everything else **/
 	/*************************************************************************/
 
+	@SuppressWarnings("unused")
 	public static void configure(final int extraSpace, final Border b, final boolean makeBrighter,
 			final java.awt.Color backgroundColor) {
 		_extraSpace = extraSpace;
@@ -357,7 +337,6 @@ public class FigTextEditor extends JTextPane
 	}
 
 	public void changedUpdate(DocumentEvent e) {
-		// XXX nao posso fazer isso só no enter? tem q ser a cada tecla?
 		updateFigText();
 	}
 
@@ -403,7 +382,6 @@ public class FigTextEditor extends JTextPane
 
 		bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, drawingPanel);
 
-		// XXX needed for FX?
 		setBounds(bbox.x - _extraSpace, bbox.y - _extraSpace, bbox.width + _extraSpace * 2,
 				bbox.height + _extraSpace * 2);
 		setFont(figText.getFont());

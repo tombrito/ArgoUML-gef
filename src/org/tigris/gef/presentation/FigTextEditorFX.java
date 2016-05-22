@@ -98,7 +98,6 @@ public class FigTextEditorFX extends TextField implements TextEditor {
 		figText = ft;
 		final Editor currEditor = Globals.curEditor();
 
-		// o mesmo JGraphFXInternalPane BLZ !!!
 		drawingPanel = currEditor.getJComponent();
 
 		UndoManager.getInstance().startChain();
@@ -114,8 +113,6 @@ public class FigTextEditorFX extends TextField implements TextEditor {
 			bounds.width = (int) Math.round(bounds.width * scale);
 			bounds.height = (int) Math.round(bounds.height * scale);
 		}
-
-		// XXX AQUI ADICIONA NA TELA !
 
 		Platform.runLater(new Runnable() {
 			public void run() {
