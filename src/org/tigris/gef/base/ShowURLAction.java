@@ -42,130 +42,155 @@ import org.tigris.gef.util.Localizer;
  */
 public class ShowURLAction extends AbstractAction {
 
-    private static final long serialVersionUID = -6226407614825075684L;
+	private static final long serialVersionUID = -6226407614825075684L;
 
-    protected URL _url;
+	protected URL _url;
 
-    /**
-     * Creates a new ShowURLAction
-     */
-    public ShowURLAction() {
-        super();
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 */
+	public ShowURLAction() {
+		super();
+	}
 
-    /**
-     * Creates a new ShowURLAction
-     * 
-     * @param name The name of the action
-     * @param url The url to be shown
-     * @throws MalformedURLException When the url is malformed
-     */
-    public ShowURLAction(String name, String url) throws MalformedURLException {
-        this(name, url, false);
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param url
+	 *            The url to be shown
+	 * @throws MalformedURLException
+	 *             When the url is malformed
+	 */
+	public ShowURLAction(String name, String url) throws MalformedURLException {
+		this(name, url, false);
+	}
 
-    /**
-     * Creates a new ShowURLAction
-     * 
-     * @param name The name of the action
-     * @param url The url to be shown
-     */
-    public ShowURLAction(String name, URL url) {
-        this(name, url, false);
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param url
+	 *            The url to be shown
+	 */
+	public ShowURLAction(String name, URL url) {
+		this(name, url, false);
+	}
 
-    /**
-     * Creates a new ShowURLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param url The url to be shown
-     * @throws MalformedURLException When the url is malformed
-     */
-    public ShowURLAction(String name, Icon icon, String url)
-        throws MalformedURLException {
-        this(name, icon, url, false);
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param url
+	 *            The url to be shown
+	 * @throws MalformedURLException
+	 *             When the url is malformed
+	 */
+	public ShowURLAction(String name, Icon icon, String url) throws MalformedURLException {
+		this(name, icon, url, false);
+	}
 
-    /**
-     * Creates a new ShowURLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param url The url to be shown
-     */
-    public ShowURLAction(String name, Icon icon, URL url) {
-        this(name, icon, url, false);
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param url
+	 *            The url to be shown
+	 */
+	public ShowURLAction(String name, Icon icon, URL url) {
+		this(name, icon, url, false);
+	}
 
-    /**
-     * Creates a new ShowURLAction
-     * 
-     * @param name The name of the action
-     * @param url The url to be shown
-     * @param localize Whether to localize the name or not
-     * @throws MalformedURLException When the url is malformed
-     */
-    public ShowURLAction(String name, String url, boolean localize)
-        throws MalformedURLException {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        setUrl(url);
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param url
+	 *            The url to be shown
+	 * @param localize
+	 *            Whether to localize the name or not
+	 * @throws MalformedURLException
+	 *             When the url is malformed
+	 */
+	public ShowURLAction(String name, String url, boolean localize) throws MalformedURLException {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+		setUrl(url);
+	}
 
-    /**
-     * Creates a new ShowURLAction
-     * 
-     * @param name The name of the action
-     * @param url The url to be shown
-     * @param localize Whether to localize the name or not
-     */
-    public ShowURLAction(String name, URL url, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        setUrl(url);
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param url
+	 *            The url to be shown
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ShowURLAction(String name, URL url, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+		setUrl(url);
+	}
 
-    /**
-     * Creates a new ShowURLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param url The url to be shown
-     * @param localize Whether to localize the name or not
-     * @throws MalformedURLException When the url is malformed
-     */
-    public ShowURLAction(String name, Icon icon, String url, boolean localize)
-        throws MalformedURLException {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        setUrl(url);
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param url
+	 *            The url to be shown
+	 * @param localize
+	 *            Whether to localize the name or not
+	 * @throws MalformedURLException
+	 *             When the url is malformed
+	 */
+	public ShowURLAction(String name, Icon icon, String url, boolean localize) throws MalformedURLException {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+		setUrl(url);
+	}
 
-    /**
-     * Creates a new ShowURLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param url The url to be shown
-     * @param localize Whether to localize the name or not
-     */
-    public ShowURLAction(String name, Icon icon, URL url, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        setUrl(url);
-    }
+	/**
+	 * Creates a new ShowURLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param url
+	 *            The url to be shown
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ShowURLAction(String name, Icon icon, URL url, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+		setUrl(url);
+	}
 
-    public void setUrl(URL u) {
-        _url = u;
-    }
+	public void setUrl(URL u) {
+		_url = u;
+	}
 
-    public void setUrl(String u) throws MalformedURLException {
-        _url = new URL(u);
-    }
+	public void setUrl(String u) throws MalformedURLException {
+		_url = new URL(u);
+	}
 
-    public URL getUrl() {
-        return _url;
-    }
+	public URL getUrl() {
+		return _url;
+	}
 
-    /** Translate all selected Fig's in the current editor. */
-    public void actionPerformed(ActionEvent e) {
-        Globals.showDocument(_url);
-    }
+	/** Translate all selected Fig's in the current editor. */
+	public void actionPerformed(ActionEvent e) {
+		Globals.showDocument(_url);
+	}
 }

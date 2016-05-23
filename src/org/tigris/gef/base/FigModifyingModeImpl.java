@@ -51,127 +51,127 @@ import org.tigris.gef.undo.UndoManager;
  */
 
 public class FigModifyingModeImpl extends ModeImpl implements FigModifyingMode {
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    /**
-     * The Editor that is in this mode. Each Mode instance belongs to exactly
-     * one Editor instance.
-     */
-    protected Editor editor;
+	/**
+	 * The Editor that is in this mode. Each Mode instance belongs to exactly
+	 * one Editor instance.
+	 */
+	protected Editor editor;
 
-    // //////////////////////////////////////////////////////////////
-    // constructors
+	// //////////////////////////////////////////////////////////////
+	// constructors
 
-    /**
-     * Construct a new Mode instance with the given Editor as its editor
-     */
-    public FigModifyingModeImpl(Editor par) {
-        setEditor(par);
-    }
+	/**
+	 * Construct a new Mode instance with the given Editor as its editor
+	 */
+	public FigModifyingModeImpl(Editor par) {
+		setEditor(par);
+	}
 
-    /**
-     * Constructs a new Mode instance with some initial parameters. At least a
-     * parameter representing the the Editor, this Mode belongs to, should be
-     * provided.
-     */
-    public FigModifyingModeImpl(Hashtable parameters) {
-        init(parameters);
-    }
+	/**
+	 * Constructs a new Mode instance with some initial parameters. At least a
+	 * parameter representing the the Editor, this Mode belongs to, should be
+	 * provided.
+	 */
+	public FigModifyingModeImpl(Hashtable parameters) {
+		init(parameters);
+	}
 
-    /**
-     * Construct a new Mode instance without any Editor as its parent, the
-     * parent must be filled in before the instance is actually used. This
-     * constructor is needed because CmdSetMode can only call Class.newInstance
-     * which does not pass constructor arguments. A call to init is necessary in
-     * order to let this instance work properly.
-     * 
-     */
-    public FigModifyingModeImpl() {
-    }
+	/**
+	 * Construct a new Mode instance without any Editor as its parent, the
+	 * parent must be filled in before the instance is actually used. This
+	 * constructor is needed because CmdSetMode can only call Class.newInstance
+	 * which does not pass constructor arguments. A call to init is necessary in
+	 * order to let this instance work properly.
+	 * 
+	 */
+	public FigModifyingModeImpl() {
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // methods related to transitions among modes
+	// //////////////////////////////////////////////////////////////
+	// methods related to transitions among modes
 
-    public void done() {
-        setCursor(Cursor.getDefaultCursor());
-        editor.finishMode();
-        UndoManager.getInstance().removeMementoLock(this);
-    }
+	public void done() {
+		setCursor(Cursor.getDefaultCursor());
+		editor.finishMode();
+		UndoManager.getInstance().removeMementoLock(this);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    /** Set the parent Editor of this Mode */
-    public void setEditor(Editor w) {
-        editor = w;
-        setCursor(getInitialCursor());
-    }
+	/** Set the parent Editor of this Mode */
+	public void setEditor(Editor w) {
+		editor = w;
+		setCursor(getInitialCursor());
+	}
 
-    /** Get the parent Editor of this Mode */
-    public Editor getEditor() {
-        return editor;
-    }
+	/** Get the parent Editor of this Mode */
+	public Editor getEditor() {
+		return editor;
+	}
 
-    /** Returns the cursor that should be shown when this Mode starts. */
-    public Cursor getInitialCursor() {
-        return Cursor.getDefaultCursor();
-    }
+	/** Returns the cursor that should be shown when this Mode starts. */
+	public Cursor getInitialCursor() {
+		return Cursor.getDefaultCursor();
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // feedback to the user
+	// //////////////////////////////////////////////////////////////
+	// feedback to the user
 
-    /**
-     * Reply a string of instructions that should be shown in the statusbar when
-     * this mode starts.
-     */
-    public String instructions() {
-        return "FigModifyingMode: " + getClass().getName();
-    }
+	/**
+	 * Reply a string of instructions that should be shown in the statusbar when
+	 * this mode starts.
+	 */
+	public String instructions() {
+		return "FigModifyingMode: " + getClass().getName();
+	}
 
-    /** Set the mouse cursor to some appropriate for this mode. */
-    public void setCursor(Cursor c) {
-        if (editor != null) editor.setCursor(c);
-    }
+	/** Set the mouse cursor to some appropriate for this mode. */
+	public void setCursor(Cursor c) {
+		if (editor != null)
+			editor.setCursor(c);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // painting methods
+	// //////////////////////////////////////////////////////////////
+	// painting methods
 
-    /**
-     * Modes can paint themselves to give the user feedback. For example,
-     * ModePlace paints the object being placed. Mode's are drawn on top of
-     * (after) the Editor's current view and on top of any selections.
-     */
-    public void paint(Graphics g) {
-        paint((Object) g);
-    }
+	/**
+	 * Modes can paint themselves to give the user feedback. For example,
+	 * ModePlace paints the object being placed. Mode's are drawn on top of
+	 * (after) the Editor's current view and on top of any selections.
+	 */
+	public void paint(Graphics g) {
+		paint((Object) g);
+	}
 
-    /** Just calls paint(g) by default. */
-    public void print(Graphics g) {
-        print((Object) g);
-    }
+	/** Just calls paint(g) by default. */
+	public void print(Graphics g) {
+		print((Object) g);
+	}
 
-    /**
-     * Modes can paint themselves to give the user feedback. For example,
-     * ModePlace paints the object being placed. Mode's are drawn on top of
-     * (after) the Editor's current view and on top of any selections.
-     */
-    final public void paint(Object graphicsContext) {
-    }
+	/**
+	 * Modes can paint themselves to give the user feedback. For example,
+	 * ModePlace paints the object being placed. Mode's are drawn on top of
+	 * (after) the Editor's current view and on top of any selections.
+	 */
+	final public void paint(Object graphicsContext) {
+	}
 
-    /** Just calls paint(g) by default. */
-    final public void print(Object graphicsContext) {
-        paint(graphicsContext);
-    }
+	/** Just calls paint(g) by default. */
+	final public void print(Object graphicsContext) {
+		paint(graphicsContext);
+	}
 
-    public boolean isFigEnclosedIn(Fig testedFig, Fig enclosingFig) {
-        Rectangle bbox = testedFig.getBounds();
-        Rectangle trap = enclosingFig.getTrapRect();
-        if (trap != null && (trap.contains(bbox.x, bbox.y)
-                && trap.contains(bbox.x + bbox.width, bbox.y + bbox.height)))
-            return true;
-        return false;
-    }
+	public boolean isFigEnclosedIn(Fig testedFig, Fig enclosingFig) {
+		Rectangle bbox = testedFig.getBounds();
+		Rectangle trap = enclosingFig.getTrapRect();
+		if (trap != null && (trap.contains(bbox.x, bbox.y) && trap.contains(bbox.x + bbox.width, bbox.y + bbox.height)))
+			return true;
+		return false;
+	}
 
-    static final long serialVersionUID = 7960954871341784898L;
+	static final long serialVersionUID = 7960954871341784898L;
 } /* end class FigModifyingModeImpl */

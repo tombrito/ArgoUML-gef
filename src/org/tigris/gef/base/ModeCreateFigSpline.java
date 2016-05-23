@@ -41,54 +41,55 @@ import org.tigris.gef.util.Localizer;
  */
 
 public class ModeCreateFigSpline extends ModeCreateFigPoly {
-    private static final long serialVersionUID = 5038274770338930599L;
+	private static final long serialVersionUID = 5038274770338930599L;
 
-    public String instructions() {
-        return Localizer.localize("GefBase", "ModeCreateFigSplineInstructions");
-    }
+	public String instructions() {
+		return Localizer.localize("GefBase", "ModeCreateFigSplineInstructions");
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // ModeCreate API
+	// //////////////////////////////////////////////////////////////
+	// ModeCreate API
 
-    /**
-     * Create a new FigRect instance based on the given mouse down event and the
-     * state of the parent Editor.
-     */
-    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-        FigSpline p = new FigSpline(snapX, snapY);
-        p.addPoint(snapX, snapY); // add the first point twice
-        _startX = _lastX = snapX;
-        _startY = _lastY = snapY;
-        _npoints = 2;
-        return p;
-    }
+	/**
+	 * Create a new FigRect instance based on the given mouse down event and the
+	 * state of the parent Editor.
+	 */
+	public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+		FigSpline p = new FigSpline(snapX, snapY);
+		p.addPoint(snapX, snapY); // add the first point twice
+		_startX = _lastX = snapX;
+		_startY = _lastY = snapY;
+		_npoints = 2;
+		return p;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // Event handlers
+	// //////////////////////////////////////////////////////////////
+	// Event handlers
 
-    public void mouseReleased(MouseEvent me) {
-        if (me.isConsumed()) return;
-        int x = me.getX(), y = me.getY();
-        if (_npoints > 2 && nearLast(x, y)) {
-            FigSpline p = (FigSpline) _newItem;
-            editor.damageAll();
-            _handle.index = p.getNumPoints() - 1;
-            p.moveVertex(_handle, _startX, _startY, true);
+	public void mouseReleased(MouseEvent me) {
+		if (me.isConsumed())
+			return;
+		int x = me.getX(), y = me.getY();
+		if (_npoints > 2 && nearLast(x, y)) {
+			FigSpline p = (FigSpline) _newItem;
+			editor.damageAll();
+			_handle.index = p.getNumPoints() - 1;
+			p.moveVertex(_handle, _startX, _startY, true);
 
-            p.removePoint(_handle.index);
+			p.removePoint(_handle.index);
 
-            _npoints = 0;
-            editor.damageAll();
-            editor.add(p);
-            editor.getSelectionManager().select(p);
-            _newItem = null;
-            done();
-            me.consume();
-            return;
-        }
-        _lastX = x;
-        _lastY = y;
-        me.consume();
-    }
+			_npoints = 0;
+			editor.damageAll();
+			editor.add(p);
+			editor.getSelectionManager().select(p);
+			_newItem = null;
+			done();
+			me.consume();
+			return;
+		}
+		_lastX = x;
+		_lastY = y;
+		me.consume();
+	}
 
 } /* end class ModeCreateFigSpline */

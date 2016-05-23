@@ -32,7 +32,7 @@ import java.util.List;
  */
 public interface GraphNode extends GraphElement {
 
-    List<GraphEdge> getGraphEdges();
+	List<GraphEdge> getGraphEdges();
 
-    Rectangle getNodeBounds();
+	Rectangle getNodeBounds();
 }

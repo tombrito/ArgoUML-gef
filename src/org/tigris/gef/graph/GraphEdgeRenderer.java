@@ -39,24 +39,29 @@ import org.tigris.gef.presentation.FigEdge;
  */
 
 public interface GraphEdgeRenderer extends java.io.Serializable {
-    /**
-     * Factory for a FigEdge that can be used to represent the given edge
-     * 
-     * @param graphmodel the model in which to place the FigEdge
-     * @param layer the layer in which to place the FigEdge
-     * @param edge the model element from which to create the FigEdge
-     * @param attributeMap an optional map of attributes to style the fig.
-     *            return the new FigEdge
-     */
-    FigEdge getFigEdgeFor(GraphModel graphmodel, Layer layer, Object edge,
-            Map attributeMap);
+	/**
+	 * Factory for a FigEdge that can be used to represent the given edge
+	 * 
+	 * @param graphmodel
+	 *            the model in which to place the FigEdge
+	 * @param layer
+	 *            the layer in which to place the FigEdge
+	 * @param edge
+	 *            the model element from which to create the FigEdge
+	 * @param attributeMap
+	 *            an optional map of attributes to style the fig. return the new
+	 *            FigEdge
+	 */
+	FigEdge getFigEdgeFor(GraphModel graphmodel, Layer layer, Object edge, Map attributeMap);
 
-    /**
-     * Factory for a FigEdge that can be used to represent the given edge
-     * 
-     * @param edge the model element from which to create the FigEdge
-     * @param attributeMap an optional map of attributes to style the fig.
-     *            return the new FigEdge
-     */
-    FigEdge getFigEdgeFor(Object edge, Map attributeMap);
+	/**
+	 * Factory for a FigEdge that can be used to represent the given edge
+	 * 
+	 * @param edge
+	 *            the model element from which to create the FigEdge
+	 * @param attributeMap
+	 *            an optional map of attributes to style the fig. return the new
+	 *            FigEdge
+	 */
+	FigEdge getFigEdgeFor(Object edge, Map attributeMap);
 } /* end interface GraphEdgeRenderer */

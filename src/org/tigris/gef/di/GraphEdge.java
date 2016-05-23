@@ -29,12 +29,12 @@ package org.tigris.gef.di;
  */
 public interface GraphEdge extends GraphElement {
 
-    GraphNode getSourceGraphNode();
+	GraphNode getSourceGraphNode();
 
-    GraphNode getDestGraphNode();
+	GraphNode getDestGraphNode();
 
-    void setSourceGraphNode(GraphNode node);
+	void setSourceGraphNode(GraphNode node);
 
-    void setDestGraphNode(GraphNode node);
+	void setDestGraphNode(GraphNode node);
 
 }

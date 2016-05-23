@@ -23,7 +23,7 @@
 
 package org.tigris.gef.graph;
 
-import java.beans.*;
+import java.beans.PropertyChangeListener;
 
 /**
  * A set of methods that edges in a GraphModel may implement. If the objects you
@@ -34,11 +34,11 @@ import java.beans.*;
  */
 
 public interface GraphEdgeHooks extends java.io.Serializable {
-    void addPropertyChangeListener(PropertyChangeListener l);
+	void addPropertyChangeListener(PropertyChangeListener l);
 
-    void removePropertyChangeListener(PropertyChangeListener l);
+	void removePropertyChangeListener(PropertyChangeListener l);
 
-    void setHighlight(boolean b);
+	void setHighlight(boolean b);
 
-    void deleteFromModel();
+	void deleteFromModel();
 } /* end interface GraphEdgeHooks */

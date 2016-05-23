@@ -38,36 +38,36 @@ package org.tigris.gef.presentation;
 
 public class FigInk extends FigPoly {
 
-    private static final long serialVersionUID = 8099997544376618L;
+	private static final long serialVersionUID = 8099997544376618L;
 
-    /** Construct a new FigInk w/ the given attributes. */
-    public FigInk() {
-        super();
-        _filled = false;
-    }
+	/** Construct a new FigInk w/ the given attributes. */
+	public FigInk() {
+		super();
+		_filled = false;
+	}
 
-    /** Construct a new FigInk w/ the given point and attributes. */
-    public FigInk(int x, int y) {
-        super(x, y);
-        _filled = false;
-    }
+	/** Construct a new FigInk w/ the given point and attributes. */
+	public FigInk(int x, int y) {
+		super(x, y);
+		_filled = false;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    /** Line width of ink must be always be 1, so do nothing */
-    public void setLineWidth(int w) {
-    }
+	/** Line width of ink must be always be 1, so do nothing */
+	public void setLineWidth(int w) {
+	}
 
-    /** FigInks can never be filled, so do nothing. */
-    public void setFilled(boolean f) {
-    }
+	/** FigInks can never be filled, so do nothing. */
+	public void setFilled(boolean f) {
+	}
 
-    /** FigInks can never be rectilinear, so do nothing. */
-    public void setRectilinear(boolean r) {
-    }
+	/** FigInks can never be rectilinear, so do nothing. */
+	public void setRectilinear(boolean r) {
+	}
 
-    public boolean contains(int x, int y) {
-        return super.findHandle(x, y) != -1;
-    }
+	public boolean contains(int x, int y) {
+		return super.findHandle(x, y) != -1;
+	}
 } /* end class FigInk */

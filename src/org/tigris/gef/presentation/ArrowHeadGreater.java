@@ -36,37 +36,36 @@ import java.awt.Point;
 
 public class ArrowHeadGreater extends ArrowHead {
 
-    private static final long serialVersionUID = 4300767437944516708L;
+	private static final long serialVersionUID = 4300767437944516708L;
 
-    public void paint(Graphics g, Point start, Point end, Color lineColor,
-            Color fillColor) {
-        int xFrom, xTo, yFrom, yTo;
-        double denom, x, y, dx, dy, cos, sin;
+	public void paint(Graphics g, Point start, Point end, Color lineColor, Color fillColor) {
+		int xFrom, xTo, yFrom, yTo;
+		double denom, x, y, dx, dy, cos, sin;
 
-        xFrom = start.x;
-        xTo = end.x;
-        yFrom = start.y;
-        yTo = end.y;
+		xFrom = start.x;
+		xTo = end.x;
+		yFrom = start.y;
+		yTo = end.y;
 
-        dx = (double) (xTo - xFrom);
-        dy = (double) (yTo - yFrom);
-        denom = dist(dx, dy);
-        if (denom == 0) {
-            return;
-        }
+		dx = (double) (xTo - xFrom);
+		dy = (double) (yTo - yFrom);
+		denom = dist(dx, dy);
+		if (denom == 0) {
+			return;
+		}
 
-        cos = getHeight() / denom;
-        sin = getWidth() / denom;
-        x = xTo - cos * dx;
-        y = yTo - cos * dy;
-        int x1 = (int) (x - sin * dy);
-        int y1 = (int) (y + sin * dx);
-        int x2 = (int) (x + sin * dy);
-        int y2 = (int) (y - sin * dx);
+		cos = getHeight() / denom;
+		sin = getWidth() / denom;
+		x = xTo - cos * dx;
+		y = yTo - cos * dy;
+		int x1 = (int) (x - sin * dy);
+		int y1 = (int) (y + sin * dx);
+		int x2 = (int) (x + sin * dy);
+		int y2 = (int) (y - sin * dx);
 
-        Graphics graphics = (Graphics) g;
-        graphics.setColor(lineColor);
-        graphics.drawLine(x1, y1, xTo, yTo);
-        graphics.drawLine(x2, y2, xTo, yTo);
-    }
+		Graphics graphics = (Graphics) g;
+		graphics.setColor(lineColor);
+		graphics.drawLine(x1, y1, xTo, yTo);
+		graphics.drawLine(x2, y2, xTo, yTo);
+	}
 }

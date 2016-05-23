@@ -32,30 +32,33 @@ import org.xml.sax.SAXException;
  * the properties of the Fig object.
  */
 public class PrivateHandler extends BaseHandler {
-    /**
-     * The container.
-     */
-    private Container container;
+	/**
+	 * The container.
+	 */
+	private Container container;
 
-    /**
-     * @param parser The parser object containing the diagram that contains the
-     *            fig specified by the element containing this element
-     * @param theContainer The object that will receive the text contents of
-     *            this element
-     */
-    public PrivateHandler(PGMLStackParser parser, Container theContainer) {
-        super(parser);
-        container = theContainer;
-    }
+	/**
+	 * @param parser
+	 *            The parser object containing the diagram that contains the fig
+	 *            specified by the element containing this element
+	 * @param theContainer
+	 *            The object that will receive the text contents of this element
+	 */
+	public PrivateHandler(PGMLStackParser parser, Container theContainer) {
+		super(parser);
+		container = theContainer;
+	}
 
-    /**
-     * Send the text content of the <em>private</em> element to the containing
-     * element.
-     * 
-     * @param contents Text content of the element
-     * @throws SAXException if something goes wrong.
-     */
-    public void gotElement(String contents) throws SAXException {
-        container.addObject(contents);
-    }
+	/**
+	 * Send the text content of the <em>private</em> element to the containing
+	 * element.
+	 * 
+	 * @param contents
+	 *            Text content of the element
+	 * @throws SAXException
+	 *             if something goes wrong.
+	 */
+	public void gotElement(String contents) throws SAXException {
+		container.addObject(contents);
+	}
 }

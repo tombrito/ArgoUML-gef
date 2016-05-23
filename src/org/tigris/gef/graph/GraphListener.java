@@ -40,13 +40,13 @@ import java.util.EventListener;
  */
 
 public interface GraphListener extends EventListener {
-    void nodeAdded(GraphEvent e);
+	void nodeAdded(GraphEvent e);
 
-    void edgeAdded(GraphEvent e);
+	void edgeAdded(GraphEvent e);
 
-    void nodeRemoved(GraphEvent e);
+	void nodeRemoved(GraphEvent e);
 
-    void edgeRemoved(GraphEvent e);
+	void edgeRemoved(GraphEvent e);
 
-    void graphChanged(GraphEvent e);
+	void graphChanged(GraphEvent e);
 } /* end interface GraphListener */

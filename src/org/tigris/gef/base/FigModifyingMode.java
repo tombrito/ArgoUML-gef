@@ -39,47 +39,47 @@ import org.tigris.gef.presentation.Fig;
  */
 
 public interface FigModifyingMode extends Mode {
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    /** Set the parent Editor of this Mode */
-    public void setEditor(Editor w);
+	/** Set the parent Editor of this Mode */
+	public void setEditor(Editor w);
 
-    /** Get the parent Editor of this Mode */
-    public Editor getEditor();
+	/** Get the parent Editor of this Mode */
+	public Editor getEditor();
 
-    /** Returns the cursor that should be shown when this Mode starts. */
-    public Cursor getInitialCursor();
+	/** Returns the cursor that should be shown when this Mode starts. */
+	public Cursor getInitialCursor();
 
-    // //////////////////////////////////////////////////////////////
-    // feedback to the user
+	// //////////////////////////////////////////////////////////////
+	// feedback to the user
 
-    /**
-     * Reply a string of instructions that should be shown in the statusbar when
-     * this mode starts.
-     */
-    public String instructions();
+	/**
+	 * Reply a string of instructions that should be shown in the statusbar when
+	 * this mode starts.
+	 */
+	public String instructions();
 
-    /** Set the mouse cursor to some appropriate for this mode. */
-    public void setCursor(Cursor c);
+	/** Set the mouse cursor to some appropriate for this mode. */
+	public void setCursor(Cursor c);
 
-    // //////////////////////////////////////////////////////////////
-    // painting methods
+	// //////////////////////////////////////////////////////////////
+	// painting methods
 
-    /**
-     * Modes can paint themselves to give the user feedback. For example,
-     * ModePlace paints the object being placed. Mode's are drawn on top of
-     * (after) the Editor's current view and on top of any selections.
-     */
-    public void paint(Graphics g);
+	/**
+	 * Modes can paint themselves to give the user feedback. For example,
+	 * ModePlace paints the object being placed. Mode's are drawn on top of
+	 * (after) the Editor's current view and on top of any selections.
+	 */
+	public void paint(Graphics g);
 
-    /** Just calls paint(g) by default. */
-    public void print(Graphics g);
+	/** Just calls paint(g) by default. */
+	public void print(Graphics g);
 
-    /**
-     * Tests, if the actually handled fig is contained in the one given as
-     * parameter.
-     */
-    public boolean isFigEnclosedIn(Fig testedFig, Fig enclosingFig);
+	/**
+	 * Tests, if the actually handled fig is contained in the one given as
+	 * parameter.
+	 */
+	public boolean isFigEnclosedIn(Fig testedFig, Fig enclosingFig);
 
 } /* end interface FigModifyingMode */

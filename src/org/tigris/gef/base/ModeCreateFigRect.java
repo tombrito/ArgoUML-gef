@@ -41,17 +41,17 @@ import org.tigris.gef.util.Localizer;
  */
 
 public class ModeCreateFigRect extends ModeCreate {
-    private static final long serialVersionUID = 2881047174758002300L;
+	private static final long serialVersionUID = 2881047174758002300L;
 
-    public String instructions() {
-        return Localizer.localize("GefBase", "ModeCreateFigRectInstructions");
-    }
+	public String instructions() {
+		return Localizer.localize("GefBase", "ModeCreateFigRectInstructions");
+	}
 
-    /**
-     * Create a new FigRect instance based on the given mouse down event and the
-     * state of the parent Editor.
-     */
-    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-        return new FigRect(snapX, snapY, 0, 0);
-    }
+	/**
+	 * Create a new FigRect instance based on the given mouse down event and the
+	 * state of the parent Editor.
+	 */
+	public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+		return new FigRect(snapX, snapY, 0, 0);
+	}
 } /* end class ModeCreateFigRect */

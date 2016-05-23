@@ -27,42 +27,44 @@
 //package sun.beanbox;
 package org.tigris.gef.properties.ui;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.beans.*;
+import java.awt.Dimension;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.beans.PropertyEditor;
+
+import javax.swing.JComboBox;
 
 class PropertySelector extends JComboBox implements ItemListener {
 
-    public PropertySelector(PropertyEditor pe) {
-        editor = pe;
-        String tags[] = editor.getTags();
-        for (int i = 0; i < tags.length; i++) {
-            addItem(tags[i]);
-        }
-        setSelectedIndex(0);
-        // This is a noop if the getAsText is not a tag.
-        setSelectedItem(editor.getAsText());
-        addItemListener(this);
-    }
+	public PropertySelector(PropertyEditor pe) {
+		editor = pe;
+		String tags[] = editor.getTags();
+		for (int i = 0; i < tags.length; i++) {
+			addItem(tags[i]);
+		}
+		setSelectedIndex(0);
+		// This is a noop if the getAsText is not a tag.
+		setSelectedItem(editor.getAsText());
+		addItemListener(this);
+	}
 
-    public Dimension getMinimumSize() {
-        return new Dimension(80, 20);
-    }
+	public Dimension getMinimumSize() {
+		return new Dimension(80, 20);
+	}
 
-    public Dimension getPreferredSize() {
-        return new Dimension(80, 20);
-    }
+	public Dimension getPreferredSize() {
+		return new Dimension(80, 20);
+	}
 
-    public void itemStateChanged(ItemEvent evt) {
-        String s = getSelectedItem().toString();
-        editor.setAsText(s);
-    }
+	public void itemStateChanged(ItemEvent evt) {
+		String s = getSelectedItem().toString();
+		editor.setAsText(s);
+	}
 
-    // public void repaint() {
-    // super.repaint();
-    // //setSelectedItem(editor.getAsText());
-    // }
+	// public void repaint() {
+	// super.repaint();
+	// //setSelectedItem(editor.getAsText());
+	// }
 
-    PropertyEditor editor;
+	PropertyEditor editor;
 }

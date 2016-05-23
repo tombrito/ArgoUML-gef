@@ -38,20 +38,20 @@ package org.tigris.gef.base;
 
 public class CmdAdjustPageBreaks extends Cmd {
 
-    private static final long serialVersionUID = -3106275866568804593L;
+	private static final long serialVersionUID = -3106275866568804593L;
 
-    /** Construct a new CmdAdjustPageBreaks */
-    public CmdAdjustPageBreaks() {
-        super("AdjustPageBreaks");
-    }
+	/** Construct a new CmdAdjustPageBreaks */
+	public CmdAdjustPageBreaks() {
+		super("AdjustPageBreaks");
+	}
 
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        Layer pageBreaks = (Layer) ce.getLayerManager()
-                .findLayerNamed("PageBreaks");
-        if (pageBreaks != null) pageBreaks.adjust();
-    }
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		Layer pageBreaks = (Layer) ce.getLayerManager().findLayerNamed("PageBreaks");
+		if (pageBreaks != null)
+			pageBreaks.adjust();
+	}
 
-    public void undoIt() {
-    }
+	public void undoIt() {
+	}
 } /* end class CmdAdjustPageBreaks */

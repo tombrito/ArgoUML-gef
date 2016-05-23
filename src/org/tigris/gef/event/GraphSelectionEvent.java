@@ -23,7 +23,8 @@
 
 package org.tigris.gef.event;
 
-import java.util.*;
+import java.util.EventObject;
+import java.util.Vector;
 
 /**
  * An event object that contains information about the current selection(s) in
@@ -36,21 +37,21 @@ import java.util.*;
  */
 public class GraphSelectionEvent extends EventObject {
 
-    private static final long serialVersionUID = 7055361155230503398L;
+	private static final long serialVersionUID = 7055361155230503398L;
 
-    private Vector _selections;
+	private Vector _selections;
 
-    // //////////////////////////////////////////////////////////////
-    // constructor
-    public GraphSelectionEvent(Object src, Vector selections) {
-        super(src);
-        _selections = selections;
-    }
+	// //////////////////////////////////////////////////////////////
+	// constructor
+	public GraphSelectionEvent(Object src, Vector selections) {
+		super(src);
+		_selections = selections;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
-    public Vector getSelections() {
-        return _selections;
-    }
+	// //////////////////////////////////////////////////////////////
+	// accessors
+	public Vector getSelections() {
+		return _selections;
+	}
 
 } /* end class GraphSelectionEvent */

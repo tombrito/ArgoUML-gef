@@ -28,9 +28,10 @@
 
 package Acme.JPM.Encoders;
 
-import java.io.*;
 import java.awt.Image;
-import java.awt.image.*;
+import java.awt.image.ImageProducer;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Write out an image as a PPM.
@@ -40,58 +41,60 @@ import java.awt.image.*;
  */
 public class PpmEncoder extends ImageEncoder {
 
-    /**
-     * Constructor.
-     * 
-     * @param img The image to encode.
-     * @param out The stream to write the PPM to.
-     * @throws IOException
-     */
-    public PpmEncoder(Image img, OutputStream out) throws IOException {
-        super(img, out);
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param img
+	 *            The image to encode.
+	 * @param out
+	 *            The stream to write the PPM to.
+	 * @throws IOException
+	 */
+	public PpmEncoder(Image img, OutputStream out) throws IOException {
+		super(img, out);
+	}
 
-    /**
-     * Constructor.
-     * 
-     * @param prod The ImageProducer to encode.
-     * @param out The stream to write the PPM to.
-     * @throws IOException
-     */
-    public PpmEncoder(ImageProducer prod, OutputStream out) throws IOException {
-        super(prod, out);
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param prod
+	 *            The ImageProducer to encode.
+	 * @param out
+	 *            The stream to write the PPM to.
+	 * @throws IOException
+	 */
+	public PpmEncoder(ImageProducer prod, OutputStream out) throws IOException {
+		super(prod, out);
+	}
 
-    void encodeStart(int width, int height) throws IOException {
-        writeString(out, "P6\n");
-        writeString(out, width + " " + height + "\n");
-        writeString(out, "255\n");
-    }
+	void encodeStart(int width, int height) throws IOException {
+		writeString(out, "P6\n");
+		writeString(out, width + " " + height + "\n");
+		writeString(out, "255\n");
+	}
 
-    static void writeString(OutputStream out, String str) throws IOException {
-        byte[] buf = str.getBytes();
-        out.write(buf);
-    }
+	static void writeString(OutputStream out, String str) throws IOException {
+		byte[] buf = str.getBytes();
+		out.write(buf);
+	}
 
-    void encodePixels(int x, int y, int w, int h, int[] rgbPixels, int off,
-            int scansize)
-        throws IOException {
-        byte[] ppmPixels = new byte[w * 3];
-        for (int row = 0; row < h; ++row) {
-            int rowOff = off + row * scansize;
-            for (int col = 0; col < w; ++col) {
-                int i = rowOff + col;
-                int j = col * 3;
-                ppmPixels[j] = (byte) ((rgbPixels[i] & 0xff0000) >> 16);
-                ppmPixels[j + 1] = (byte) ((rgbPixels[i] & 0x00ff00) >> 8);
-                ppmPixels[j + 2] = (byte) (rgbPixels[i] & 0x0000ff);
-            }
-            out.write(ppmPixels);
-        }
-    }
+	void encodePixels(int x, int y, int w, int h, int[] rgbPixels, int off, int scansize) throws IOException {
+		byte[] ppmPixels = new byte[w * 3];
+		for (int row = 0; row < h; ++row) {
+			int rowOff = off + row * scansize;
+			for (int col = 0; col < w; ++col) {
+				int i = rowOff + col;
+				int j = col * 3;
+				ppmPixels[j] = (byte) ((rgbPixels[i] & 0xff0000) >> 16);
+				ppmPixels[j + 1] = (byte) ((rgbPixels[i] & 0x00ff00) >> 8);
+				ppmPixels[j + 2] = (byte) (rgbPixels[i] & 0x0000ff);
+			}
+			out.write(ppmPixels);
+		}
+	}
 
-    void encodeDone() throws IOException {
-        // Nothing.
-    }
+	void encodeDone() throws IOException {
+		// Nothing.
+	}
 
 }

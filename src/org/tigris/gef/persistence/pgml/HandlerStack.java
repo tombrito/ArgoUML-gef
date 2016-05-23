@@ -35,18 +35,19 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Michael MacDonald
  */
 public interface HandlerStack {
-    /**
-     * Pushes a new ContentHandler on the stack and insures that the SAX parser
-     * uses that handler for further events.
-     * 
-     * @param handler ContentHandler to be pushed on the handler stack
-     */
-    void pushHandlerStack(DefaultHandler handler);
+	/**
+	 * Pushes a new ContentHandler on the stack and insures that the SAX parser
+	 * uses that handler for further events.
+	 * 
+	 * @param handler
+	 *            ContentHandler to be pushed on the handler stack
+	 */
+	void pushHandlerStack(DefaultHandler handler);
 
-    /**
-     * Removes the top handler from the stack and insures that the SAX parser
-     * calls the previously underlying, now top ContentHandler object for
-     * further events.
-     */
-    void popHandlerStack();
+	/**
+	 * Removes the top handler from the stack and insures that the SAX parser
+	 * calls the previously underlying, now top ContentHandler object for
+	 * further events.
+	 */
+	void popHandlerStack();
 }

@@ -35,50 +35,50 @@ import org.xml.sax.helpers.DefaultHandler;
  * sub-elements.
  */
 public class UnknownHandler extends DefaultHandler {
-    /**
-     * Logger.
-     */
-    private static final Log LOG = LogFactory.getLog(UnknownHandler.class);
+	/**
+	 * Logger.
+	 */
+	private static final Log LOG = LogFactory.getLog(UnknownHandler.class);
 
-    private int depthCount;
+	private int depthCount;
 
-    private HandlerStack stack;
+	private HandlerStack stack;
 
-    /**
-     * @param theStack The stack of ContentHandler's for this parsing operation
-     */
-    public UnknownHandler(HandlerStack theStack) {
-        depthCount = 1;
-        stack = theStack;
-    }
+	/**
+	 * @param theStack
+	 *            The stack of ContentHandler's for this parsing operation
+	 */
+	public UnknownHandler(HandlerStack theStack) {
+		depthCount = 1;
+		stack = theStack;
+	}
 
-    /**
-     * Increments depth count.
-     * 
-     * @param uri
-     * @param localname
-     * @param qname
-     * @param attributes
-     */
-    public void startElement(String uri, String localname, String qname,
-            Attributes attributes) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Ignoring unexpected element: " + qname);
-        }
-        depthCount++;
-    }
+	/**
+	 * Increments depth count.
+	 * 
+	 * @param uri
+	 * @param localname
+	 * @param qname
+	 * @param attributes
+	 */
+	public void startElement(String uri, String localname, String qname, Attributes attributes) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Ignoring unexpected element: " + qname);
+		}
+		depthCount++;
+	}
 
-    /**
-     * Decrements depth count; pops itself off the stack when the depth count is
-     * 0.
-     * 
-     * @param uri
-     * @param localname
-     * @param qname
-     */
-    public void endElement(String uri, String localname, String qname) {
-        if (--depthCount == 0) {
-            stack.popHandlerStack();
-        }
-    }
+	/**
+	 * Decrements depth count; pops itself off the stack when the depth count is
+	 * 0.
+	 * 
+	 * @param uri
+	 * @param localname
+	 * @param qname
+	 */
+	public void endElement(String uri, String localname, String qname) {
+		if (--depthCount == 0) {
+			stack.popHandlerStack();
+		}
+	}
 }

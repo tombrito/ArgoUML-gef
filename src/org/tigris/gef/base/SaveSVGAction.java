@@ -38,61 +38,67 @@ import org.tigris.gef.util.Localizer;
 
 public class SaveSVGAction extends SaveGraphicsAction {
 
-    private static final long serialVersionUID = -5248797272442711063L;
+	private static final long serialVersionUID = -5248797272442711063L;
 
-    /**
-     * Creates a new SaveSVGAction
-     * 
-     * @param name The name of the action
-     */
-    public SaveSVGAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new SaveSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public SaveSVGAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new SaveSVGAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public SaveSVGAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new SaveSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public SaveSVGAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new SaveSVGAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SaveSVGAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new SaveSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public SaveSVGAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new SaveSVGAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SaveSVGAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new SaveSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public SaveSVGAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    protected void saveGraphics(OutputStream s, Editor ce,
-            Rectangle drawingArea)
-        throws IOException {
-        SVGWriter writer = null;
-        try {
-            writer = new SVGWriter(s, drawingArea);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (writer != null) {
-            ce.print(writer);
-            writer.dispose();
-        }
-    }
+	protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea) throws IOException {
+		SVGWriter writer = null;
+		try {
+			writer = new SVGWriter(s, drawingArea);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (writer != null) {
+			ce.print(writer);
+			writer.dispose();
+		}
+	}
 
 }

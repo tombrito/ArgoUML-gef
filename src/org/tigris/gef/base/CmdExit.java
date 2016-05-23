@@ -37,17 +37,17 @@ package org.tigris.gef.base;
 
 public class CmdExit extends Cmd {
 
-    private static final long serialVersionUID = 739924033915132025L;
+	private static final long serialVersionUID = 739924033915132025L;
 
-    public CmdExit() {
-        super("Exit");
-    }
+	public CmdExit() {
+		super("Exit");
+	}
 
-    public void doIt() {
-        Globals.quit();
-    }
+	public void doIt() {
+		Globals.quit();
+	}
 
-    public void undoIt() {
-        System.out.println("Undo does not make sense for CmdExit");
-    }
+	public void undoIt() {
+		System.out.println("Undo does not make sense for CmdExit");
+	}
 } /* end class CmdExit */

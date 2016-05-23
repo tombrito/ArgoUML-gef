@@ -27,9 +27,14 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.image.FilteredImageSource;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import Acme.JPM.Encoders.GifEncoder;
 
@@ -46,60 +51,56 @@ import Acme.JPM.Encoders.GifEncoder;
 
 public class CmdSaveGIF extends CmdSaveGraphics {
 
-    private static final long serialVersionUID = 4044142753088912626L;
+	private static final long serialVersionUID = 4044142753088912626L;
 
-    /**
-     * Used as background color in image and set transparent. Chosen because
-     * it's unlikely to be selected by the user, and leaves the diagram readable
-     * if viewed without transparency.
-     */
+	/**
+	 * Used as background color in image and set transparent. Chosen because
+	 * it's unlikely to be selected by the user, and leaves the diagram readable
+	 * if viewed without transparency.
+	 */
 
-    public static final int TRANSPARENT_BG_COLOR = 0x00efefef;
+	public static final int TRANSPARENT_BG_COLOR = 0x00efefef;
 
-    public CmdSaveGIF() {
-        super("SaveGIF");
-    }
+	public CmdSaveGIF() {
+		super("SaveGIF");
+	}
 
-    /**
-     * Write the diagram contained by the current editor into an OutputStream as
-     * a GIF image.
-     */
-    protected void saveGraphics(OutputStream s, Editor ce,
-            Rectangle drawingArea)
-        throws IOException {
+	/**
+	 * Write the diagram contained by the current editor into an OutputStream as
+	 * a GIF image.
+	 */
+	protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea) throws IOException {
 
-        // Create an offscreen image and render the diagram into it.
+		// Create an offscreen image and render the diagram into it.
 
-        Image i = ce.createImage(drawingArea.width * scale,
-                drawingArea.height * scale);
-        Graphics g = i.getGraphics();
-        if (g instanceof Graphics2D) {
-            ((Graphics2D) g).scale(scale, scale);
-        }
-        g.setColor(new Color(TRANSPARENT_BG_COLOR));
-        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
-        // a little extra won't hurt
-        g.translate(-drawingArea.x, -drawingArea.y);
-        ce.print(g);
+		Image i = ce.createImage(drawingArea.width * scale, drawingArea.height * scale);
+		Graphics g = i.getGraphics();
+		if (g instanceof Graphics2D) {
+			((Graphics2D) g).scale(scale, scale);
+		}
+		g.setColor(new Color(TRANSPARENT_BG_COLOR));
+		g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
+		// a little extra won't hurt
+		g.translate(-drawingArea.x, -drawingArea.y);
+		ce.print(g);
 
-        // Tell the Acme GIF encoder to save the image as a GIF into the
-        // output stream. Use the TransFilter to make the background
-        // color transparent.
+		// Tell the Acme GIF encoder to save the image as a GIF into the
+		// output stream. Use the TransFilter to make the background
+		// color transparent.
 
-        try {
-            FilteredImageSource fis = new FilteredImageSource(i.getSource(),
-                    new TransFilter(TRANSPARENT_BG_COLOR));
-            GifEncoder ge = new GifEncoder(fis, s);
-            // GifEncoder ge = new GifEncoder( i, s );
-            ge.encode();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			FilteredImageSource fis = new FilteredImageSource(i.getSource(), new TransFilter(TRANSPARENT_BG_COLOR));
+			GifEncoder ge = new GifEncoder(fis, s);
+			// GifEncoder ge = new GifEncoder( i, s );
+			ge.encode();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        g.dispose();
-        // force garbage collection, to prevent out of memory exceptions
-        g = null;
-        i = null;
-    }
+		g.dispose();
+		// force garbage collection, to prevent out of memory exceptions
+		g = null;
+		i = null;
+	}
 
 } /* end class CmdSaveGIF */

@@ -36,30 +36,30 @@ import java.awt.Point;
  */
 public interface PathItemPlacementStrategy {
 
-    Point getPoint();
+	Point getPoint();
 
-    /**
-     * Method to visualize the algorithm of the path item placement strategy.
-     * 
-     * This is implemented as an empty method in PathConv so any class extending
-     * that has no painting of the algorithm by default.
-     * 
-     * It is up to the client application to provide the algorithm when required
-     * and also to call the strategy at the appropriate time.
-     * 
-     * Should the strategy always be visible then the FigEdge paint method would
-     * be responsible for painting the strategy. Should the strategy only appear
-     * on selection then the appropriate Selection classes paint method should
-     * be responsible.
-     */
-    void paint(Graphics g);
+	/**
+	 * Method to visualize the algorithm of the path item placement strategy.
+	 * 
+	 * This is implemented as an empty method in PathConv so any class extending
+	 * that has no painting of the algorithm by default.
+	 * 
+	 * It is up to the client application to provide the algorithm when required
+	 * and also to call the strategy at the appropriate time.
+	 * 
+	 * Should the strategy always be visible then the FigEdge paint method would
+	 * be responsible for painting the strategy. Should the strategy only appear
+	 * on selection then the appropriate Selection classes paint method should
+	 * be responsible.
+	 */
+	void paint(Graphics g);
 
-    /**
-     * Method for setting new locations of path item Figs by specifying a new
-     * point in the x,y coordinate space.
-     * 
-     * @param newPoint
-     */
-    public void setPoint(Point newPoint);
+	/**
+	 * Method for setting new locations of path item Figs by specifying a new
+	 * point in the x,y coordinate space.
+	 * 
+	 * @param newPoint
+	 */
+	public void setPoint(Point newPoint);
 
 }

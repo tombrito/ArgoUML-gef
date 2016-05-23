@@ -37,66 +37,65 @@ import java.awt.Polygon;
 
 public class ArrowHeadDiamond extends ArrowHead {
 
-    private static final long serialVersionUID = 7056384380724728325L;
+	private static final long serialVersionUID = 7056384380724728325L;
 
-    public static ArrowHeadDiamond WhiteDiamond = new ArrowHeadDiamond(
-            Color.black, Color.white);
+	public static ArrowHeadDiamond WhiteDiamond = new ArrowHeadDiamond(Color.black, Color.white);
 
-    public static ArrowHeadDiamond BlackDiamond = new ArrowHeadDiamond(
-            Color.black, Color.black);
+	public static ArrowHeadDiamond BlackDiamond = new ArrowHeadDiamond(Color.black, Color.black);
 
-    // //////////////////////////////////////////////////////////////
-    // constuctors
-    public ArrowHeadDiamond() {
-    }
+	// //////////////////////////////////////////////////////////////
+	// constuctors
+	public ArrowHeadDiamond() {
+	}
 
-    public ArrowHeadDiamond(Color line, Color fill) {
-        super(line, fill);
-        setHeight(20);
-        setWidth(5);
-    }
+	public ArrowHeadDiamond(Color line, Color fill) {
+		super(line, fill);
+		setHeight(20);
+		setWidth(5);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // display methods
+	// //////////////////////////////////////////////////////////////
+	// display methods
 
-    public void paint(final Graphics g, final Point start, final Point end,
-            final Color lineColor, final Color fillColor) {
-        double denom, x, y, dx, dy, cos, sin;
-        Polygon diamond;
+	public void paint(final Graphics g, final Point start, final Point end, final Color lineColor,
+			final Color fillColor) {
+		double denom, x, y, dx, dy, cos, sin;
+		Polygon diamond;
 
-        final int xFrom = start.x;
-        final int xTo = end.x;
-        final int yFrom = start.y;
-        final int yTo = end.y;
+		final int xFrom = start.x;
+		final int xTo = end.x;
+		final int yFrom = start.y;
+		final int yTo = end.y;
 
-        dx = (double) (xTo - xFrom);
-        dy = (double) (yTo - yFrom);
-        denom = dist(dx, dy);
-        if (denom == 0) return;
+		dx = (double) (xTo - xFrom);
+		dy = (double) (yTo - yFrom);
+		denom = dist(dx, dy);
+		if (denom == 0)
+			return;
 
-        cos = (getHeight() / 2) / denom;
-        sin = getWidth() / denom;
-        x = xTo - cos * dx;
-        y = yTo - cos * dy;
-        int x1 = (int) (x - sin * dy);
-        int y1 = (int) (y + sin * dx);
-        int x2 = (int) (x + sin * dy);
-        int y2 = (int) (y - sin * dx);
+		cos = (getHeight() / 2) / denom;
+		sin = getWidth() / denom;
+		x = xTo - cos * dx;
+		y = yTo - cos * dy;
+		int x1 = (int) (x - sin * dy);
+		int y1 = (int) (y + sin * dx);
+		int x2 = (int) (x + sin * dy);
+		int y2 = (int) (y - sin * dx);
 
-        Point topPoint = pointAlongLine(end, start, getHeight());
+		Point topPoint = pointAlongLine(end, start, getHeight());
 
-        // needs-more-work: should avoid alloacting new objects in paint
-        diamond = new Polygon();
-        diamond.addPoint(xTo, yTo);
-        diamond.addPoint(x1, y1);
-        diamond.addPoint(topPoint.x, topPoint.y);
-        diamond.addPoint(x2, y2);
+		// needs-more-work: should avoid alloacting new objects in paint
+		diamond = new Polygon();
+		diamond.addPoint(xTo, yTo);
+		diamond.addPoint(x1, y1);
+		diamond.addPoint(topPoint.x, topPoint.y);
+		diamond.addPoint(x2, y2);
 
-        Graphics graphics = (Graphics) g;
-        graphics.setColor(getFillColor());
-        graphics.fillPolygon(diamond);
-        graphics.setColor(lineColor);
-        graphics.drawPolygon(diamond);
-    }
+		Graphics graphics = (Graphics) g;
+		graphics.setColor(getFillColor());
+		graphics.fillPolygon(diamond);
+		graphics.setColor(lineColor);
+		graphics.drawPolygon(diamond);
+	}
 
 } /* end class ArrowHeadDiamond */

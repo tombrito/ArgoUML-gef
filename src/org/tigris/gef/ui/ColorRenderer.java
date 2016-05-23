@@ -23,21 +23,23 @@
 
 package org.tigris.gef.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
 
-import javax.swing.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
 
 public class ColorRenderer extends DefaultListCellRenderer {
-    public Component getListCellRendererComponent(JList list, Object value,
-            int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel label = (JLabel) super.getListCellRendererComponent(list, value,
-                index, isSelected, cellHasFocus);
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			boolean cellHasFocus) {
+		JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        if (value instanceof Color) {
-            label.setIcon(Swatch.forColor((Color) value));
-            label.setText("  ");
-        } else
-            label.setIcon(null);
-        return label;
-    }
+		if (value instanceof Color) {
+			label.setIcon(Swatch.forColor((Color) value));
+			label.setText("  ");
+		} else
+			label.setIcon(null);
+		return label;
+	}
 } /* end class ColorRenderer */

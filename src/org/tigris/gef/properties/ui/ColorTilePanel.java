@@ -28,11 +28,17 @@
 
 package org.tigris.gef.properties.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.applet.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.Vector;
+
+import javax.swing.JPanel;
 
 /**
  * A Panel that shows an array of little colored squares to allow the user to
@@ -40,222 +46,224 @@ import java.util.*;
  * Netscape Navigator (TM) tries to allocate when it starts.
  */
 
-public class ColorTilePanel extends JPanel
-        implements MouseListener, MouseMotionListener {
-    // //////////////////////////////////////////////////////////////
-    // constants
-    public final static int TILESIZE = 6;
+public class ColorTilePanel extends JPanel implements MouseListener, MouseMotionListener {
+	// //////////////////////////////////////////////////////////////
+	// constants
+	public final static int TILESIZE = 6;
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    /** The colors that will be shown */
-    protected Vector _colors;
+	/** The colors that will be shown */
+	protected Vector _colors;
 
-    /** The index of the selected color */
-    protected int _selected = 0;
+	/** The index of the selected color */
+	protected int _selected = 0;
 
-    /**
-     * The number of columns to use when displaying the array of /** colors.
-     */
-    protected int _nCols;
+	/**
+	 * The number of columns to use when displaying the array of /** colors.
+	 */
+	protected int _nCols;
 
-    /**
-     * True iff the user can select a color, false if this widget is /**
-     * disabled.
-     */
-    protected boolean _allowSelection = true;
+	/**
+	 * True iff the user can select a color, false if this widget is /**
+	 * disabled.
+	 */
+	protected boolean _allowSelection = true;
 
-    protected ActionListener _onlyListener = null;
+	protected ActionListener _onlyListener = null;
 
-    // //////////////////////////////////////////////////////////////
-    // constructors
+	// //////////////////////////////////////////////////////////////
+	// constructors
 
-    public ColorTilePanel() {
-        this(netscapeColors());
-    }
+	public ColorTilePanel() {
+		this(netscapeColors());
+	}
 
-    public ColorTilePanel(int nCols) {
-        this(netscapeColors(), nCols);
-    }
+	public ColorTilePanel(int nCols) {
+		this(netscapeColors(), nCols);
+	}
 
-    public ColorTilePanel(Vector cs) {
-        _colors = cs;
-        _nCols = (int) Math.sqrt(cs.size());
-        addMouseListener(this);
-        addMouseMotionListener(this);
-    }
+	public ColorTilePanel(Vector cs) {
+		_colors = cs;
+		_nCols = (int) Math.sqrt(cs.size());
+		addMouseListener(this);
+		addMouseMotionListener(this);
+	}
 
-    public ColorTilePanel(Vector cs, int nCols) {
-        _colors = cs;
-        _nCols = nCols;
-        addMouseListener(this);
-        addMouseMotionListener(this);
-    }
+	public ColorTilePanel(Vector cs, int nCols) {
+		_colors = cs;
+		_nCols = nCols;
+		addMouseListener(this);
+		addMouseMotionListener(this);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    public Color getColor() {
-        return (Color) _colors.elementAt(_selected);
-    }
+	public Color getColor() {
+		return (Color) _colors.elementAt(_selected);
+	}
 
-    /**
-     * Select the little rectangle for the given color, ONLY if it is one of the
-     * displayed colors.
-     */
-    public void setColor(Color c) {
-        if (!_colors.contains(c)) return;
-        setSelectionIndex(_colors.indexOf(c));
-    }
+	/**
+	 * Select the little rectangle for the given color, ONLY if it is one of the
+	 * displayed colors.
+	 */
+	public void setColor(Color c) {
+		if (!_colors.contains(c))
+			return;
+		setSelectionIndex(_colors.indexOf(c));
+	}
 
-    /**
-     * The user can be prevented from selecting a color if there would be
-     * nothing to do the the selected color. E.g., the Color Picker window is
-     * open but no DiagramElement is selected.
-     */
-    public void allowSelection(boolean as) {
-        _allowSelection = as;
-        repaint();
-    }
+	/**
+	 * The user can be prevented from selecting a color if there would be
+	 * nothing to do the the selected color. E.g., the Color Picker window is
+	 * open but no DiagramElement is selected.
+	 */
+	public void allowSelection(boolean as) {
+		_allowSelection = as;
+		repaint();
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // painting and related methods
+	// //////////////////////////////////////////////////////////////
+	// painting and related methods
 
-    public void paint(Graphics g) {
-        for (int i = 0; i < _colors.size(); ++i)
-            paintTile(g, i);
-        showSelection(g);
-    }
+	public void paint(Graphics g) {
+		for (int i = 0; i < _colors.size(); ++i)
+			paintTile(g, i);
+		showSelection(g);
+	}
 
-    public void paintTile(Graphics g, int tileNum) {
-        g.setColor((Color) _colors.elementAt(tileNum));
-        int col = tileNum % _nCols;
-        int row = tileNum / _nCols;
-        g.fillRect(col * TILESIZE, row * TILESIZE, TILESIZE, TILESIZE);
-    }
+	public void paintTile(Graphics g, int tileNum) {
+		g.setColor((Color) _colors.elementAt(tileNum));
+		int col = tileNum % _nCols;
+		int row = tileNum / _nCols;
+		g.fillRect(col * TILESIZE, row * TILESIZE, TILESIZE, TILESIZE);
+	}
 
-    /**
-     * Draw a black or white hollow rectangle to indicate which color the user
-     * selected.
-     */
-    public void showSelection(Graphics g) {
-        Color c, sc;
-        c = (Color) _colors.elementAt(_selected);
-        if (c.getRed() + c.getBlue() + c.getGreen() > 255 * 3 / 2)
-            sc = Color.black;
-        else
-            sc = Color.white;
-        g.setColor(sc);
-        g.drawRect((_selected % _nCols) * TILESIZE,
-                (_selected / _nCols) * TILESIZE, TILESIZE - 1, TILESIZE - 1);
-        if (TILESIZE >= 8) g.drawRect((_selected % _nCols) * TILESIZE + 1,
-                (_selected / _nCols) * TILESIZE + 1, TILESIZE - 3,
-                TILESIZE - 3);
-    }
+	/**
+	 * Draw a black or white hollow rectangle to indicate which color the user
+	 * selected.
+	 */
+	public void showSelection(Graphics g) {
+		Color c, sc;
+		c = (Color) _colors.elementAt(_selected);
+		if (c.getRed() + c.getBlue() + c.getGreen() > 255 * 3 / 2)
+			sc = Color.black;
+		else
+			sc = Color.white;
+		g.setColor(sc);
+		g.drawRect((_selected % _nCols) * TILESIZE, (_selected / _nCols) * TILESIZE, TILESIZE - 1, TILESIZE - 1);
+		if (TILESIZE >= 8)
+			g.drawRect((_selected % _nCols) * TILESIZE + 1, (_selected / _nCols) * TILESIZE + 1, TILESIZE - 3,
+					TILESIZE - 3);
+	}
 
-    public Dimension getMinimumSize() {
-        int xSize = TILESIZE * _nCols;
-        int ySize = TILESIZE * (_colors.size() / _nCols + 2);
-        return (new Dimension(xSize, ySize));
-    }
+	public Dimension getMinimumSize() {
+		int xSize = TILESIZE * _nCols;
+		int ySize = TILESIZE * (_colors.size() / _nCols + 2);
+		return (new Dimension(xSize, ySize));
+	}
 
-    public Dimension getPreferredSize() {
-        return getMinimumSize();
-    }
+	public Dimension getPreferredSize() {
+		return getMinimumSize();
+	}
 
-    public boolean setSelectionIndex(int s) {
-        if (s < 0 || s > _colors.size()) return false;
-        if (s == _selected) return false;
-        _selected = s;
-        repaint();
-        return true;
-    }
+	public boolean setSelectionIndex(int s) {
+		if (s < 0 || s > _colors.size())
+			return false;
+		if (s == _selected)
+			return false;
+		_selected = s;
+		repaint();
+		return true;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // event handling
+	// //////////////////////////////////////////////////////////////
+	// event handling
 
-    /**
-     * When the user releases the mouse button that signifies that (s)he has
-     * made a selection, post an ACTION_EVENT that the enclosing Container can
-     * handle.
-     */
-    public void mouseReleased(MouseEvent me) {
-        int x = me.getX();
-        int y = me.getY();
-        if (x > _nCols * TILESIZE - 1
-                || y > (_colors.size() / _nCols) * TILESIZE - 1)
-            return;
-        int col = x / TILESIZE;
-        int row = y / TILESIZE;
-        if (setSelectionIndex(col + row * _nCols)) {
-            fireActionEvent(null);
-        }
-    }
+	/**
+	 * When the user releases the mouse button that signifies that (s)he has
+	 * made a selection, post an ACTION_EVENT that the enclosing Container can
+	 * handle.
+	 */
+	public void mouseReleased(MouseEvent me) {
+		int x = me.getX();
+		int y = me.getY();
+		if (x > _nCols * TILESIZE - 1 || y > (_colors.size() / _nCols) * TILESIZE - 1)
+			return;
+		int col = x / TILESIZE;
+		int row = y / TILESIZE;
+		if (setSelectionIndex(col + row * _nCols)) {
+			fireActionEvent(null);
+		}
+	}
 
-    /**
-     * Mousedown is the same as mouse up: it selects the color under the mouse
-     */
-    public void mousePressed(MouseEvent me) {
-        mouseReleased(me);
-    }
+	/**
+	 * Mousedown is the same as mouse up: it selects the color under the mouse
+	 */
+	public void mousePressed(MouseEvent me) {
+		mouseReleased(me);
+	}
 
-    public void mouseMoved(MouseEvent me) {
-    }
+	public void mouseMoved(MouseEvent me) {
+	}
 
-    public void mouseDragged(MouseEvent me) {
-        mouseReleased(me);
-    }
+	public void mouseDragged(MouseEvent me) {
+		mouseReleased(me);
+	}
 
-    public void mouseClicked(MouseEvent me) {
-        mouseReleased(me);
-    }
+	public void mouseClicked(MouseEvent me) {
+		mouseReleased(me);
+	}
 
-    public void mouseEntered(MouseEvent me) {
-    }
+	public void mouseEntered(MouseEvent me) {
+	}
 
-    public void mouseExited(MouseEvent me) {
-    }
+	public void mouseExited(MouseEvent me) {
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // color sets
+	// //////////////////////////////////////////////////////////////
+	// color sets
 
-    public static Vector _NetscapeColors = null;
+	public static Vector _NetscapeColors = null;
 
-    public static Vector netscapeColors() {
-        if (_NetscapeColors == null) {
-            int values[] = new int[6];
-            int nValues = 0;
-            values[nValues++] = 0;
-            values[nValues++] = 3 * 16 + 3;
-            values[nValues++] = 6 * 16 + 6;
-            values[nValues++] = 9 * 16 + 9;
-            values[nValues++] = 12 * 16 + 12;
-            values[nValues++] = 15 * 16 + 15;
-            _NetscapeColors = new Vector(nValues * nValues * nValues);
-            for (int r = 0; r < nValues; ++r)
-                for (int g = 0; g < nValues; ++g)
-                    for (int b = 0; b < nValues; ++b) {
-                        Color c = new Color(values[r], values[g], values[b]);
-                        _NetscapeColors.addElement(c);
-                    }
-        }
-        return _NetscapeColors;
-    }
+	public static Vector netscapeColors() {
+		if (_NetscapeColors == null) {
+			int values[] = new int[6];
+			int nValues = 0;
+			values[nValues++] = 0;
+			values[nValues++] = 3 * 16 + 3;
+			values[nValues++] = 6 * 16 + 6;
+			values[nValues++] = 9 * 16 + 9;
+			values[nValues++] = 12 * 16 + 12;
+			values[nValues++] = 15 * 16 + 15;
+			_NetscapeColors = new Vector(nValues * nValues * nValues);
+			for (int r = 0; r < nValues; ++r)
+				for (int g = 0; g < nValues; ++g)
+					for (int b = 0; b < nValues; ++b) {
+						Color c = new Color(values[r], values[g], values[b]);
+						_NetscapeColors.addElement(c);
+					}
+		}
+		return _NetscapeColors;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // events
+	// //////////////////////////////////////////////////////////////
+	// events
 
-    public void addActionListener(ActionListener list) {
-        _onlyListener = list;
-    }
+	public void addActionListener(ActionListener list) {
+		_onlyListener = list;
+	}
 
-    public void removeActionListener(ActionListener list) {
-        if (_onlyListener == list) _onlyListener = null;
-    }
+	public void removeActionListener(ActionListener list) {
+		if (_onlyListener == list)
+			_onlyListener = null;
+	}
 
-    public void fireActionEvent(ActionEvent ae) {
-        if (_onlyListener != null) _onlyListener.actionPerformed(ae);
-    }
+	public void fireActionEvent(ActionEvent ae) {
+		if (_onlyListener != null)
+			_onlyListener.actionPerformed(ae);
+	}
 
 } /* end class ColorTilePanel */

@@ -30,17 +30,17 @@ package org.tigris.gef.base;
  * @author Bob Tarling
  */
 public interface ModeFactory {
-    /**
-     * Create a new instance of the relevant Mode class
-     * 
-     * @return
-     */
-    FigModifyingMode createMode();
+	/**
+	 * Create a new instance of the relevant Mode class
+	 * 
+	 * @return
+	 */
+	FigModifyingMode createMode();
 
-    /**
-     * Create a new instance of the relevant Mode class
-     * 
-     * @return
-     */
-    FigModifyingMode createMode(Editor editor);
+	/**
+	 * Create a new instance of the relevant Mode class
+	 * 
+	 * @return
+	 */
+	FigModifyingMode createMode(Editor editor);
 }

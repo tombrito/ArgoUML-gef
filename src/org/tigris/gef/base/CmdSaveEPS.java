@@ -27,10 +27,11 @@
 
 package org.tigris.gef.base;
 
-import java.io.*;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.OutputStream;
 
-import org.tigris.gef.persistence.*;
+import org.tigris.gef.persistence.PostscriptWriter;
 
 /**
  * Cmd to save a diagram as PostScript in a supplied OutputStream. Requires the
@@ -45,19 +46,17 @@ import org.tigris.gef.persistence.*;
 
 public class CmdSaveEPS extends CmdSaveGraphics {
 
-    private static final long serialVersionUID = 1727730791092235778L;
+	private static final long serialVersionUID = 1727730791092235778L;
 
-    public CmdSaveEPS() {
-        super("SaveEncapsulatedPostScript");
-    }
+	public CmdSaveEPS() {
+		super("SaveEncapsulatedPostScript");
+	}
 
-    protected void saveGraphics(OutputStream s, Editor ce,
-            Rectangle drawingArea)
-        throws IOException {
-        PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
-        ps.translate(-drawingArea.x, -drawingArea.y);
-        ce.print(ps);
-        ps.dispose();
-    }
+	protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea) throws IOException {
+		PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
+		ps.translate(-drawingArea.x, -drawingArea.y);
+		ce.print(ps);
+		ps.dispose();
+	}
 
 } /* end class CmdSaveEPS */

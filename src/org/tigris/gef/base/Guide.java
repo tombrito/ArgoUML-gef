@@ -28,7 +28,7 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Point;
 
 /**
  * Constrains interactions to certain coordinates. For example GuideGrid makes
@@ -41,31 +41,31 @@ import java.awt.*;
 
 public abstract class Guide implements java.io.Serializable {
 
-    // //////////////////////////////////////////////////////////////
-    // geometric constraints
+	// //////////////////////////////////////////////////////////////
+	// geometric constraints
 
-    /**
-     * Return a NEW Point that is close to p and on the guideline (e.g.,
-     * gridline).
-     */
-    public final Point snapTo(Point p) {
-        Point res = new Point(p.x, p.y);
-        snap(res);
-        return res;
-    }
+	/**
+	 * Return a NEW Point that is close to p and on the guideline (e.g.,
+	 * gridline).
+	 */
+	public final Point snapTo(Point p) {
+		Point res = new Point(p.x, p.y);
+		snap(res);
+		return res;
+	}
 
-    /**
-     * Modify the given point to satisfy guide conditions (e.g. be on a
-     * gridline).
-     */
-    public abstract void snap(Point p);
+	/**
+	 * Modify the given point to satisfy guide conditions (e.g. be on a
+	 * gridline).
+	 */
+	public abstract void snap(Point p);
 
-    // //////////////////////////////////////////////////////////////
-    // user interface
+	// //////////////////////////////////////////////////////////////
+	// user interface
 
-    /**
-     * Set the parameters for this guide. E.g., toggle the size of a grid.
-     */
-    public void adjust() {
-    };
+	/**
+	 * Set the parameters for this guide. E.g., toggle the size of a grid.
+	 */
+	public void adjust() {
+	};
 } /* end class Guide */

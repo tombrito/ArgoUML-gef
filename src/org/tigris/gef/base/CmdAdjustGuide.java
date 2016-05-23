@@ -39,18 +39,19 @@ package org.tigris.gef.base;
 
 public class CmdAdjustGuide extends Cmd {
 
-    private static final long serialVersionUID = 3373558342324430910L;
+	private static final long serialVersionUID = 3373558342324430910L;
 
-    public CmdAdjustGuide() {
-        super("AdjustGridSnap");
-    }
+	public CmdAdjustGuide() {
+		super("AdjustGridSnap");
+	}
 
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        Guide guide = ce.getGuide();
-        if (guide != null) guide.adjust();
-    }
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		Guide guide = ce.getGuide();
+		if (guide != null)
+			guide.adjust();
+	}
 
-    public void undoIt() {
-    }
+	public void undoIt() {
+	}
 } /* end class CmdAdjustGuide */

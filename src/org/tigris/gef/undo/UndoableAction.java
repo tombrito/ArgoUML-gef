@@ -24,6 +24,7 @@
 package org.tigris.gef.undo;
 
 import java.awt.event.ActionEvent;
+
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
@@ -32,33 +33,33 @@ import javax.swing.Icon;
  */
 public abstract class UndoableAction extends AbstractAction {
 
-    /**
-     * @see javax.swing.AbstractAction.AbstractAction()
-     */
-    public UndoableAction() {
-        super();
-    }
+	/**
+	 * @see javax.swing.AbstractAction.AbstractAction()
+	 */
+	public UndoableAction() {
+		super();
+	}
 
-    /**
-     * @see javax.swing.AbstractAction.AbstractAction(java.lang.String)
-     */
-    public UndoableAction(String name) {
-        super(name);
-    }
+	/**
+	 * @see javax.swing.AbstractAction.AbstractAction(java.lang.String)
+	 */
+	public UndoableAction(String name) {
+		super(name);
+	}
 
-    /**
-     * @see javax.swing.AbstractAction.AbstractAction( java.lang.String,
-     *      javax.swing.Icon)
-     */
-    public UndoableAction(String name, Icon icon) {
-        super(name, icon);
-    }
+	/**
+	 * @see javax.swing.AbstractAction.AbstractAction( java.lang.String,
+	 *      javax.swing.Icon)
+	 */
+	public UndoableAction(String name, Icon icon) {
+		super(name, icon);
+	}
 
-    /**
-     * Signals that a chain of mementos are about to start for a single user
-     * interaction.
-     */
-    public void actionPerformed(ActionEvent e) {
-        UndoManager.getInstance().startChain();
-    }
+	/**
+	 * Signals that a chain of mementos are about to start for a single user
+	 * interaction.
+	 */
+	public void actionPerformed(ActionEvent e) {
+		UndoManager.getInstance().startChain();
+	}
 } /* end class AlignAction */

@@ -42,20 +42,20 @@ import java.util.Hashtable;
  */
 
 public interface Mode {
-    public void start();
+	public void start();
 
-    public void done();
+	public void done();
 
-    public void setArgs(Hashtable args);
+	public void setArgs(Hashtable args);
 
-    public void setArg(String key, Object value);
+	public void setArg(String key, Object value);
 
-    public Hashtable getArgs();
+	public Hashtable getArgs();
 
-    public Object getArg(String key);
+	public Object getArg(String key);
 
-    public boolean canExit();
+	public boolean canExit();
 
-    public void init(Hashtable parameters);
+	public void init(Hashtable parameters);
 
 } /* end interface Mode */

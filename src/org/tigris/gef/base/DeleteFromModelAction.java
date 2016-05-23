@@ -33,6 +33,7 @@ import javax.swing.Icon;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Localizer;
 
@@ -42,56 +43,64 @@ import org.tigris.gef.util.Localizer;
  */
 public class DeleteFromModelAction extends UndoableAction {
 
-    private static final long serialVersionUID = -6433353066464208028L;
+	private static final long serialVersionUID = -6433353066464208028L;
 
-    private static Log LOG = LogFactory.getLog(DeleteFromModelAction.class);
+	private static Log LOG = LogFactory.getLog(DeleteFromModelAction.class);
 
-    /**
-     * Creates a new DeleteFromModelAction
-     * 
-     * @param name The name of the action
-     */
-    public DeleteFromModelAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new DeleteFromModelAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public DeleteFromModelAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new DeleteFromModelAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public DeleteFromModelAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new DeleteFromModelAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public DeleteFromModelAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new DeleteFromModelAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public DeleteFromModelAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new DeleteFromModelAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public DeleteFromModelAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new DeleteFromModelAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public DeleteFromModelAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new DeleteFromModelAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public DeleteFromModelAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        LOG.debug("Executing DeleteFromModelAction");
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        sm.deleteFromModel();
-        sm.deselectAll();
-    }
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		LOG.debug("Executing DeleteFromModelAction");
+		Editor ce = Globals.curEditor();
+		SelectionManager sm = ce.getSelectionManager();
+		sm.deleteFromModel();
+		sm.deselectAll();
+	}
 }

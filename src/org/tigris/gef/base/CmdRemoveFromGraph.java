@@ -43,23 +43,23 @@ import org.tigris.gef.undo.UndoManager;
 
 public class CmdRemoveFromGraph extends Cmd {
 
-    private static final long serialVersionUID = 8789982494893113775L;
+	private static final long serialVersionUID = 8789982494893113775L;
 
-    public CmdRemoveFromGraph() {
-        super("RemoveFromGraph");
-    }
+	public CmdRemoveFromGraph() {
+		super("RemoveFromGraph");
+	}
 
-    /**
-     * Tell the selected Figs to remove themselves from the the diagram it is in
-     * (and thus all editors).
-     */
-    public void doIt() {
-        UndoManager.getInstance().startChain();
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        sm.removeFromGraph();
-    }
+	/**
+	 * Tell the selected Figs to remove themselves from the the diagram it is in
+	 * (and thus all editors).
+	 */
+	public void doIt() {
+		UndoManager.getInstance().startChain();
+		Editor ce = Globals.curEditor();
+		SelectionManager sm = ce.getSelectionManager();
+		sm.removeFromGraph();
+	}
 
-    public void undoIt() {
-    }
+	public void undoIt() {
+	}
 } /* end class CmdDelete */

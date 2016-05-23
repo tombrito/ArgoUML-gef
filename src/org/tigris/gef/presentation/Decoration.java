@@ -37,92 +37,90 @@ import java.awt.Point;
  */
 
 public abstract class Decoration implements java.io.Serializable {
-    private int arrowWidth = 7;
+	private int arrowWidth = 7;
 
-    private int arrowHeight = 12;
+	private int arrowHeight = 12;
 
-    private Color arrowLineColor = Color.black;
+	private Color arrowLineColor = Color.black;
 
-    private Color arrowFillColor = Color.black;
+	private Color arrowFillColor = Color.black;
 
-    public Decoration() {
-    }
+	public Decoration() {
+	}
 
-    public Decoration(Color line, Color fill) {
-        setLineColor(line);
-        setFillColor(fill);
-    }
+	public Decoration(Color line, Color fill) {
+		setLineColor(line);
+		setFillColor(fill);
+	}
 
-    public Color getLineColor() {
-        return arrowLineColor;
-    }
+	public Color getLineColor() {
+		return arrowLineColor;
+	}
 
-    public void setLineColor(Color newColor) {
-        arrowLineColor = newColor;
-    }
+	public void setLineColor(Color newColor) {
+		arrowLineColor = newColor;
+	}
 
-    public Color getFillColor() {
-        return arrowFillColor;
-    }
+	public Color getFillColor() {
+		return arrowFillColor;
+	}
 
-    public void setFillColor(Color newColor) {
-        arrowFillColor = newColor;
-    }
+	public void setFillColor(Color newColor) {
+		arrowFillColor = newColor;
+	}
 
-    public abstract void paint(Graphics g, Point start, Point end,
-            Color lineColor, Color fillColor);
+	public abstract void paint(Graphics g, Point start, Point end, Color lineColor, Color fillColor);
 
-    /**
-     * @deprecated use paint(Graphics, start, end)
-     */
-    // public final void paint(Object g, Point start, Point end) {
-    // paint((Graphics) g, start, end);
-    // }
+	/**
+	 * @deprecated use paint(Graphics, start, end)
+	 */
+	// public final void paint(Object g, Point start, Point end) {
+	// paint((Graphics) g, start, end);
+	// }
 
-    /** return the approximate arc length of the path in pixel units */
-    public int getLineLength(Point one, Point two) {
-        int dxdx = (two.x - one.x) * (two.x - one.x);
-        int dydy = (two.y - one.y) * (two.y - one.y);
-        return (int) Math.sqrt(dxdx + dydy);
-    }
+	/** return the approximate arc length of the path in pixel units */
+	public int getLineLength(Point one, Point two) {
+		int dxdx = (two.x - one.x) * (two.x - one.x);
+		int dydy = (two.y - one.y) * (two.y - one.y);
+		return (int) Math.sqrt(dxdx + dydy);
+	}
 
-    /** return a point that is dist pixels along the path */
-    public Point pointAlongLine(Point one, Point two, int dist) {
-        int len = getLineLength(one, two);
-        int p = dist;
-        if (len == 0) {
-            return one;
-        }
-        return new Point(one.x + ((two.x - one.x) * p) / len,
-                one.y + ((two.y - one.y) * p) / len);
-    }
+	/** return a point that is dist pixels along the path */
+	public Point pointAlongLine(Point one, Point two, int dist) {
+		int len = getLineLength(one, two);
+		int p = dist;
+		if (len == 0) {
+			return one;
+		}
+		return new Point(one.x + ((two.x - one.x) * p) / len, one.y + ((two.y - one.y) * p) / len);
+	}
 
-    public double dist(int x0, int y0, int x1, int y1) {
-        double dx;
-        double dy;
-        dx = (double) (x0 - x1);
-        dy = (double) (y0 - y1);
-        return Math.sqrt(dx * dx + dy * dy);
-    }
+	public double dist(int x0, int y0, int x1, int y1) {
+		double dx;
+		double dy;
+		dx = (double) (x0 - x1);
+		dy = (double) (y0 - y1);
+		return Math.sqrt(dx * dx + dy * dy);
+	}
 
-    public double dist(double dx, double dy) {
-        return Math.sqrt(dx * dx + dy * dy);
-    }
+	public double dist(double dx, double dy) {
+		return Math.sqrt(dx * dx + dy * dy);
+	}
 
-    public int getWidth() {
-        return arrowWidth;
-    }
+	public int getWidth() {
+		return arrowWidth;
+	}
 
-    public int getHeight() {
-        return arrowHeight;
-    }
+	public int getHeight() {
+		return arrowHeight;
+	}
 
-    public void setWidth(int w) {
-        arrowWidth = w;
-    }
+	public void setWidth(int w) {
+		arrowWidth = w;
+	}
 
-    public void setHeight(int h) {
-        arrowHeight = h;
-    }
+	public void setHeight(int h) {
+		arrowHeight = h;
+	}
 
 } /* end class Decoration */

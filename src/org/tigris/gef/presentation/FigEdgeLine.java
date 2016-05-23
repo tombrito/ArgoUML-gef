@@ -39,41 +39,41 @@ import java.awt.Point;
 
 public class FigEdgeLine extends FigEdge {
 
-    private static final long serialVersionUID = 7010064753682104591L;
+	private static final long serialVersionUID = 7010064753682104591L;
 
-    /**
-     * Instanciate a new FigLine as the contained Fig. By default it is black
-     * and the FigEdge has no ArrowHeads.
-     */
-    protected Fig makeEdgeFig() {
-        return new FigLine(0, 0, 0, 0, Color.black);
-    }
+	/**
+	 * Instanciate a new FigLine as the contained Fig. By default it is black
+	 * and the FigEdge has no ArrowHeads.
+	 */
+	protected Fig makeEdgeFig() {
+		return new FigLine(0, 0, 0, 0, Color.black);
+	}
 
-    /** Compute the shape of the line that presents an Edge. */
-    public void computeRouteImpl() {
-        Fig sourcePortFig = getSourcePortFig();
-        Fig destPortFig = getDestPortFig();
-        Point srcPt = sourcePortFig.getCenter();
-        Point dstPt = destPortFig.getCenter();
+	/** Compute the shape of the line that presents an Edge. */
+	public void computeRouteImpl() {
+		Fig sourcePortFig = getSourcePortFig();
+		Fig destPortFig = getDestPortFig();
+		Point srcPt = sourcePortFig.getCenter();
+		Point dstPt = destPortFig.getCenter();
 
-        if (_useNearest) {
-            // ? two iterations of refinement, maybe should be a for-loop
-            srcPt = sourcePortFig.connectionPoint(dstPt);
-            dstPt = destPortFig.connectionPoint(srcPt);
-            srcPt = sourcePortFig.connectionPoint(dstPt);
-            dstPt = destPortFig.connectionPoint(srcPt);
-        }
+		if (_useNearest) {
+			// ? two iterations of refinement, maybe should be a for-loop
+			srcPt = sourcePortFig.connectionPoint(dstPt);
+			dstPt = destPortFig.connectionPoint(srcPt);
+			srcPt = sourcePortFig.connectionPoint(dstPt);
+			dstPt = destPortFig.connectionPoint(srcPt);
+		}
 
-        ((FigLine) getFig()).setShape(srcPt, dstPt);
-        calcBounds();
-    }
+		((FigLine) getFig()).setShape(srcPt, dstPt);
+		calcBounds();
+	}
 
-    public void paint(Graphics graphicContext) {
-        super.paint(graphicContext);
-        Graphics g = (Graphics) graphicContext;
-        if (_highlight) {
-            FigLine f = (FigLine) getFig();
-            paintHighlightLine(g, f.getX1(), f.getY1(), f.getX2(), f.getY2());
-        }
-    }
+	public void paint(Graphics graphicContext) {
+		super.paint(graphicContext);
+		Graphics g = (Graphics) graphicContext;
+		if (_highlight) {
+			FigLine f = (FigLine) getFig();
+			paintHighlightLine(g, f.getX1(), f.getY1(), f.getX2(), f.getY2());
+		}
+	}
 } /* end class FigEdgeLine */

@@ -44,98 +44,100 @@ import org.tigris.gef.util.Localizer;
 
 public class ModeCreateFigImage extends ModeCreate {
 
-    private static final long serialVersionUID = -3062009802693268691L;
+	private static final long serialVersionUID = -3062009802693268691L;
 
-    /** The image to be placed. */
-    protected Image _image;
+	/** The image to be placed. */
+	protected Image _image;
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    /** get and set the image to be used for the new FigImage. */
-    public Image image() {
-        return _image;
-    }
+	/** get and set the image to be used for the new FigImage. */
+	public Image image() {
+		return _image;
+	}
 
-    public void image(Image i) {
-        _image = i;
-    }
+	public void image(Image i) {
+		_image = i;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // Mode API
+	// //////////////////////////////////////////////////////////////
+	// Mode API
 
-    public String instructions() {
-        return Localizer.localize("GefBase", "ModeCreateFigImageInstructions");
-    }
+	public String instructions() {
+		return Localizer.localize("GefBase", "ModeCreateFigImageInstructions");
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // ModeCreate API
+	// //////////////////////////////////////////////////////////////
+	// ModeCreate API
 
-    /**
-     * Create a new FigImage instance based on the given mouse down event and
-     * the state of the parent Editor.
-     */
-    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-        if (null == _image) {
-            String dURL = "http://www.ics.uci.edu/~jrobbins/banners/gef_banner.gif";
-            String urlString = (String) _args.get("imageURL");
-            if (urlString == null) urlString = dURL;
-            _image = Globals.getImage(urlString);
-            Globals.waitForImages();
-        }
-        return new FigImage(snapX, snapY, _image);
-    }
+	/**
+	 * Create a new FigImage instance based on the given mouse down event and
+	 * the state of the parent Editor.
+	 */
+	public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+		if (null == _image) {
+			String dURL = "http://www.ics.uci.edu/~jrobbins/banners/gef_banner.gif";
+			String urlString = (String) _args.get("imageURL");
+			if (urlString == null)
+				urlString = dURL;
+			_image = Globals.getImage(urlString);
+			Globals.waitForImages();
+		}
+		return new FigImage(snapX, snapY, _image);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // event handlers
+	// //////////////////////////////////////////////////////////////
+	// event handlers
 
-    /**
-     * When the mouse enters an Editor, create the FigImage and place it at the
-     * mouse position.
-     */
-    public void mouseEntered(MouseEvent me) {
-        int x = me.getX(), y = me.getY();
-        start();
-        anchorX = x;
-        anchorY = y;
-        Point snapPt = new Point(x, y);
-        editor.snap(snapPt);
-        if (null == _newItem) _newItem = createNewItem(me, snapPt.x, snapPt.y);
-        me.consume();
-    }
+	/**
+	 * When the mouse enters an Editor, create the FigImage and place it at the
+	 * mouse position.
+	 */
+	public void mouseEntered(MouseEvent me) {
+		int x = me.getX(), y = me.getY();
+		start();
+		anchorX = x;
+		anchorY = y;
+		Point snapPt = new Point(x, y);
+		editor.snap(snapPt);
+		if (null == _newItem)
+			_newItem = createNewItem(me, snapPt.x, snapPt.y);
+		me.consume();
+	}
 
-    /** When the mouse exits the editor, clean up the display a little. */
-    public void mouseExited(MouseEvent me) {
-        editor.damageAll();
-        me.consume();
-    }
+	/** When the mouse exits the editor, clean up the display a little. */
+	public void mouseExited(MouseEvent me) {
+		editor.damageAll();
+		me.consume();
+	}
 
-    /** On mouse down, do nothing. */
-    public void mousePressed(MouseEvent me) {
-        me.consume();
-    }
+	/** On mouse down, do nothing. */
+	public void mousePressed(MouseEvent me) {
+		me.consume();
+	}
 
-    /**
-     * Whem the user drags or moves the mouse, move the FigImage to the current
-     * mouse position.
-     */
-    public void mouseMoved(MouseEvent me) {
-        int x = me.getX(), y = me.getY();
-        if (_newItem == null) {
-            System.out.println("null _newItem");
-            me.consume();
-            return;
-        }
-        editor.damageAll();
-        Point snapPt = new Point(x, y);
-        editor.snap(snapPt);
-        _newItem.setLocation(snapPt.x, snapPt.y);
-        editor.damageAll(); /* needed? */
-        me.consume();
-    }
+	/**
+	 * Whem the user drags or moves the mouse, move the FigImage to the current
+	 * mouse position.
+	 */
+	public void mouseMoved(MouseEvent me) {
+		int x = me.getX(), y = me.getY();
+		if (_newItem == null) {
+			System.out.println("null _newItem");
+			me.consume();
+			return;
+		}
+		editor.damageAll();
+		Point snapPt = new Point(x, y);
+		editor.snap(snapPt);
+		_newItem.setLocation(snapPt.x, snapPt.y);
+		editor.damageAll(); /* needed? */
+		me.consume();
+	}
 
-    /** Exactly the same as mouseMove. */
-    public void mouseDragged(MouseEvent me) {
-        mouseMoved(me);
-    }
+	/** Exactly the same as mouseMove. */
+	public void mouseDragged(MouseEvent me) {
+		mouseMoved(me);
+	}
 } /* end class ModeCreateFigImage */

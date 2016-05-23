@@ -35,21 +35,22 @@ package org.tigris.gef.base;
  */
 public class CmdAdjustGrid extends Cmd {
 
-    /**
-     * Comment for <code>serialVersionUID</code>
-     */
-    private static final long serialVersionUID = 3761403097309984825L;
+	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 3761403097309984825L;
 
-    public CmdAdjustGrid() {
-        super("AdjustGrid");
-    }
+	public CmdAdjustGrid() {
+		super("AdjustGrid");
+	}
 
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        Layer grid = ce.getLayerManager().findLayerNamed("Grid");
-        if (grid != null) grid.adjust();
-    }
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		Layer grid = ce.getLayerManager().findLayerNamed("Grid");
+		if (grid != null)
+			grid.adjust();
+	}
 
-    public void undoIt() {
-    }
+	public void undoIt() {
+	}
 } /* end class CmdAdjustGrid */

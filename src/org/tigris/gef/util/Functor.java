@@ -28,8 +28,6 @@
 
 package org.tigris.gef.util;
 
-import java.util.*;
-
 /**
  * Interface to define Functor objects. Functor's are described in many papers
  * and books about design patterns or coding idioms. They are basically
@@ -39,5 +37,5 @@ import java.util.*;
  */
 
 public interface Functor extends java.io.Serializable {
-    public Object apply(Object x);
+	public Object apply(Object x);
 } /* end interface Functor */

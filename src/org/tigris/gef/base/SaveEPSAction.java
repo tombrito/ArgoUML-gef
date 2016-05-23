@@ -20,54 +20,60 @@ import org.tigris.gef.util.Localizer;
  */
 public class SaveEPSAction extends SaveGraphicsAction {
 
-    private static final long serialVersionUID = -4098178463187704859L;
+	private static final long serialVersionUID = -4098178463187704859L;
 
-    /**
-     * Creates a new SaveEPSAction
-     * 
-     * @param name The name of the action
-     */
-    public SaveEPSAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new SaveEPSAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public SaveEPSAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new SaveEPSAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public SaveEPSAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new SaveEPSAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public SaveEPSAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new SaveEPSAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SaveEPSAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new SaveEPSAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public SaveEPSAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new SaveEPSAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SaveEPSAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new SaveEPSAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public SaveEPSAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    protected void saveGraphics(OutputStream s, Editor ce,
-            Rectangle drawingArea)
-        throws IOException {
-        PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
-        ps.translate(-drawingArea.x, -drawingArea.y);
-        ce.print(ps);
-        ps.dispose();
-    }
+	protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea) throws IOException {
+		PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
+		ps.translate(-drawingArea.x, -drawingArea.y);
+		ce.print(ps);
+		ps.dispose();
+	}
 }

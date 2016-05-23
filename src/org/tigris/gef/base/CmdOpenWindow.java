@@ -28,7 +28,7 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Frame;
 
 /**
  * Cmd to open a user interface dialog window. Given the name of a subclass of
@@ -41,42 +41,42 @@ import java.awt.*;
 
 public class CmdOpenWindow extends Cmd {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 883641359701325952L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 883641359701325952L;
 
-    public CmdOpenWindow(String className, String name) {
-        super(name);
-        setArg("className", className);
-    }
+	public CmdOpenWindow(String className, String name) {
+		super(name);
+		setArg("className", className);
+	}
 
-    public void doIt() {
-        String className = (String) getArg("className");
-        Frame window;
-        Class<?> clazz;
-        if (className != null) {
-            Globals.showStatus("Opening window for " + className);
-            try {
-                clazz = Class.forName(className);
-            } catch (java.lang.ClassNotFoundException ignore) {
-                return;
-            }
+	public void doIt() {
+		String className = (String) getArg("className");
+		Frame window;
+		Class<?> clazz;
+		if (className != null) {
+			Globals.showStatus("Opening window for " + className);
+			try {
+				clazz = Class.forName(className);
+			} catch (java.lang.ClassNotFoundException ignore) {
+				return;
+			}
 
-            try {
-                window = (Frame) clazz.newInstance();
-            } catch (java.lang.IllegalAccessException ignore) {
-                return;
-            } catch (java.lang.InstantiationException ignore) {
-                return;
-            }
-            window.setVisible(true);
-            return;
-        }
-        System.out.println("invalid window name");
-    }
+			try {
+				window = (Frame) clazz.newInstance();
+			} catch (java.lang.IllegalAccessException ignore) {
+				return;
+			} catch (java.lang.InstantiationException ignore) {
+				return;
+			}
+			window.setVisible(true);
+			return;
+		}
+		System.out.println("invalid window name");
+	}
 
-    public void undoIt() {
-        System.out.println("undo CmdOpenWindow is not supported");
-    }
+	public void undoIt() {
+		System.out.println("undo CmdOpenWindow is not supported");
+	}
 } /* end class CmdOpenWindow */

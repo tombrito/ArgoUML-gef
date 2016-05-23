@@ -45,57 +45,65 @@ import org.tigris.gef.util.Localizer;
  */
 public class RemoveFromGraphAction extends UndoableAction {
 
-    private static final long serialVersionUID = -4537382217248274321L;
+	private static final long serialVersionUID = -4537382217248274321L;
 
-    /**
-     * Creates a new RemoveFromGraphAction
-     * 
-     * @param name The name of the action
-     */
-    public RemoveFromGraphAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new RemoveFromGraphAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public RemoveFromGraphAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new RemoveFromGraphAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public RemoveFromGraphAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new RemoveFromGraphAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public RemoveFromGraphAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new RemoveFromGraphAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public RemoveFromGraphAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new RemoveFromGraphAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public RemoveFromGraphAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new RemoveFromGraphAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public RemoveFromGraphAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new RemoveFromGraphAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public RemoveFromGraphAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    /**
-     * Tell the selected Figs to remove themselves from the the diagram it is in
-     * (and thus all editors).
-     */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        sm.removeFromGraph();
-    }
+	/**
+	 * Tell the selected Figs to remove themselves from the the diagram it is in
+	 * (and thus all editors).
+	 */
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		Editor ce = Globals.curEditor();
+		SelectionManager sm = ce.getSelectionManager();
+		sm.removeFromGraph();
+	}
 
 }

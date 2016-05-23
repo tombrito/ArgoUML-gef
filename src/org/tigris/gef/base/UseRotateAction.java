@@ -46,74 +46,82 @@ import org.tigris.gef.util.Localizer;
  */
 public class UseRotateAction extends UndoableAction {
 
-    private static final long serialVersionUID = 5951856044179232257L;
+	private static final long serialVersionUID = 5951856044179232257L;
 
-    /**
-     * Creates a new UseRotateAction
-     */
-    public UseRotateAction() {
-        super();
-    }
+	/**
+	 * Creates a new UseRotateAction
+	 */
+	public UseRotateAction() {
+		super();
+	}
 
-    /**
-     * Creates a new UseRotateAction
-     * 
-     * @param name The name of the action
-     */
-    public UseRotateAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new UseRotateAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public UseRotateAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new UseRotateAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public UseRotateAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new UseRotateAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public UseRotateAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new UseRotateAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public UseRotateAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new UseRotateAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public UseRotateAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new UseRotateAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public UseRotateAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new UseRotateAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public UseRotateAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        Enumeration sels = ((Vector) sm.selections().clone()).elements();
-        // Enumeration sels = sm.selections().elements();
-        while (sels.hasMoreElements()) {
-            Selection s = (Selection) sels.nextElement();
-            if (s instanceof Selection && !(s instanceof SelectionRotate)) {
-                Fig f = s.getContent();
-                if (f.isReshapable()) {
-                    ce.damaged(s);
-                    sm.removeSelection(s);
-                    SelectionRotate sr = new SelectionRotate(f);
-                    sm.addSelection(sr);
-                    ce.damaged(sr);
-                }
-            }
-        }
-    }
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		Editor ce = Globals.curEditor();
+		SelectionManager sm = ce.getSelectionManager();
+		Enumeration sels = ((Vector) sm.selections().clone()).elements();
+		// Enumeration sels = sm.selections().elements();
+		while (sels.hasMoreElements()) {
+			Selection s = (Selection) sels.nextElement();
+			if (s instanceof Selection && !(s instanceof SelectionRotate)) {
+				Fig f = s.getContent();
+				if (f.isReshapable()) {
+					ce.damaged(s);
+					sm.removeSelection(s);
+					SelectionRotate sr = new SelectionRotate(f);
+					sm.addSelection(sr);
+					ce.damaged(sr);
+				}
+			}
+		}
+	}
 
 }

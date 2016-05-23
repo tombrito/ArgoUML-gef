@@ -41,213 +41,211 @@ import org.tigris.gef.util.Localizer;
  */
 public class DistributeAction extends UndoableAction {
 
-    private static final long serialVersionUID = 3630014084522093432L;
+	private static final long serialVersionUID = 3630014084522093432L;
 
-    /** Constants specifying the type of distribution requested. */
-    public static final int H_SPACING = 0;
+	/** Constants specifying the type of distribution requested. */
+	public static final int H_SPACING = 0;
 
-    public static final int H_CENTERS = 1;
+	public static final int H_CENTERS = 1;
 
-    public static final int H_PACK = 2;
+	public static final int H_PACK = 2;
 
-    public static final int V_SPACING = 4;
+	public static final int V_SPACING = 4;
 
-    public static final int V_CENTERS = 5;
+	public static final int V_CENTERS = 5;
 
-    public static final int V_PACK = 6;
+	public static final int V_PACK = 6;
 
-    /** Specification of the type of distribution requested */
-    private int _request;
+	/** Specification of the type of distribution requested */
+	private int _request;
 
-    private Rectangle _bbox = null;
+	private Rectangle _bbox = null;
 
-    private List<Fig> figs;
+	private List<Fig> figs;
 
-    private Integer gap;
+	private Integer gap;
 
-    /**
-     * Construct a new DistributeAction.
-     * 
-     * @param r The desired alignment direction, one of the constants listed
-     *            above.
-     */
-    public DistributeAction(int r) {
-        super(Localizer.localize("GefBase", "Distribute" + wordFor(r)));
-        _request = r;
-    }
+	/**
+	 * Construct a new DistributeAction.
+	 * 
+	 * @param r
+	 *            The desired alignment direction, one of the constants listed
+	 *            above.
+	 */
+	public DistributeAction(int r) {
+		super(Localizer.localize("GefBase", "Distribute" + wordFor(r)));
+		_request = r;
+	}
 
-    public DistributeAction(int r, List<Fig> figs) {
-        this(r);
-        this.figs = figs;
-    }
+	public DistributeAction(int r, List<Fig> figs) {
+		this(r);
+		this.figs = figs;
+	}
 
-    private static String wordFor(int r) {
-        switch (r) {
-        case H_SPACING:
-            return "HorizontalSpacing";
-        case H_CENTERS:
-            return "HorizontalCenters";
-        case H_PACK:
-            return "Leftward";
-        case V_SPACING:
-            return "VerticalSpacing";
-        case V_CENTERS:
-            return "VerticalCenters";
-        case V_PACK:
-            return "Upward";
-        }
-        return "";
-    }
+	private static String wordFor(int r) {
+		switch (r) {
+		case H_SPACING:
+			return "HorizontalSpacing";
+		case H_CENTERS:
+			return "HorizontalCenters";
+		case H_PACK:
+			return "Leftward";
+		case V_SPACING:
+			return "VerticalSpacing";
+		case V_CENTERS:
+			return "VerticalCenters";
+		case V_PACK:
+			return "Upward";
+		}
+		return "";
+	}
 
-    public void setBoundingBox(Rectangle bbox) {
-        _bbox = bbox;
-    }
+	public void setBoundingBox(Rectangle bbox) {
+		_bbox = bbox;
+	}
 
-    public void setGap(Integer gap) {
-        this.gap = gap;
-    }
+	public void setGap(Integer gap) {
+		this.gap = gap;
+	}
 
-    public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 
-        super.actionPerformed(e);
-        List<Fig> targets = new ArrayList<Fig>();
+		super.actionPerformed(e);
+		List<Fig> targets = new ArrayList<Fig>();
 
-        Editor ce = Globals.curEditor();
-        int packGap = 8;
-        if (gap != null) {
-            packGap = gap.intValue();
-        }
-        if (figs == null) {
-            SelectionManager sm = ce.getSelectionManager();
-            if (sm.getLocked()) {
-                Globals.showStatus("Cannot Modify Locked Objects");
-                return;
-            }
-            targets.addAll(sm.getSelectedFigs());
-        } else {
-            targets.addAll(figs);
-        }
-        int leftMostCenter = 0, rightMostCenter = 0;
-        int topMostCenter = 0, bottomMostCenter = 0;
-        int size = targets.size();
-        if (size == 0) return;
+		Editor ce = Globals.curEditor();
+		int packGap = 8;
+		if (gap != null) {
+			packGap = gap.intValue();
+		}
+		if (figs == null) {
+			SelectionManager sm = ce.getSelectionManager();
+			if (sm.getLocked()) {
+				Globals.showStatus("Cannot Modify Locked Objects");
+				return;
+			}
+			targets.addAll(sm.getSelectedFigs());
+		} else {
+			targets.addAll(figs);
+		}
+		int leftMostCenter = 0, rightMostCenter = 0;
+		int topMostCenter = 0, bottomMostCenter = 0;
+		int size = targets.size();
+		if (size == 0)
+			return;
 
-        // find the bbox of all selected objects
-        Fig f = targets.get(0);
-        if (_bbox == null) {
-            _bbox = f.getBounds();
-            leftMostCenter = _bbox.x + _bbox.width / 2;
-            rightMostCenter = _bbox.x + _bbox.width / 2;
-            topMostCenter = _bbox.y + _bbox.height / 2;
-            bottomMostCenter = _bbox.y + _bbox.height / 2;
-            for (int i = 1; i < size; i++) {
-                f = targets.get(i);
-                Rectangle r = f.getBounds();
-                _bbox.add(r);
-                leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
-                rightMostCenter = Math.max(rightMostCenter, r.x + r.width / 2);
-                topMostCenter = Math.min(topMostCenter, r.y + r.height / 2);
-                bottomMostCenter = Math.max(bottomMostCenter,
-                        r.y + r.height / 2);
-            }
-        }
+		// find the bbox of all selected objects
+		Fig f = targets.get(0);
+		if (_bbox == null) {
+			_bbox = f.getBounds();
+			leftMostCenter = _bbox.x + _bbox.width / 2;
+			rightMostCenter = _bbox.x + _bbox.width / 2;
+			topMostCenter = _bbox.y + _bbox.height / 2;
+			bottomMostCenter = _bbox.y + _bbox.height / 2;
+			for (int i = 1; i < size; i++) {
+				f = targets.get(i);
+				Rectangle r = f.getBounds();
+				_bbox.add(r);
+				leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
+				rightMostCenter = Math.max(rightMostCenter, r.x + r.width / 2);
+				topMostCenter = Math.min(topMostCenter, r.y + r.height / 2);
+				bottomMostCenter = Math.max(bottomMostCenter, r.y + r.height / 2);
+			}
+		}
 
-        // find the sum of the widths and heights of all selected objects
-        int totalWidth = 0, totalHeight = 0;
-        for (int i = 0; i < size; i++) {
-            f = targets.get(i);
-            totalWidth += f.getWidth();
-            totalHeight += f.getHeight();
-        }
+		// find the sum of the widths and heights of all selected objects
+		int totalWidth = 0, totalHeight = 0;
+		for (int i = 0; i < size; i++) {
+			f = targets.get(i);
+			totalWidth += f.getWidth();
+			totalHeight += f.getHeight();
+		}
 
-        float gap = 0, oncenter = 0;
-        float xNext = 0, yNext = 0;
+		float gap = 0, oncenter = 0;
+		float xNext = 0, yNext = 0;
 
-        switch (_request) {
-        case H_SPACING:
-            xNext = _bbox.x;
-            gap = (_bbox.width - totalWidth) / Math.max(size - 1, 1);
-            break;
-        case H_CENTERS:
-            xNext = leftMostCenter;
-            oncenter = (rightMostCenter - leftMostCenter)
-                    / Math.max(size - 1, 1);
-            break;
-        case H_PACK:
-            xNext = _bbox.x;
-            gap = packGap;
-            break;
-        case V_SPACING:
-            yNext = _bbox.y;
-            gap = (_bbox.height - totalHeight) / Math.max(size - 1, 1);
-            break;
-        case V_CENTERS:
-            yNext = topMostCenter;
-            oncenter = (bottomMostCenter - topMostCenter)
-                    / Math.max(size - 1, 1);
-            break;
-        case V_PACK:
-            yNext = _bbox.y;
-            gap = packGap;
-            break;
-        }
+		switch (_request) {
+		case H_SPACING:
+			xNext = _bbox.x;
+			gap = (_bbox.width - totalWidth) / Math.max(size - 1, 1);
+			break;
+		case H_CENTERS:
+			xNext = leftMostCenter;
+			oncenter = (rightMostCenter - leftMostCenter) / Math.max(size - 1, 1);
+			break;
+		case H_PACK:
+			xNext = _bbox.x;
+			gap = packGap;
+			break;
+		case V_SPACING:
+			yNext = _bbox.y;
+			gap = (_bbox.height - totalHeight) / Math.max(size - 1, 1);
+			break;
+		case V_CENTERS:
+			yNext = topMostCenter;
+			oncenter = (bottomMostCenter - topMostCenter) / Math.max(size - 1, 1);
+			break;
+		case V_PACK:
+			yNext = _bbox.y;
+			gap = packGap;
+			break;
+		}
 
-        // sort top-to-bottom or left-to-right, this maintains visual order
-        // when we set the coordinates
-        for (int i = 0; i < size; i++) {
-            for (int j = i + 1; j < size; j++) {
-                Fig fi = targets.get(i);
-                Fig fj = targets.get(j);
-                if (_request == H_SPACING || _request == H_CENTERS
-                        || _request == H_PACK) {
-                    if (fi.getX() > fj.getX()) {
-                        swap(targets, i, j);
-                    }
-                } else if (fi.getY() > fj.getY()) {
-                    swap(targets, i, j);
-                }
-            }
-        }
+		// sort top-to-bottom or left-to-right, this maintains visual order
+		// when we set the coordinates
+		for (int i = 0; i < size; i++) {
+			for (int j = i + 1; j < size; j++) {
+				Fig fi = targets.get(i);
+				Fig fj = targets.get(j);
+				if (_request == H_SPACING || _request == H_CENTERS || _request == H_PACK) {
+					if (fi.getX() > fj.getX()) {
+						swap(targets, i, j);
+					}
+				} else if (fi.getY() > fj.getY()) {
+					swap(targets, i, j);
+				}
+			}
+		}
 
-        for (int i = 0; i < size; i++) {
-            f = targets.get(i);
-            switch (_request) {
-            case H_SPACING:
-            case H_PACK:
-                f.setLocation((int) xNext, f.getY());
-                xNext += f.getWidth() + gap;
-                break;
-            case H_CENTERS:
-                f.setLocation((int) xNext - f.getWidth() / 2, f.getY());
-                xNext += oncenter;
-                break;
-            case V_SPACING:
-            case V_PACK:
-                f.setLocation(f.getX(), (int) yNext);
-                yNext += f.getHeight() + gap;
-                break;
-            case V_CENTERS:
-                f.setLocation(f.getX(), (int) yNext - f.getHeight() / 2);
-                yNext += oncenter;
-                break;
-            }
-            f.endTrans();
-        }
-    }
+		for (int i = 0; i < size; i++) {
+			f = targets.get(i);
+			switch (_request) {
+			case H_SPACING:
+			case H_PACK:
+				f.setLocation((int) xNext, f.getY());
+				xNext += f.getWidth() + gap;
+				break;
+			case H_CENTERS:
+				f.setLocation((int) xNext - f.getWidth() / 2, f.getY());
+				xNext += oncenter;
+				break;
+			case V_SPACING:
+			case V_PACK:
+				f.setLocation(f.getX(), (int) yNext);
+				yNext += f.getHeight() + gap;
+				break;
+			case V_CENTERS:
+				f.setLocation(f.getX(), (int) yNext - f.getHeight() / 2);
+				yNext += oncenter;
+				break;
+			}
+			f.endTrans();
+		}
+	}
 
-    public void undoIt() {
-    }
+	public void undoIt() {
+	}
 
-    protected void swap(List<Fig> v, int i, int j) {
-        Fig temp = v.get(i);
-        v.add(i, v.get(j));
-        v.add(j, temp);
-    }
+	protected void swap(List<Fig> v, int i, int j) {
+		Fig temp = v.get(i);
+		v.add(i, v.get(j));
+		v.add(j, temp);
+	}
 
-    /**
-     * @return the resulting bounding box after were done
-     */
-    public Rectangle getBoundingBox() {
-        return _bbox;
-    }
+	/**
+	 * @return the resulting bounding box after were done
+	 */
+	public Rectangle getBoundingBox() {
+		return _bbox;
+	}
 } /* end class CmdDistribute */

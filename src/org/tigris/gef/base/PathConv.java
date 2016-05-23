@@ -32,7 +32,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.io.Serializable;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * Abstract class that defines a common interface to all of path-to-coord
@@ -42,80 +42,79 @@ import org.tigris.gef.presentation.*;
  * FigEdge and have the label stay in the right place, even if the FigEdge
  * moves.
  */
-public abstract class PathConv
-        implements PathItemPlacementStrategy, Serializable {
+public abstract class PathConv implements PathItemPlacementStrategy, Serializable {
 
-    /**
-     * @deprecated use getPathFig()
-     */
-    @Deprecated
-    protected Fig _pathFigure; // The intermediate path figure
+	/**
+	 * @deprecated use getPathFig()
+	 */
+	@Deprecated
+	protected Fig _pathFigure; // The intermediate path figure
 
-    public PathConv(Fig theFig) {
-        _pathFigure = theFig;
-    }
+	public PathConv(Fig theFig) {
+		_pathFigure = theFig;
+	}
 
-    public Point getPoint() {
-        Point res = new Point();
-        stuffPoint(res);
-        return res;
-    }
+	public Point getPoint() {
+		Point res = new Point();
+		stuffPoint(res);
+		return res;
+	}
 
-    abstract public void stuffPoint(Point res);
+	abstract public void stuffPoint(Point res);
 
-    abstract protected void setClosestPoint(Point newPoint);
+	abstract protected void setClosestPoint(Point newPoint);
 
-    protected Point getOffsetAmount(Point p1, Point p2, int offset) {
-        Point res = new Point(0, 0);
-        applyOffsetAmount(p1, p2, offset, res);
-        return res;
-    }
+	protected Point getOffsetAmount(Point p1, Point p2, int offset) {
+		Point res = new Point(0, 0);
+		applyOffsetAmount(p1, p2, offset, res);
+		return res;
+	}
 
-    /**
-     * Used when manually adjusting a previously created PathConv object (e.g.
-     * while dragging the Fig which this PathConv object anchors). The actual
-     * decision about which parameters to set (e.g. angles/offset) is up to the
-     * implementation of this method.
-     * 
-     * @param newPoint The new location of the anchored Fig.
-     */
-    public void setPoint(Point newPoint) {
+	/**
+	 * Used when manually adjusting a previously created PathConv object (e.g.
+	 * while dragging the Fig which this PathConv object anchors). The actual
+	 * decision about which parameters to set (e.g. angles/offset) is up to the
+	 * implementation of this method.
+	 * 
+	 * @param newPoint
+	 *            The new location of the anchored Fig.
+	 */
+	public void setPoint(Point newPoint) {
 
-    }
+	}
 
-    protected void applyOffsetAmount(Point p1, Point p2, int offset,
-            Point res) {
-        // slope of the line we're finding the normal to
-        // is slope, and the normal is the negative reciprocal
-        // slope is (p1.y - p2.y) / (p1.x - p2.x)
-        // so recip is - (p1.x - p2.x) / (p1.y - p2.y)
-        int recipnumerator = (p1.x - p2.x) * -1;
-        int recipdenominator = (p1.y - p2.y);
+	protected void applyOffsetAmount(Point p1, Point p2, int offset, Point res) {
+		// slope of the line we're finding the normal to
+		// is slope, and the normal is the negative reciprocal
+		// slope is (p1.y - p2.y) / (p1.x - p2.x)
+		// so recip is - (p1.x - p2.x) / (p1.y - p2.y)
+		int recipnumerator = (p1.x - p2.x) * -1;
+		int recipdenominator = (p1.y - p2.y);
 
-        if (recipdenominator == 0 && recipnumerator == 0) return;
-        // find the point offset on the line that gives a
-        // correct offset
+		if (recipdenominator == 0 && recipnumerator == 0)
+			return;
+		// find the point offset on the line that gives a
+		// correct offset
 
-        double len = Math.sqrt(recipnumerator * recipnumerator
-                + recipdenominator * recipdenominator);
-        int dx = (int) ((recipdenominator * offset) / len);
-        int dy = (int) ((recipnumerator * offset) / len);
-        // if (dx > 10000 || dy > 10000) {
-        // System.out.println("p1=" + p1 + " p2=" + p2);
-        // System.out.println("offset=" + offset);
-        // System.out.println("dx=" + dx + " dy=" + dy);
-        // }
-        res.x += dx;
-        res.y += dy;
-    }
+		double len = Math.sqrt(recipnumerator * recipnumerator + recipdenominator * recipdenominator);
+		int dx = (int) ((recipdenominator * offset) / len);
+		int dy = (int) ((recipnumerator * offset) / len);
+		// if (dx > 10000 || dy > 10000) {
+		// System.out.println("p1=" + p1 + " p2=" + p2);
+		// System.out.println("offset=" + offset);
+		// System.out.println("dx=" + dx + " dy=" + dy);
+		// }
+		res.x += dx;
+		res.y += dy;
+	}
 
-    protected Fig getPathFig() {
-        return _pathFigure;
-    }
+	protected Fig getPathFig() {
+		return _pathFigure;
+	}
 
-    /**
-     * Does nothing by default. Override in subclass if required.
-     */
-    public void paint(Graphics g) {
-    }
+	/**
+	 * Does nothing by default. Override in subclass if required.
+	 */
+	public void paint(Graphics g) {
+	}
 }

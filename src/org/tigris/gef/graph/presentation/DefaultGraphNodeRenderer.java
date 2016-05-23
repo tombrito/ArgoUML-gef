@@ -31,8 +31,9 @@ package org.tigris.gef.graph.presentation;
 import java.util.Map;
 
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.graph.*;
 
 /**
  * An interface for FigNode factories. Similiar in concept to the Swing class
@@ -42,27 +43,24 @@ import org.tigris.gef.graph.*;
  * @see org.tigris.gef.graph.presentation.NetNode#presentationFor
  */
 
-public class DefaultGraphNodeRenderer
-        implements GraphNodeRenderer, java.io.Serializable {
+public class DefaultGraphNodeRenderer implements GraphNodeRenderer, java.io.Serializable {
 
-    private static final long serialVersionUID = -8396231710414093663L;
+	private static final long serialVersionUID = -8396231710414093663L;
 
-    /** Return a Fig that can be used to represent the given node */
-    public FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node,
-            Map styleAttributes) {
-        if (node instanceof NetNode)
-            return ((NetNode) node).presentationFor(lay);
-        return null;
-    }
+	/** Return a Fig that can be used to represent the given node */
+	public FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node, Map styleAttributes) {
+		if (node instanceof NetNode)
+			return ((NetNode) node).presentationFor(lay);
+		return null;
+	}
 
-    /** Return a Fig that can be used to represent the given node */
-    public FigNode getFigNodeFor(Object node, int x, int y,
-            Map styleAttributes) {
-        FigNode figNode = null;
-        if (node instanceof NetNode) {
-            figNode = ((NetNode) node).presentationFor(null);
-            figNode.setLocation(x, y);
-        }
-        return null;
-    }
+	/** Return a Fig that can be used to represent the given node */
+	public FigNode getFigNodeFor(Object node, int x, int y, Map styleAttributes) {
+		FigNode figNode = null;
+		if (node instanceof NetNode) {
+			figNode = ((NetNode) node).presentationFor(null);
+			figNode.setLocation(x, y);
+		}
+		return null;
+	}
 } /* end class DefaultGraphNodeRenderer */

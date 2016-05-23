@@ -39,17 +39,17 @@ package org.tigris.gef.base;
 
 public class CmdNull extends Cmd {
 
-    private static final long serialVersionUID = 1658731580779408872L;
+	private static final long serialVersionUID = 1658731580779408872L;
 
-    public CmdNull() {
-        super("DoNothing");
-    }
+	public CmdNull() {
+		super("DoNothing");
+	}
 
-    /** Do nothing */
-    public void doIt() {
-    }
+	/** Do nothing */
+	public void doIt() {
+	}
 
-    /** This is the only undo method that works :) */
-    public void undoIt() {
-    }
+	/** This is the only undo method that works :) */
+	public void undoIt() {
+	}
 } /* end class CmdNull */

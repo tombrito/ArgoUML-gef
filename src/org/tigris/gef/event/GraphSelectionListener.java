@@ -23,7 +23,7 @@
 
 package org.tigris.gef.event;
 
-import java.util.*;
+import java.util.EventListener;
 
 /**
  * An interface that must be implemented by any object that wants to be notified
@@ -35,8 +35,8 @@ import java.util.*;
 
 public interface GraphSelectionListener extends EventListener {
 
-    void selectionChanged(GraphSelectionEvent gse);
-    // ? void selectionAdded(GraphSelectionEvent gse);
-    // ? void selectionRemoved(GraphSelectionEvent gse);
+	void selectionChanged(GraphSelectionEvent gse);
+	// ? void selectionAdded(GraphSelectionEvent gse);
+	// ? void selectionRemoved(GraphSelectionEvent gse);
 
 } /* end class GraphSelectionListener */

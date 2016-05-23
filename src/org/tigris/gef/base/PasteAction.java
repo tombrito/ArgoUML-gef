@@ -29,7 +29,6 @@ package org.tigris.gef.base;
 
 import java.awt.event.ActionEvent;
 import java.beans.VetoableChangeListener;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -45,73 +44,79 @@ import org.tigris.gef.util.VetoableChangeEventSource;
  */
 public class PasteAction extends UndoableAction {
 
-    private static final long serialVersionUID = 1306168450357555809L;
+	private static final long serialVersionUID = 1306168450357555809L;
 
-    /**
-     * Creates a new PasteAction
-     * 
-     * @param name The name of the action
-     */
-    public PasteAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new PasteAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public PasteAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new PasteAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public PasteAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new PasteAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public PasteAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new PasteAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public PasteAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new PasteAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public PasteAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new PasteAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public PasteAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new PasteAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public PasteAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    // needs-more-work: if the Fig was removed from the model, then I would
-    // need to create a new owner.
+	// needs-more-work: if the Fig was removed from the model, then I would
+	// need to create a new owner.
 
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        SelectionManager sm = Globals.curEditor().getSelectionManager();
-        Vector figs = new Vector();
-        Iterator cb = Globals.clipBoard.iterator();
-        while (cb.hasNext()) {
-            Fig f = (Fig) cb.next();
-            Editor ce = Globals.curEditor();
-            int gridSze = ((GuideGrid) ce.getGuide()).gridSize();
-            // Point p = f.getLocation();
-            f.translate(gridSze, gridSze);
-            f = (Fig) f.clone();
-            Object owner = f.getOwner();
-            if (owner instanceof VetoableChangeEventSource
-                    && f instanceof VetoableChangeListener) {
-                ((VetoableChangeEventSource) owner)
-                        .addVetoableChangeListener((VetoableChangeListener) f);
-            }
-            ce.add(f);
-            figs.addElement(f);
-        }
-        sm.deselectAll();
-        sm.select(figs);
-    }
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		SelectionManager sm = Globals.curEditor().getSelectionManager();
+		Vector figs = new Vector();
+		Iterator cb = Globals.clipBoard.iterator();
+		while (cb.hasNext()) {
+			Fig f = (Fig) cb.next();
+			Editor ce = Globals.curEditor();
+			int gridSze = ((GuideGrid) ce.getGuide()).gridSize();
+			// Point p = f.getLocation();
+			f.translate(gridSze, gridSze);
+			f = (Fig) f.clone();
+			Object owner = f.getOwner();
+			if (owner instanceof VetoableChangeEventSource && f instanceof VetoableChangeListener) {
+				((VetoableChangeEventSource) owner).addVetoableChangeListener((VetoableChangeListener) f);
+			}
+			ce.add(f);
+			figs.addElement(f);
+		}
+		sm.deselectAll();
+		sm.select(figs);
+	}
 }

@@ -42,23 +42,23 @@ import org.tigris.gef.util.Localizer;
 
 public class ModeCreateFigText extends ModeCreate {
 
-    private static final long serialVersionUID = 3394093467647491098L;
+	private static final long serialVersionUID = 3394093467647491098L;
 
-    public ModeCreateFigText() {
-        super();
-        _defaultWidth = 15;
-        _defaultHeight = 15;
-    }
+	public ModeCreateFigText() {
+		super();
+		_defaultWidth = 15;
+		_defaultHeight = 15;
+	}
 
-    public String instructions() {
-        return Localizer.localize("GefBase", "ModeCreateFigTextInstructions");
-    }
+	public String instructions() {
+		return Localizer.localize("GefBase", "ModeCreateFigTextInstructions");
+	}
 
-    /**
-     * Create a new FigText instance based on the given mouse down event and the
-     * state of the parent Editor.
-     */
-    public Fig createNewItem(MouseEvent e, int snapX, int snapY) {
-        return new FigText(snapX, snapY, 0, 0);
-    }
+	/**
+	 * Create a new FigText instance based on the given mouse down event and the
+	 * state of the parent Editor.
+	 */
+	public Fig createNewItem(MouseEvent e, int snapX, int snapY) {
+		return new FigText(snapX, snapY, 0, 0);
+	}
 } /* end class ModeCreateFigText */

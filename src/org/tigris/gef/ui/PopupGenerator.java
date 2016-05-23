@@ -32,7 +32,7 @@ import org.tigris.gef.base.CmdReorder;
 import org.tigris.gef.util.Localizer;
 
 public interface PopupGenerator {
-	
+
 	@SuppressWarnings("unused")
 	default public Vector getPopUpActions(MouseEvent me) {
 		Vector popUpActions = new Vector();
@@ -45,5 +45,5 @@ public interface PopupGenerator {
 		popUpActions.addElement(orderMenu);
 		return popUpActions;
 	}
-	
+
 }

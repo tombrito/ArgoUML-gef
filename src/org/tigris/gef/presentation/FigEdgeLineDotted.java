@@ -37,16 +37,16 @@ import java.awt.Color;
 
 public class FigEdgeLineDotted extends FigEdgeLine {
 
-    private static final long serialVersionUID = 9072810754297771917L;
+	private static final long serialVersionUID = 9072810754297771917L;
 
-    /**
-     * Instanciate a new FigLine as the contained Fig. By default it is black
-     * and the FigEdge has no ArrowHeads. It is also dashed, which is the major
-     * benefit this class entails.
-     */
-    protected Fig makeEdgeFig() {
-        FigLine returned = new FigLine(0, 0, 0, 0, Color.black);
-        returned.setDashed(true);
-        return returned;
-    }
+	/**
+	 * Instanciate a new FigLine as the contained Fig. By default it is black
+	 * and the FigEdge has no ArrowHeads. It is also dashed, which is the major
+	 * benefit this class entails.
+	 */
+	protected Fig makeEdgeFig() {
+		FigLine returned = new FigLine(0, 0, 0, 0, Color.black);
+		returned.setDashed(true);
+		return returned;
+	}
 } /* end class FigEdgeLineDotted */

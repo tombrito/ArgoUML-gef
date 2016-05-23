@@ -34,16 +34,17 @@ import java.awt.image.RGBImageFilter;
  */
 
 class TransFilter extends RGBImageFilter {
-    int _transBG;
+	int _transBG;
 
-    public TransFilter(int bg) {
-        _transBG = bg;
-        canFilterIndexColorModel = true;
-    }
+	public TransFilter(int bg) {
+		_transBG = bg;
+		canFilterIndexColorModel = true;
+	}
 
-    public int filterRGB(int x, int y, int rgb) {
-        // background color w/any alpha level? make it transparent
-        if ((rgb & 0x00ffffff) == _transBG) return _transBG;
-        return 0xff000000 | rgb; // make it 100% opaque
-    }
+	public int filterRGB(int x, int y, int rgb) {
+		// background color w/any alpha level? make it transparent
+		if ((rgb & 0x00ffffff) == _transBG)
+			return _transBG;
+		return 0xff000000 | rgb; // make it 100% opaque
+	}
 } /* end class TransFilter */

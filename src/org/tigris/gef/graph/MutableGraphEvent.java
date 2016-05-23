@@ -38,21 +38,21 @@ import java.util.EventObject;
  */
 
 public class MutableGraphEvent extends EventObject {
-    private static final long serialVersionUID = -9143159532643088192L;
+	private static final long serialVersionUID = -9143159532643088192L;
 
-    /** The specific node, port, or arc that was modified. */
-    private Object _arg;
+	/** The specific node, port, or arc that was modified. */
+	private Object _arg;
 
-    public MutableGraphEvent(Object src) {
-        this(src, null);
-    }
+	public MutableGraphEvent(Object src) {
+		this(src, null);
+	}
 
-    public MutableGraphEvent(Object src, Object arg) {
-        super(src);
-        _arg = arg;
-    }
+	public MutableGraphEvent(Object src, Object arg) {
+		super(src);
+		_arg = arg;
+	}
 
-    public Object getArg() {
-        return _arg;
-    }
+	public Object getArg() {
+		return _arg;
+	}
 } /* end class MutableGraphEvent */

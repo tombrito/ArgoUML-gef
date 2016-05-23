@@ -28,7 +28,8 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * Cmd to execute a sequence of Cmd's. Needs-More-Work: Not done yet. This could
@@ -40,65 +41,66 @@ import java.util.*;
 
 public class CmdSequence extends Cmd {
 
-    private static final long serialVersionUID = -2124763382521376440L;
+	private static final long serialVersionUID = -2124763382521376440L;
 
-    private Vector _cmds;
+	private Vector _cmds;
 
-    /** Construct a new CmdSequence */
-    public CmdSequence() {
-        super("SequenceOfCommands");
-    }
+	/** Construct a new CmdSequence */
+	public CmdSequence() {
+		super("SequenceOfCommands");
+	}
 
-    public CmdSequence(String name) {
-        super(name);
-    }
+	public CmdSequence(String name) {
+		super(name);
+	}
 
-    public CmdSequence(Cmd a1, String name) {
-        super(name);
-        add(a1);
-    }
+	public CmdSequence(Cmd a1, String name) {
+		super(name);
+		add(a1);
+	}
 
-    public CmdSequence(Cmd a1, Cmd a2, String name) {
-        super(name);
-        add(a1);
-        add(a2);
-    }
+	public CmdSequence(Cmd a1, Cmd a2, String name) {
+		super(name);
+		add(a1);
+		add(a2);
+	}
 
-    public CmdSequence(Cmd a1, Cmd a2, Cmd a3, String name) {
-        super(name);
-        add(a1);
-        add(a2);
-        add(a3);
-    }
+	public CmdSequence(Cmd a1, Cmd a2, Cmd a3, String name) {
+		super(name);
+		add(a1);
+		add(a2);
+		add(a3);
+	}
 
-    public void add(Cmd a) {
-        _cmds.addElement(a);
-    };
+	public void add(Cmd a) {
+		_cmds.addElement(a);
+	};
 
-    public String dbgString() {
-        String n = "Seq: ";
-        Enumeration acts = _cmds.elements();
-        while (acts.hasMoreElements()) {
-            Cmd a = (Cmd) acts.nextElement();
-            n = n + a.getName();
-            if (acts.hasMoreElements()) n = n + ", ";
-        }
-        return n;
-    }
+	public String dbgString() {
+		String n = "Seq: ";
+		Enumeration acts = _cmds.elements();
+		while (acts.hasMoreElements()) {
+			Cmd a = (Cmd) acts.nextElement();
+			n = n + a.getName();
+			if (acts.hasMoreElements())
+				n = n + ", ";
+		}
+		return n;
+	}
 
-    /** Call the undoIt method of each subCmd. */
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        Enumeration acts = _cmds.elements();
-        while (acts.hasMoreElements()) {
-            Cmd a = (Cmd) acts.nextElement();
-            ce.executeCmd(a, null);
-        }
-    }
+	/** Call the undoIt method of each subCmd. */
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		Enumeration acts = _cmds.elements();
+		while (acts.hasMoreElements()) {
+			Cmd a = (Cmd) acts.nextElement();
+			ce.executeCmd(a, null);
+		}
+	}
 
-    /** Call the undoIt method of each subCmd, in reverse order! */
-    public void undoIt() {
-        for (int i = _cmds.size() - 1; i >= 0; --i)
-            ((Cmd) _cmds.elementAt(i)).undoIt();
-    }
+	/** Call the undoIt method of each subCmd, in reverse order! */
+	public void undoIt() {
+		for (int i = _cmds.size() - 1; i >= 0; --i)
+			((Cmd) _cmds.elementAt(i)).undoIt();
+	}
 } /* end class CmdSequence */

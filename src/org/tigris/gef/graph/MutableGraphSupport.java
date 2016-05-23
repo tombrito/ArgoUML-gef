@@ -46,360 +46,363 @@ import org.tigris.gef.presentation.Fig;
  * utility methods.
  */
 
-public abstract class MutableGraphSupport
-        implements MutableGraphModel, java.io.Serializable {
+public abstract class MutableGraphSupport implements MutableGraphModel, java.io.Serializable {
 
-    private Vector _graphListeners;
+	private Vector _graphListeners;
 
-    private ConnectionConstrainer connectionConstrainer;
+	private ConnectionConstrainer connectionConstrainer;
 
-    private static Action saveAction;
+	private static Action saveAction;
 
-    public MutableGraphSupport() {
-    }
+	public MutableGraphSupport() {
+	}
 
-    public MutableGraphSupport(ConnectionConstrainer cc) {
-        connectionConstrainer = cc;
-    }
+	public MutableGraphSupport(ConnectionConstrainer cc) {
+		connectionConstrainer = cc;
+	}
 
-    public List getGraphListeners() {
-        return _graphListeners;
-    }
+	public List getGraphListeners() {
+		return _graphListeners;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // MutableGraphModel implementation
+	// //////////////////////////////////////////////////////////////
+	// MutableGraphModel implementation
 
-    /**
-     * Return a valid node in this graph TODO Should throw a GraphModelException
-     * or InvalidArgumentException
-     */
-    public Object createNode(String name, Hashtable args) {
-        Object newNode;
-        try {
-            newNode = Class.forName(name).newInstance();
-        } catch (java.lang.ClassNotFoundException ignore) {
-            return null;
-        } catch (java.lang.IllegalAccessException ignore) {
-            return null;
-        } catch (java.lang.InstantiationException ignore) {
-            return null;
-        }
+	/**
+	 * Return a valid node in this graph TODO Should throw a GraphModelException
+	 * or InvalidArgumentException
+	 */
+	public Object createNode(String name, Hashtable args) {
+		Object newNode;
+		try {
+			newNode = Class.forName(name).newInstance();
+		} catch (java.lang.ClassNotFoundException ignore) {
+			return null;
+		} catch (java.lang.IllegalAccessException ignore) {
+			return null;
+		} catch (java.lang.InstantiationException ignore) {
+			return null;
+		}
 
-        if (newNode instanceof GraphNodeHooks) {
-            ((GraphNodeHooks) newNode).initialize(args);
-        }
-        return newNode;
-    }
+		if (newNode instanceof GraphNodeHooks) {
+			((GraphNodeHooks) newNode).initialize(args);
+		}
+		return newNode;
+	}
 
-    protected ConnectionConstrainer getConnectionConstrainer() {
-        return connectionConstrainer;
-    }
+	protected ConnectionConstrainer getConnectionConstrainer() {
+		return connectionConstrainer;
+	}
 
-    /**
-     * Apply the object containing the ruleset for what edges and ports can
-     * connect in the graph
-     */
-    public void setConnectionConstrainer(ConnectionConstrainer cc) {
-        connectionConstrainer = cc;
-    }
+	/**
+	 * Apply the object containing the ruleset for what edges and ports can
+	 * connect in the graph
+	 */
+	public void setConnectionConstrainer(ConnectionConstrainer cc) {
+		connectionConstrainer = cc;
+	}
 
-    /**
-     * Return true if the type of the given node can be mapped to a type
-     * supported by this type of diagram
-     */
-    public boolean canDragNode(Object node) {
-        return false;
-    }
+	/**
+	 * Return true if the type of the given node can be mapped to a type
+	 * supported by this type of diagram
+	 */
+	public boolean canDragNode(Object node) {
+		return false;
+	}
 
-    /** Create a new node based on the given one and add it to the graph. */
-    public void dragNode(Object node) {
-    }
+	/** Create a new node based on the given one and add it to the graph. */
+	public void dragNode(Object node) {
+	}
 
-    /**
-     * Return true if the connection to the old node can be rerouted to the new
-     * node.
-     */
-    public boolean canChangeConnectedNode(Object newNode, Object oldNode,
-            Object edge) {
-        return false;
-    }
+	/**
+	 * Return true if the connection to the old node can be rerouted to the new
+	 * node.
+	 */
+	public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
+		return false;
+	}
 
-    /**
-     * Determine if the two given ports can be connected by the given kind of
-     * edge. This delegates either to the registered ConnectionConstrainer or if
-     * unregistered then ignores edgeClass and calls canConnect(port,port).
-     * 
-     * @param fromPort the source port for which to test
-     * @param toPort the destination port for which to test
-     * @param edgeType An identifier indicating the type of edge to create
-     */
-    public boolean canConnect(Object fromPort, Object toPort, Object edgeType) {
-        boolean canConnect = false;
-        if (connectionConstrainer != null) {
-            canConnect = connectionConstrainer.isConnectionValid(edgeType,
-                    fromPort, toPort);
-        } else {
-            canConnect = canConnect(fromPort, toPort);
-        }
-        return canConnect;
-    }
+	/**
+	 * Determine if the two given ports can be connected by the given kind of
+	 * edge. This delegates either to the registered ConnectionConstrainer or if
+	 * unregistered then ignores edgeClass and calls canConnect(port,port).
+	 * 
+	 * @param fromPort
+	 *            the source port for which to test
+	 * @param toPort
+	 *            the destination port for which to test
+	 * @param edgeType
+	 *            An identifier indicating the type of edge to create
+	 */
+	public boolean canConnect(Object fromPort, Object toPort, Object edgeType) {
+		boolean canConnect = false;
+		if (connectionConstrainer != null) {
+			canConnect = connectionConstrainer.isConnectionValid(edgeType, fromPort, toPort);
+		} else {
+			canConnect = canConnect(fromPort, toPort);
+		}
+		return canConnect;
+	}
 
-    /**
-     * Determine if the two given ports can be connected by the given kind of
-     * edge. This delegates either to the registered ConnectionConstrainer or if
-     * unregistered then ignores edgeClass and calls canConnect(port,port).
-     * 
-     * @param fromPort the source port for which to test
-     * @param toPort the destination port for which to test
-     * @param edgeClass The edge class for which test
-     */
-    public boolean canConnect(Object fromPort, Object toPort, Class edgeClass) {
-        boolean canConnect = false;
-        if (connectionConstrainer != null) {
-            canConnect = connectionConstrainer.isConnectionValid(edgeClass,
-                    fromPort, toPort);
-        } else {
-            canConnect = canConnect(fromPort, toPort);
-        }
-        return canConnect;
-    }
+	/**
+	 * Determine if the two given ports can be connected by the given kind of
+	 * edge. This delegates either to the registered ConnectionConstrainer or if
+	 * unregistered then ignores edgeClass and calls canConnect(port,port).
+	 * 
+	 * @param fromPort
+	 *            the source port for which to test
+	 * @param toPort
+	 *            the destination port for which to test
+	 * @param edgeClass
+	 *            The edge class for which test
+	 */
+	public boolean canConnect(Object fromPort, Object toPort, Class edgeClass) {
+		boolean canConnect = false;
+		if (connectionConstrainer != null) {
+			canConnect = connectionConstrainer.isConnectionValid(edgeClass, fromPort, toPort);
+		} else {
+			canConnect = canConnect(fromPort, toPort);
+		}
+		return canConnect;
+	}
 
-    /**
-     * Reroutes the connection to the old node to be connected to the new node.
-     */
-    public void changeConnectedNode(Object newNode, Object oldNode, Object edge,
-            boolean isSource) {
-    }
+	/**
+	 * Reroutes the connection to the old node to be connected to the new node.
+	 */
+	public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
+	}
 
-    /**
-     * Contruct and add a new edge of the given kind. By default ignore
-     * edgeClass and call connect(port,port).
-     */
-    public Object connect(Object fromPort, Object toPort, Object edgeClass) {
-        return connect(fromPort, toPort);
-    }
+	/**
+	 * Contruct and add a new edge of the given kind. By default ignore
+	 * edgeClass and call connect(port,port).
+	 */
+	public Object connect(Object fromPort, Object toPort, Object edgeClass) {
+		return connect(fromPort, toPort);
+	}
 
-    /**
-     * Construct and add a new edge of the given kind and connect the given
-     * ports. By default ignore edgeClass and call connect(port,port).
-     * 
-     * @param fromPort The originating port to connect
-     * 
-     * @param toPort The destination port to connect
-     * 
-     * @param edgeType Some indicator of the type of edge to create. This could
-     *            be a <code>Class</code> or some other value as input to a
-     *            factory to create the required edge model.
-     * 
-     * @param styleAttributes key/value pairs from which to create the edge.
-     * 
-     * @return The type of edge created (the same as <code>edgeClass</code> if
-     *         we succeeded, <code>null</code> otherwise)
-     */
-    public Object connect(Object fromPort, Object toPort, Object edgeType,
-            Map styleAttributes) {
-        return connect(fromPort, toPort);
-    }
+	/**
+	 * Construct and add a new edge of the given kind and connect the given
+	 * ports. By default ignore edgeClass and call connect(port,port).
+	 * 
+	 * @param fromPort
+	 *            The originating port to connect
+	 * 
+	 * @param toPort
+	 *            The destination port to connect
+	 * 
+	 * @param edgeType
+	 *            Some indicator of the type of edge to create. This could be a
+	 *            <code>Class</code> or some other value as input to a factory
+	 *            to create the required edge model.
+	 * 
+	 * @param styleAttributes
+	 *            key/value pairs from which to create the edge.
+	 * 
+	 * @return The type of edge created (the same as <code>edgeClass</code> if
+	 *         we succeeded, <code>null</code> otherwise)
+	 */
+	public Object connect(Object fromPort, Object toPort, Object edgeType, Map styleAttributes) {
+		return connect(fromPort, toPort);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // utility methods
+	// //////////////////////////////////////////////////////////////
+	// utility methods
 
-    public boolean containsNode(Object node) {
-        List nodes = getNodes();
-        return nodes.contains(node);
-    }
+	public boolean containsNode(Object node) {
+		List nodes = getNodes();
+		return nodes.contains(node);
+	}
 
-    public boolean containsEdge(Object edge) {
-        List edges = getEdges();
-        return edges.contains(edge);
-    }
+	public boolean containsEdge(Object edge) {
+		List edges = getEdges();
+		return edges.contains(edge);
+	}
 
-    public boolean containsNodePort(Object port) {
-        List nodes = getNodes();
-        if (nodes == null) {
-            return false;
-        }
-        for (int i = 0; i < nodes.size(); ++i) {
-            List ports = getPorts(nodes.get(i));
-            if (ports != null && ports.contains(port)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	public boolean containsNodePort(Object port) {
+		List nodes = getNodes();
+		if (nodes == null) {
+			return false;
+		}
+		for (int i = 0; i < nodes.size(); ++i) {
+			List ports = getPorts(nodes.get(i));
+			if (ports != null && ports.contains(port)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public boolean containsEdgePort(Object port) {
-        List edges = getNodes();
-        if (edges == null) {
-            return false;
-        }
-        for (int i = 0; i < edges.size(); ++i) {
-            List ports = getPorts(edges.get(i));
-            if (ports != null && ports.contains(port)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	public boolean containsEdgePort(Object port) {
+		List edges = getNodes();
+		if (edges == null) {
+			return false;
+		}
+		for (int i = 0; i < edges.size(); ++i) {
+			List ports = getPorts(edges.get(i));
+			if (ports != null && ports.contains(port)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public boolean containsPort(Object port) {
-        return containsNodePort(port) || containsEdgePort(port);
-    }
+	public boolean containsPort(Object port) {
+		return containsNodePort(port) || containsEdgePort(port);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // listener registration
+	// //////////////////////////////////////////////////////////////
+	// listener registration
 
-    public void addGraphEventListener(GraphListener listener) {
-        if (_graphListeners == null) {
-            _graphListeners = new Vector();
-        }
-        _graphListeners.addElement(listener);
-    }
+	public void addGraphEventListener(GraphListener listener) {
+		if (_graphListeners == null) {
+			_graphListeners = new Vector();
+		}
+		_graphListeners.addElement(listener);
+	}
 
-    public void removeGraphEventListener(GraphListener listener) {
-        if (_graphListeners == null) {
-            return;
-        }
-        _graphListeners.removeElement(listener);
-    }
+	public void removeGraphEventListener(GraphListener listener) {
+		if (_graphListeners == null) {
+			return;
+		}
+		_graphListeners.removeElement(listener);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // event notifications
+	// //////////////////////////////////////////////////////////////
+	// event notifications
 
-    public void fireNodeAdded(Object node) {
-        if (saveAction != null && !saveAction.isEnabled()) {
-            saveAction.setEnabled(true);
-        }
-        if (_graphListeners == null) {
-            return;
-        }
-        GraphEvent ge = new GraphEvent(this, node);
-        Enumeration listeners = _graphListeners.elements();
-        while (listeners.hasMoreElements()) {
-            GraphListener listen = (GraphListener) listeners.nextElement();
-            listen.nodeAdded(ge);
-        }
-    }
+	public void fireNodeAdded(Object node) {
+		if (saveAction != null && !saveAction.isEnabled()) {
+			saveAction.setEnabled(true);
+		}
+		if (_graphListeners == null) {
+			return;
+		}
+		GraphEvent ge = new GraphEvent(this, node);
+		Enumeration listeners = _graphListeners.elements();
+		while (listeners.hasMoreElements()) {
+			GraphListener listen = (GraphListener) listeners.nextElement();
+			listen.nodeAdded(ge);
+		}
+	}
 
-    public void fireNodeRemoved(Object node) {
-        if (saveAction != null && !saveAction.isEnabled()) {
-            saveAction.setEnabled(true);
-        }
-        if (_graphListeners == null) {
-            return;
-        }
-        GraphEvent ge = new GraphEvent(this, node);
-        Enumeration listeners = _graphListeners.elements();
-        while (listeners.hasMoreElements()) {
-            GraphListener listen = (GraphListener) listeners.nextElement();
-            listen.nodeRemoved(ge);
-        }
-    }
+	public void fireNodeRemoved(Object node) {
+		if (saveAction != null && !saveAction.isEnabled()) {
+			saveAction.setEnabled(true);
+		}
+		if (_graphListeners == null) {
+			return;
+		}
+		GraphEvent ge = new GraphEvent(this, node);
+		Enumeration listeners = _graphListeners.elements();
+		while (listeners.hasMoreElements()) {
+			GraphListener listen = (GraphListener) listeners.nextElement();
+			listen.nodeRemoved(ge);
+		}
+	}
 
-    public void fireEdgeAdded(Object edge) {
-        if (saveAction != null && !saveAction.isEnabled()) {
-            saveAction.setEnabled(true);
-        }
-        if (_graphListeners == null) {
-            return;
-        }
-        GraphEvent ge = new GraphEvent(this, edge);
-        Enumeration listeners = _graphListeners.elements();
-        while (listeners.hasMoreElements()) {
-            GraphListener listen = (GraphListener) listeners.nextElement();
-            listen.edgeAdded(ge);
-        }
-    }
+	public void fireEdgeAdded(Object edge) {
+		if (saveAction != null && !saveAction.isEnabled()) {
+			saveAction.setEnabled(true);
+		}
+		if (_graphListeners == null) {
+			return;
+		}
+		GraphEvent ge = new GraphEvent(this, edge);
+		Enumeration listeners = _graphListeners.elements();
+		while (listeners.hasMoreElements()) {
+			GraphListener listen = (GraphListener) listeners.nextElement();
+			listen.edgeAdded(ge);
+		}
+	}
 
-    public void fireEdgeRemoved(Object edge) {
-        if (saveAction != null && !saveAction.isEnabled()) {
-            saveAction.setEnabled(true);
-        }
-        if (_graphListeners == null) {
-            return;
-        }
-        GraphEvent ge = new GraphEvent(this, edge);
-        Enumeration listeners = _graphListeners.elements();
-        while (listeners.hasMoreElements()) {
-            GraphListener listen = (GraphListener) listeners.nextElement();
-            listen.edgeRemoved(ge);
-        }
-    }
+	public void fireEdgeRemoved(Object edge) {
+		if (saveAction != null && !saveAction.isEnabled()) {
+			saveAction.setEnabled(true);
+		}
+		if (_graphListeners == null) {
+			return;
+		}
+		GraphEvent ge = new GraphEvent(this, edge);
+		Enumeration listeners = _graphListeners.elements();
+		while (listeners.hasMoreElements()) {
+			GraphListener listen = (GraphListener) listeners.nextElement();
+			listen.edgeRemoved(ge);
+		}
+	}
 
-    public void fireGraphChanged() {
-        if (saveAction != null && !saveAction.isEnabled()) {
-            saveAction.setEnabled(true);
-        }
-        if (_graphListeners == null) {
-            return;
-        }
-        GraphEvent ge = new GraphEvent(this, null);
-        Enumeration listeners = _graphListeners.elements();
-        while (listeners.hasMoreElements()) {
-            GraphListener listen = (GraphListener) listeners.nextElement();
-            listen.graphChanged(ge);
-        }
-    }
+	public void fireGraphChanged() {
+		if (saveAction != null && !saveAction.isEnabled()) {
+			saveAction.setEnabled(true);
+		}
+		if (_graphListeners == null) {
+			return;
+		}
+		GraphEvent ge = new GraphEvent(this, null);
+		Enumeration listeners = _graphListeners.elements();
+		while (listeners.hasMoreElements()) {
+			GraphListener listen = (GraphListener) listeners.nextElement();
+			listen.graphChanged(ge);
+		}
+	}
 
-    public static void setSaveAction(Action action) {
-        saveAction = action;
-    }
+	public static void setSaveAction(Action action) {
+		saveAction = action;
+	}
 
-    public static void enableSaveAction() {
-        if (saveAction != null) {
-            saveAction.setEnabled(true);
-        }
-    }
+	public static void enableSaveAction() {
+		if (saveAction != null) {
+			saveAction.setEnabled(true);
+		}
+	}
 
-    public void removeNode(Object node) {
-        fireNodeRemoved(node);
-    }
+	public void removeNode(Object node) {
+		fireNodeRemoved(node);
+	}
 
-    /** Add the given node to the graph, if valid. */
-    public void addNode(Object node) {
-        fireNodeAdded(node);
-    }
+	/** Add the given node to the graph, if valid. */
+	public void addNode(Object node) {
+		fireNodeAdded(node);
+	}
 
-    /** Add the given edge to the graph, if valid. */
-    public void addEdge(Object edge) {
-        fireEdgeAdded(edge);
-    }
+	/** Add the given edge to the graph, if valid. */
+	public void addEdge(Object edge) {
+		fireEdgeAdded(edge);
+	}
 
-    /** Remove the given edge from the graph. */
-    public void removeEdge(Object edge) {
-        fireEdgeRemoved(edge);
-    }
+	/** Remove the given edge from the graph. */
+	public void removeEdge(Object edge) {
+		fireEdgeRemoved(edge);
+	}
 
-    /** Remove the given edge from the graph. */
-    public void removeFig(Fig fig) {
-        if (fig instanceof GraphElement) {
-            throw new IllegalArgumentException(
-                    "Use removeEdge or removeNode to remove a complex Fig");
-        }
-        fig.removeFromDiagram();
-        fireGraphChanged();
-    }
+	/** Remove the given edge from the graph. */
+	public void removeFig(Fig fig) {
+		if (fig instanceof GraphElement) {
+			throw new IllegalArgumentException("Use removeEdge or removeNode to remove a complex Fig");
+		}
+		fig.removeFromDiagram();
+		fireGraphChanged();
+	}
 
-    /** Remove all the nodes from the graph. */
-    public void removeAllNodes() {
-        fireGraphChanged();
-    }
+	/** Remove all the nodes from the graph. */
+	public void removeAllNodes() {
+		fireGraphChanged();
+	}
 
-    /** Remove all the edges from the graph. */
-    public void removeAllEdges() {
-        fireGraphChanged();
-    }
+	/** Remove all the edges from the graph. */
+	public void removeAllEdges() {
+		fireGraphChanged();
+	}
 
-    /** Remove all nodes and edges to reset the graph. */
-    public void removeAll() {
-        fireGraphChanged();
-    }
+	/** Remove all nodes and edges to reset the graph. */
+	public void removeAll() {
+		fireGraphChanged();
+	}
 
-    /**
-     * Returns true if handle can be enclosed into encloser.
-     */
-    public boolean isEnclosable(Object handle, Object encloser) {
-        return true;
-    }
+	/**
+	 * Returns true if handle can be enclosed into encloser.
+	 */
+	public boolean isEnclosable(Object handle, Object encloser) {
+		return true;
+	}
 
 } /* end class MutableGraphSupport */

@@ -37,67 +37,67 @@ package org.tigris.gef.base;
 
 public class CmdReorder extends Cmd {
 
-    private static final long serialVersionUID = 1315160037668280033L;
+	private static final long serialVersionUID = 1315160037668280033L;
 
-    public static final int SEND_TO_BACK = 1;
+	public static final int SEND_TO_BACK = 1;
 
-    public static final int BRING_TO_FRONT = 2;
+	public static final int BRING_TO_FRONT = 2;
 
-    public static final int SEND_BACKWARD = 3;
+	public static final int SEND_BACKWARD = 3;
 
-    public static final int BRING_FORWARD = 4;
+	public static final int BRING_FORWARD = 4;
 
-    public static CmdReorder SendToBack = new CmdReorder(SEND_TO_BACK);
+	public static CmdReorder SendToBack = new CmdReorder(SEND_TO_BACK);
 
-    public static CmdReorder BringToFront = new CmdReorder(BRING_TO_FRONT);
+	public static CmdReorder BringToFront = new CmdReorder(BRING_TO_FRONT);
 
-    public static CmdReorder SendBackward = new CmdReorder(SEND_BACKWARD);
+	public static CmdReorder SendBackward = new CmdReorder(SEND_BACKWARD);
 
-    public static CmdReorder BringForward = new CmdReorder(BRING_FORWARD);
+	public static CmdReorder BringForward = new CmdReorder(BRING_FORWARD);
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
-    private int function;
+	// //////////////////////////////////////////////////////////////
+	// instance variables
+	private int function;
 
-    // //////////////////////////////////////////////////////////////
-    // constructor
+	// //////////////////////////////////////////////////////////////
+	// constructor
 
-    /**
-     * Construct a new CmdReorder with the given reordering constrant (see
-     * above)
-     */
-    public CmdReorder(int f) {
-        super(wordFor(f));
-        function = f;
-    }
+	/**
+	 * Construct a new CmdReorder with the given reordering constrant (see
+	 * above)
+	 */
+	public CmdReorder(int f) {
+		super(wordFor(f));
+		function = f;
+	}
 
-    protected static String wordFor(int f) {
-        switch (f) {
-        case SEND_BACKWARD:
-            return "Backward";
-        case SEND_TO_BACK:
-            return "ToBack";
-        case BRING_FORWARD:
-            return "Forward";
-        case BRING_TO_FRONT:
-            return "ToFront";
-        }
-        return "";
-    }
+	protected static String wordFor(int f) {
+		switch (f) {
+		case SEND_BACKWARD:
+			return "Backward";
+		case SEND_TO_BACK:
+			return "ToBack";
+		case BRING_FORWARD:
+			return "Forward";
+		case BRING_TO_FRONT:
+			return "ToFront";
+		}
+		return "";
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // Cmd API
+	// //////////////////////////////////////////////////////////////
+	// Cmd API
 
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        LayerManager lm = ce.getLayerManager();
-        SelectionManager sm = ce.getSelectionManager();
-        sm.reorder(function, lm.getActiveLayer());
-        sm.endTrans();
-        // ce.repairDamage();
-    }
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		LayerManager lm = ce.getLayerManager();
+		SelectionManager sm = ce.getSelectionManager();
+		sm.reorder(function, lm.getActiveLayer());
+		sm.endTrans();
+		// ce.repairDamage();
+	}
 
-    public void undoIt() {
-        System.out.println("Connot undo CmdReorder, yet");
-    }
+	public void undoIt() {
+		System.out.println("Connot undo CmdReorder, yet");
+	}
 } /* end class CmdReorder */

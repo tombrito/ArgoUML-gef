@@ -41,59 +41,56 @@ import org.tigris.gef.presentation.Handle;
 
 public class SelectionMove extends Selection {
 
-    private static final long serialVersionUID = 2136083601083895759L;
+	private static final long serialVersionUID = 2136083601083895759L;
 
-    /** Construct a new SelectionMove around the given DiagramElement */
-    public SelectionMove(Fig f) {
-        super(f);
-    }
+	/** Construct a new SelectionMove around the given DiagramElement */
+	public SelectionMove(Fig f) {
+		super(f);
+	}
 
-    /** Paint the selection. */
-    public void paint(Graphics g) {
-        Fig fig = getContent();
-        int x = fig.getX();
-        int y = fig.getY();
-        int w = fig.getWidth();
-        int h = fig.getHeight();
-        g.setColor(Globals.getPrefs().handleColorFor(fig));
-        g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH, w + BORDER_WIDTH * 2 - 1,
-                h + BORDER_WIDTH * 2 - 1);
-        g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1,
-                w + BORDER_WIDTH * 2 + 2 - 1, h + BORDER_WIDTH * 2 + 2 - 1);
-        g.fillRect(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
-        g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
-        g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
-        g.fillRect(x + w, y + h, HAND_SIZE, HAND_SIZE);
-    }
+	/** Paint the selection. */
+	public void paint(Graphics g) {
+		Fig fig = getContent();
+		int x = fig.getX();
+		int y = fig.getY();
+		int w = fig.getWidth();
+		int h = fig.getHeight();
+		g.setColor(Globals.getPrefs().handleColorFor(fig));
+		g.drawRect(x - BORDER_WIDTH, y - BORDER_WIDTH, w + BORDER_WIDTH * 2 - 1, h + BORDER_WIDTH * 2 - 1);
+		g.drawRect(x - BORDER_WIDTH - 1, y - BORDER_WIDTH - 1, w + BORDER_WIDTH * 2 + 2 - 1,
+				h + BORDER_WIDTH * 2 + 2 - 1);
+		g.fillRect(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+		g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+		g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
+		g.fillRect(x + w, y + h, HAND_SIZE, HAND_SIZE);
+	}
 
-    /**
-     * SelectionMove is used when there are no handles, so dragHandle does
-     * nothing. Actually, hitHandle always returns -1 , so this method should
-     * never even get called.
-     */
-    public void dragHandle(int mx, int my, int an_x, int an_y, Handle h) {
-        /* do nothing */
-    }
+	/**
+	 * SelectionMove is used when there are no handles, so dragHandle does
+	 * nothing. Actually, hitHandle always returns -1 , so this method should
+	 * never even get called.
+	 */
+	public void dragHandle(int mx, int my, int an_x, int an_y, Handle h) {
+		/* do nothing */
+	}
 
-    /**
-     * Return -1 as a special code to indicate that the user clicked in the body
-     * of the Fig and wants to drag it around.
-     */
-    public void hitHandle(Rectangle r, Handle h) {
-        h.index = -1;
-        h.instructions = "Move Object(s)";
-    }
+	/**
+	 * Return -1 as a special code to indicate that the user clicked in the body
+	 * of the Fig and wants to drag it around.
+	 */
+	public void hitHandle(Rectangle r, Handle h) {
+		h.index = -1;
+		h.instructions = "Move Object(s)";
+	}
 
-    /**
-     * The bounding box of the selection is the bbox of the contained Fig with
-     * added space for the handles. For SelectionMove this is larger than normal
-     * so that the edges of the selection box don't touch the edges of the
-     * contents.
-     */
-    public Rectangle getBounds() {
-        return new Rectangle(getContent().getX() - BORDER_WIDTH,
-                getContent().getY() - BORDER_WIDTH,
-                getContent().getWidth() + BORDER_WIDTH * 2 + 2,
-                getContent().getHeight() + BORDER_WIDTH * 2 + 2);
-    }
+	/**
+	 * The bounding box of the selection is the bbox of the contained Fig with
+	 * added space for the handles. For SelectionMove this is larger than normal
+	 * so that the edges of the selection box don't touch the edges of the
+	 * contents.
+	 */
+	public Rectangle getBounds() {
+		return new Rectangle(getContent().getX() - BORDER_WIDTH, getContent().getY() - BORDER_WIDTH,
+				getContent().getWidth() + BORDER_WIDTH * 2 + 2, getContent().getHeight() + BORDER_WIDTH * 2 + 2);
+	}
 } /* end class SelectionMove */

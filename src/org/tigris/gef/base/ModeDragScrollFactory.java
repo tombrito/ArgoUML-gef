@@ -30,11 +30,11 @@ package org.tigris.gef.base;
  */
 public class ModeDragScrollFactory implements ModeFactory {
 
-    public FigModifyingMode createMode() {
-        return new ModeDragScroll();
-    }
+	public FigModifyingMode createMode() {
+		return new ModeDragScroll();
+	}
 
-    public FigModifyingMode createMode(Editor editor) {
-        return new ModeDragScroll(editor);
-    }
+	public FigModifyingMode createMode(Editor editor) {
+		return new ModeDragScroll(editor);
+	}
 }

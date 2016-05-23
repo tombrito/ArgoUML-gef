@@ -30,6 +30,7 @@ package org.tigris.gef.base;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.tigris.gef.undo.UndoManager;
 
 /**
@@ -41,23 +42,23 @@ import org.tigris.gef.undo.UndoManager;
 
 public class CmdDeleteFromModel extends Cmd {
 
-    private static final long serialVersionUID = -6770426022196761889L;
+	private static final long serialVersionUID = -6770426022196761889L;
 
-    private static Log LOG = LogFactory.getLog(CmdDeleteFromModel.class);
+	private static Log LOG = LogFactory.getLog(CmdDeleteFromModel.class);
 
-    public CmdDeleteFromModel() {
-        super("Delete From Model");
-    }
+	public CmdDeleteFromModel() {
+		super("Delete From Model");
+	}
 
-    public void doIt() {
-        LOG.debug("Executing CmdDeleteFromModel");
-        UndoManager.getInstance().startChain();
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        sm.deleteFromModel();
-        sm.deselectAll();
-    }
+	public void doIt() {
+		LOG.debug("Executing CmdDeleteFromModel");
+		UndoManager.getInstance().startChain();
+		Editor ce = Globals.curEditor();
+		SelectionManager sm = ce.getSelectionManager();
+		sm.deleteFromModel();
+		sm.deselectAll();
+	}
 
-    public void undoIt() {
-    }
+	public void undoIt() {
+	}
 } /* end class CmdDispose */

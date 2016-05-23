@@ -23,40 +23,39 @@
 
 package org.tigris.gef.ui;
 
-import javax.swing.table.*;
-
-import javax.swing.*;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 public class JSortedTable extends JTable {
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    TableSorter sorter = new TableSorter();
+	TableSorter sorter = new TableSorter();
 
-    // //////////////////////////////////////////////////////////////
-    // constructors
+	// //////////////////////////////////////////////////////////////
+	// constructors
 
-    public JSortedTable() {
-        super();
-        super.setModel(sorter);
-        sorter.addMouseListenerToHeaderInTable(this);
-    }
+	public JSortedTable() {
+		super();
+		super.setModel(sorter);
+		sorter.addMouseListenerToHeaderInTable(this);
+	}
 
-    public JSortedTable(TableModel model) {
-        super();
-        super.setModel(sorter);
-        sorter.setModel(model);
-        sorter.addMouseListenerToHeaderInTable(this);
-    }
+	public JSortedTable(TableModel model) {
+		super();
+		super.setModel(sorter);
+		sorter.setModel(model);
+		sorter.addMouseListenerToHeaderInTable(this);
+	}
 
-    public void setModel(TableModel model) {
-        if (sorter == null)
-            super.setModel(model);
-        else {
-            super.setModel(sorter);
-            sorter.setModel(model);
-        }
-    }
+	public void setModel(TableModel model) {
+		if (sorter == null)
+			super.setModel(model);
+		else {
+			super.setModel(sorter);
+			sorter.setModel(model);
+		}
+	}
 
 } /* end class JSortedTable */

@@ -23,14 +23,14 @@
 
 package org.tigris.gef.ui;
 
-import java.beans.*;
+import java.beans.PropertyChangeListener;
 
 public interface Highlightable {
-    void setHighlight(boolean b);
+	void setHighlight(boolean b);
 
-    boolean getHighlight();
+	boolean getHighlight();
 
-    void addPropertyChangeListener(PropertyChangeListener listen);
+	void addPropertyChangeListener(PropertyChangeListener listen);
 
-    void removePropertyChangeListener(PropertyChangeListener listen);
+	void removePropertyChangeListener(PropertyChangeListener listen);
 } /* end interface Highlightable */

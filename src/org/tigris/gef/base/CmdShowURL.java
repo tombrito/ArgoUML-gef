@@ -39,42 +39,42 @@ import java.net.URL;
 
 public class CmdShowURL extends Cmd {
 
-    private static final long serialVersionUID = 8641563793819533804L;
+	private static final long serialVersionUID = 8641563793819533804L;
 
-    protected URL _url;
+	protected URL _url;
 
-    public CmdShowURL(URL url) {
-        this();
-        url(url);
-    }
+	public CmdShowURL(URL url) {
+		this();
+		url(url);
+	}
 
-    public CmdShowURL(String s) throws java.net.MalformedURLException {
-        this();
-        url(s);
-    }
+	public CmdShowURL(String s) throws java.net.MalformedURLException {
+		this();
+		url(s);
+	}
 
-    public CmdShowURL() {
-        super("ShowURLInBrowser");
-    }
+	public CmdShowURL() {
+		super("ShowURLInBrowser");
+	}
 
-    public void url(URL u) {
-        _url = u;
-    }
+	public void url(URL u) {
+		_url = u;
+	}
 
-    public void url(String u) throws java.net.MalformedURLException {
-        _url = new URL(u);
-    }
+	public void url(String u) throws java.net.MalformedURLException {
+		_url = new URL(u);
+	}
 
-    public URL url() {
-        return _url;
-    }
+	public URL url() {
+		return _url;
+	}
 
-    /** Translate all selected Fig's in the current editor. */
-    public void doIt() {
-        Globals.showDocument(_url);
-    }
+	/** Translate all selected Fig's in the current editor. */
+	public void doIt() {
+		Globals.showDocument(_url);
+	}
 
-    public void undoIt() {
-        System.out.println("Needs-More-Work");
-    }
+	public void undoIt() {
+		System.out.println("Needs-More-Work");
+	}
 } /* end class CmdShowURL */

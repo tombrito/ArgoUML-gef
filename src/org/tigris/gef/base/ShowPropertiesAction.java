@@ -44,57 +44,65 @@ import org.tigris.gef.util.Localizer;
 
 public class ShowPropertiesAction extends AbstractAction {
 
-    private static final long serialVersionUID = -5844819335131780517L;
+	private static final long serialVersionUID = -5844819335131780517L;
 
-    /**
-     * Creates a new ShowPropertiesAction
-     */
-    public ShowPropertiesAction() {
-        super();
-    }
+	/**
+	 * Creates a new ShowPropertiesAction
+	 */
+	public ShowPropertiesAction() {
+		super();
+	}
 
-    /**
-     * Creates a new ShowPropertiesAction
-     * 
-     * @param name The name of the action
-     */
-    public ShowPropertiesAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new ShowPropertiesAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public ShowPropertiesAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new ShowPropertiesAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public ShowPropertiesAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new ShowPropertiesAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public ShowPropertiesAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new ShowPropertiesAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public ShowPropertiesAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new ShowPropertiesAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ShowPropertiesAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new ShowPropertiesAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public ShowPropertiesAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new ShowPropertiesAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ShowPropertiesAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        Globals.startPropertySheet();
-    }
+	public void actionPerformed(ActionEvent e) {
+		Globals.startPropertySheet();
+	}
 
 }

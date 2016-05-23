@@ -27,10 +27,11 @@
 
 package org.tigris.gef.base;
 
-import java.io.*;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.OutputStream;
 
-import org.tigris.gef.persistence.*;
+import org.tigris.gef.persistence.PostscriptWriter;
 
 /**
  * Cmd to save a diagram as PostScript in a supplied OutputStream. Requires the
@@ -45,28 +46,24 @@ import org.tigris.gef.persistence.*;
 
 public class CmdSavePS extends CmdSaveGraphics {
 
-    private static final long serialVersionUID = 2283867876416499471L;
+	private static final long serialVersionUID = 2283867876416499471L;
 
-    public CmdSavePS() {
-        super("SavePostScript");
-    }
+	public CmdSavePS() {
+		super("SavePostScript");
+	}
 
-    protected void saveGraphics(OutputStream s, Editor ce,
-            Rectangle drawingArea)
-        throws IOException {
-        PostscriptWriter ps = new PostscriptWriter(s);
-        ps.translate(32, 32 + 778);
-        double scale = Math.min(535.0 / drawingArea.width,
-                778.0 / drawingArea.height);
-        if (scale < 1.0) {
-            ps.scale(scale, scale);
-        }
-        ps.translate(-drawingArea.x, -drawingArea.y);
-        ps.setClip(drawingArea.x, drawingArea.y, drawingArea.width,
-                drawingArea.height);
-        // java bug if using Rectangle.shape() ???
-        ce.print(ps);
-        ps.dispose();
-    }
+	protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea) throws IOException {
+		PostscriptWriter ps = new PostscriptWriter(s);
+		ps.translate(32, 32 + 778);
+		double scale = Math.min(535.0 / drawingArea.width, 778.0 / drawingArea.height);
+		if (scale < 1.0) {
+			ps.scale(scale, scale);
+		}
+		ps.translate(-drawingArea.x, -drawingArea.y);
+		ps.setClip(drawingArea.x, drawingArea.y, drawingArea.width, drawingArea.height);
+		// java bug if using Rectangle.shape() ???
+		ce.print(ps);
+		ps.dispose();
+	}
 
 } /* end class CmdSavePS */

@@ -72,178 +72,184 @@ import org.tigris.gef.util.Localizer;
  */
 public class SavePGMLAction extends AbstractAction implements FilenameFilter {
 
-    private static final long serialVersionUID = 8033817528836858940L;
+	private static final long serialVersionUID = 8033817528836858940L;
 
-    private static OCLExpander _expander = null;
+	private static OCLExpander _expander = null;
 
-    /**
-     * Creates a new SavePGMLAction
-     */
-    public SavePGMLAction() {
-        super();
-    }
+	/**
+	 * Creates a new SavePGMLAction
+	 */
+	public SavePGMLAction() {
+		super();
+	}
 
-    /**
-     * Creates a new SavePGMLAction
-     * 
-     * @param name The name of the action
-     */
-    public SavePGMLAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new SavePGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public SavePGMLAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new SavePGMLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public SavePGMLAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new SavePGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public SavePGMLAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new SavePGMLAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SavePGMLAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new SavePGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public SavePGMLAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new SavePGMLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SavePGMLAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new SavePGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public SavePGMLAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent event) {
-        // @@@ just for easy debugging
-        try {
-            _expander = new OCLExpander(TemplateReader.getInstance()
-                    .read("/org/tigris/gef/xml/dtd/PGML.tee"));
+	public void actionPerformed(ActionEvent event) {
+		// @@@ just for easy debugging
+		try {
+			_expander = new OCLExpander(TemplateReader.getInstance().read("/org/tigris/gef/xml/dtd/PGML.tee"));
 
-            Editor ce = Globals.curEditor();
-            Diagram d = new Diagram("junk", ce.getGraphModel(),
-                    (LayerPerspective) ce.getLayerManager().getActiveLayer());
-            FileDialog fd = new FileDialog(ce.findFrame(),
-                    "Save Diagram in PGML format", FileDialog.SAVE);
-            fd.setFilenameFilter(this);
-            fd.setDirectory(Globals.getLastDirectory());
-            fd.setVisible(true);
-            String filename = fd.getFile(); // blocking
-            String path = fd.getDirectory(); // blocking
-            Globals.setLastDirectory(path);
-            if (filename != null) {
-                Globals.showStatus("Writing " + path + filename + "...");
-                FileWriter fw = new FileWriter(path + filename);
-                System.out.println("Action save in PGML...");
+			Editor ce = Globals.curEditor();
+			Diagram d = new Diagram("junk", ce.getGraphModel(),
+					(LayerPerspective) ce.getLayerManager().getActiveLayer());
+			FileDialog fd = new FileDialog(ce.findFrame(), "Save Diagram in PGML format", FileDialog.SAVE);
+			fd.setFilenameFilter(this);
+			fd.setDirectory(Globals.getLastDirectory());
+			fd.setVisible(true);
+			String filename = fd.getFile(); // blocking
+			String path = fd.getDirectory(); // blocking
+			Globals.setLastDirectory(path);
+			if (filename != null) {
+				Globals.showStatus("Writing " + path + filename + "...");
+				FileWriter fw = new FileWriter(path + filename);
+				System.out.println("Action save in PGML...");
 
-                _expander.expand(fw, d);
-                System.out.println("save done");
-                Globals.showStatus("Wrote " + path + filename);
-                fw.close();
-                // ce.setTitle(filename);
-            }
-        } catch (FileNotFoundException ignore) {
-            System.out.println("got an FileNotFoundException");
-        } catch (IOException ignore) {
-            System.out.println("got an IOException");
-            ignore.printStackTrace();
-        } catch (ExpansionException e) {
-            System.out.println("got an Exception");
-            e.printStackTrace();
-        }
-    }
+				_expander.expand(fw, d);
+				System.out.println("save done");
+				Globals.showStatus("Wrote " + path + filename);
+				fw.close();
+				// ce.setTitle(filename);
+			}
+		} catch (FileNotFoundException ignore) {
+			System.out.println("got an FileNotFoundException");
+		} catch (IOException ignore) {
+			System.out.println("got an IOException");
+			ignore.printStackTrace();
+		} catch (ExpansionException e) {
+			System.out.println("got an Exception");
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Only let the user select files that match the filter. This does not seem
-     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
-     * it currently accepts all filenames.
-     * <p>
-     * 
-     * Needs-More-Work: the source code for this method is duplicated in
-     * OpenAction#accept.
-     * 
-     * @deprecated this method always returns true
-     */
-    public boolean accept(File dir, String name) {
-        return true;
-    }
+	/**
+	 * Only let the user select files that match the filter. This does not seem
+	 * to be called under JDK 1.0.2 on solaris. I have not finished this method,
+	 * it currently accepts all filenames.
+	 * <p>
+	 * 
+	 * Needs-More-Work: the source code for this method is duplicated in
+	 * OpenAction#accept.
+	 * 
+	 * @deprecated this method always returns true
+	 */
+	public boolean accept(File dir, String name) {
+		return true;
+	}
 
-    // protected void initTemplates() {
-    // t.put(Diagram.class,
-    // "<pgml>\n"+
-    // " ($self.contents$)\n"+
-    // "</pgml>");
-    // t.put(Rectangle.class,
-    // "x='($self.x$)' y='($self.y$)' "+
-    // "w='($self.width$)' h='($self.height$)'");
-    // t.put(FigRect.class,
-    // "<rectangle ($self.bounds$) "+
-    // " fill='($self.filled)'\n"+
-    // " fillcolor='($self.fillColor)'\n"+
-    // " stroke='($self.lineWidth)'\n"+
-    // " strokecolor='($self.lineColor)'\n"+
-    // "/>");
-    // t.put(FigRRect.class,
-    // "<rectangle ($self.bounds$)\n"+
-    // " fill='($self.filled)'\n"+
-    // " fillcolor='($self.fillColor)'\n"+
-    // " stroke='($self.lineWidth)'\n"+
-    // " strokecolor='($self.lineColor)'\n"+
-    // " rounding='($self.cornerRadius$)'\n"+
-    // "/>");
-    // t.put(FigCircle.class,
-    // "<ellipse ($self.bounds$)\n"+
-    // " fill='($self.filled)'\n"+
-    // " fillcolor='($self.fillColor)'\n"+
-    // " stroke='($self.lineWidth)'\n"+
-    // " strokecolor='($self.lineColor)'\n"+
-    // "/>");
-    // t.put(FigText.class,
-    // "<text ($self.bounds$) \n"+
-    // " fill='($self.filled)'\n"+
-    // " fillcolor='($self.fillColor)'\n"+
-    // " stroke='($self.lineWidth)'\n"+
-    // " strokecolor='($self.lineColor)'\n"+
-    // " textsize='($self.fontSize$)'\n"+
-    // ">($self.text$)</text>");
-    // t.put(FigLine.class,
-    // "<path\n"+
-    // " fill='($self.filled)'\n"+
-    // " fillcolor='($self.fillColor)'\n"+
-    // " stroke='($self.lineWidth)'\n"+
-    // " strokecolor='($self.lineColor)'\n"+
-    // ">\n"+
-    // " <moveto x='($self.x1$)' y='($self.y1$)'>\n"+
-    // " <lineto x='($self.x2$)' y='($self.y2$)'>\n"+
-    // "</path>");
-    // t.put(FigPoly.class,
-    // "<path>\n"+
-    // " <moveto x='($self.x1$)' y='($self.y1$)'>\n"+
-    // " <lineto ($self.points$)>\n"+
-    // "</path>");
-    // //spline?
-    // //image?
-    // t.put(FigGroup.class,
-    // "<group description='($self.class$)'\n"+
-    // " href='($ref.owner$)\n"+
-    // ">\n"+
-    // " ($self.figs$)\n"+
-    // "</group>");
-    // t.put(FigEdge.class,
-    // "<group description='($self.class$)'\n"+
-    // " href='($ref.owner$)'\n"+
-    // ">\n"+
-    // " ($self.fig$)\n"+
-    // "</group>");
-    // }
+	// protected void initTemplates() {
+	// t.put(Diagram.class,
+	// "<pgml>\n"+
+	// " ($self.contents$)\n"+
+	// "</pgml>");
+	// t.put(Rectangle.class,
+	// "x='($self.x$)' y='($self.y$)' "+
+	// "w='($self.width$)' h='($self.height$)'");
+	// t.put(FigRect.class,
+	// "<rectangle ($self.bounds$) "+
+	// " fill='($self.filled)'\n"+
+	// " fillcolor='($self.fillColor)'\n"+
+	// " stroke='($self.lineWidth)'\n"+
+	// " strokecolor='($self.lineColor)'\n"+
+	// "/>");
+	// t.put(FigRRect.class,
+	// "<rectangle ($self.bounds$)\n"+
+	// " fill='($self.filled)'\n"+
+	// " fillcolor='($self.fillColor)'\n"+
+	// " stroke='($self.lineWidth)'\n"+
+	// " strokecolor='($self.lineColor)'\n"+
+	// " rounding='($self.cornerRadius$)'\n"+
+	// "/>");
+	// t.put(FigCircle.class,
+	// "<ellipse ($self.bounds$)\n"+
+	// " fill='($self.filled)'\n"+
+	// " fillcolor='($self.fillColor)'\n"+
+	// " stroke='($self.lineWidth)'\n"+
+	// " strokecolor='($self.lineColor)'\n"+
+	// "/>");
+	// t.put(FigText.class,
+	// "<text ($self.bounds$) \n"+
+	// " fill='($self.filled)'\n"+
+	// " fillcolor='($self.fillColor)'\n"+
+	// " stroke='($self.lineWidth)'\n"+
+	// " strokecolor='($self.lineColor)'\n"+
+	// " textsize='($self.fontSize$)'\n"+
+	// ">($self.text$)</text>");
+	// t.put(FigLine.class,
+	// "<path\n"+
+	// " fill='($self.filled)'\n"+
+	// " fillcolor='($self.fillColor)'\n"+
+	// " stroke='($self.lineWidth)'\n"+
+	// " strokecolor='($self.lineColor)'\n"+
+	// ">\n"+
+	// " <moveto x='($self.x1$)' y='($self.y1$)'>\n"+
+	// " <lineto x='($self.x2$)' y='($self.y2$)'>\n"+
+	// "</path>");
+	// t.put(FigPoly.class,
+	// "<path>\n"+
+	// " <moveto x='($self.x1$)' y='($self.y1$)'>\n"+
+	// " <lineto ($self.points$)>\n"+
+	// "</path>");
+	// //spline?
+	// //image?
+	// t.put(FigGroup.class,
+	// "<group description='($self.class$)'\n"+
+	// " href='($ref.owner$)\n"+
+	// ">\n"+
+	// " ($self.figs$)\n"+
+	// "</group>");
+	// t.put(FigEdge.class,
+	// "<group description='($self.class$)'\n"+
+	// " href='($ref.owner$)'\n"+
+	// ">\n"+
+	// " ($self.fig$)\n"+
+	// "</group>");
+	// }
 
 }

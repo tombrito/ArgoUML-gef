@@ -23,41 +23,43 @@
 
 package org.tigris.gef.ui;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.util.Hashtable;
 
-import javax.swing.*;
+import javax.swing.Icon;
 
 public class Swatch implements Icon {
-    protected static Hashtable _swatches = new Hashtable();
+	protected static Hashtable _swatches = new Hashtable();
 
-    Color _color = Color.black;
+	Color _color = Color.black;
 
-    public static Swatch forColor(Color c) {
-        Swatch s = (Swatch) _swatches.get(c);
-        if (s == null) {
-            s = new Swatch(c);
-            _swatches.put(c, s);
-        }
-        return s;
-    }
+	public static Swatch forColor(Color c) {
+		Swatch s = (Swatch) _swatches.get(c);
+		if (s == null) {
+			s = new Swatch(c);
+			_swatches.put(c, s);
+		}
+		return s;
+	}
 
-    public Swatch(Color c) {
-        _color = c;
-    }
+	public Swatch(Color c) {
+		_color = c;
+	}
 
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        int w = getIconWidth(), h = getIconHeight();
-        g.setColor(_color);
-        g.fillRect(x, y, getIconWidth(), getIconHeight());
-    }
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		int w = getIconWidth(), h = getIconHeight();
+		g.setColor(_color);
+		g.fillRect(x, y, getIconWidth(), getIconHeight());
+	}
 
-    public int getIconWidth() {
-        return 150;
-    }
+	public int getIconWidth() {
+		return 150;
+	}
 
-    public int getIconHeight() {
-        return 12;
-    }
+	public int getIconHeight() {
+		return 12;
+	}
 
 } /* end class Swatch */

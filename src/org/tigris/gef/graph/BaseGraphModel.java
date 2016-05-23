@@ -50,16 +50,16 @@ package org.tigris.gef.graph;
 
 public interface BaseGraphModel extends java.io.Serializable {
 
-    /** Return the node or edge that owns the given port */
-    Object getOwner(Object port);
+	/** Return the node or edge that owns the given port */
+	Object getOwner(Object port);
 
-    /** Return one end of an edge */
-    Object getSourcePort(Object edge);
+	/** Return one end of an edge */
+	Object getSourcePort(Object edge);
 
-    /** Return the other end of an edge */
-    Object getDestPort(Object edge);
+	/** Return the other end of an edge */
+	Object getDestPort(Object edge);
 
-    void addGraphEventListener(GraphListener listener);
+	void addGraphEventListener(GraphListener listener);
 
-    void removeGraphEventListener(GraphListener listener);
+	void removeGraphEventListener(GraphListener listener);
 } /* end interface GraphModel */

@@ -28,9 +28,10 @@
 
 package org.tigris.gef.util;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * Predicate that returns true for FigNode's that intersect the rectangle given
@@ -39,24 +40,25 @@ import org.tigris.gef.presentation.*;
  */
 public class PredFigNodeInRect implements Predicate {
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    Rectangle _r;
+	Rectangle _r;
 
-    // //////////////////////////////////////////////////////////////
-    // constructor
+	// //////////////////////////////////////////////////////////////
+	// constructor
 
-    public PredFigNodeInRect(Rectangle r) {
-        _r = r;
-    }
+	public PredFigNodeInRect(Rectangle r) {
+		_r = r;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // Predicate API
+	// //////////////////////////////////////////////////////////////
+	// Predicate API
 
-    public boolean predicate(Object o) {
-        if (!(o instanceof FigNode)) return false;
-        return ((Fig) o).intersects(_r);
-    }
+	public boolean predicate(Object o) {
+		if (!(o instanceof FigNode))
+			return false;
+		return ((Fig) o).intersects(_r);
+	}
 
 } /* end class PredFigInRect */

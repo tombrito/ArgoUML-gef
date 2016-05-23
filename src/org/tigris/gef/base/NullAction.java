@@ -42,57 +42,65 @@ import org.tigris.gef.util.Localizer;
  */
 public class NullAction extends AbstractAction {
 
-    private static final long serialVersionUID = -1522361361333044248L;
+	private static final long serialVersionUID = -1522361361333044248L;
 
-    /**
-     * Creates a new NullAction
-     */
-    public NullAction() {
-        super();
-    }
+	/**
+	 * Creates a new NullAction
+	 */
+	public NullAction() {
+		super();
+	}
 
-    /**
-     * Creates a new NullAction
-     * 
-     * @param name The name of the action
-     */
-    public NullAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new NullAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public NullAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new NullAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public NullAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new NullAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public NullAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new NullAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public NullAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new NullAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public NullAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    /**
-     * Creates a new NullAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public NullAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new NullAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public NullAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /** Do nothing */
-    public void actionPerformed(ActionEvent e) {
-    }
+	/** Do nothing */
+	public void actionPerformed(ActionEvent e) {
+	}
 
 }

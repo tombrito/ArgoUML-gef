@@ -40,67 +40,75 @@ import org.tigris.gef.util.Localizer;
 
 public class CutAction extends UndoableAction {
 
-    private static final long serialVersionUID = -5008218014474881077L;
+	private static final long serialVersionUID = -5008218014474881077L;
 
-    /**
-     * Creates a new CutAction
-     * 
-     * @param name The name of the action
-     */
-    public CutAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new CutAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public CutAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new CutAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public CutAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new CutAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public CutAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new CutAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public CutAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new CutAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public CutAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new CutAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public CutAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new CutAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public CutAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        System.out.println("[CmdCut] doIt");
-        Editor ce = Globals.curEditor();
-        SelectionManager selectionManager = ce.getSelectionManager();
-        Vector copiedElements = selectionManager.selections();
-        Vector figs = new Vector();
-        Enumeration copies = copiedElements.elements();
-        while (copies.hasMoreElements()) {
-            Selection s = (Selection) copies.nextElement();
-            Fig f = s.getContent();
-            if (f instanceof FigEdge) {
-                continue;
-            }
-            // needs-more-work: add support for cut-and-paste of edges
-            f = (Fig) f.clone();
-            figs.addElement(f);
-        }
-        Globals.clipBoard = figs;
-        selectionManager.removeFromGraph();
-    }
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		System.out.println("[CmdCut] doIt");
+		Editor ce = Globals.curEditor();
+		SelectionManager selectionManager = ce.getSelectionManager();
+		Vector copiedElements = selectionManager.selections();
+		Vector figs = new Vector();
+		Enumeration copies = copiedElements.elements();
+		while (copies.hasMoreElements()) {
+			Selection s = (Selection) copies.nextElement();
+			Fig f = s.getContent();
+			if (f instanceof FigEdge) {
+				continue;
+			}
+			// needs-more-work: add support for cut-and-paste of edges
+			f = (Fig) f.clone();
+			figs.addElement(f);
+		}
+		Globals.clipBoard = figs;
+		selectionManager.removeFromGraph();
+	}
 }

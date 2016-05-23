@@ -28,7 +28,7 @@
 
 package org.tigris.gef.base;
 
-import java.awt.*;
+import java.awt.Point;
 
 /**
  * Constrains interactions to certain coordinates. In this case, GuideGrid makes
@@ -40,54 +40,54 @@ import java.awt.*;
 
 public class GuideGrid extends Guide {
 
-    private static final long serialVersionUID = -8729481663081674989L;
+	private static final long serialVersionUID = -8729481663081674989L;
 
-    /** Size of the grid. */
-    protected int _gridSize = 8;
+	/** Size of the grid. */
+	protected int _gridSize = 8;
 
-    // //////////////////////////////////////////////////////////////
-    // constructors
+	// //////////////////////////////////////////////////////////////
+	// constructors
 
-    /** Make a new GuideGrid instance with the given grid size. */
-    public GuideGrid(int size) {
-        _gridSize = size;
-    }
+	/** Make a new GuideGrid instance with the given grid size. */
+	public GuideGrid(int size) {
+		_gridSize = size;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    /** Reply the size of the grid to snap points to. */
-    public int gridSize() {
-        return _gridSize;
-    }
+	/** Reply the size of the grid to snap points to. */
+	public int gridSize() {
+		return _gridSize;
+	}
 
-    /** Set the size of the grid. */
-    public void gridSize(int g) {
-        _gridSize = g;
-    }
+	/** Set the size of the grid. */
+	public void gridSize(int g) {
+		_gridSize = g;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // Guide API
+	// //////////////////////////////////////////////////////////////
+	// Guide API
 
-    /**
-     * Modify the given point to be on the guideline (In this case, a gridline)
-     */
-    public void snap(Point p) {
-        p.x = (p.x + _gridSize / 2) / _gridSize * _gridSize;
-        p.y = (p.y + _gridSize / 2) / _gridSize * _gridSize;
-    }
+	/**
+	 * Modify the given point to be on the guideline (In this case, a gridline)
+	 */
+	public void snap(Point p) {
+		p.x = (p.x + _gridSize / 2) / _gridSize * _gridSize;
+		p.y = (p.y + _gridSize / 2) / _gridSize * _gridSize;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // user interface
+	// //////////////////////////////////////////////////////////////
+	// user interface
 
-    /**
-     * Bring up a dialog box to set the grid snap parameters. Needs-More-Work:
-     * use the property sheet to change guide parameters.
-     */
-    public void adjust() {
-        if (_gridSize >= 32)
-            _gridSize = 4;
-        else
-            _gridSize *= 2;
-    }
+	/**
+	 * Bring up a dialog box to set the grid snap parameters. Needs-More-Work:
+	 * use the property sheet to change guide parameters.
+	 */
+	public void adjust() {
+		if (_gridSize >= 32)
+			_gridSize = 4;
+		else
+			_gridSize *= 2;
+	}
 } /* end class GuideGrid */

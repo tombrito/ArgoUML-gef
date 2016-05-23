@@ -35,12 +35,12 @@ import java.awt.Point;
 /** Draws no arrow head at the end of a FigEdge. */
 public class ArrowHeadNone extends ArrowHead {
 
-    private static final long serialVersionUID = -5863903990732263244L;
+	private static final long serialVersionUID = -5863903990732263244L;
 
-    public static ArrowHeadNone TheInstance = new ArrowHeadNone();
+	public static ArrowHeadNone TheInstance = new ArrowHeadNone();
 
-    public void paint(final Graphics g, final Point start, final Point end,
-            final Color lineColor, final Color fillColor) {
-    }
+	public void paint(final Graphics g, final Point start, final Point end, final Color lineColor,
+			final Color fillColor) {
+	}
 
 } /* end class ArrowHeadNone */

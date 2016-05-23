@@ -23,21 +23,22 @@
 
 package org.tigris.gef.base;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.ui.PopupGenerator;
-
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.ui.PopupGenerator;
 
 /**
  * A permanent Mode to catch right-mouse-button events and show a popup menu.
@@ -47,151 +48,142 @@ import javax.swing.JSeparator;
 
 public class ModePopup extends FigModifyingModeImpl {
 
-    private static final long serialVersionUID = 288785293995576958L;
+	private static final long serialVersionUID = 288785293995576958L;
 
-    private static final Log LOG = LogFactory.getLog(ModePopup.class);
+	private static final Log LOG = LogFactory.getLog(ModePopup.class);
 
-    // //////////////////////////////////////////////////////////////
-    // constructor
+	// //////////////////////////////////////////////////////////////
+	// constructor
 
-    public ModePopup(Editor par) {
-        super(par);
-    }
+	public ModePopup(Editor par) {
+		super(par);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    /** Always false because I never want to get out of popup mode. */
-    public boolean canExit() {
-        return false;
-    }
+	/** Always false because I never want to get out of popup mode. */
+	public boolean canExit() {
+		return false;
+	}
 
-    public String instructions() {
-        return " ";
-    }
+	public String instructions() {
+		return " ";
+	}
 
-    public boolean showPopup(MouseEvent me) {
-        int x = me.getX();
-        int y = me.getY();
-        Fig underMouse = editor.hit(x, y);
+	public boolean showPopup(MouseEvent me) {
+		int x = me.getX();
+		int y = me.getY();
+		Fig underMouse = editor.hit(x, y);
 
-        me = editor.retranslateMouseEvent(me);
+		me = editor.retranslateMouseEvent(me);
 
-        // if no Fig is under the mouse, show the editor's popup menu
-        if (underMouse == null) {
-            JPopupMenu editorPopup = editor.getPopupMenu();
-            if (editorPopup != null) {
-                // if the editor has a popup menu, show it
-                editorPopup.show(me.getComponent(), me.getX(), me.getY());
-                me.consume();
-                return true;
-            }
-        }
+		// if no Fig is under the mouse, show the editor's popup menu
+		if (underMouse == null) {
+			JPopupMenu editorPopup = editor.getPopupMenu();
+			if (editorPopup != null) {
+				// if the editor has a popup menu, show it
+				editorPopup.show(me.getComponent(), me.getX(), me.getY());
+				me.consume();
+				return true;
+			}
+		}
 
-        if (!(underMouse instanceof PopupGenerator)) {
-            return false;
-        }
+		if (!(underMouse instanceof PopupGenerator)) {
+			return false;
+		}
 
-        SelectionManager selectionManager = editor.getSelectionManager();
-        if (!selectionManager.containsFig(underMouse)) {
-            selectionManager.select(underMouse);
-        } else {
-            Vector selection = selectionManager.getFigs();
-            Vector reassertSelection = new Vector(selection);
-            selectionManager.select(reassertSelection);
-        }
+		SelectionManager selectionManager = editor.getSelectionManager();
+		if (!selectionManager.containsFig(underMouse)) {
+			selectionManager.select(underMouse);
+		} else {
+			Vector selection = selectionManager.getFigs();
+			Vector reassertSelection = new Vector(selection);
+			selectionManager.select(reassertSelection);
+		}
 
-        Class commonClass = selectionManager.findCommonSuperClass();
-        if (commonClass != null) {
-            Object commonInstance = selectionManager
-                    .findFirstSelectionOfType(commonClass);
+		Class commonClass = selectionManager.findCommonSuperClass();
+		if (commonClass != null) {
+			Object commonInstance = selectionManager.findFirstSelectionOfType(commonClass);
 
-            if (commonInstance instanceof PopupGenerator) {
-                PopupGenerator popupGenerator = (PopupGenerator) commonInstance;
-                List actions = popupGenerator.getPopUpActions(me);
+			if (commonInstance instanceof PopupGenerator) {
+				PopupGenerator popupGenerator = (PopupGenerator) commonInstance;
+				List actions = popupGenerator.getPopUpActions(me);
 
-                JPopupMenu popup = new JPopupMenu();
+				JPopupMenu popup = new JPopupMenu();
 
-                int size = actions.size();
-                for (int i = 0; i < size; ++i) {
-                    Object a = actions.get(i);
-                    if (a instanceof AbstractAction)
-                        popup.add((AbstractAction) a);
-                    else if (a instanceof JMenu)
-                        popup.add((JMenu) a);
-                    else if (a instanceof JMenuItem)
-                        popup.add((JMenuItem) a);
-                    else if (a instanceof JSeparator) popup.add((JSeparator) a);
-                }
+				int size = actions.size();
+				for (int i = 0; i < size; ++i) {
+					Object a = actions.get(i);
+					if (a instanceof AbstractAction)
+						popup.add((AbstractAction) a);
+					else if (a instanceof JMenu)
+						popup.add((JMenu) a);
+					else if (a instanceof JMenuItem)
+						popup.add((JMenuItem) a);
+					else if (a instanceof JSeparator)
+						popup.add((JSeparator) a);
+				}
 
-                popup.show(editor.getJComponent(), me.getX(), me.getY());
-                me.consume();
-                return true;
-            }
-        }
-        return false;
-    }
+				popup.show(editor.getJComponent(), me.getX(), me.getY());
+				me.consume();
+				return true;
+			}
+		}
+		return false;
+	}
 
-    /**
-     * Determine if a popup menu should be displayed by this mouse key being
-     * released
-     */
-    public void mouseReleased(MouseEvent me) {
-        boolean popUpDisplayed = false;
-        if (me.isPopupTrigger()
-                || me.getModifiers() == InputEvent.BUTTON3_MASK) {
-            popUpDisplayed = showPopup(me);
-            if (LOG.isDebugEnabled()) {
-                if (popUpDisplayed)
-                    LOG.debug(
-                            "MouseReleased detected as a popup trigger and popup displayed and event consumed");
-                else
-                    LOG.debug(
-                            "MouseReleased detected as a popup trigger but no popup to display");
-            }
-            return;
-        }
-        LOG.debug("MouseReleased is not a popup trigger");
-    }
+	/**
+	 * Determine if a popup menu should be displayed by this mouse key being
+	 * released
+	 */
+	public void mouseReleased(MouseEvent me) {
+		boolean popUpDisplayed = false;
+		if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+			popUpDisplayed = showPopup(me);
+			if (LOG.isDebugEnabled()) {
+				if (popUpDisplayed)
+					LOG.debug("MouseReleased detected as a popup trigger and popup displayed and event consumed");
+				else
+					LOG.debug("MouseReleased detected as a popup trigger but no popup to display");
+			}
+			return;
+		}
+		LOG.debug("MouseReleased is not a popup trigger");
+	}
 
-    /**
-     * Determine if a popup menu should be displayed by this mouse key being
-     * pressed
-     */
-    public void mousePressed(MouseEvent me) {
-        boolean popUpDisplayed = false;
-        if (me.isPopupTrigger()
-                || me.getModifiers() == InputEvent.BUTTON3_MASK) {
-            popUpDisplayed = showPopup(me);
-            if (LOG.isDebugEnabled()) {
-                if (popUpDisplayed)
-                    LOG.debug(
-                            "MousePressed detected as a popup and popup displayed and event consumed");
-                else
-                    LOG.debug(
-                            "MousePressed detected as a popup but no popup to display");
-            }
-            return;
-        }
-    }
+	/**
+	 * Determine if a popup menu should be displayed by this mouse key being
+	 * pressed
+	 */
+	public void mousePressed(MouseEvent me) {
+		boolean popUpDisplayed = false;
+		if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+			popUpDisplayed = showPopup(me);
+			if (LOG.isDebugEnabled()) {
+				if (popUpDisplayed)
+					LOG.debug("MousePressed detected as a popup and popup displayed and event consumed");
+				else
+					LOG.debug("MousePressed detected as a popup but no popup to display");
+			}
+			return;
+		}
+	}
 
-    /**
-     * Determine if a popup menu should be displayed by this mouse key being
-     * clicked
-     */
-    public void mouseClicked(MouseEvent me) {
-        boolean popUpDisplayed = false;
-        if (me.isPopupTrigger()
-                || me.getModifiers() == InputEvent.BUTTON3_MASK) {
-            popUpDisplayed = showPopup(me);
-            if (LOG.isDebugEnabled()) {
-                if (popUpDisplayed)
-                    LOG.debug(
-                            "MouseClicked detected as a popup and popup displayed and event consumed");
-                else
-                    LOG.debug(
-                            "MouseClicked detected as a popup but no popup to display");
-            }
-        }
-    }
+	/**
+	 * Determine if a popup menu should be displayed by this mouse key being
+	 * clicked
+	 */
+	public void mouseClicked(MouseEvent me) {
+		boolean popUpDisplayed = false;
+		if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+			popUpDisplayed = showPopup(me);
+			if (LOG.isDebugEnabled()) {
+				if (popUpDisplayed)
+					LOG.debug("MouseClicked detected as a popup and popup displayed and event consumed");
+				else
+					LOG.debug("MouseClicked detected as a popup but no popup to display");
+			}
+		}
+	}
 }

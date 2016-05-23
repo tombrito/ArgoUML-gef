@@ -40,124 +40,135 @@ import org.tigris.gef.util.Localizer;
  * @see LayerDiagram#reorder
  */
 public class ReorderAction extends UndoableAction {
-    private static final long serialVersionUID = -2190865994915716779L;
+	private static final long serialVersionUID = -2190865994915716779L;
 
-    // //////////////////////////////////////////////////////////////
-    // constants
-    public static final int SEND_TO_BACK = 1;
+	// //////////////////////////////////////////////////////////////
+	// constants
+	public static final int SEND_TO_BACK = 1;
 
-    public static final int BRING_TO_FRONT = 2;
+	public static final int BRING_TO_FRONT = 2;
 
-    public static final int SEND_BACKWARD = 3;
+	public static final int SEND_BACKWARD = 3;
 
-    public static final int BRING_FORWARD = 4;
+	public static final int BRING_FORWARD = 4;
 
-    public static ReorderAction SendToBack = new ReorderAction(SEND_TO_BACK);
+	public static ReorderAction SendToBack = new ReorderAction(SEND_TO_BACK);
 
-    public static ReorderAction BringToFront = new ReorderAction(
-            BRING_TO_FRONT);
+	public static ReorderAction BringToFront = new ReorderAction(BRING_TO_FRONT);
 
-    public static ReorderAction SendBackward = new ReorderAction(SEND_BACKWARD);
+	public static ReorderAction SendBackward = new ReorderAction(SEND_BACKWARD);
 
-    public static ReorderAction BringForward = new ReorderAction(BRING_FORWARD);
+	public static ReorderAction BringForward = new ReorderAction(BRING_FORWARD);
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
-    private int function;
+	// //////////////////////////////////////////////////////////////
+	// instance variables
+	private int function;
 
-    // //////////////////////////////////////////////////////////////
-    // constructor
+	// //////////////////////////////////////////////////////////////
+	// constructor
 
-    /**
-     * Construct a new ReorderAction with the given reordering constrant (see
-     * above)
-     * 
-     * @param function The function of the reorder
-     * @deprecated hardcoded names are going to be removed. Use
-     *             ReorderAction(name, function) instead
-     */
-    public ReorderAction(int function) {
-        this(wordFor(function), function, false);
-    }
+	/**
+	 * Construct a new ReorderAction with the given reordering constrant (see
+	 * above)
+	 * 
+	 * @param function
+	 *            The function of the reorder
+	 * @deprecated hardcoded names are going to be removed. Use
+	 *             ReorderAction(name, function) instead
+	 */
+	public ReorderAction(int function) {
+		this(wordFor(function), function, false);
+	}
 
-    /**
-     * Construct a new ReorderAction with the given reordering constrant (see
-     * above)
-     * 
-     * @param name The name of the action
-     * @param function The function of the reorder
-     */
-    public ReorderAction(String name, int function) {
-        this(name, function, false);
-    }
+	/**
+	 * Construct a new ReorderAction with the given reordering constrant (see
+	 * above)
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param function
+	 *            The function of the reorder
+	 */
+	public ReorderAction(String name, int function) {
+		this(name, function, false);
+	}
 
-    /**
-     * Construct a new ReorderAction with the given reordering constrant (see
-     * above)
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param function The function of the reorder
-     */
-    public ReorderAction(String name, Icon icon, int function) {
-        this(name, icon, function, false);
-    }
+	/**
+	 * Construct a new ReorderAction with the given reordering constrant (see
+	 * above)
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param function
+	 *            The function of the reorder
+	 */
+	public ReorderAction(String name, Icon icon, int function) {
+		this(name, icon, function, false);
+	}
 
-    /**
-     * Construct a new ReorderAction with the given reordering constrant (see
-     * above)
-     * 
-     * @param name The name of the action
-     * @param function The function of the reorder
-     * @param localize Whether to localize the name or not
-     */
-    public ReorderAction(String name, int function, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        this.function = function;
-    }
+	/**
+	 * Construct a new ReorderAction with the given reordering constrant (see
+	 * above)
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param function
+	 *            The function of the reorder
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ReorderAction(String name, int function, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+		this.function = function;
+	}
 
-    /**
-     * Construct a new ReorderAction with the given reordering constrant (see
-     * above)
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param function The function of the reorder
-     * @param localize Whether to localize the name or not
-     */
-    public ReorderAction(String name, Icon icon, int function,
-            boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        this.function = function;
-    }
+	/**
+	 * Construct a new ReorderAction with the given reordering constrant (see
+	 * above)
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param function
+	 *            The function of the reorder
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ReorderAction(String name, Icon icon, int function, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+		this.function = function;
+	}
 
-    /**
-     * @deprecated hardcoded names are going to be removed
-     */
-    protected static String wordFor(int f) {
-        switch (f) {
-        case SEND_BACKWARD:
-            return "Backward";
-        case SEND_TO_BACK:
-            return "ToBack";
-        case BRING_FORWARD:
-            return "Forward";
-        case BRING_TO_FRONT:
-            return "ToFront";
-        }
-        return "";
-    }
+	/**
+	 * @deprecated hardcoded names are going to be removed
+	 */
+	protected static String wordFor(int f) {
+		switch (f) {
+		case SEND_BACKWARD:
+			return "Backward";
+		case SEND_TO_BACK:
+			return "ToBack";
+		case BRING_FORWARD:
+			return "Forward";
+		case BRING_TO_FRONT:
+			return "ToFront";
+		}
+		return "";
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // Action API
+	// //////////////////////////////////////////////////////////////
+	// Action API
 
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Editor ce = Globals.curEditor();
-        LayerManager lm = ce.getLayerManager();
-        SelectionManager sm = ce.getSelectionManager();
-        sm.reorder(function, lm.getActiveLayer());
-        sm.endTrans();
-        // ce.repairDamage();
-    }
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		Editor ce = Globals.curEditor();
+		LayerManager lm = ce.getLayerManager();
+		SelectionManager sm = ce.getSelectionManager();
+		sm.reorder(function, lm.getActiveLayer());
+		sm.endTrans();
+		// ce.repairDamage();
+	}
 }

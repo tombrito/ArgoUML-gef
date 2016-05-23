@@ -28,9 +28,10 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * Set the current editor to use a SelectionRotate on its current selections.
@@ -43,33 +44,33 @@ import org.tigris.gef.presentation.*;
 
 public class CmdUseRotate extends Cmd {
 
-    private static final long serialVersionUID = 8929130238670954085L;
+	private static final long serialVersionUID = 8929130238670954085L;
 
-    public CmdUseRotate() {
-        super("UseRotationHandles");
-    }
+	public CmdUseRotate() {
+		super("UseRotationHandles");
+	}
 
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        Enumeration sels = ((Vector) sm.selections().clone()).elements();
-        // Enumeration sels = sm.selections().elements();
-        while (sels.hasMoreElements()) {
-            Selection s = (Selection) sels.nextElement();
-            if (s instanceof Selection && !(s instanceof SelectionRotate)) {
-                Fig f = s.getContent();
-                if (f.isReshapable()) {
-                    ce.damaged(s);
-                    sm.removeSelection(s);
-                    SelectionRotate sr = new SelectionRotate(f);
-                    sm.addSelection(sr);
-                    ce.damaged(sr);
-                }
-            }
-        }
-    }
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		SelectionManager sm = ce.getSelectionManager();
+		Enumeration sels = ((Vector) sm.selections().clone()).elements();
+		// Enumeration sels = sm.selections().elements();
+		while (sels.hasMoreElements()) {
+			Selection s = (Selection) sels.nextElement();
+			if (s instanceof Selection && !(s instanceof SelectionRotate)) {
+				Fig f = s.getContent();
+				if (f.isReshapable()) {
+					ce.damaged(s);
+					sm.removeSelection(s);
+					SelectionRotate sr = new SelectionRotate(f);
+					sm.addSelection(sr);
+					ce.damaged(sr);
+				}
+			}
+		}
+	}
 
-    public void undoIt() {
-        System.out.println("not done yet");
-    }
+	public void undoIt() {
+		System.out.println("not done yet");
+	}
 } /* end class CmdUseRotate */

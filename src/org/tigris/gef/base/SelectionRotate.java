@@ -31,7 +31,8 @@ package org.tigris.gef.base;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.Handle;
 
 /**
  * Selection object that allows the user to rotate the selected Fig.
@@ -40,40 +41,40 @@ import org.tigris.gef.presentation.*;
 
 public class SelectionRotate extends Selection {
 
-    private static final long serialVersionUID = 5294127325030067448L;
+	private static final long serialVersionUID = 5294127325030067448L;
 
-    /** Construct a new SelectionRotate around the given DiagramElement */
-    public SelectionRotate(Fig f) {
-        super(f);
-    }
+	/** Construct a new SelectionRotate around the given DiagramElement */
+	public SelectionRotate(Fig f) {
+		super(f);
+	}
 
-    /** Paint the selection. */
-    public void paint(Graphics g) {
-        int x = getContent().getX();
-        int y = getContent().getY();
-        int w = getContent().getWidth();
-        int h = getContent().getHeight();
-        g.setColor(Globals.getPrefs().handleColorFor(getContent()));
-        g.fillOval(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
-        g.fillOval(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
-        g.fillOval(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
-        g.fillOval(x + w, y + h, HAND_SIZE, HAND_SIZE);
-    }
+	/** Paint the selection. */
+	public void paint(Graphics g) {
+		int x = getContent().getX();
+		int y = getContent().getY();
+		int w = getContent().getWidth();
+		int h = getContent().getHeight();
+		g.setColor(Globals.getPrefs().handleColorFor(getContent()));
+		g.fillOval(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+		g.fillOval(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
+		g.fillOval(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
+		g.fillOval(x + w, y + h, HAND_SIZE, HAND_SIZE);
+	}
 
-    /**
-     * Rotate the Fig when the user drags the roataion handle(s).
-     * Needs-more-work: not implemented yet.
-     */
-    public void dragHandle(int mx, int my, int an_x, int an_y, Handle h) {
-        /* do nothing */
-    }
+	/**
+	 * Rotate the Fig when the user drags the roataion handle(s).
+	 * Needs-more-work: not implemented yet.
+	 */
+	public void dragHandle(int mx, int my, int an_x, int an_y, Handle h) {
+		/* do nothing */
+	}
 
-    /**
-     * Returns -2 to indicate that the user did not click on a handle or the
-     * body of the Fig. Needs-more-work.
-     */
-    public void hitHandle(Rectangle r, Handle h) {
-        h.index = -2;
-        h.instructions = "Object cannot be rotated";
-    }
+	/**
+	 * Returns -2 to indicate that the user did not click on a handle or the
+	 * body of the Fig. Needs-more-work.
+	 */
+	public void hitHandle(Rectangle r, Handle h) {
+		h.index = -2;
+		h.instructions = "Object cannot be rotated";
+	}
 } /* end class SelectionRotate */

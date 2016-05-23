@@ -36,16 +36,16 @@ package org.tigris.gef.util;
 
 public class PredicateTrue implements Predicate {
 
-    public PredicateTrue() {
-    }
+	public PredicateTrue() {
+	}
 
-    public boolean predicate(Object obj) {
-        return true;
-    }
+	public boolean predicate(Object obj) {
+		return true;
+	}
 
-    private static PredicateTrue _theInstance = new PredicateTrue();
+	private static PredicateTrue _theInstance = new PredicateTrue();
 
-    public static PredicateTrue theInstance() {
-        return _theInstance;
-    }
+	public static PredicateTrue theInstance() {
+		return _theInstance;
+	}
 } /* end class PredicateTrue */

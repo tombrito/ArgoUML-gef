@@ -41,17 +41,17 @@ import org.tigris.gef.util.Localizer;
  */
 
 public class ModeCreateFigLine extends ModeCreate {
-    private static final long serialVersionUID = -6899160824566397778L;
+	private static final long serialVersionUID = -6899160824566397778L;
 
-    public String instructions() {
-        return Localizer.localize("GefBase", "ModeCreateFigLineInstructions");
-    }
+	public String instructions() {
+		return Localizer.localize("GefBase", "ModeCreateFigLineInstructions");
+	}
 
-    /**
-     * Make a new FigLine based on the given mouse down event and the parent
-     * Editor's default graphical attributes.
-     */
-    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-        return new FigLine(snapX, snapY, snapX, snapY);
-    }
+	/**
+	 * Make a new FigLine based on the given mouse down event and the parent
+	 * Editor's default graphical attributes.
+	 */
+	public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+		return new FigLine(snapX, snapY, snapX, snapY);
+	}
 } /* end class ModeCreateFigLine */

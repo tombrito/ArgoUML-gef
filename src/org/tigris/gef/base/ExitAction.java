@@ -40,56 +40,64 @@ import org.tigris.gef.util.Localizer;
  */
 public class ExitAction extends AbstractAction {
 
-    private static final long serialVersionUID = -8078344307460270580L;
+	private static final long serialVersionUID = -8078344307460270580L;
 
-    /**
-     * Creates a new ExitAction
-     */
-    public ExitAction() {
-        super();
-    }
+	/**
+	 * Creates a new ExitAction
+	 */
+	public ExitAction() {
+		super();
+	}
 
-    /**
-     * Creates a new ExitAction
-     * 
-     * @param name The name of the action
-     */
-    public ExitAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new ExitAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public ExitAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new ExitAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public ExitAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new ExitAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public ExitAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new ExitAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public ExitAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new ExitAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ExitAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new ExitAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public ExitAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new ExitAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ExitAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        Globals.quit();
-    }
+	public void actionPerformed(ActionEvent e) {
+		Globals.quit();
+	}
 }

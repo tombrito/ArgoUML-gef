@@ -32,21 +32,21 @@ package org.tigris.gef.base;
  */
 public class CmdPrintPageSetup extends Cmd {
 
-    private static final long serialVersionUID = -5821916114285147277L;
+	private static final long serialVersionUID = -5821916114285147277L;
 
-    CmdPrint cmdPrint;
+	CmdPrint cmdPrint;
 
-    public CmdPrintPageSetup(CmdPrint cmdPrint) {
-        super("PageSetup");
-        this.cmdPrint = cmdPrint;
-    }
+	public CmdPrintPageSetup(CmdPrint cmdPrint) {
+		super("PageSetup");
+		this.cmdPrint = cmdPrint;
+	}
 
-    public void doIt() {
-        cmdPrint.doPageSetup();
-    }
+	public void doIt() {
+		cmdPrint.doPageSetup();
+	}
 
-    public void undoIt() {
-        System.out.println("Undo does not make sense for CmdPrintPageSetup");
-    }
+	public void undoIt() {
+		System.out.println("Undo does not make sense for CmdPrintPageSetup");
+	}
 
 } /* end class CmdPrintPageSetup */

@@ -28,7 +28,9 @@
 
 package org.tigris.gef.util;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * A enumeration that is always empty. Functially equivelant to:
@@ -39,34 +41,33 @@ import java.util.*;
  * have any elements.
  */
 
-public class EnumerationEmpty
-        implements Enumeration, Iterator, java.io.Serializable {
+public class EnumerationEmpty implements Enumeration, Iterator, java.io.Serializable {
 
-    public boolean hasMoreElements() {
-        return false;
-    }
+	public boolean hasMoreElements() {
+		return false;
+	}
 
-    public Object nextElement() {
-        throw new NoSuchElementException();
-    }
+	public Object nextElement() {
+		throw new NoSuchElementException();
+	}
 
-    protected static EnumerationEmpty _theInstance = new EnumerationEmpty();
+	protected static EnumerationEmpty _theInstance = new EnumerationEmpty();
 
-    public static EnumerationEmpty theInstance() {
-        return _theInstance;
-    }
+	public static EnumerationEmpty theInstance() {
+		return _theInstance;
+	}
 
-    // Implementing the Iterator interface:
-    public boolean hasNext() {
-        return hasMoreElements();
-    };
+	// Implementing the Iterator interface:
+	public boolean hasNext() {
+		return hasMoreElements();
+	};
 
-    public Object next() {
-        return nextElement();
-    };
+	public Object next() {
+		return nextElement();
+	};
 
-    public void remove() {
-        throw new java.util.NoSuchElementException();
-    };
+	public void remove() {
+		throw new java.util.NoSuchElementException();
+	};
 
 } /* end class EnumerationEmpty */

@@ -46,94 +46,102 @@ import org.tigris.gef.util.Localizer;
  */
 public class SpawnAction extends AbstractAction {
 
-    private static final long serialVersionUID = -7549484751631085721L;
+	private static final long serialVersionUID = -7549484751631085721L;
 
-    private String title;
+	private String title;
 
-    private Dimension dimension;
+	private Dimension dimension;
 
-    public SpawnAction() {
-        super();
-    }
+	public SpawnAction() {
+		super();
+	}
 
-    /**
-     * Creates a new SpawnAction
-     * 
-     * @param name The name of the action
-     */
-    public SpawnAction(String name) {
-        this(name, null, null, false);
-    }
+	/**
+	 * Creates a new SpawnAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public SpawnAction(String name) {
+		this(name, null, null, false);
+	}
 
-    /**
-     * Creates a new SpawnAction
-     * 
-     * @param name The name of the action
-     */
-    public SpawnAction(String name, String title, Dimension dimension) {
-        this(name, title, dimension, false);
-    }
+	/**
+	 * Creates a new SpawnAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public SpawnAction(String name, String title, Dimension dimension) {
+		this(name, title, dimension, false);
+	}
 
-    /**
-     * Creates a new SpawnAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public SpawnAction(String name, Icon icon) {
-        this(name, icon, null, null, false);
-    }
+	/**
+	 * Creates a new SpawnAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public SpawnAction(String name, Icon icon) {
+		this(name, icon, null, null, false);
+	}
 
-    /**
-     * Creates a new SpawnAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public SpawnAction(String name, Icon icon, String title,
-            Dimension dimension) {
-        this(name, icon, title, dimension, false);
-    }
+	/**
+	 * Creates a new SpawnAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public SpawnAction(String name, Icon icon, String title, Dimension dimension) {
+		this(name, icon, title, dimension, false);
+	}
 
-    /**
-     * Creates a new SpawnAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SpawnAction(String name, String title, Dimension dimension,
-            boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        this.title = title;
-        this.dimension = dimension;
-    }
+	/**
+	 * Creates a new SpawnAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public SpawnAction(String name, String title, Dimension dimension, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+		this.title = title;
+		this.dimension = dimension;
+	}
 
-    /**
-     * Creates a new SpawnAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public SpawnAction(String name, Icon icon, String title,
-            Dimension dimension, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        this.title = title;
-        this.dimension = dimension;
-    }
+	/**
+	 * Creates a new SpawnAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public SpawnAction(String name, Icon icon, String title, Dimension dimension, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+		this.title = title;
+		this.dimension = dimension;
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        Editor ce = Globals.curEditor();
-        Editor ed = (Editor) ce.clone();
-        // String title = (String) getArg("title", "new window");
-        JGraphFrame jgf = new JGraphFrame(title, ed);
-        // use clone because ce may be of a subclass of Editor
-        // Object d = getArg("dimension");
-        // if (d instanceof Dimension) jgf.setSize((Dimension)d);
-        if (dimension != null) {
-            jgf.setSize(dimension);
-        }
-        jgf.setVisible(true);
-    }
+	public void actionPerformed(ActionEvent e) {
+		Editor ce = Globals.curEditor();
+		Editor ed = (Editor) ce.clone();
+		// String title = (String) getArg("title", "new window");
+		JGraphFrame jgf = new JGraphFrame(title, ed);
+		// use clone because ce may be of a subclass of Editor
+		// Object d = getArg("dimension");
+		// if (d instanceof Dimension) jgf.setSize((Dimension)d);
+		if (dimension != null) {
+			jgf.setSize(dimension);
+		}
+		jgf.setVisible(true);
+	}
 
 }

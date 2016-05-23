@@ -40,109 +40,122 @@ import org.tigris.gef.util.Localizer;
  */
 public class ScrollAction extends UndoableAction {
 
-    private static final long serialVersionUID = -3240224240491643821L;
+	private static final long serialVersionUID = -3240224240491643821L;
 
-    // //////////////////////////////////////////////////////////////
-    // constants
+	// //////////////////////////////////////////////////////////////
+	// constants
 
-    public static final int LEFT = 1;
+	public static final int LEFT = 1;
 
-    public static final int RIGHT = 2;
+	public static final int RIGHT = 2;
 
-    public static final int UP = 3;
+	public static final int UP = 3;
 
-    public static final int DOWN = 4;
+	public static final int DOWN = 4;
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    private int direction;
+	private int direction;
 
-    private int magnitude;
+	private int magnitude;
 
-    // //////////////////////////////////////////////////////////////
-    // constructor
+	// //////////////////////////////////////////////////////////////
+	// constructor
 
-    /**
-     * Creates a new ScrollAction
-     * 
-     * @param dir The direction of the scroll
-     */
-    public ScrollAction(int dir) {
-        direction = dir;
-        magnitude = 16; // Needs-More-Work: prefs
-    }
+	/**
+	 * Creates a new ScrollAction
+	 * 
+	 * @param dir
+	 *            The direction of the scroll
+	 */
+	public ScrollAction(int dir) {
+		direction = dir;
+		magnitude = 16; // Needs-More-Work: prefs
+	}
 
-    /**
-     * Creates a new ScrollAction
-     * 
-     * @param name The name of the action
-     * @param dir The direction of the scroll
-     */
-    public ScrollAction(String name, int dir) {
-        this(name, dir, false);
-    }
+	/**
+	 * Creates a new ScrollAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param dir
+	 *            The direction of the scroll
+	 */
+	public ScrollAction(String name, int dir) {
+		this(name, dir, false);
+	}
 
-    /**
-     * Creates a new ScrollAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dir The direction of the scroll
-     */
-    public ScrollAction(String name, Icon icon, int dir) {
-        this(name, icon, dir, false);
-    }
+	/**
+	 * Creates a new ScrollAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param dir
+	 *            The direction of the scroll
+	 */
+	public ScrollAction(String name, Icon icon, int dir) {
+		this(name, icon, dir, false);
+	}
 
-    /**
-     * Creates a new ScrollAction
-     * 
-     * @param name The name of the action
-     * @param dir The direction of the scroll
-     * @param localize Whether to localize the name or not
-     */
-    public ScrollAction(String name, int dir, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        direction = dir;
-        magnitude = 16; // Needs-More-Work: prefs
-    }
+	/**
+	 * Creates a new ScrollAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param dir
+	 *            The direction of the scroll
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ScrollAction(String name, int dir, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+		direction = dir;
+		magnitude = 16; // Needs-More-Work: prefs
+	}
 
-    /**
-     * Creates a new ScrollAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dir The direction of the scroll
-     * @param localize Whether to localize the name or not
-     */
-    public ScrollAction(String name, Icon icon, int dir, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        direction = dir;
-        magnitude = 16; // Needs-More-Work: prefs
-    }
+	/**
+	 * Creates a new ScrollAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param dir
+	 *            The direction of the scroll
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public ScrollAction(String name, Icon icon, int dir, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+		direction = dir;
+		magnitude = 16; // Needs-More-Work: prefs
+	}
 
-    /**
-     * Scroll the view of the current editor in the given direction.
-     * Needs-More-Work: not implemented yet.
-     */
-    public void actionPerformed(ActionEvent e) {
-        int deltaX = 0, deltaY = 0;
-        // Needs-More-Work
-        switch (direction) {
-        case LEFT:
-            deltaX = magnitude;
-            break;
-        case RIGHT:
-            deltaX = 0 - magnitude;
-            break;
-        case UP:
-            deltaY = magnitude;
-            break;
-        case DOWN:
-            deltaY = 0 - magnitude;
-            break;
-        }
-        // Needs-More-Work: now do something with deltas...
-        System.out.println("Scrolling by " + deltaX + ", " + deltaY);
-    }
+	/**
+	 * Scroll the view of the current editor in the given direction.
+	 * Needs-More-Work: not implemented yet.
+	 */
+	public void actionPerformed(ActionEvent e) {
+		int deltaX = 0, deltaY = 0;
+		// Needs-More-Work
+		switch (direction) {
+		case LEFT:
+			deltaX = magnitude;
+			break;
+		case RIGHT:
+			deltaX = 0 - magnitude;
+			break;
+		case UP:
+			deltaY = magnitude;
+			break;
+		case DOWN:
+			deltaY = 0 - magnitude;
+			break;
+		}
+		// Needs-More-Work: now do something with deltas...
+		System.out.println("Scrolling by " + deltaX + ", " + deltaY);
+	}
 }

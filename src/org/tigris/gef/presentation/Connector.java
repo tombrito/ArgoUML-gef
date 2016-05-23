@@ -33,17 +33,18 @@ import org.tigris.gef.di.GraphNode;
  */
 public interface Connector {
 
-    /**
-     * Get theGraphNode this connector is connected to.
-     * 
-     * @return
-     */
-    GraphNode getGraphNode();
+	/**
+	 * Get theGraphNode this connector is connected to.
+	 * 
+	 * @return
+	 */
+	GraphNode getGraphNode();
 
-    /**
-     * Assign a GraphNode to this connector
-     * 
-     * @param node the GraphNode to assign
-     */
-    void setGraphNode(GraphNode node);
+	/**
+	 * Assign a GraphNode to this connector
+	 * 
+	 * @param node
+	 *            the GraphNode to assign
+	 */
+	void setGraphNode(GraphNode node);
 }

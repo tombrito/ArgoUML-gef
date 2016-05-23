@@ -28,13 +28,13 @@
 
 package org.tigris.gef.util;
 
-import java.beans.*;
+import java.beans.VetoableChangeListener;
 import java.util.Vector;
 
 public interface VetoableChangeEventSource {
-    void addVetoableChangeListener(VetoableChangeListener l);
+	void addVetoableChangeListener(VetoableChangeListener l);
 
-    void removeVetoableChangeListener(VetoableChangeListener l);
+	void removeVetoableChangeListener(VetoableChangeListener l);
 
-    Vector getVetoableChangeListeners();
+	Vector getVetoableChangeListeners();
 }

@@ -30,118 +30,117 @@ package org.tigris.gef.presentation;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.image.*;
-import java.net.*;
+import java.awt.image.ImageObserver;
+import java.net.URL;
 
-import org.apache.commons.logging.*;
-import org.tigris.gef.base.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.tigris.gef.base.Globals;
 
 /** Primitive Fig to paint images (such as icons) on a LayerDiagram. */
 
 public class FigImage extends Fig implements ImageObserver {
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2567695485399374706L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2567695485399374706L;
 
-    /** The Image being rendered */
-    protected transient Image _image;
+	/** The Image being rendered */
+	protected transient Image _image;
 
-    /** The URL of the Image being rendered */
-    protected URL _url;
+	/** The URL of the Image being rendered */
+	protected URL _url;
 
-    // //////////////////////////////////////////////////////////////
-    // constructors
+	// //////////////////////////////////////////////////////////////
+	// constructors
 
-    private static Log LOG = LogFactory.getLog(FigImage.class);
+	private static Log LOG = LogFactory.getLog(FigImage.class);
 
-    /** Construct a new FigImage with the given position, size, and Image. */
-    public FigImage(int x, int y, int w, int h, Image img) {
-        super(x, y, w, h);
-        _image = img;
-    }
+	/** Construct a new FigImage with the given position, size, and Image. */
+	public FigImage(int x, int y, int w, int h, Image img) {
+		super(x, y, w, h);
+		_image = img;
+	}
 
-    /** Construct a new FigImage w/ the given position and image. */
-    public FigImage(int x, int y, Image i) {
-        this(x, y, 0, 0, i);
-        setSize(i.getWidth(this), i.getHeight(this));
-    }
+	/** Construct a new FigImage w/ the given position and image. */
+	public FigImage(int x, int y, Image i) {
+		this(x, y, 0, 0, i);
+		setSize(i.getWidth(this), i.getHeight(this));
+	}
 
-    /** Construct a new FigImage w/ the given position and URL. */
-    public FigImage(int x, int y, URL imageUrl) {
-        super(x, y, 0, 0);
-        _url = imageUrl;
-        _image = Globals.getImage(_url);
-        Globals.waitForImages();
-        setSize(_image.getWidth(this), _image.getHeight(this));
-    }
+	/** Construct a new FigImage w/ the given position and URL. */
+	public FigImage(int x, int y, URL imageUrl) {
+		super(x, y, 0, 0);
+		_url = imageUrl;
+		_image = Globals.getImage(_url);
+		Globals.waitForImages();
+		setSize(_image.getWidth(this), _image.getHeight(this));
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // Editor API
+	// //////////////////////////////////////////////////////////////
+	// Editor API
 
-    public void createDrag(int anchorX, int anchorY, int x, int y, int snapX,
-            int snapY) {
-        setLocation(snapX, snapY);
-    }
+	public void createDrag(int anchorX, int anchorY, int x, int y, int snapX, int snapY) {
+		setLocation(snapX, snapY);
+	}
 
-    /**
-     * USED BY SVG.tee
-     */
-    public URL getURL() {
-        return _url;
-    }
+	/**
+	 * USED BY SVG.tee
+	 */
+	public URL getURL() {
+		return _url;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    // needs-more-work: add get and put for the url...
+	// needs-more-work: add get and put for the url...
 
-    // //////////////////////////////////////////////////////////////
-    // ImageObserver API
+	// //////////////////////////////////////////////////////////////
+	// ImageObserver API
 
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w,
-            int h) {
-        boolean done = ((infoflags & (ERROR | FRAMEBITS | ALLBITS)) != 0);
-        return !done;
-    }
+	public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
+		boolean done = ((infoflags & (ERROR | FRAMEBITS | ALLBITS)) != 0);
+		return !done;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // painting methods
+	// //////////////////////////////////////////////////////////////
+	// painting methods
 
-    /** Paint this FigImage on the given Graphics. */
-    public void paint(Graphics graphicContext) {
-        if (_image == null) {
-            if (LOG.isDebugEnabled()) LOG.debug("reloading image");
-            if (_url != null) {
-                _image = Globals.getImage(_url);
-                Globals.waitForImages();
-            }
-        }
+	/** Paint this FigImage on the given Graphics. */
+	public void paint(Graphics graphicContext) {
+		if (_image == null) {
+			if (LOG.isDebugEnabled())
+				LOG.debug("reloading image");
+			if (_url != null) {
+				_image = Globals.getImage(_url);
+				Globals.waitForImages();
+			}
+		}
 
-        Graphics g = (Graphics) graphicContext;
-        if (_image != null)
-            g.drawImage(_image, getX(), getY(), getWidth(), getHeight(), this);
-        else {
-            g.setColor(getFillColor());
-            g.fillRect(getX(), getY(), getWidth(), getHeight());
-        }
-    }
+		Graphics g = (Graphics) graphicContext;
+		if (_image != null)
+			g.drawImage(_image, getX(), getY(), getWidth(), getHeight(), this);
+		else {
+			g.setColor(getFillColor());
+			g.fillRect(getX(), getY(), getWidth(), getHeight());
+		}
+	}
 
-    public void setURL(URL newURL) {
-        _url = newURL;
-    }
+	public void setURL(URL newURL) {
+		_url = newURL;
+	}
 
-    public void appendSvg(StringBuffer sb) {
-        sb.append("<image id='").append(getId()).append("' class='")
-                .append(getClass().getName()).append("' style='fill:none;' x='")
-                .append(getX()).append("' y='").append(getY())
-                .append("' width='").append(getWidth()).append("' height='")
-                .append(getHeight()).append("' xlink:href='").append(getURL())
-                .append(" />");
-    }
+	public void appendSvg(StringBuffer sb) {
+		sb.append("<image id='").append(getId()).append("' class='").append(getClass().getName())
+				.append("' style='fill:none;' x='").append(getX()).append("' y='").append(getY()).append("' width='")
+				.append(getWidth()).append("' height='").append(getHeight()).append("' xlink:href='").append(getURL())
+				.append(" />");
+	}
 
 } /* end of FigImage class */

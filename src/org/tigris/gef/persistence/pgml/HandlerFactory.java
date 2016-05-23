@@ -26,7 +26,6 @@ package org.tigris.gef.persistence.pgml;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -34,23 +33,22 @@ import org.xml.sax.helpers.DefaultHandler;
  * ContentHandler given the information about a new PGML file element.
  */
 public interface HandlerFactory {
-    /**
-     * Return a ContentHandler appropriate for the element with the given name
-     * and attributes. If you aren't interested in the content or any
-     * sub-elements of the element, return null, and a default handler will be
-     * used (which usually mean that the contents and sub-elements are just
-     * thrown away).
-     * 
-     * @param stack
-     * @param container
-     * @param uri
-     * @param localname
-     * @param qname
-     * @param attributes
-     * @return
-     * @throws SAXException
-     */
-    DefaultHandler getHandler(HandlerStack stack, Object container, String uri,
-            String localname, String qname, Attributes attributes)
-        throws SAXException;
+	/**
+	 * Return a ContentHandler appropriate for the element with the given name
+	 * and attributes. If you aren't interested in the content or any
+	 * sub-elements of the element, return null, and a default handler will be
+	 * used (which usually mean that the contents and sub-elements are just
+	 * thrown away).
+	 * 
+	 * @param stack
+	 * @param container
+	 * @param uri
+	 * @param localname
+	 * @param qname
+	 * @param attributes
+	 * @return
+	 * @throws SAXException
+	 */
+	DefaultHandler getHandler(HandlerStack stack, Object container, String uri, String localname, String qname,
+			Attributes attributes) throws SAXException;
 }

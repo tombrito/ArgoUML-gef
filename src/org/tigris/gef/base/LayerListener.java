@@ -4,8 +4,8 @@ import java.util.EventObject;
 
 public interface LayerListener {
 
-    void figAdded(EventObject event);
+	void figAdded(EventObject event);
 
-    void figRemoved(EventObject event);
+	void figRemoved(EventObject event);
 
 }

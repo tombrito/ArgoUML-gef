@@ -28,9 +28,11 @@
 
 package org.tigris.gef.base;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Cmd to group all the Fig's selected in the current editor into a single
@@ -43,38 +45,38 @@ import org.tigris.gef.presentation.*;
 
 public class CmdGroup extends Cmd {
 
-    private static final long serialVersionUID = -8094870867293229677L;
+	private static final long serialVersionUID = -8094870867293229677L;
 
-    public CmdGroup() {
-        super("Group");
-    }
+	public CmdGroup() {
+		super("Group");
+	}
 
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        Vector selectedFigs = ce.getSelectionManager().getFigs();
-        FigGroup _newItem = new FigGroup();
-        Enumeration eachDE = selectedFigs.elements();
-        while (eachDE.hasMoreElements()) {
-            Object o = eachDE.nextElement();
-            if (o instanceof Fig) {
-                Fig f = (Fig) o;
-                _newItem.addFig(f);
-            }
-        }
-        eachDE = selectedFigs.elements();
-        while (eachDE.hasMoreElements()) {
-            Object o = eachDE.nextElement();
-            if (o instanceof Fig) {
-                Fig f = (Fig) o;
-                ce.remove(f);
-            }
-        }
-        ce.add(_newItem);
-        ce.getSelectionManager().deselectAll();
-        ce.getSelectionManager().select(_newItem);
-    }
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		Vector selectedFigs = ce.getSelectionManager().getFigs();
+		FigGroup _newItem = new FigGroup();
+		Enumeration eachDE = selectedFigs.elements();
+		while (eachDE.hasMoreElements()) {
+			Object o = eachDE.nextElement();
+			if (o instanceof Fig) {
+				Fig f = (Fig) o;
+				_newItem.addFig(f);
+			}
+		}
+		eachDE = selectedFigs.elements();
+		while (eachDE.hasMoreElements()) {
+			Object o = eachDE.nextElement();
+			if (o instanceof Fig) {
+				Fig f = (Fig) o;
+				ce.remove(f);
+			}
+		}
+		ce.add(_newItem);
+		ce.getSelectionManager().deselectAll();
+		ce.getSelectionManager().select(_newItem);
+	}
 
-    public void undoIt() {
-        System.out.println("not done yet");
-    }
+	public void undoIt() {
+		System.out.println("not done yet");
+	}
 } /* end class CmdGroup */

@@ -24,48 +24,48 @@
 package org.tigris.gef.ocl;
 
 public class TemplateRecord {
-    private Class key;
+	private Class key;
 
-    private String guard;
+	private String guard;
 
-    String body;
+	String body;
 
-    private StringBuffer _buf = null;
+	private StringBuffer _buf = null;
 
-    TemplateRecord(Class k, String g, String b) {
-        key = k;
-        guard = g;
-        body = b;
-    }
+	TemplateRecord(Class k, String g, String b) {
+		key = k;
+		guard = g;
+		body = b;
+	}
 
-    public String getBody() {
-        if (_buf != null) {
-            body = _buf.toString();
-        }
-        return body;
-    }
+	public String getBody() {
+		if (_buf != null) {
+			body = _buf.toString();
+		}
+		return body;
+	}
 
-    public String getGuard() {
-        return guard;
-    }
+	public String getGuard() {
+		return guard;
+	}
 
-    public void setBody(String b) {
-        body = b;
-        _buf = null;
-    }
+	public void setBody(String b) {
+		body = b;
+		_buf = null;
+	}
 
-    public void characters(char[] ch, int start, int length) {
-        if (_buf == null) {
-            _buf = new StringBuffer();
-            if (body != null) {
-                _buf.append(body);
-            }
-        }
-        _buf.append(ch, start, length);
-    }
+	public void characters(char[] ch, int start, int length) {
+		if (_buf == null) {
+			_buf = new StringBuffer();
+			if (body != null) {
+				_buf.append(body);
+			}
+		}
+		_buf.append(ch, start, length);
+	}
 
-    public Class getKey() {
-        return key;
-    }
+	public Class getKey() {
+		return key;
+	}
 }
 /** end class TemplateRecord */

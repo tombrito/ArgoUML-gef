@@ -68,478 +68,464 @@ import org.tigris.gef.presentation.FigText;
  * class Editor, and other classes which do the real work.
  */
 
-public class JGraph extends JPanel
-        implements Cloneable, AdjustmentListener, MouseWheelListener {
-
-    static final long serialVersionUID = -5459241816919316496L;
-
-    /**
-     * The Editor object that is being shown in this panel
-     */
-    private Editor editor;
-
-    private JComponent drawingPane;
-
-    private JScrollPane scrollPane;
-
-    private Dimension defaultSize = new Dimension(6000, 6000);
-
-    private Hashtable _viewPortPositions = new Hashtable();
-
-    private String _currentDiagramId = null;
-
-    private ZoomAction zoomOut = new ZoomAction(0.9);
-
-    private ZoomAction zoomIn = new ZoomAction(1.1);
-
-    // //////////////////////////////////////////////////////////////
-    // constructor
-
-    /**
-     * Make a new JGraph with a new DefaultGraphModel.
-     * 
-     * @see org.tigris.gef.graph.presentation.DefaultGraphModel
-     */
-    public JGraph() {
-        this(new DefaultGraphModel());
-    }
-
-    /**
-     * Make a new JGraph with a new DefaultGraphModel.
-     * 
-     * @see org.tigris.gef.graph.presentation.DefaultGraphModel
-     */
-    public JGraph(ConnectionConstrainer cc) {
-        this(new DefaultGraphModel(cc));
-    }
-
-    /**
-     * Make a new JGraph with a the GraphModel and Layer from the given Diagram.
-     */
-    public JGraph(Diagram d) {
-        this(new Editor(d));
-    }
-
-    /** Make a new JGraph with the given GraphModel */
-    public JGraph(GraphModel gm) {
-        this(new Editor(gm, null));
-    }
-
-    /**
-     * Make a new JGraph with the given Editor. All JGraph contructors
-     * eventually call this contructor.
-     */
-    public JGraph(Editor ed) {
-        super(false); // not double buffered. I do my own flicker-free redraw.
-        editor = ed;
-        if (JavaFXTest.ON)
-            drawingPane = new JGraphFXInternalPane(editor);
-        else
-            drawingPane = new JGraphInternalPane(editor);
-        setDrawingSize(getDefaultSize());
-
-        scrollPane = new JScrollPane(drawingPane);
-
-        scrollPane.setBorder(null);
-        scrollPane.getHorizontalScrollBar().setUnitIncrement(25);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(25);
-
-        editor.setJComponent(drawingPane);
-        setLayout(new BorderLayout());
-        add(scrollPane, BorderLayout.CENTER);
-        addMouseListener(editor);
-        addMouseMotionListener(editor);
-        addKeyListener(editor);
-        scrollPane.getHorizontalScrollBar().addAdjustmentListener(this);
-        scrollPane.getVerticalScrollBar().addAdjustmentListener(this);
-
-        initKeys();
-
-        validate();
-
-        Collection layerManagerContent = ed.getLayerManager().getContents();
-        if (layerManagerContent != null) {
-            updateDrawingSizeToIncludeAllFigs(
-                    Collections.enumeration(layerManagerContent));
-        } // end if
-
-        int mask = java.awt.event.KeyEvent.ALT_MASK
-                | java.awt.event.KeyEvent.CTRL_MASK;
-        establishAlternateMouseWheelListener(this, mask);
-    }
-
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object o) {
-        if (o instanceof JGraph) {
-            JGraph other = (JGraph) o;
-            if (((this.getCurrentDiagramId() != null && this
-                    .getCurrentDiagramId().equals(other.getCurrentDiagramId()))
-                    || (this.getCurrentDiagramId() == null
-                            && other.getCurrentDiagramId() == null))
-                    && this.getEditor().equals(other.getEditor())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @see Object#hashCode()
-     * 
-     *      TODO: Investigate further:
-     *      <p>
-     * 
-     *      According to a mail from GZ (6th November 2004) on the ArgoUML dev
-     *      list, {@link javax.swing.RepaintManager} puts these objects in some
-     *      kind of data structure that uses this function. Assuming that there
-     *      is a reason for this we dare not sabotage this by short-circuiting
-     *      this to 0. Instead we rely on that
-     *      {@link org.tigris.gef.graph.presentation.JGraph#setDiagram( org.tigris.gef.base.Diagram)}
-     *      actually removes this object from the
-     *      {@link javax.swing.RepaintManager} and registers it again when
-     *      resetting the diagram id.
-     *      <p>
-     * 
-     *      This is based on the assumption that the function
-     *      {@link #equals(Object)} must work as it does. I (Linus) have not
-     *      understood why it must. Could someone please explain that in the
-     *      javadoc.
-     */
-    public int hashCode() {
-        if (getCurrentDiagramId() == null) {
-            return 0;
-        } else {
-            return getCurrentDiagramId().hashCode();
-        }
-    }
-
-    public void addMouseListener(MouseListener listener) {
-        drawingPane.addMouseListener(listener);
-    }
-
-    public void addMouseMotionListener(MouseMotionListener listener) {
-        drawingPane.addMouseMotionListener(listener);
-    }
-
-    public void addKeyListener(KeyListener listener) {
-        drawingPane.addKeyListener(listener);
-    }
-
-    /** Make a copy of this JGraph so that it can be shown in another window. */
-    public Object clone() {
-        JGraph newJGraph = new JGraph((Editor) editor.clone());
-        return newJGraph;
-    }
-
-    /* Set up some standard keystrokes and the Cmds that they invoke. */
-    private void initKeys() {
-        int shift = KeyEvent.SHIFT_MASK;
-        int alt = KeyEvent.ALT_MASK;
-        int meta = KeyEvent.META_MASK;
-
-        bindKey(new SelectNextAction("Select Next", true), KeyEvent.VK_TAB, 0);
-        bindKey(new SelectNextAction("Select Previous", false), KeyEvent.VK_TAB,
-                shift);
-
-        bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
-        bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
-        bindKey(new NudgeAction(NudgeAction.UP), KeyEvent.VK_UP, 0);
-        bindKey(new NudgeAction(NudgeAction.DOWN), KeyEvent.VK_DOWN, 0);
-
-        bindKey(new NudgeAction(NudgeAction.LEFT, 8), KeyEvent.VK_LEFT, shift);
-        bindKey(new NudgeAction(NudgeAction.RIGHT, 8), KeyEvent.VK_RIGHT,
-                shift);
-        bindKey(new NudgeAction(NudgeAction.UP, 8), KeyEvent.VK_UP, shift);
-        bindKey(new NudgeAction(NudgeAction.DOWN, 8), KeyEvent.VK_DOWN, shift);
-
-        bindKey(new NudgeAction(NudgeAction.LEFT, 18), KeyEvent.VK_LEFT, alt);
-        bindKey(new NudgeAction(NudgeAction.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
-        bindKey(new NudgeAction(NudgeAction.UP, 18), KeyEvent.VK_UP, alt);
-        bindKey(new NudgeAction(NudgeAction.DOWN, 18), KeyEvent.VK_DOWN, alt);
-
-        bindKey(new SelectNearAction(SelectNearAction.LEFT), KeyEvent.VK_LEFT,
-                meta);
-        bindKey(new SelectNearAction(SelectNearAction.RIGHT), KeyEvent.VK_RIGHT,
-                meta);
-        bindKey(new SelectNearAction(SelectNearAction.UP), KeyEvent.VK_UP,
-                meta);
-        bindKey(new SelectNearAction(SelectNearAction.DOWN), KeyEvent.VK_DOWN,
-                meta);
-    }
-
-    /**
-     * Utility function to bind a keystroke to a Swing Action. Note that GEF
-     * Cmds are subclasses of Swing's Actions.
-     */
-    private void bindKey(ActionListener action, int keyCode, int modifiers) {
-        drawingPane.registerKeyboardAction(action,
-                KeyStroke.getKeyStroke(keyCode, modifiers), WHEN_FOCUSED);
-    }
-
-    // //////////////////////////////////////////////////////////////
-    // accessors
-
-    /** Get the Editor that is being displayed */
-    public Editor getEditor() {
-        return editor;
-    }
-
-    /**
-     * Set the Diagram that should be displayed by setting the GraphModel and
-     * Layer that the Editor is using.
-     */
-    public void setDiagram(Diagram d) {
-        if (d == null) return;
-        if (_currentDiagramId != null) {
-            _viewPortPositions.put(_currentDiagramId,
-                    scrollPane.getViewport().getViewRect());
-        } // end if
-        setDrawingSize(getDefaultSize());
-        updateDrawingSizeToIncludeAllFigs(d.elements());
-        editor.getLayerManager().replaceActiveLayer(d.getLayer());
-        editor.setGraphModel(d.getGraphModel());
-        editor.getSelectionManager().deselectAll();
-        editor.setScale(d.getScale());
-        String newDiagramId = Integer.toString(d.hashCode());
-        if (newDiagramId.equals(_currentDiagramId)) {
-            return;
-        }
-        _currentDiagramId = newDiagramId;
-        if (_viewPortPositions.get(_currentDiagramId) != null) {
-            Rectangle rect = (Rectangle) _viewPortPositions
-                    .get(_currentDiagramId);
-            scrollPane.getViewport().setViewPosition(new Point(rect.x, rect.y));
-        } else {
-            scrollPane.getViewport().setViewPosition(new Point());
-        }
-    }
-
-    /**
-     * Enlarges the JGraphInternalPane dimensions as necessary to insure that
-     * all the contained Figs are visible.
-     */
-    private void updateDrawingSizeToIncludeAllFigs(Enumeration iter) {
-        if (iter == null) {
-            return;
-        }
-        Dimension drawingSize = new Dimension(defaultSize.width,
-                defaultSize.height);
-        while (iter.hasMoreElements()) {
-            Fig fig = (Fig) iter.nextElement();
-            Rectangle rect = fig.getBounds();
-            Point point = rect.getLocation();
-            Dimension dim = rect.getSize();
-            if ((point.x + dim.width + 5) > drawingSize.width) {
-                drawingSize.setSize(point.x + dim.width + 5,
-                        drawingSize.height);
-            }
-            if ((point.y + dim.height + 5) > drawingSize.height) {
-                drawingSize.setSize(drawingSize.width,
-                        point.y + dim.height + 5);
-            }
-        }
-        setDrawingSize(drawingSize.width, drawingSize.height);
-    }
-
-    public void setDrawingSize(int width, int height) {
-        setDrawingSize(new Dimension(width, height));
-    }
-
-    private void setDrawingSize(Dimension dim) {
-        editor.drawingSizeChanged(dim);
-    }
-
-    /**
-     * Set the GraphModel the Editor is using.
-     */
-    void setGraphModel(GraphModel gm) {
-        editor.setGraphModel(gm);
-    }
-
-    /**
-     * Get the GraphModel the Editor is using.
-     */
-    GraphModel getGraphModel() {
-        return editor.getGraphModel();
-    }
-
-    /**
-     * When the JGraph is hidden, hide its internal pane
-     */
-    public void setVisible(boolean visible) {
-        super.setVisible(visible);
-        drawingPane.setVisible(visible);
-    }
-
-    /**
-     * Tell Swing/AWT that JGraph handles tab-order itself.
-     */
-    public boolean isManagingFocus() {
-        return true;
-    }
-
-    /**
-     * Tell Swing/AWT that JGraph can be tabbed into.
-     */
-    public boolean isFocusTraversable() {
-        return true;
-    }
-
-    // //////////////////////////////////////////////////////////////
-    // events
-
-    /**
-     * Add listener to the objects to notify whenever the Editor changes its
-     * current selection.
-     */
-    public void addGraphSelectionListener(GraphSelectionListener listener) {
-        getEditor().addGraphSelectionListener(listener);
-    }
-
-    public void removeGraphSelectionListener(GraphSelectionListener listener) {
-        getEditor().removeGraphSelectionListener(listener);
-    }
-
-    public void addModeChangeListener(ModeChangeListener listener) {
-        getEditor().addModeChangeListener(listener);
-    }
-
-    public void removeModeChangeListener(ModeChangeListener listener) {
-        getEditor().removeModeChangeListener(listener);
-    }
-
-    // //////////////////////////////////////////////////////////////
-    // Editor facade
-
-    /** Deslect everything that is currently selected. */
-    public void deselectAll() {
-        editor.getSelectionManager().deselectAll();
-    }
-
-    /**
-     * Select a collection of Figs.
-     * 
-     * @deprecated in GEF 0.13.1 use select(Collection<DiagramElement>);
-     */
-    public void select(Vector items) {
-        editor.getSelectionManager().select(items);
-    }
-
-    /** reply a Vector of all selected Figs. Used in many Cmds. */
-    public Vector selectedFigs() {
-        return editor.getSelectionManager().getFigs();
-    }
-
-    private Dimension getDefaultSize() {
-        return defaultSize;
-    }
-
-    /** Get the position of the editor's scrollpane. */
-    protected Point getViewPosition() {
-        return scrollPane.getViewport().getViewPosition();
-    }
-
-    /**
-     * Establishes alternate MouseWheelListener object that's only active when
-     * the alt/shift/ctrl keys are held down.
-     * 
-     * @param listener MouseWheelListener that will receive MouseWheelEvents
-     *            generated by this JGraph.
-     * @param mask logical OR of key modifier values as defined by
-     *            java.awt.event.KeyEvent constants. This has been tested with
-     *            ALT_MASK, SHIFT_MASK, and CTRL_MASK.
-     */
-    private void establishAlternateMouseWheelListener(
-            MouseWheelListener listener, int mask) {
-
-        WheelKeyListenerToggleAction keyListener = new WheelKeyListenerToggleAction(
-                this.drawingPane, listener, mask);
-
-        this.drawingPane.addKeyListener(keyListener);
-    }
-
-    /**
-     * @return Returns the _currentDiagramId.
-     */
-    private String getCurrentDiagramId() {
-        return _currentDiagramId;
-    }
-
-    public void adjustmentValueChanged(AdjustmentEvent e) {
-        FigText.endActiveEditing();
-        editor.damageAll();
-    }
-
-    /**
-     * Zooms diagram in and out when mousewheel is rolled while holding down
-     * ctrl and/or alt key. Alt, because alt + mouse motion pans the diagram &
-     * zooming while panning makes more sense than scrolling while panning.
-     * Ctrl, because Ctrl/+ and Ctrl/- are used to zoom using the keyboard.
-     */
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        if (e.isAltDown() || e.isControlDown()) {
-
-            if (e.getWheelRotation() < 0)
-                this.zoomOut.actionPerformed(null);
-            else if (e.getWheelRotation() > 0)
-                this.zoomIn.actionPerformed(null);
-
-            e.consume();
-        }
-    }
+public class JGraph extends JPanel implements Cloneable, AdjustmentListener, MouseWheelListener {
+
+	static final long serialVersionUID = -5459241816919316496L;
+
+	/**
+	 * The Editor object that is being shown in this panel
+	 */
+	private Editor editor;
+
+	private JComponent drawingPane;
+
+	private JScrollPane scrollPane;
+
+	private Dimension defaultSize = new Dimension(6000, 6000);
+
+	private Hashtable _viewPortPositions = new Hashtable();
+
+	private String _currentDiagramId = null;
+
+	private ZoomAction zoomOut = new ZoomAction(0.9);
+
+	private ZoomAction zoomIn = new ZoomAction(1.1);
+
+	// //////////////////////////////////////////////////////////////
+	// constructor
+
+	/**
+	 * Make a new JGraph with a new DefaultGraphModel.
+	 * 
+	 * @see org.tigris.gef.graph.presentation.DefaultGraphModel
+	 */
+	public JGraph() {
+		this(new DefaultGraphModel());
+	}
+
+	/**
+	 * Make a new JGraph with a new DefaultGraphModel.
+	 * 
+	 * @see org.tigris.gef.graph.presentation.DefaultGraphModel
+	 */
+	public JGraph(ConnectionConstrainer cc) {
+		this(new DefaultGraphModel(cc));
+	}
+
+	/**
+	 * Make a new JGraph with a the GraphModel and Layer from the given Diagram.
+	 */
+	public JGraph(Diagram d) {
+		this(new Editor(d));
+	}
+
+	/** Make a new JGraph with the given GraphModel */
+	public JGraph(GraphModel gm) {
+		this(new Editor(gm, null));
+	}
+
+	/**
+	 * Make a new JGraph with the given Editor. All JGraph contructors
+	 * eventually call this contructor.
+	 */
+	public JGraph(Editor ed) {
+		super(false); // not double buffered. I do my own flicker-free redraw.
+		editor = ed;
+		if (JavaFXTest.ON)
+			drawingPane = new JGraphFXInternalPane(editor);
+		else
+			drawingPane = new JGraphInternalPane(editor);
+		setDrawingSize(getDefaultSize());
+
+		scrollPane = new JScrollPane(drawingPane);
+
+		scrollPane.setBorder(null);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(25);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(25);
+
+		editor.setJComponent(drawingPane);
+		setLayout(new BorderLayout());
+		add(scrollPane, BorderLayout.CENTER);
+		addMouseListener(editor);
+		addMouseMotionListener(editor);
+		addKeyListener(editor);
+		scrollPane.getHorizontalScrollBar().addAdjustmentListener(this);
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(this);
+
+		initKeys();
+
+		validate();
+
+		Collection layerManagerContent = ed.getLayerManager().getContents();
+		if (layerManagerContent != null) {
+			updateDrawingSizeToIncludeAllFigs(Collections.enumeration(layerManagerContent));
+		} // end if
+
+		int mask = java.awt.event.KeyEvent.ALT_MASK | java.awt.event.KeyEvent.CTRL_MASK;
+		establishAlternateMouseWheelListener(this, mask);
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof JGraph) {
+			JGraph other = (JGraph) o;
+			if (((this.getCurrentDiagramId() != null && this.getCurrentDiagramId().equals(other.getCurrentDiagramId()))
+					|| (this.getCurrentDiagramId() == null && other.getCurrentDiagramId() == null))
+					&& this.getEditor().equals(other.getEditor())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @see Object#hashCode()
+	 * 
+	 *      TODO: Investigate further:
+	 *      <p>
+	 * 
+	 *      According to a mail from GZ (6th November 2004) on the ArgoUML dev
+	 *      list, {@link javax.swing.RepaintManager} puts these objects in some
+	 *      kind of data structure that uses this function. Assuming that there
+	 *      is a reason for this we dare not sabotage this by short-circuiting
+	 *      this to 0. Instead we rely on that
+	 *      {@link org.tigris.gef.graph.presentation.JGraph#setDiagram( org.tigris.gef.base.Diagram)}
+	 *      actually removes this object from the
+	 *      {@link javax.swing.RepaintManager} and registers it again when
+	 *      resetting the diagram id.
+	 *      <p>
+	 * 
+	 *      This is based on the assumption that the function
+	 *      {@link #equals(Object)} must work as it does. I (Linus) have not
+	 *      understood why it must. Could someone please explain that in the
+	 *      javadoc.
+	 */
+	public int hashCode() {
+		if (getCurrentDiagramId() == null) {
+			return 0;
+		} else {
+			return getCurrentDiagramId().hashCode();
+		}
+	}
+
+	public void addMouseListener(MouseListener listener) {
+		drawingPane.addMouseListener(listener);
+	}
+
+	public void addMouseMotionListener(MouseMotionListener listener) {
+		drawingPane.addMouseMotionListener(listener);
+	}
+
+	public void addKeyListener(KeyListener listener) {
+		drawingPane.addKeyListener(listener);
+	}
+
+	/** Make a copy of this JGraph so that it can be shown in another window. */
+	public Object clone() {
+		JGraph newJGraph = new JGraph((Editor) editor.clone());
+		return newJGraph;
+	}
+
+	/* Set up some standard keystrokes and the Cmds that they invoke. */
+	private void initKeys() {
+		int shift = KeyEvent.SHIFT_MASK;
+		int alt = KeyEvent.ALT_MASK;
+		int meta = KeyEvent.META_MASK;
+
+		bindKey(new SelectNextAction("Select Next", true), KeyEvent.VK_TAB, 0);
+		bindKey(new SelectNextAction("Select Previous", false), KeyEvent.VK_TAB, shift);
+
+		bindKey(new NudgeAction(NudgeAction.LEFT), KeyEvent.VK_LEFT, 0);
+		bindKey(new NudgeAction(NudgeAction.RIGHT), KeyEvent.VK_RIGHT, 0);
+		bindKey(new NudgeAction(NudgeAction.UP), KeyEvent.VK_UP, 0);
+		bindKey(new NudgeAction(NudgeAction.DOWN), KeyEvent.VK_DOWN, 0);
+
+		bindKey(new NudgeAction(NudgeAction.LEFT, 8), KeyEvent.VK_LEFT, shift);
+		bindKey(new NudgeAction(NudgeAction.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
+		bindKey(new NudgeAction(NudgeAction.UP, 8), KeyEvent.VK_UP, shift);
+		bindKey(new NudgeAction(NudgeAction.DOWN, 8), KeyEvent.VK_DOWN, shift);
+
+		bindKey(new NudgeAction(NudgeAction.LEFT, 18), KeyEvent.VK_LEFT, alt);
+		bindKey(new NudgeAction(NudgeAction.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
+		bindKey(new NudgeAction(NudgeAction.UP, 18), KeyEvent.VK_UP, alt);
+		bindKey(new NudgeAction(NudgeAction.DOWN, 18), KeyEvent.VK_DOWN, alt);
+
+		bindKey(new SelectNearAction(SelectNearAction.LEFT), KeyEvent.VK_LEFT, meta);
+		bindKey(new SelectNearAction(SelectNearAction.RIGHT), KeyEvent.VK_RIGHT, meta);
+		bindKey(new SelectNearAction(SelectNearAction.UP), KeyEvent.VK_UP, meta);
+		bindKey(new SelectNearAction(SelectNearAction.DOWN), KeyEvent.VK_DOWN, meta);
+	}
+
+	/**
+	 * Utility function to bind a keystroke to a Swing Action. Note that GEF
+	 * Cmds are subclasses of Swing's Actions.
+	 */
+	private void bindKey(ActionListener action, int keyCode, int modifiers) {
+		drawingPane.registerKeyboardAction(action, KeyStroke.getKeyStroke(keyCode, modifiers), WHEN_FOCUSED);
+	}
+
+	// //////////////////////////////////////////////////////////////
+	// accessors
+
+	/** Get the Editor that is being displayed */
+	public Editor getEditor() {
+		return editor;
+	}
+
+	/**
+	 * Set the Diagram that should be displayed by setting the GraphModel and
+	 * Layer that the Editor is using.
+	 */
+	public void setDiagram(Diagram d) {
+		if (d == null)
+			return;
+		if (_currentDiagramId != null) {
+			_viewPortPositions.put(_currentDiagramId, scrollPane.getViewport().getViewRect());
+		} // end if
+		setDrawingSize(getDefaultSize());
+		updateDrawingSizeToIncludeAllFigs(d.elements());
+		editor.getLayerManager().replaceActiveLayer(d.getLayer());
+		editor.setGraphModel(d.getGraphModel());
+		editor.getSelectionManager().deselectAll();
+		editor.setScale(d.getScale());
+		String newDiagramId = Integer.toString(d.hashCode());
+		if (newDiagramId.equals(_currentDiagramId)) {
+			return;
+		}
+		_currentDiagramId = newDiagramId;
+		if (_viewPortPositions.get(_currentDiagramId) != null) {
+			Rectangle rect = (Rectangle) _viewPortPositions.get(_currentDiagramId);
+			scrollPane.getViewport().setViewPosition(new Point(rect.x, rect.y));
+		} else {
+			scrollPane.getViewport().setViewPosition(new Point());
+		}
+	}
+
+	/**
+	 * Enlarges the JGraphInternalPane dimensions as necessary to insure that
+	 * all the contained Figs are visible.
+	 */
+	private void updateDrawingSizeToIncludeAllFigs(Enumeration iter) {
+		if (iter == null) {
+			return;
+		}
+		Dimension drawingSize = new Dimension(defaultSize.width, defaultSize.height);
+		while (iter.hasMoreElements()) {
+			Fig fig = (Fig) iter.nextElement();
+			Rectangle rect = fig.getBounds();
+			Point point = rect.getLocation();
+			Dimension dim = rect.getSize();
+			if ((point.x + dim.width + 5) > drawingSize.width) {
+				drawingSize.setSize(point.x + dim.width + 5, drawingSize.height);
+			}
+			if ((point.y + dim.height + 5) > drawingSize.height) {
+				drawingSize.setSize(drawingSize.width, point.y + dim.height + 5);
+			}
+		}
+		setDrawingSize(drawingSize.width, drawingSize.height);
+	}
+
+	public void setDrawingSize(int width, int height) {
+		setDrawingSize(new Dimension(width, height));
+	}
+
+	private void setDrawingSize(Dimension dim) {
+		editor.drawingSizeChanged(dim);
+	}
+
+	/**
+	 * Set the GraphModel the Editor is using.
+	 */
+	void setGraphModel(GraphModel gm) {
+		editor.setGraphModel(gm);
+	}
+
+	/**
+	 * Get the GraphModel the Editor is using.
+	 */
+	GraphModel getGraphModel() {
+		return editor.getGraphModel();
+	}
+
+	/**
+	 * When the JGraph is hidden, hide its internal pane
+	 */
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		drawingPane.setVisible(visible);
+	}
+
+	/**
+	 * Tell Swing/AWT that JGraph handles tab-order itself.
+	 */
+	public boolean isManagingFocus() {
+		return true;
+	}
+
+	/**
+	 * Tell Swing/AWT that JGraph can be tabbed into.
+	 */
+	public boolean isFocusTraversable() {
+		return true;
+	}
+
+	// //////////////////////////////////////////////////////////////
+	// events
+
+	/**
+	 * Add listener to the objects to notify whenever the Editor changes its
+	 * current selection.
+	 */
+	public void addGraphSelectionListener(GraphSelectionListener listener) {
+		getEditor().addGraphSelectionListener(listener);
+	}
+
+	public void removeGraphSelectionListener(GraphSelectionListener listener) {
+		getEditor().removeGraphSelectionListener(listener);
+	}
+
+	public void addModeChangeListener(ModeChangeListener listener) {
+		getEditor().addModeChangeListener(listener);
+	}
+
+	public void removeModeChangeListener(ModeChangeListener listener) {
+		getEditor().removeModeChangeListener(listener);
+	}
+
+	// //////////////////////////////////////////////////////////////
+	// Editor facade
+
+	/** Deslect everything that is currently selected. */
+	public void deselectAll() {
+		editor.getSelectionManager().deselectAll();
+	}
+
+	/**
+	 * Select a collection of Figs.
+	 * 
+	 * @deprecated in GEF 0.13.1 use select(Collection<DiagramElement>);
+	 */
+	public void select(Vector items) {
+		editor.getSelectionManager().select(items);
+	}
+
+	/** reply a Vector of all selected Figs. Used in many Cmds. */
+	public Vector selectedFigs() {
+		return editor.getSelectionManager().getFigs();
+	}
+
+	private Dimension getDefaultSize() {
+		return defaultSize;
+	}
+
+	/** Get the position of the editor's scrollpane. */
+	protected Point getViewPosition() {
+		return scrollPane.getViewport().getViewPosition();
+	}
+
+	/**
+	 * Establishes alternate MouseWheelListener object that's only active when
+	 * the alt/shift/ctrl keys are held down.
+	 * 
+	 * @param listener
+	 *            MouseWheelListener that will receive MouseWheelEvents
+	 *            generated by this JGraph.
+	 * @param mask
+	 *            logical OR of key modifier values as defined by
+	 *            java.awt.event.KeyEvent constants. This has been tested with
+	 *            ALT_MASK, SHIFT_MASK, and CTRL_MASK.
+	 */
+	private void establishAlternateMouseWheelListener(MouseWheelListener listener, int mask) {
+
+		WheelKeyListenerToggleAction keyListener = new WheelKeyListenerToggleAction(this.drawingPane, listener, mask);
+
+		this.drawingPane.addKeyListener(keyListener);
+	}
+
+	/**
+	 * @return Returns the _currentDiagramId.
+	 */
+	private String getCurrentDiagramId() {
+		return _currentDiagramId;
+	}
+
+	public void adjustmentValueChanged(AdjustmentEvent e) {
+		FigText.endActiveEditing();
+		editor.damageAll();
+	}
+
+	/**
+	 * Zooms diagram in and out when mousewheel is rolled while holding down
+	 * ctrl and/or alt key. Alt, because alt + mouse motion pans the diagram &
+	 * zooming while panning makes more sense than scrolling while panning.
+	 * Ctrl, because Ctrl/+ and Ctrl/- are used to zoom using the keyboard.
+	 */
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (e.isAltDown() || e.isControlDown()) {
+
+			if (e.getWheelRotation() < 0)
+				this.zoomOut.actionPerformed(null);
+			else if (e.getWheelRotation() > 0)
+				this.zoomIn.actionPerformed(null);
+
+			e.consume();
+		}
+	}
 } /* end class JGraph */
 
 class WheelKeyListenerToggleAction implements KeyListener {
 
-    private int mask;
+	private int mask;
 
-    private int down;
+	private int down;
 
-    private MouseWheelListener listener;
+	private MouseWheelListener listener;
 
-    private Component panel;
+	private Component panel;
 
-    /**
-     * Creates KeyListener that adds and removes MouseWheelListener from
-     * indicated JPanel so that it's only active when the modifier keys
-     * (indicated by modifiersMask) are held down. Otherwise, the scrollbars
-     * automatically managed by the JScrollPanel would never see the wheel
-     * events.
-     * 
-     * @param panel JPanel object that will be listening for MouseWheelEvents on
-     *            demand.
-     * @param listener MouseWheelListener that listens for MouseWheelEvents
-     * @param modifiersMask the logical OR of the AWT modifier keys values
-     *            defined as constants by the KeyEvent class. This has been
-     *            tested with ALT_MASK, CTRL_MASK, and SHIFT_MASK.
-     */
-    public WheelKeyListenerToggleAction(Component panel,
-            MouseWheelListener listener, int modifiersMask) {
-        this.panel = panel;
-        this.listener = listener;
-        this.mask = modifiersMask;
-    }
+	/**
+	 * Creates KeyListener that adds and removes MouseWheelListener from
+	 * indicated JPanel so that it's only active when the modifier keys
+	 * (indicated by modifiersMask) are held down. Otherwise, the scrollbars
+	 * automatically managed by the JScrollPanel would never see the wheel
+	 * events.
+	 * 
+	 * @param panel
+	 *            JPanel object that will be listening for MouseWheelEvents on
+	 *            demand.
+	 * @param listener
+	 *            MouseWheelListener that listens for MouseWheelEvents
+	 * @param modifiersMask
+	 *            the logical OR of the AWT modifier keys values defined as
+	 *            constants by the KeyEvent class. This has been tested with
+	 *            ALT_MASK, CTRL_MASK, and SHIFT_MASK.
+	 */
+	public WheelKeyListenerToggleAction(Component panel, MouseWheelListener listener, int modifiersMask) {
+		this.panel = panel;
+		this.listener = listener;
+		this.mask = modifiersMask;
+	}
 
-    public synchronized void keyPressed(KeyEvent e) {
-        if ((e.getModifiers() | mask) != mask) {
-            return;
-        }
+	public synchronized void keyPressed(KeyEvent e) {
+		if ((e.getModifiers() | mask) != mask) {
+			return;
+		}
 
-        if (down == 0) {
-            panel.addMouseWheelListener(listener);
-        }
-        down |= e.getModifiers();
-    }
+		if (down == 0) {
+			panel.addMouseWheelListener(listener);
+		}
+		down |= e.getModifiers();
+	}
 
-    public synchronized void keyReleased(KeyEvent e) {
-        if ((e.getModifiers() & mask) == 0) {
-            panel.removeMouseWheelListener(listener);
-        }
-        down = e.getModifiers();
-    }
+	public synchronized void keyReleased(KeyEvent e) {
+		if ((e.getModifiers() & mask) == 0) {
+			panel.removeMouseWheelListener(listener);
+		}
+		down = e.getModifiers();
+	}
 
-    public void keyTyped(KeyEvent e) {
-    }
+	public void keyTyped(KeyEvent e) {
+	}
 }

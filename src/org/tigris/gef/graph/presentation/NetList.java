@@ -43,110 +43,110 @@ import java.util.Vector;
 
 public class NetList extends NetPrimitive implements java.io.Serializable {
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    /** The nodes in the NetList */
-    private ArrayList nodes = new ArrayList();
+	/** The nodes in the NetList */
+	private ArrayList nodes = new ArrayList();
 
-    /** The edges in the NetList */
-    private ArrayList edges = new ArrayList();
+	/** The edges in the NetList */
+	private ArrayList edges = new ArrayList();
 
-    /** The name of this connected graph. */
-    String name;
+	/** The name of this connected graph. */
+	String name;
 
-    // //////////////////////////////////////////////////////////////
-    // constructors
+	// //////////////////////////////////////////////////////////////
+	// constructors
 
-    /** Construct a new NetList with no contained nodes. */
-    public NetList() {
-    }
+	/** Construct a new NetList with no contained nodes. */
+	public NetList() {
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    public String getId() {
-        return name;
-    }
+	public String getId() {
+		return name;
+	}
 
-    public void setName(String n) {
-        name = n;
-    }
+	public void setName(String n) {
+		name = n;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Reply the vector of nodes
-     */
-    public List getNodes() {
-        return nodes;
-    }
+	/**
+	 * Reply the vector of nodes
+	 */
+	public List getNodes() {
+		return nodes;
+	}
 
-    /**
-     * Reply the vector of edges
-     */
-    public List getEdges() {
-        return edges;
-    }
+	/**
+	 * Reply the vector of edges
+	 */
+	public List getEdges() {
+		return edges;
+	}
 
-    /** Reply the vector of nodes */
-    public Collection getNodes(Collection c) {
-        if (c == null) {
-            return new Vector(nodes);
-        } else {
-            c.addAll(nodes);
-            return c;
-        }
-    }
+	/** Reply the vector of nodes */
+	public Collection getNodes(Collection c) {
+		if (c == null) {
+			return new Vector(nodes);
+		} else {
+			c.addAll(nodes);
+			return c;
+		}
+	}
 
-    /** Reply the vector of edges */
-    public Collection getEdges(Collection c) {
-        if (c == null) {
-            return new Vector(edges);
-        } else {
-            c.addAll(edges);
-            return c;
-        }
-    }
+	/** Reply the vector of edges */
+	public Collection getEdges(Collection c) {
+		if (c == null) {
+			return new Vector(edges);
+		} else {
+			c.addAll(edges);
+			return c;
+		}
+	}
 
-    /** Add a node to this NetList. */
-    public void addNode(NetNode n) {
-        nodes.add(n);
-    }
+	/** Add a node to this NetList. */
+	public void addNode(NetNode n) {
+		nodes.add(n);
+	}
 
-    /**
-     * Remove a node from this NetList. When a node is deleted a notification is
-     * sent out.
-     */
-    public void removeNode(NetNode n) {
-        if (n != null && nodes.contains(n)) {
-            nodes.remove(n);
-        }
-    }
+	/**
+	 * Remove a node from this NetList. When a node is deleted a notification is
+	 * sent out.
+	 */
+	public void removeNode(NetNode n) {
+		if (n != null && nodes.contains(n)) {
+			nodes.remove(n);
+		}
+	}
 
-    /** Add a NetEdge to this NetList. */
-    public void addEdge(NetEdge a) {
-        edges.add(a);
-    }
+	/** Add a NetEdge to this NetList. */
+	public void addEdge(NetEdge a) {
+		edges.add(a);
+	}
 
-    /** Remove a Edge from this NetList. */
-    public void removeEdge(NetEdge a) {
-        if (a != null && edges.contains(a)) {
-            edges.remove(a);
-        }
-    }
+	/** Remove a Edge from this NetList. */
+	public void removeEdge(NetEdge a) {
+		if (a != null && edges.contains(a)) {
+			edges.remove(a);
+		}
+	}
 
-    /** Remove all the nodes from this NetList. */
-    public void removeAllNodes() {
-        nodes.clear();
-    }
+	/** Remove all the nodes from this NetList. */
+	public void removeAllNodes() {
+		nodes.clear();
+	}
 
-    /** Remove all the edges from this NetList. */
-    public void removeAllEdges() {
-        edges.clear();
-    }
+	/** Remove all the edges from this NetList. */
+	public void removeAllEdges() {
+		edges.clear();
+	}
 
-    static final long serialVersionUID = -238774170084340147L;
+	static final long serialVersionUID = -238774170084340147L;
 } /* end class NetList */

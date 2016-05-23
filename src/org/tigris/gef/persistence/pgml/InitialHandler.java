@@ -30,7 +30,6 @@ import java.net.URL;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -38,47 +37,44 @@ import org.xml.sax.helpers.DefaultHandler;
  * to the whole PGML document.
  */
 public class InitialHandler extends DefaultHandler {
-    /**
-     * The parser for this handler.
-     */
-    private PGMLStackParser parser;
+	/**
+	 * The parser for this handler.
+	 */
+	private PGMLStackParser parser;
 
-    /**
-     * @param theParser The PGMLStackParser object associated with the diagram
-     *            that is to be read.
-     */
-    InitialHandler(PGMLStackParser theParser) {
-        parser = theParser;
-    }
+	/**
+	 * @param theParser
+	 *            The PGMLStackParser object associated with the diagram that is
+	 *            to be read.
+	 */
+	InitialHandler(PGMLStackParser theParser) {
+		parser = theParser;
+	}
 
-    /**
-     * Creates a PGMLHandler object to parse a PGML element corresponding to a
-     * diagram in a PGML file.
-     * 
-     * @see org.xml.sax.ContentHandler#startElement( java.lang.String,
-     *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-     */
-    public void startElement(String uri, String localname, String qname,
-            Attributes attributes)
-        throws SAXException {
-        if (qname.equals("pgml")) {
-            parser.pushHandlerStack(new PGMLHandler(parser, attributes));
-        }
-    }
+	/**
+	 * Creates a PGMLHandler object to parse a PGML element corresponding to a
+	 * diagram in a PGML file.
+	 * 
+	 * @see org.xml.sax.ContentHandler#startElement( java.lang.String,
+	 *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
+	public void startElement(String uri, String localname, String qname, Attributes attributes) throws SAXException {
+		if (qname.equals("pgml")) {
+			parser.pushHandlerStack(new PGMLHandler(parser, attributes));
+		}
+	}
 
-    public InputSource resolveEntity(String publicId, String systemId) {
-        if (systemId.endsWith("pgml.dtd")) {
-            URL dtdUrl = this.getClass()
-                    .getResource("/org/tigris/gef/xml/dtd/pgml.dtd");
-            if (dtdUrl != null) {
-                return new InputSource(dtdUrl.toExternalForm());
-            } else {
-                // Return empty DTD if it can't be found
-                return new InputSource(new ByteArrayInputStream(
-                        "<?xml version='1.0' encoding='UTF-8'?>".getBytes()));
-            }
-        } else {
-            return null;
-        }
-    }
+	public InputSource resolveEntity(String publicId, String systemId) {
+		if (systemId.endsWith("pgml.dtd")) {
+			URL dtdUrl = this.getClass().getResource("/org/tigris/gef/xml/dtd/pgml.dtd");
+			if (dtdUrl != null) {
+				return new InputSource(dtdUrl.toExternalForm());
+			} else {
+				// Return empty DTD if it can't be found
+				return new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes()));
+			}
+		} else {
+			return null;
+		}
+	}
 }

@@ -41,29 +41,29 @@ import java.util.List;
 
 public class CmdSelectInvert extends Cmd {
 
-    private static final long serialVersionUID = -7470920956846786762L;
+	private static final long serialVersionUID = -7470920956846786762L;
 
-    public CmdSelectInvert() {
-        super("InvertSelection");
-    }
+	public CmdSelectInvert() {
+		super("InvertSelection");
+	}
 
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        List selected = ce.getSelectionManager().getFigs();
-        List diagramContents = ce.getLayerManager().getContents();
-        List inverse = new ArrayList(diagramContents.size());
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		List selected = ce.getSelectionManager().getFigs();
+		List diagramContents = ce.getLayerManager().getContents();
+		List inverse = new ArrayList(diagramContents.size());
 
-        Iterator it = diagramContents.iterator();
-        while (it.hasNext()) {
-            Object dc = it.next();
-            if (!selected.contains(dc)) {
-                inverse.add(dc);
-            }
-        }
-        ce.getSelectionManager().select(inverse);
-    }
+		Iterator it = diagramContents.iterator();
+		while (it.hasNext()) {
+			Object dc = it.next();
+			if (!selected.contains(dc)) {
+				inverse.add(dc);
+			}
+		}
+		ce.getSelectionManager().select(inverse);
+	}
 
-    public void undoIt() {
-        System.out.println("Undo does not make sense for CmdSelectInvert");
-    }
+	public void undoIt() {
+		System.out.println("Undo does not make sense for CmdSelectInvert");
+	}
 }

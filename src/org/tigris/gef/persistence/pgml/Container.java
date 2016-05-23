@@ -31,11 +31,13 @@ import org.xml.sax.SAXException;
  * content from sub-elements that it will contain.
  */
 public interface Container {
-    /**
-     * Add an object to the container.
-     * 
-     * @param toAdd The object to add.
-     * @throws SAXException if there was a problem.
-     */
-    void addObject(Object toAdd) throws SAXException;
+	/**
+	 * Add an object to the container.
+	 * 
+	 * @param toAdd
+	 *            The object to add.
+	 * @throws SAXException
+	 *             if there was a problem.
+	 */
+	void addObject(Object toAdd) throws SAXException;
 }

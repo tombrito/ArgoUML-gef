@@ -28,9 +28,11 @@
 
 package org.tigris.gef.graph.presentation;
 
-import java.util.*;
+import java.util.Vector;
 
-import org.apache.commons.logging.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphPortHooks;
 
@@ -42,174 +44,171 @@ import org.tigris.gef.graph.GraphPortHooks;
  * your own application-specific objects as ports.
  */
 
-public class NetPort extends NetPrimitive
-        implements GraphPortHooks, java.io.Serializable {
+public class NetPort extends NetPrimitive implements GraphPortHooks, java.io.Serializable {
 
-    private static final long serialVersionUID = -3506978147166333303L;
+	private static final long serialVersionUID = -3506978147166333303L;
 
-    // needs-more-work: main framework should not depend on any demo code
-    public static String DEFAULT_EDGE_CLASS = "org.tigris.gef.graph.presentation.NetEdge";
+	// needs-more-work: main framework should not depend on any demo code
+	public static String DEFAULT_EDGE_CLASS = "org.tigris.gef.graph.presentation.NetEdge";
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    /**
-     * The NetEdges that are connected to this port.
-     */
-    private Vector edges;
+	/**
+	 * The NetEdges that are connected to this port.
+	 */
+	private Vector edges;
 
-    /**
-     * The NetNode that this port is a part of.
-     */
-    private Object _parent;
+	/**
+	 * The NetNode that this port is a part of.
+	 */
+	private Object _parent;
 
-    private static Log LOG = LogFactory.getLog(NetPort.class);
+	private static Log LOG = LogFactory.getLog(NetPort.class);
 
-    // //////////////////////////////////////////////////////////////
-    // constructors
+	// //////////////////////////////////////////////////////////////
+	// constructors
 
-    /** Construct a new NetPort with the given parent node and no arcs. */
-    public NetPort(Object parent) {
-        _parent = parent;
-        edges = new Vector();
-    }
+	/** Construct a new NetPort with the given parent node and no arcs. */
+	public NetPort(Object parent) {
+		_parent = parent;
+		edges = new Vector();
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
+	// //////////////////////////////////////////////////////////////
+	// accessors
 
-    public String getId() {
-        return toString();
-    }
+	public String getId() {
+		return toString();
+	}
 
-    /** Reply the NetNode that owns this port. */
-    public NetNode getParentNode() {
-        return (NetNode) _parent;
-    }
+	/** Reply the NetNode that owns this port. */
+	public NetNode getParentNode() {
+		return (NetNode) _parent;
+	}
 
-    public NetEdge getParentEdge() {
-        return (NetEdge) _parent;
-    }
+	public NetEdge getParentEdge() {
+		return (NetEdge) _parent;
+	}
 
-    public Object getParent() {
-        return _parent;
-    }
+	public Object getParent() {
+		return _parent;
+	}
 
-    /** Reply a vector of NetEdges that are connected here. */
-    public Vector getEdges() {
-        return edges;
-    }
+	/** Reply a vector of NetEdges that are connected here. */
+	public Vector getEdges() {
+		return edges;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // net-level operations
+	// //////////////////////////////////////////////////////////////
+	// net-level operations
 
-    /**
-     * Add an edge to the list of edge connected to this port. Called when the
-     * user defines a new edge. Normally, you would not call this directly, you
-     * would call NetEdge#connect().
-     */
-    public void addEdge(NetEdge edge) {
-        edges.addElement(edge);
-    }
+	/**
+	 * Add an edge to the list of edge connected to this port. Called when the
+	 * user defines a new edge. Normally, you would not call this directly, you
+	 * would call NetEdge#connect().
+	 */
+	public void addEdge(NetEdge edge) {
+		edges.addElement(edge);
+	}
 
-    /**
-     * Remove an edge from the list of edge connected to this port. Called when
-     * the user disposes an edge. Normally, you would not call this directly,
-     * you would call NetEdge#deleteFromModel().
-     */
-    public void removeEdge(NetEdge edge) {
-        edges.removeElement(edge);
-    }
+	/**
+	 * Remove an edge from the list of edge connected to this port. Called when
+	 * the user disposes an edge. Normally, you would not call this directly,
+	 * you would call NetEdge#deleteFromModel().
+	 */
+	public void removeEdge(NetEdge edge) {
+		edges.removeElement(edge);
+	}
 
-    /**
-     * Remove this port from the underlying connected graph model and dispose
-     * all arcs connected to it.
-     */
-    public void deleteFromModel() {
-        LOG.debug("Deleting from model");
-        int size = edges.size();
-        for (int i = 0; i < size; i++) {
-            // We always just dispose the first edge as each dispose
-            // results in a call-back to removing that same edge from the
-            // edges list making what was the next item the new first
-            // item.
-            NetEdge edge = (NetEdge) edges.get(0);
-            edge.deleteFromModel();
-        }
-        firePropertyChange("disposed", false, true);
-    }
+	/**
+	 * Remove this port from the underlying connected graph model and dispose
+	 * all arcs connected to it.
+	 */
+	public void deleteFromModel() {
+		LOG.debug("Deleting from model");
+		int size = edges.size();
+		for (int i = 0; i < size; i++) {
+			// We always just dispose the first edge as each dispose
+			// results in a call-back to removing that same edge from the
+			// edges list making what was the next item the new first
+			// item.
+			NetEdge edge = (NetEdge) edges.get(0);
+			edge.deleteFromModel();
+		}
+		firePropertyChange("disposed", false, true);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // net-level hooks
+	// //////////////////////////////////////////////////////////////
+	// net-level hooks
 
-    /**
-     * Application specific hook that is called after a successful connection.
-     */
-    public void postConnect(GraphModel gm, Object otherPort) {
-        NetPort otherNetPort = (NetPort) otherPort;
-        NetNode parent = getParentNode();
-        parent.postConnect(gm, otherNetPort.getParentNode(), this,
-                otherNetPort);
-    }
+	/**
+	 * Application specific hook that is called after a successful connection.
+	 */
+	public void postConnect(GraphModel gm, Object otherPort) {
+		NetPort otherNetPort = (NetPort) otherPort;
+		NetNode parent = getParentNode();
+		parent.postConnect(gm, otherNetPort.getParentNode(), this, otherNetPort);
+	}
 
-    /**
-     * Application specific hook that is called after a disconnection. (for now,
-     * all disconnections are assumed legal).
-     */
-    public void postDisconnect(GraphModel gm, Object otherPort) {
-        NetPort otherNetPort = (NetPort) otherPort;
-        NetNode parent = getParentNode();
-        parent.postDisconnect(gm, otherNetPort.getParentNode(), this,
-                otherNetPort);
-    }
+	/**
+	 * Application specific hook that is called after a disconnection. (for now,
+	 * all disconnections are assumed legal).
+	 */
+	public void postDisconnect(GraphModel gm, Object otherPort) {
+		NetPort otherNetPort = (NetPort) otherPort;
+		NetNode parent = getParentNode();
+		parent.postDisconnect(gm, otherNetPort.getParentNode(), this, otherNetPort);
+	}
 
-    /**
-     * reply the java Class to be used to make new arcs. This is a utility
-     * function called from NetPort#makeEdgeFor
-     */
-    protected Class defaultEdgeClass(NetPort otherPort) {
-        try {
-            return Class.forName(DEFAULT_EDGE_CLASS);
-        } catch (java.lang.ClassNotFoundException ignore) {
-            return null;
-        }
-    }
+	/**
+	 * reply the java Class to be used to make new arcs. This is a utility
+	 * function called from NetPort#makeEdgeFor
+	 */
+	protected Class defaultEdgeClass(NetPort otherPort) {
+		try {
+			return Class.forName(DEFAULT_EDGE_CLASS);
+		} catch (java.lang.ClassNotFoundException ignore) {
+			return null;
+		}
+	}
 
-    /** reply a new NetEdge from this port to the given NetPort. */
-    public NetEdge makeEdgeFor(NetPort otherPort) {
-        Class edgeClass;
-        NetEdge edge;
-        edgeClass = defaultEdgeClass(otherPort);
-        if (edgeClass == null) {
-            LOG.error("defaultEdgeClass is null");
-            return null;
-        }
-        try {
-            edge = (NetEdge) edgeClass.newInstance();
-        } catch (java.lang.IllegalAccessException e) {
-            LOG.error("Failed to create edge ", e);
-            return null;
-        } catch (java.lang.InstantiationException e) {
-            LOG.error("Failed to create edge ", e);
-            return null;
-        }
-        LOG.debug("Made edge " + edge.getClass().getName());
-        return edge;
-    }
+	/** reply a new NetEdge from this port to the given NetPort. */
+	public NetEdge makeEdgeFor(NetPort otherPort) {
+		Class edgeClass;
+		NetEdge edge;
+		edgeClass = defaultEdgeClass(otherPort);
+		if (edgeClass == null) {
+			LOG.error("defaultEdgeClass is null");
+			return null;
+		}
+		try {
+			edge = (NetEdge) edgeClass.newInstance();
+		} catch (java.lang.IllegalAccessException e) {
+			LOG.error("Failed to create edge ", e);
+			return null;
+		} catch (java.lang.InstantiationException e) {
+			LOG.error("Failed to create edge ", e);
+			return null;
+		}
+		LOG.debug("Made edge " + edge.getClass().getName());
+		return edge;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // net-level constraints
+	// //////////////////////////////////////////////////////////////
+	// net-level constraints
 
-    /**
-     * Reply true if this port can legally be connected to the given port.
-     * Subclasses may implement this to reflect application specific connection
-     * constraints. By default, each port just defers that decision to its
-     * parent NetNode. By convention, your implementation should return false if
-     * super.canConnectTo() would return false (i.e., deeper subclasses get more
-     * constrained). I don't know if that is a good convention.
-     */
-    public boolean canConnectTo(GraphModel gm, Object anotherPort) {
-        NetNode myNode = getParentNode();
-        NetNode otherNode = ((NetPort) anotherPort).getParentNode();
-        return myNode.canConnectTo(gm, otherNode, anotherPort, this);
-    }
+	/**
+	 * Reply true if this port can legally be connected to the given port.
+	 * Subclasses may implement this to reflect application specific connection
+	 * constraints. By default, each port just defers that decision to its
+	 * parent NetNode. By convention, your implementation should return false if
+	 * super.canConnectTo() would return false (i.e., deeper subclasses get more
+	 * constrained). I don't know if that is a good convention.
+	 */
+	public boolean canConnectTo(GraphModel gm, Object anotherPort) {
+		NetNode myNode = getParentNode();
+		NetNode otherNode = ((NetPort) anotherPort).getParentNode();
+		return myNode.canConnectTo(gm, otherNode, anotherPort, this);
+	}
 } /* end class NetPort */

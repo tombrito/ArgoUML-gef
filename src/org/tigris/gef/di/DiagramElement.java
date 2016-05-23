@@ -31,9 +31,9 @@ import java.awt.Dimension;
  */
 public interface DiagramElement {
 
-    String getId();
+	String getId();
 
-    Object getOwner();
+	Object getOwner();
 
-    Dimension getMinimumSize();
+	Dimension getMinimumSize();
 }

@@ -30,35 +30,33 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.tigris.gef.persistence.*;
+import org.tigris.gef.persistence.SVGWriter;
 
 /**
  * @deprecated in 0.12.3 use SaveSVGAction
  */
 public class CmdSaveSVG extends CmdSaveGraphics {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -713862282696505691L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -713862282696505691L;
 
-    public CmdSaveSVG() {
-        super("SaveScalableVectorGraphics");
-    }
+	public CmdSaveSVG() {
+		super("SaveScalableVectorGraphics");
+	}
 
-    protected void saveGraphics(OutputStream s, Editor ce,
-            Rectangle drawingArea)
-        throws IOException {
-        SVGWriter writer = null;
-        try {
-            writer = new SVGWriter(s, drawingArea);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (writer != null) {
-            ce.print(writer);
-            writer.dispose();
-        }
-    }
+	protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea) throws IOException {
+		SVGWriter writer = null;
+		try {
+			writer = new SVGWriter(s, drawingArea);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (writer != null) {
+			ce.print(writer);
+			writer.dispose();
+		}
+	}
 
 } /* end class CmdSaveSVG */

@@ -38,11 +38,12 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
+import org.xml.sax.SAXException;
+
 import org.tigris.gef.graph.presentation.JGraphFrame;
 import org.tigris.gef.persistence.pgml.PGMLStackParser;
 import org.tigris.gef.util.Localizer;
 import org.tigris.gef.util.Util;
-import org.xml.sax.SAXException;
 
 /**
  * Action to Load a previously saved document document. The loaded editor is
@@ -52,124 +53,137 @@ import org.xml.sax.SAXException;
  */
 public class OpenPGMLAction extends AbstractAction implements FilenameFilter {
 
-    private Dimension dimension;
+	private Dimension dimension;
 
-    /**
-     * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     */
-    public OpenPGMLAction(String name) {
-        this(name, null, false);
-    }
+	/**
+	 * Creates a new OpenPGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public OpenPGMLAction(String name) {
+		this(name, null, false);
+	}
 
-    /**
-     * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
-     */
-    public OpenPGMLAction(String name, Dimension dimension) {
-        this(name, dimension, false);
-    }
+	/**
+	 * Creates a new OpenPGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param dimension
+	 *            The dimension of the graph
+	 */
+	public OpenPGMLAction(String name, Dimension dimension) {
+		this(name, dimension, false);
+	}
 
-    /**
-     * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public OpenPGMLAction(String name, Icon icon) {
-        this(name, icon, null, false);
-    }
+	/**
+	 * Creates a new OpenPGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public OpenPGMLAction(String name, Icon icon) {
+		this(name, icon, null, false);
+	}
 
-    /**
-     * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
-     */
-    public OpenPGMLAction(String name, Icon icon, Dimension dimension) {
-        this(name, icon, dimension, false);
-    }
+	/**
+	 * Creates a new OpenPGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param dimension
+	 *            The dimension of the graph
+	 */
+	public OpenPGMLAction(String name, Icon icon, Dimension dimension) {
+		this(name, icon, dimension, false);
+	}
 
-    /**
-     * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
-     */
-    public OpenPGMLAction(String name, Dimension dimension, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        this.dimension = dimension;
-    }
+	/**
+	 * Creates a new OpenPGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param dimension
+	 *            The dimension of the graph
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public OpenPGMLAction(String name, Dimension dimension, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+		this.dimension = dimension;
+	}
 
-    /**
-     * Creates a new OpenPGMLAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
-     */
-    public OpenPGMLAction(String name, Icon icon, Dimension dimension,
-            boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        this.dimension = dimension;
-    }
+	/**
+	 * Creates a new OpenPGMLAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param dimension
+	 *            The dimension of the graph
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public OpenPGMLAction(String name, Icon icon, Dimension dimension, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+		this.dimension = dimension;
+	}
 
-    public void actionPerformed(ActionEvent event) {
-        Editor ce = Globals.curEditor();
-        FileDialog fd = new FileDialog(ce.findFrame(), "Open...",
-                FileDialog.LOAD);
-        fd.setFilenameFilter(this);
-        fd.setDirectory(Globals.getLastDirectory());
-        fd.setVisible(true);
-        String filename = fd.getFile(); // blocking
-        String path = fd.getDirectory(); // blocking
-        Globals.setLastDirectory(path);
+	public void actionPerformed(ActionEvent event) {
+		Editor ce = Globals.curEditor();
+		FileDialog fd = new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+		fd.setFilenameFilter(this);
+		fd.setDirectory(Globals.getLastDirectory());
+		fd.setVisible(true);
+		String filename = fd.getFile(); // blocking
+		String path = fd.getDirectory(); // blocking
+		Globals.setLastDirectory(path);
 
-        if (filename != null) {
-            try {
-                Globals.showStatus("Reading " + path + filename + "...");
-                URL url = Util.fileToURL(new File(path + filename));
-                PGMLStackParser parser = new PGMLStackParser(null);
-                Diagram diag = parser.readDiagram(url.openStream(), false);
-                Editor ed = new Editor(diag);
-                Globals.showStatus("Read " + path + filename);
-                JGraphFrame jgf = new JGraphFrame(path + filename, ed);
-                // Object d = getArg("dimension");
-                // if (dim instanceof Dimension) {
-                // jgf.setSize((Dimension) d);
-                if (dimension != null) {
-                    jgf.setSize(dimension);
-                }
-                jgf.setVisible(true);
-            } catch (SAXException murle) {
-                System.out.println("bad URL");
-            } catch (IOException e) {
-                System.out.println("IOExcept in openpgml");
-            }
-        }
-    }
+		if (filename != null) {
+			try {
+				Globals.showStatus("Reading " + path + filename + "...");
+				URL url = Util.fileToURL(new File(path + filename));
+				PGMLStackParser parser = new PGMLStackParser(null);
+				Diagram diag = parser.readDiagram(url.openStream(), false);
+				Editor ed = new Editor(diag);
+				Globals.showStatus("Read " + path + filename);
+				JGraphFrame jgf = new JGraphFrame(path + filename, ed);
+				// Object d = getArg("dimension");
+				// if (dim instanceof Dimension) {
+				// jgf.setSize((Dimension) d);
+				if (dimension != null) {
+					jgf.setSize(dimension);
+				}
+				jgf.setVisible(true);
+			} catch (SAXException murle) {
+				System.out.println("bad URL");
+			} catch (IOException e) {
+				System.out.println("IOExcept in openpgml");
+			}
+		}
+	}
 
-    /**
-     * Only let the user select files that match the filter. This does not seem
-     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
-     * it currently accepts all filenames.
-     * <p>
-     * 
-     * Needs-More-Work: The source code for this function is duplicated in
-     * CmdSave#accept.
-     * 
-     * @deprecated this method always returns true
-     */
-    public boolean accept(File dir, String name) {
-        return true;
-    }
+	/**
+	 * Only let the user select files that match the filter. This does not seem
+	 * to be called under JDK 1.0.2 on solaris. I have not finished this method,
+	 * it currently accepts all filenames.
+	 * <p>
+	 * 
+	 * Needs-More-Work: The source code for this function is duplicated in
+	 * CmdSave#accept.
+	 * 
+	 * @deprecated this method always returns true
+	 */
+	public boolean accept(File dir, String name) {
+		return true;
+	}
 
-    static final long serialVersionUID = 00000000000000L;
+	static final long serialVersionUID = 00000000000000L;
 
 }

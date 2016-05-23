@@ -48,47 +48,44 @@ import javax.imageio.ImageIO;
  */
 public class CmdSavePNG extends CmdSaveGraphics {
 
-    private static final long serialVersionUID = 2694114560467440132L;
+	private static final long serialVersionUID = 2694114560467440132L;
 
-    /**
-     * Used as background color in image and set transparent. Chosen because
-     * it's unlikely to be selected by the user, and leaves the diagram readable
-     * if viewed without transparency.
-     */
-    public static final int TRANSPARENT_BG_COLOR = 0x00efefef;
+	/**
+	 * Used as background color in image and set transparent. Chosen because
+	 * it's unlikely to be selected by the user, and leaves the diagram readable
+	 * if viewed without transparency.
+	 */
+	public static final int TRANSPARENT_BG_COLOR = 0x00efefef;
 
-    public CmdSavePNG() {
-        super("SavePNG");
-    }
+	public CmdSavePNG() {
+		super("SavePNG");
+	}
 
-    /**
-     * Write the diagram contained by the current editor into an OutputStream as
-     * a PNG image.
-     */
-    protected void saveGraphics(OutputStream s, Editor ce,
-            Rectangle drawingArea)
-        throws IOException {
+	/**
+	 * Write the diagram contained by the current editor into an OutputStream as
+	 * a PNG image.
+	 */
+	protected void saveGraphics(OutputStream s, Editor ce, Rectangle drawingArea) throws IOException {
 
-        // Create an offscreen image and render the diagram into it.
-        Image i = new BufferedImage(drawingArea.width * scale,
-                drawingArea.height * scale, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = (Graphics2D) i.getGraphics();
-        g.scale(scale, scale);
-        g.setColor(new Color(TRANSPARENT_BG_COLOR, true));
-        Composite c = g.getComposite();
-        g.setComposite(AlphaComposite.Src);
-        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
-        g.setComposite(c);
-        // a little extra won't hurt
-        g.translate(-drawingArea.x, -drawingArea.y);
-        ce.print(g);
+		// Create an offscreen image and render the diagram into it.
+		Image i = new BufferedImage(drawingArea.width * scale, drawingArea.height * scale, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) i.getGraphics();
+		g.scale(scale, scale);
+		g.setColor(new Color(TRANSPARENT_BG_COLOR, true));
+		Composite c = g.getComposite();
+		g.setComposite(AlphaComposite.Src);
+		g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);
+		g.setComposite(c);
+		// a little extra won't hurt
+		g.translate(-drawingArea.x, -drawingArea.y);
+		ce.print(g);
 
-        ImageIO.write((RenderedImage) i, "png", s);
+		ImageIO.write((RenderedImage) i, "png", s);
 
-        g.dispose();
-        // force garbage collection, to prevent out of memory exceptions
-        g = null;
-        i = null;
-    }
+		g.dispose();
+		// force garbage collection, to prevent out of memory exceptions
+		g = null;
+		i = null;
+	}
 
 } /* end class CmdSavePNG */

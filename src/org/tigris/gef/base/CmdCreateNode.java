@@ -56,136 +56,135 @@ import org.tigris.gef.util.Localizer;
 
 public class CmdCreateNode extends Cmd implements GraphFactory {
 
-    private static final long serialVersionUID = -4746215260464595235L;
+	private static final long serialVersionUID = -4746215260464595235L;
 
-    public static Class<?> DEFAULT_NODE_CLASS = org.tigris.gef.graph.presentation.NetNode.class;
+	public static Class<?> DEFAULT_NODE_CLASS = org.tigris.gef.graph.presentation.NetNode.class;
 
-    private static Log LOG = LogFactory.getLog(CmdCreateNode.class);
+	private static Log LOG = LogFactory.getLog(CmdCreateNode.class);
 
-    /**
-     * Construct a new Cmd with the given arguments for node class.
-     */
-    public CmdCreateNode(Hashtable args, String resource, String name) {
-        super(args, resource, name);
-    }
+	/**
+	 * Construct a new Cmd with the given arguments for node class.
+	 */
+	public CmdCreateNode(Hashtable args, String resource, String name) {
+		super(args, resource, name);
+	}
 
-    public CmdCreateNode(Hashtable args, String name) {
-        super(args, "GefBase", name);
-    }
+	public CmdCreateNode(Hashtable args, String name) {
+		super(args, "GefBase", name);
+	}
 
-    /**
-     * Construct a new Cmd with the given classes for the NetNode and its
-     * FigNode.
-     */
-    public CmdCreateNode(Class nodeClass, String resource, String name) {
-        this(new Hashtable(), resource, name);
-        setArg("className", nodeClass);
-    }
+	/**
+	 * Construct a new Cmd with the given classes for the NetNode and its
+	 * FigNode.
+	 */
+	public CmdCreateNode(Class nodeClass, String resource, String name) {
+		this(new Hashtable(), resource, name);
+		setArg("className", nodeClass);
+	}
 
-    public CmdCreateNode(Class nodeClass, String name) {
-        this(new Hashtable(), name);
-        setArg("className", nodeClass);
-    }
+	public CmdCreateNode(Class nodeClass, String name) {
+		this(new Hashtable(), name);
+		setArg("className", nodeClass);
+	}
 
-    public CmdCreateNode(Object nodeClass, String name, ImageIcon icon) {
-        super(new Hashtable(), name, icon);
-        setArg("className", nodeClass);
-    }
+	public CmdCreateNode(Object nodeClass, String name, ImageIcon icon) {
+		super(new Hashtable(), name, icon);
+		setArg("className", nodeClass);
+	}
 
-    /**
-     * Construct a new Cmd with the given classes for the NetNode and its
-     * FigNode, and set the global sticky mode boolean to the given value. This
-     * allows the user to place several nodes rapidly.
-     */
-    public CmdCreateNode(Class<?> nodeClass, boolean sticky, String resource,
-            String name) {
-        this(nodeClass, resource, name);
-        setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
-    }
+	/**
+	 * Construct a new Cmd with the given classes for the NetNode and its
+	 * FigNode, and set the global sticky mode boolean to the given value. This
+	 * allows the user to place several nodes rapidly.
+	 */
+	public CmdCreateNode(Class<?> nodeClass, boolean sticky, String resource, String name) {
+		this(nodeClass, resource, name);
+		setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
+	}
 
-    public CmdCreateNode(Class<?> nodeClass, boolean sticky, String name) {
-        this(nodeClass, name);
-        setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
-    }
+	public CmdCreateNode(Class<?> nodeClass, boolean sticky, String name) {
+		this(nodeClass, name);
+		setArg("shouldBeSticky", sticky ? Boolean.TRUE : Boolean.FALSE);
+	}
 
-    /**
-     * Actually instantiate the NetNode and FigNode objects and set the global
-     * next mode to ModePlace
-     */
-    public void doIt() {
-        Editor ce = Globals.curEditor();
-        GraphModel gm = ce.getGraphModel();
-        if (!(gm instanceof MutableGraphModel)) return;
-        setArg("graphModel", gm);
+	/**
+	 * Actually instantiate the NetNode and FigNode objects and set the global
+	 * next mode to ModePlace
+	 */
+	public void doIt() {
+		Editor ce = Globals.curEditor();
+		GraphModel gm = ce.getGraphModel();
+		if (!(gm instanceof MutableGraphModel))
+			return;
+		setArg("graphModel", gm);
 
-        String instructions = null;
-        Object actionName = getValue(javax.swing.Action.NAME);
-        if (actionName != null) {
-            instructions = Localizer.localize("GefBase", "ClickToPlace") + " "
-                    + actionName.toString();
-        }
-        Mode placeMode = new ModePlace(this, instructions);
+		String instructions = null;
+		Object actionName = getValue(javax.swing.Action.NAME);
+		if (actionName != null) {
+			instructions = Localizer.localize("GefBase", "ClickToPlace") + " " + actionName.toString();
+		}
+		Mode placeMode = new ModePlace(this, instructions);
 
-        Object shouldBeSticky = getArg("shouldBeSticky");
-        Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
-        if (LOG.isDebugEnabled()) LOG.debug(
-                "Mode set to ModePlace with sticky mode " + shouldBeSticky);
-    }
+		Object shouldBeSticky = getArg("shouldBeSticky");
+		Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
+		if (LOG.isDebugEnabled())
+			LOG.debug("Mode set to ModePlace with sticky mode " + shouldBeSticky);
+	}
 
-    public void undoIt() {
-        LOG.warn("undo is not implemented");
-    }
+	public void undoIt() {
+		LOG.warn("undo is not implemented");
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // GraphFactory implementation
+	// //////////////////////////////////////////////////////////////
+	// GraphFactory implementation
 
-    public GraphModel makeGraphModel() {
-        return null;
-    }
+	public GraphModel makeGraphModel() {
+		return null;
+	}
 
-    public Object makeEdge() {
-        return null;
-    }
+	public Object makeEdge() {
+		return null;
+	}
 
-    /**
-     * Factory method for creating a new NetNode from the className argument.
-     * TODO This returns null on error. We need to define some basic exception
-     * classes.
-     */
-    public Object makeNode() {
-        Object newNode;
-        Object nodeType = getArg("className", DEFAULT_NODE_CLASS);
-        if (nodeType instanceof Action) {
-            // TODO: This is a NPE. What is the purpose of this?
-            Action a = null;
-            a.actionPerformed(null);
-            newNode = a.getValue("node");
-        } else {
-            Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-            // assert _nodeClass != null
-            try {
-                newNode = nodeClass.newInstance();
-            } catch (java.lang.IllegalAccessException ignore) {
-                LOG.error("Unable to instantiate node " + nodeClass.getName());
-                return null;
-            } catch (java.lang.InstantiationException ignore) {
-                LOG.error("Failed to instantiate node " + nodeClass.getName());
-                return null;
-            }
-        }
-        LOG.debug("New node created " + newNode);
+	/**
+	 * Factory method for creating a new NetNode from the className argument.
+	 * TODO This returns null on error. We need to define some basic exception
+	 * classes.
+	 */
+	public Object makeNode() {
+		Object newNode;
+		Object nodeType = getArg("className", DEFAULT_NODE_CLASS);
+		if (nodeType instanceof Action) {
+			// TODO: This is a NPE. What is the purpose of this?
+			Action a = null;
+			a.actionPerformed(null);
+			newNode = a.getValue("node");
+		} else {
+			Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
+			// assert _nodeClass != null
+			try {
+				newNode = nodeClass.newInstance();
+			} catch (java.lang.IllegalAccessException ignore) {
+				LOG.error("Unable to instantiate node " + nodeClass.getName());
+				return null;
+			} catch (java.lang.InstantiationException ignore) {
+				LOG.error("Failed to instantiate node " + nodeClass.getName());
+				return null;
+			}
+		}
+		LOG.debug("New node created " + newNode);
 
-        if (newNode instanceof GraphNodeHooks) {
-            LOG.debug("Initializing GraphNodeHooks");
-            ((GraphNodeHooks) newNode).initialize(_args);
-        }
-        return newNode;
-    }
+		if (newNode instanceof GraphNodeHooks) {
+			LOG.debug("Initializing GraphNodeHooks");
+			((GraphNodeHooks) newNode).initialize(_args);
+		}
+		return newNode;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // for testing purpose only
-    public Object getActiveGraphModel() {
-        return getArg("graphModel");
-    }
+	// //////////////////////////////////////////////////////////////
+	// for testing purpose only
+	public Object getActiveGraphModel() {
+		return getArg("graphModel");
+	}
 
 } /* end class CmdCreateNode */

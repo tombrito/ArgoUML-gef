@@ -23,17 +23,19 @@
 
 package org.tigris.gef.ui;
 
-import java.awt.*;
-import java.net.*;
+import java.awt.Container;
+import java.awt.Cursor;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
-import javax.swing.text.*;
-import javax.swing.event.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.Document;
 
 /**
  * An undocumented and unused class. This would not appear to be relevent to the
@@ -44,23 +46,23 @@ import javax.swing.event.*;
  */
 public class TinyHTMLViewer extends JFrame {
 
-    public TinyHTMLViewer(String startPage) {
-        super("Help -- " + startPage);
-        setBounds(200, 25, 600, 400);
-        HtmlPane html = new HtmlPane(startPage);
-        setContentPane(html);
-    }
+	public TinyHTMLViewer(String startPage) {
+		super("Help -- " + startPage);
+		setBounds(200, 25, 600, 400);
+		HtmlPane html = new HtmlPane(startPage);
+		setContentPane(html);
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // testing
-    // public static void main(String args[]) {
-    // if (args.length != 1) {
-    // System.out.println("use resourceName as the only cmdline arg");
-    // return;
-    // }
-    // TinyHTMLViewer v = new TinyHTMLViewer(args[0]);
-    // v.setVisible(true);
-    // }
+	// //////////////////////////////////////////////////////////////
+	// testing
+	// public static void main(String args[]) {
+	// if (args.length != 1) {
+	// System.out.println("use resourceName as the only cmdline arg");
+	// return;
+	// }
+	// TinyHTMLViewer v = new TinyHTMLViewer(args[0]);
+	// v.setVisible(true);
+	// }
 } /* end class TinyHTMLViewer */
 
 /**
@@ -71,136 +73,137 @@ public class TinyHTMLViewer extends JFrame {
  * @deprecated in 0.12.4 by Bob Tarling
  */
 class HtmlPane extends JScrollPane implements HyperlinkListener {
-    public static String DEFAULT_PAGE = "/uci/uml/help/index.html";
+	public static String DEFAULT_PAGE = "/uci/uml/help/index.html";
 
-    JEditorPane html;
+	JEditorPane html;
 
-    public HtmlPane(String startPage) {
-        URL url = null;
-        try {
-            url = new URL(startPage);
-        } catch (Exception ex) {
-            try {
-                url = TinyHTMLViewer.class.getResource(startPage);
-            } catch (Exception ex2) {
-                try {
-                    if (DEFAULT_PAGE.startsWith("http"))
-                        url = new URL(DEFAULT_PAGE);
-                    else
-                        url = TinyHTMLViewer.class.getResource(DEFAULT_PAGE);
-                } catch (Exception ex3) {
-                    url = null;
-                }
-            }
-        }
+	public HtmlPane(String startPage) {
+		URL url = null;
+		try {
+			url = new URL(startPage);
+		} catch (Exception ex) {
+			try {
+				url = TinyHTMLViewer.class.getResource(startPage);
+			} catch (Exception ex2) {
+				try {
+					if (DEFAULT_PAGE.startsWith("http"))
+						url = new URL(DEFAULT_PAGE);
+					else
+						url = TinyHTMLViewer.class.getResource(DEFAULT_PAGE);
+				} catch (Exception ex3) {
+					url = null;
+				}
+			}
+		}
 
-        if (url != null) {
-            try {
-                html = new JEditorPane(url);
-                html.setEditable(false);
-                html.addHyperlinkListener(this);
+		if (url != null) {
+			try {
+				html = new JEditorPane(url);
+				html.setEditable(false);
+				html.addHyperlinkListener(this);
 
-                JViewport vp = getViewport();
-                vp.add(html);
-            } catch (Exception ex4) {
-                System.out.println("could not open HTML pane");
-            }
-        }
-    }
+				JViewport vp = getViewport();
+				vp.add(html);
+			} catch (Exception ex4) {
+				System.out.println("could not open HTML pane");
+			}
+		}
+	}
 
-    /**
-     * Notification of a change relative to a hyperlink.
-     */
-    public void hyperlinkUpdate(HyperlinkEvent e) {
-        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-            linkActivated(e.getURL());
-        }
-    }
+	/**
+	 * Notification of a change relative to a hyperlink.
+	 */
+	public void hyperlinkUpdate(HyperlinkEvent e) {
+		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+			linkActivated(e.getURL());
+		}
+	}
 
-    /**
-     * Follows the reference in an link. The given url is the requested
-     * reference. By default this calls <a href="#setPage">setPage</a>, and if
-     * an exception is thrown the original previous document is restored and a
-     * beep sounded. If an attempt was made to follow a link, but it represented
-     * a malformed url, this method will be called with a null argument.
-     * 
-     * @param u the URL to follow
-     */
-    protected void linkActivated(URL u) {
-        Cursor c = html.getCursor();
-        Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-        html.setCursor(waitCursor);
-        SwingUtilities.invokeLater(new PageLoader(u, c));
-    }
+	/**
+	 * Follows the reference in an link. The given url is the requested
+	 * reference. By default this calls <a href="#setPage">setPage</a>, and if
+	 * an exception is thrown the original previous document is restored and a
+	 * beep sounded. If an attempt was made to follow a link, but it represented
+	 * a malformed url, this method will be called with a null argument.
+	 * 
+	 * @param u
+	 *            the URL to follow
+	 */
+	protected void linkActivated(URL u) {
+		Cursor c = html.getCursor();
+		Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+		html.setCursor(waitCursor);
+		SwingUtilities.invokeLater(new PageLoader(u, c));
+	}
 
-    /**
-     * temporary class that loads synchronously (although later than the request
-     * so that a cursor change can be done).
-     */
-    class PageLoader implements Runnable {
+	/**
+	 * temporary class that loads synchronously (although later than the request
+	 * so that a cursor change can be done).
+	 */
+	class PageLoader implements Runnable {
 
-        PageLoader(URL u, Cursor c) {
-            url = u;
-            cursor = c;
-        }
+		PageLoader(URL u, Cursor c) {
+			url = u;
+			cursor = c;
+		}
 
-        public void run() {
-            if (url == null) {
-                // restore the original cursor
-                html.setCursor(cursor);
+		public void run() {
+			if (url == null) {
+				// restore the original cursor
+				html.setCursor(cursor);
 
-                // PENDING(prinz) remove this hack when
-                // automatic validation is activated.
-                Container parent = html.getParent();
-                parent.repaint();
-            } else {
-                Document doc = html.getDocument();
-                try {
-                    html.setPage(url);
-                } catch (IOException ioe) {
-                    html.setDocument(doc);
-                    getToolkit().beep();
-                } finally {
-                    // schedule the cursor to revert after
-                    // the paint has happended.
-                    url = null;
-                    SwingUtilities.invokeLater(this);
-                }
-            }
-        }
+				// PENDING(prinz) remove this hack when
+				// automatic validation is activated.
+				Container parent = html.getParent();
+				parent.repaint();
+			} else {
+				Document doc = html.getDocument();
+				try {
+					html.setPage(url);
+				} catch (IOException ioe) {
+					html.setDocument(doc);
+					getToolkit().beep();
+				} finally {
+					// schedule the cursor to revert after
+					// the paint has happended.
+					url = null;
+					SwingUtilities.invokeLater(this);
+				}
+			}
+		}
 
-        URL url;
+		URL url;
 
-        Cursor cursor;
-    }
+		Cursor cursor;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // construtor
-    // public TinyHTMLViewer(String resourceName) {
-    // _url = this.getClass().getResource(resourceName);
-    // init();
-    // }
+	// //////////////////////////////////////////////////////////////
+	// construtor
+	// public TinyHTMLViewer(String resourceName) {
+	// _url = this.getClass().getResource(resourceName);
+	// init();
+	// }
 
-    // public TinyHTMLViewer(URL url) {
-    // _url = url;
-    // init();
-    // }
+	// public TinyHTMLViewer(URL url) {
+	// _url = url;
+	// init();
+	// }
 
-    // protected void init() {
-    // try {
-    // _editor = new JEditorPane(_url);
-    // _editor.setEditable(false);
-    // c.setLayout(new BorderLayout());
-    // html.addHyperlinkListener(this);
+	// protected void init() {
+	// try {
+	// _editor = new JEditorPane(_url);
+	// _editor.setEditable(false);
+	// c.setLayout(new BorderLayout());
+	// html.addHyperlinkListener(this);
 
-    // JScrollPane sp
-    // vp.add(html);
-    // _editor, BorderLayout.CENTER);
-    // setSize(WIDTH, HEIGHT);
-    // }
-    // catch (IOException ex) {
-    // System.out.println("got IOException");
-    // }
-    // }
+	// JScrollPane sp
+	// vp.add(html);
+	// _editor, BorderLayout.CENTER);
+	// setSize(WIDTH, HEIGHT);
+	// }
+	// catch (IOException ex) {
+	// System.out.println("got IOException");
+	// }
+	// }
 
 }

@@ -24,27 +24,26 @@
 
 package org.tigris.gef.ocl;
 
-import java.io.Writer;
 import java.lang.reflect.Method;
 
 /**
  * @author Bob Tarling
  */
 class MethodInfo {
-    Object object;
+	Object object;
 
-    Method method;
+	Method method;
 
-    MethodInfo(Object o, Method m) {
-        object = o;
-        method = m;
-    }
+	MethodInfo(Object o, Method m) {
+		object = o;
+		method = m;
+	}
 
-    Object getObject() {
-        return object;
-    }
+	Object getObject() {
+		return object;
+	}
 
-    Method getMethod() {
-        return method;
-    }
+	Method getMethod() {
+		return method;
+	}
 }

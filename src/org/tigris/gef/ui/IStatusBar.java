@@ -35,5 +35,5 @@ package org.tigris.gef.ui;
  */
 
 public interface IStatusBar {
-    public void showStatus(String s);
+	public void showStatus(String s);
 } /* end interface IStatusBar */

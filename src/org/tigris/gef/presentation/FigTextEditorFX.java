@@ -296,7 +296,7 @@ public class FigTextEditorFX extends TextField implements TextEditor {
 
 		Platform.runLater(new Runnable() {
 			public void run() {
-				if (figText == null) { //XXX uso esse ou o de cima?
+				if (figText == null) { // XXX uso esse ou o de cima?
 					return;
 				}
 				String text;

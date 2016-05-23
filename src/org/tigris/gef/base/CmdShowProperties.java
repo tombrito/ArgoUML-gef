@@ -39,17 +39,17 @@ package org.tigris.gef.base;
 
 public class CmdShowProperties extends Cmd {
 
-    private static final long serialVersionUID = 7571203445979788114L;
+	private static final long serialVersionUID = 7571203445979788114L;
 
-    public CmdShowProperties() {
-        super("ShowProperties");
-    }
+	public CmdShowProperties() {
+		super("ShowProperties");
+	}
 
-    public void doIt() {
-        Globals.startPropertySheet();
-    }
+	public void doIt() {
+		Globals.startPropertySheet();
+	}
 
-    public void undoIt() {
-        System.out.println("undo CmdShowProperties is not supported");
-    }
+	public void undoIt() {
+		System.out.println("undo CmdShowProperties is not supported");
+	}
 } /* end class CmdShowProperties */

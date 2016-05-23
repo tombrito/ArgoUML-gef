@@ -28,7 +28,7 @@
 
 package org.tigris.gef.graph;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * This interface provides a facade to a net-level representation. Similiar in
@@ -51,25 +51,26 @@ import java.util.*;
  */
 
 public interface GraphModel extends BaseGraphModel {
-    /** Return all nodes in the graph */
-    List getNodes();
+	/** Return all nodes in the graph */
+	List getNodes();
 
-    /** Return all nodes in the graph */
-    List getEdges();
+	/** Return all nodes in the graph */
+	List getEdges();
 
-    /** Return all ports on node or edge */
-    List getPorts(Object nodeOrEdge);
+	/** Return all ports on node or edge */
+	List getPorts(Object nodeOrEdge);
 
-    /** Return all edges going to given port */
-    List getInEdges(Object port);
+	/** Return all edges going to given port */
+	List getInEdges(Object port);
 
-    /** Return all edges going from given port */
-    List getOutEdges(Object port);
+	/** Return all edges going from given port */
+	List getOutEdges(Object port);
 
-    /**
-     * Set the rules dictating which ports are connectable by which edge
-     * 
-     * @param cc A connection constrainer
-     */
-    public void setConnectionConstrainer(ConnectionConstrainer cc);
+	/**
+	 * Set the rules dictating which ports are connectable by which edge
+	 * 
+	 * @param cc
+	 *            A connection constrainer
+	 */
+	public void setConnectionConstrainer(ConnectionConstrainer cc);
 } /* end interface GraphModel */

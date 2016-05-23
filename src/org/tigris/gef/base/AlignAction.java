@@ -43,106 +43,108 @@ import org.tigris.gef.util.Localizer;
  */
 public class AlignAction extends UndoableAction {
 
-    private static final long serialVersionUID = 4982051206522858526L;
+	private static final long serialVersionUID = 4982051206522858526L;
 
-    /* Constants specifying the type of alignment requested. */
-    public static final int ALIGN_TOPS = 0;
+	/* Constants specifying the type of alignment requested. */
+	public static final int ALIGN_TOPS = 0;
 
-    public static final int ALIGN_BOTTOMS = 1;
+	public static final int ALIGN_BOTTOMS = 1;
 
-    public static final int ALIGN_LEFTS = 2;
+	public static final int ALIGN_LEFTS = 2;
 
-    public static final int ALIGN_RIGHTS = 3;
+	public static final int ALIGN_RIGHTS = 3;
 
-    public static final int ALIGN_CENTERS = 4;
+	public static final int ALIGN_CENTERS = 4;
 
-    public static final int ALIGN_H_CENTERS = 5;
+	public static final int ALIGN_H_CENTERS = 5;
 
-    public static final int ALIGN_V_CENTERS = 6;
+	public static final int ALIGN_V_CENTERS = 6;
 
-    public static final int ALIGN_TO_GRID = 7;
+	public static final int ALIGN_TO_GRID = 7;
 
-    private List<Fig> figs;
+	private List<Fig> figs;
 
-    /**
-     * Specification of the type of alignment requested
-     */
-    private int direction;
+	/**
+	 * Specification of the type of alignment requested
+	 */
+	private int direction;
 
-    private Map<Fig, Rectangle> boundsByFig;
+	private Map<Fig, Rectangle> boundsByFig;
 
-    /**
-     * Construct a new CmdAlign.
-     * 
-     * @param dir The desired alignment direction, one of the constants listed
-     *            above.
-     */
-    public AlignAction(int dir) {
-        super(Localizer.localize("GefBase", "Align" + wordFor(dir))); // needs-more-work:
-                                                                      // direction
-        direction = dir;
-    }
+	/**
+	 * Construct a new CmdAlign.
+	 * 
+	 * @param dir
+	 *            The desired alignment direction, one of the constants listed
+	 *            above.
+	 */
+	public AlignAction(int dir) {
+		super(Localizer.localize("GefBase", "Align" + wordFor(dir))); // needs-more-work:
+																		// direction
+		direction = dir;
+	}
 
-    public AlignAction(int dir, List<Fig> figs) {
-        super(Localizer.localize("GefBase", "Align" + wordFor(dir))); // needs-more-work:
-                                                                      // direction
-        direction = dir;
-        this.figs = figs;
-    }
+	public AlignAction(int dir, List<Fig> figs) {
+		super(Localizer.localize("GefBase", "Align" + wordFor(dir))); // needs-more-work:
+																		// direction
+		direction = dir;
+		this.figs = figs;
+	}
 
-    private static String wordFor(int d) {
-        switch (d) {
-        case ALIGN_TOPS:
-            return "Tops";
-        case ALIGN_BOTTOMS:
-            return "Bottoms";
-        case ALIGN_LEFTS:
-            return "Lefts";
-        case ALIGN_RIGHTS:
-            return "Rights";
+	private static String wordFor(int d) {
+		switch (d) {
+		case ALIGN_TOPS:
+			return "Tops";
+		case ALIGN_BOTTOMS:
+			return "Bottoms";
+		case ALIGN_LEFTS:
+			return "Lefts";
+		case ALIGN_RIGHTS:
+			return "Rights";
 
-        case ALIGN_CENTERS:
-            return "Centers";
-        case ALIGN_H_CENTERS:
-            return "HorizontalCenters";
-        case ALIGN_V_CENTERS:
-            return "VerticalCenters";
+		case ALIGN_CENTERS:
+			return "Centers";
+		case ALIGN_H_CENTERS:
+			return "HorizontalCenters";
+		case ALIGN_V_CENTERS:
+			return "VerticalCenters";
 
-        case ALIGN_TO_GRID:
-            return "ToGrid";
-        }
-        return "";
-    }
+		case ALIGN_TO_GRID:
+			return "ToGrid";
+		}
+		return "";
+	}
 
-    public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 
-        super.actionPerformed(e);
-        List<Fig> targets = new ArrayList<Fig>();
+		super.actionPerformed(e);
+		List<Fig> targets = new ArrayList<Fig>();
 
-        Editor ce = Globals.curEditor();
-        if (figs == null) {
-            SelectionManager sm = ce.getSelectionManager();
-            if (sm.getLocked()) {
-                Globals.showStatus("Cannot Modify Locked Objects");
-                return;
-            }
-            targets.addAll(sm.getSelectedFigs());
-        } else {
-            targets.addAll(figs);
-        }
-        int size = targets.size();
-        if (size == 0) return;
-        Rectangle bbox = targets.get(0).getBounds();
-        for (int i = 1; i < size; i++) {
-            bbox.add(targets.get(i).getBounds());
-        }
+		Editor ce = Globals.curEditor();
+		if (figs == null) {
+			SelectionManager sm = ce.getSelectionManager();
+			if (sm.getLocked()) {
+				Globals.showStatus("Cannot Modify Locked Objects");
+				return;
+			}
+			targets.addAll(sm.getSelectedFigs());
+		} else {
+			targets.addAll(figs);
+		}
+		int size = targets.size();
+		if (size == 0)
+			return;
+		Rectangle bbox = targets.get(0).getBounds();
+		for (int i = 1; i < size; i++) {
+			bbox.add(targets.get(i).getBounds());
+		}
 
-        boundsByFig = new HashMap<Fig, Rectangle>(size);
-        for (int i = 0; i < size; i++) {
-            Fig f = targets.get(i);
-            boundsByFig.put(f, f.getBounds());
-            f.align(bbox, direction, ce);
-            f.endTrans();
-        }
-    }
+		boundsByFig = new HashMap<Fig, Rectangle>(size);
+		for (int i = 0; i < size; i++) {
+			Fig f = targets.get(i);
+			boundsByFig.put(f, f.getBounds());
+			f.align(bbox, direction, ce);
+			f.endTrans();
+		}
+	}
 } /* end class AlignAction */

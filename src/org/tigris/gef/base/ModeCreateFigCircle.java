@@ -42,20 +42,20 @@ import org.tigris.gef.util.Localizer;
 
 public class ModeCreateFigCircle extends ModeCreate {
 
-    private static final long serialVersionUID = 2100068733524473429L;
+	private static final long serialVersionUID = 2100068733524473429L;
 
-    public String instructions() {
-        return Localizer.localize("GefBase", "ModeCreateFigCircleInstructions");
-    }
+	public String instructions() {
+		return Localizer.localize("GefBase", "ModeCreateFigCircleInstructions");
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // ModeCreate API
+	// //////////////////////////////////////////////////////////////
+	// ModeCreate API
 
-    /**
-     * Create a new FigCircle instance based on the given mouse down event and
-     * the state of the parent Editor.
-     */
-    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-        return new FigCircle(snapX, snapY, 0, 0);
-    }
+	/**
+	 * Create a new FigCircle instance based on the given mouse down event and
+	 * the state of the parent Editor.
+	 */
+	public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+		return new FigCircle(snapX, snapY, 0, 0);
+	}
 } /* end class ModeCreateFigCircle */

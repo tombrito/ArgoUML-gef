@@ -23,7 +23,8 @@
 
 package org.tigris.gef.event;
 
-import java.util.*;
+import java.util.EventObject;
+import java.util.Vector;
 
 /**
  * An event object that contains information about the current selection(s) in
@@ -36,21 +37,21 @@ import java.util.*;
  */
 public class ModeChangeEvent extends EventObject {
 
-    private static final long serialVersionUID = -6352595981387658622L;
+	private static final long serialVersionUID = -6352595981387658622L;
 
-    private Vector _modes;
+	private Vector _modes;
 
-    // //////////////////////////////////////////////////////////////
-    // constructor
-    public ModeChangeEvent(Object src, Vector modes) {
-        super(src);
-        _modes = modes;
-    }
+	// //////////////////////////////////////////////////////////////
+	// constructor
+	public ModeChangeEvent(Object src, Vector modes) {
+		super(src);
+		_modes = modes;
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // accessors
-    public Vector getModes() {
-        return _modes;
-    }
+	// //////////////////////////////////////////////////////////////
+	// accessors
+	public Vector getModes() {
+		return _modes;
+	}
 
 } /* end class ModeChangeEvent */

@@ -29,45 +29,45 @@
 package org.tigris.gef.base;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  * @deprecated in 0.12.3 us CutAction
  */
 public class CmdCut extends Cmd {
 
-    private static final long serialVersionUID = -5296601012186667929L;
+	private static final long serialVersionUID = -5296601012186667929L;
 
-    public CmdCut() {
-        super("Cut");
-    }
+	public CmdCut() {
+		super("Cut");
+	}
 
-    public void doIt() {
-        System.out.println("[CmdCut] doIt");
-        Editor ce = Globals.curEditor();
-        SelectionManager selectionManager = ce.getSelectionManager();
-        List<Selection> copiedElements = selectionManager.getSelections();
-        List<Fig> figs = new ArrayList<Fig>();
-        Iterator<Selection> copies = copiedElements.iterator();
-        while (copies.hasNext()) {
-            Selection s = copies.next();
-            Fig f = s.getContent();
-            if (f instanceof FigEdge) continue;
-            // needs-more-work: add support for cut-and-paste of edges
-            f = (Fig) f.clone();
-            figs.add(f);
-        }
-        Globals.clipBoard = figs;
-        selectionManager.removeFromGraph();
-    }
+	public void doIt() {
+		System.out.println("[CmdCut] doIt");
+		Editor ce = Globals.curEditor();
+		SelectionManager selectionManager = ce.getSelectionManager();
+		List<Selection> copiedElements = selectionManager.getSelections();
+		List<Fig> figs = new ArrayList<Fig>();
+		Iterator<Selection> copies = copiedElements.iterator();
+		while (copies.hasNext()) {
+			Selection s = copies.next();
+			Fig f = s.getContent();
+			if (f instanceof FigEdge)
+				continue;
+			// needs-more-work: add support for cut-and-paste of edges
+			f = (Fig) f.clone();
+			figs.add(f);
+		}
+		Globals.clipBoard = figs;
+		selectionManager.removeFromGraph();
+	}
 
-    public void undoIt() {
-        System.out.println("Undo does not make sense for CmdCut");
-    }
+	public void undoIt() {
+		System.out.println("Undo does not make sense for CmdCut");
+	}
 
 } /* end class CmdCut */

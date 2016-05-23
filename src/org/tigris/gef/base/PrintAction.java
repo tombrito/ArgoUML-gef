@@ -52,267 +52,267 @@ import org.tigris.gef.util.Localizer;
  */
 public class PrintAction extends AbstractAction implements Printable {
 
-    private static final long serialVersionUID = 3600929184215942819L;
+	private static final long serialVersionUID = 3600929184215942819L;
 
-    private PrinterJob printerJob;
+	private PrinterJob printerJob;
 
-    private PageFormat pageFormat;
+	private PageFormat pageFormat;
 
-    private int maxPageIndex = 1;
+	private int maxPageIndex = 1;
 
-    private boolean fitDiagramToPage = true;
+	private boolean fitDiagramToPage = true;
 
-    private boolean isFirstPrintCall = true;
+	private boolean isFirstPrintCall = true;
 
-    private double scale;
+	private double scale;
 
-    private int nCol;
+	private int nCol;
 
-    private double pageX;
+	private double pageX;
 
-    private double pageY;
+	private double pageY;
 
-    private double pageWidth;
+	private double pageWidth;
 
-    private double pageHeight;
+	private double pageHeight;
 
-    private double diagramX;
+	private double diagramX;
 
-    private double diagramY;
+	private double diagramY;
 
-    private double diagramWidth;
+	private double diagramWidth;
 
-    private double diagramHeight;
+	private double diagramHeight;
 
-    public PrintAction() {
-        super();
-    }
+	public PrintAction() {
+		super();
+	}
 
-    /**
-     * Creates a new PrintAction
-     * 
-     * @param name The name of the action
-     */
-    public PrintAction(String name, String diagramName) {
-        this(name, diagramName, false);
-    }
+	/**
+	 * Creates a new PrintAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public PrintAction(String name, String diagramName) {
+		this(name, diagramName, false);
+	}
 
-    /**
-     * Creates a new PrintAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public PrintAction(String name, String diagramName, Icon icon) {
-        this(name, icon, diagramName, false);
-    }
+	/**
+	 * Creates a new PrintAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public PrintAction(String name, String diagramName, Icon icon) {
+		this(name, icon, diagramName, false);
+	}
 
-    /**
-     * Creates a new PrintAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public PrintAction(String name, String diagramName, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new PrintAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public PrintAction(String name, String diagramName, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new PrintAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public PrintAction(String name, Icon icon, String diagramName,
-            boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new PrintAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public PrintAction(String name, Icon icon, String diagramName, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent arg0) {
-        PrinterJob printerJob = getPrinterJob();
+	public void actionPerformed(ActionEvent arg0) {
+		PrinterJob printerJob = getPrinterJob();
 
-        printerJob.setPrintable(new PrintAction(), getPageFormat());
+		printerJob.setPrintable(new PrintAction(), getPageFormat());
 
-        if (printerJob.printDialog()) {
-            try {
-                printerJob.print();
-            } catch (PrinterException pe) {
-                Globals.showStatus("Error got a Printer exception");
-            }
-        }
+		if (printerJob.printDialog()) {
+			try {
+				printerJob.print();
+			} catch (PrinterException pe) {
+				Globals.showStatus("Error got a Printer exception");
+			}
+		}
 
-        Globals.showStatus("Printing finished");
-    }
+		Globals.showStatus("Printing finished");
+	}
 
-    private boolean isFirstPrintCall() {
-        return isFirstPrintCall;
-    }
+	private boolean isFirstPrintCall() {
+		return isFirstPrintCall;
+	}
 
-    private void setFirstPrintCall(boolean b) {
-        isFirstPrintCall = b;
-    }
+	private void setFirstPrintCall(boolean b) {
+		isFirstPrintCall = b;
+	}
 
-    private boolean fitDiagramToPage() {
-        return fitDiagramToPage;
-    }
+	private boolean fitDiagramToPage() {
+		return fitDiagramToPage;
+	}
 
-    private void setFitDiagramToPage(boolean b) {
-        fitDiagramToPage = b;
-    }
+	private void setFitDiagramToPage(boolean b) {
+		fitDiagramToPage = b;
+	}
 
-    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
-        throws PrinterException {
-        if (pageIndex >= maxPageIndex) {
-            return NO_SUCH_PAGE;
-        }
+	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+		if (pageIndex >= maxPageIndex) {
+			return NO_SUCH_PAGE;
+		}
 
-        Editor editor = Globals.curEditor();
-        // String diagramName = (String) getArg("diagramName");
+		Editor editor = Globals.curEditor();
+		// String diagramName = (String) getArg("diagramName");
 
-        Graphics2D g2d = (Graphics2D) graphics;
+		Graphics2D g2d = (Graphics2D) graphics;
 
-        Rectangle drawingArea = null;
+		Rectangle drawingArea = null;
 
-        SelectionManager sm = editor.getSelectionManager();
-        List<Fig> selectedFigs = sm.getSelectedFigs();
-        Iterator<Fig> iter = null;
+		SelectionManager sm = editor.getSelectionManager();
+		List<Fig> selectedFigs = sm.getSelectedFigs();
+		Iterator<Fig> iter = null;
 
-        if (selectedFigs.size() > 0) {
-            iter = selectedFigs.iterator();
-        } else {
-            iter = editor.getFigs().iterator();
-            drawingArea = new Rectangle();
-        } // end else if
+		if (selectedFigs.size() > 0) {
+			iter = selectedFigs.iterator();
+		} else {
+			iter = editor.getFigs().iterator();
+			drawingArea = new Rectangle();
+		} // end else if
 
-        while (iter.hasNext()) {
-            Fig fig = iter.next();
-            Rectangle rect = fig.getBounds();
-            if (drawingArea == null) {
-                drawingArea = new Rectangle(rect);
-            }
-            drawingArea.add(rect);
-        }
+		while (iter.hasNext()) {
+			Fig fig = iter.next();
+			Rectangle rect = fig.getBounds();
+			if (drawingArea == null) {
+				drawingArea = new Rectangle(rect);
+			}
+			drawingArea.add(rect);
+		}
 
-        if (drawingArea == null || drawingArea.width == 0
-                || drawingArea.height == 0) {
-            return NO_SUCH_PAGE;
-        }
+		if (drawingArea == null || drawingArea.width == 0 || drawingArea.height == 0) {
+			return NO_SUCH_PAGE;
+		}
 
-        boolean h = editor.getGridHidden();
-        editor.setGridHidden(true);
+		boolean h = editor.getGridHidden();
+		editor.setGridHidden(true);
 
-        if (isFirstPrintCall()) {
-            setFirstPrintCall(false);
+		if (isFirstPrintCall()) {
+			setFirstPrintCall(false);
 
-            pageWidth = pageFormat.getImageableWidth();
-            pageHeight = pageFormat.getImageableHeight();
+			pageWidth = pageFormat.getImageableWidth();
+			pageHeight = pageFormat.getImageableHeight();
 
-            pageX = pageFormat.getImageableX();
-            pageY = pageFormat.getImageableY();
+			pageX = pageFormat.getImageableX();
+			pageY = pageFormat.getImageableY();
 
-            diagramWidth = (double) drawingArea.width;
-            diagramHeight = (double) drawingArea.height;
+			diagramWidth = (double) drawingArea.width;
+			diagramHeight = (double) drawingArea.height;
 
-            diagramX = (double) drawingArea.x;
-            diagramY = (double) drawingArea.y;
+			diagramX = (double) drawingArea.x;
+			diagramY = (double) drawingArea.y;
 
-            scale = Math.min(pageWidth / (double) (drawingArea.width + 1),
-                    pageHeight / (double) (drawingArea.height + 1));
-            if (scale < 1.0) {
-                // the printing doesn't fit in a single page;
-                // let's ask the user what to do
-                if (!promptFitToPage()) {
-                    // the user chose to cancel the printing job: let's restore
-                    // the
-                    // grid, then quit
-                    editor.setGridHidden(h);
-                    throw new PrinterException();
-                }
-            }
-            if (fitDiagramToPage()) {
-                maxPageIndex = 1;
-            } else {
-                nCol = Math.max((int) Math.ceil(diagramWidth / pageWidth), 1);
-                int nRow = Math.max((int) Math.ceil(diagramHeight / pageHeight),
-                        1);
-                maxPageIndex = nCol * nRow;
-            }
-        }
+			scale = Math.min(pageWidth / (double) (drawingArea.width + 1),
+					pageHeight / (double) (drawingArea.height + 1));
+			if (scale < 1.0) {
+				// the printing doesn't fit in a single page;
+				// let's ask the user what to do
+				if (!promptFitToPage()) {
+					// the user chose to cancel the printing job: let's restore
+					// the
+					// grid, then quit
+					editor.setGridHidden(h);
+					throw new PrinterException();
+				}
+			}
+			if (fitDiagramToPage()) {
+				maxPageIndex = 1;
+			} else {
+				nCol = Math.max((int) Math.ceil(diagramWidth / pageWidth), 1);
+				int nRow = Math.max((int) Math.ceil(diagramHeight / pageHeight), 1);
+				maxPageIndex = nCol * nRow;
+			}
+		}
 
-        if (fitDiagramToPage()) {
-            if (scale < 1.0) {
-                g2d.scale(scale, scale);
-                g2d.translate((pageX / scale) - diagramX + 1,
-                        (pageY / scale) - diagramY + 1);
-            } else {
-                g2d.translate(pageX - diagramX + 1, pageY - diagramY + 1);
-            }
-        } else {
-            double iCol = pageIndex % nCol;
-            double iRow = pageIndex / nCol;
-            double x = iCol * pageWidth;
-            double y = iRow * pageHeight;
-            g2d.translate(pageX - x + 1, pageY - y + 1);
-        }
+		if (fitDiagramToPage()) {
+			if (scale < 1.0) {
+				g2d.scale(scale, scale);
+				g2d.translate((pageX / scale) - diagramX + 1, (pageY / scale) - diagramY + 1);
+			} else {
+				g2d.translate(pageX - diagramX + 1, pageY - diagramY + 1);
+			}
+		} else {
+			double iCol = pageIndex % nCol;
+			double iRow = pageIndex / nCol;
+			double x = iCol * pageWidth;
+			double y = iRow * pageHeight;
+			g2d.translate(pageX - x + 1, pageY - y + 1);
+		}
 
-        g2d.setClip(drawingArea);
-        editor.print(g2d);
-        editor.setGridHidden(h);
+		g2d.setClip(drawingArea);
+		editor.print(g2d);
+		editor.setGridHidden(h);
 
-        return (PAGE_EXISTS);
-    }
+		return (PAGE_EXISTS);
+	}
 
-    PrinterJob getPrinterJob() {
-        if (printerJob == null) {
-            printerJob = PrinterJob.getPrinterJob();
-        }
-        return printerJob;
-    }
+	PrinterJob getPrinterJob() {
+		if (printerJob == null) {
+			printerJob = PrinterJob.getPrinterJob();
+		}
+		return printerJob;
+	}
 
-    PageFormat getPageFormat() {
-        if (pageFormat == null) {
-            PrinterJob pj = getPrinterJob();
-            if (pj != null) {
-                pageFormat = pj.defaultPage();
-            }
-        }
-        return pageFormat;
-    }
+	PageFormat getPageFormat() {
+		if (pageFormat == null) {
+			PrinterJob pj = getPrinterJob();
+			if (pj != null) {
+				pageFormat = pj.defaultPage();
+			}
+		}
+		return pageFormat;
+	}
 
-    void setPageFormat(PageFormat pf) {
-        pageFormat = pf;
-    }
+	void setPageFormat(PageFormat pf) {
+		pageFormat = pf;
+	}
 
-    public void doPageSetup() {
-        setPageFormat(getPrinterJob().pageDialog(getPageFormat()));
-    }
+	public void doPageSetup() {
+		setPageFormat(getPrinterJob().pageDialog(getPageFormat()));
+	}
 
-    /**
-     * Pops up a dialog to ask the user whether to fit the exceeding diagrams to
-     * page or to print multiple pages. The user can also cancel the print job.
-     * 
-     * @return false if the user has chosen to cancel the printing, true
-     *         otherwise
-     */
-    private boolean promptFitToPage() {
-        Object[] options = { "Fit to page", "Multiple Pages", "Cancel" };
+	/**
+	 * Pops up a dialog to ask the user whether to fit the exceeding diagrams to
+	 * page or to print multiple pages. The user can also cancel the print job.
+	 * 
+	 * @return false if the user has chosen to cancel the printing, true
+	 *         otherwise
+	 */
+	private boolean promptFitToPage() {
+		Object[] options = { "Fit to page", "Multiple Pages", "Cancel" };
 
-        int n = JOptionPane.showOptionDialog(null,
-                "The diagram exceeds the current page size. Select option?",
-                "Print", JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		int n = JOptionPane.showOptionDialog(null, "The diagram exceeds the current page size. Select option?", "Print",
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        if (n == JOptionPane.CANCEL_OPTION
-                || (n == JOptionPane.CLOSED_OPTION)) {
-            return false;
-        } else {
-            if (n == JOptionPane.NO_OPTION) {
-                setFitDiagramToPage(false);
-            } else {
-                setFitDiagramToPage(true);
-            }
-            return true;
-        }
-    }
+		if (n == JOptionPane.CANCEL_OPTION || (n == JOptionPane.CLOSED_OPTION)) {
+			return false;
+		} else {
+			if (n == JOptionPane.NO_OPTION) {
+				setFitDiagramToPage(false);
+			} else {
+				setFitDiagramToPage(true);
+			}
+			return true;
+		}
+	}
 }

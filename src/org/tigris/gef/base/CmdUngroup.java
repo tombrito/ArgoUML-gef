@@ -28,12 +28,12 @@
 
 package org.tigris.gef.base;
 
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
-
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
+
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Cmd to ungroup a selected group object.
@@ -45,35 +45,35 @@ import java.util.Vector;
 
 public class CmdUngroup extends Cmd {
 
-    private static final long serialVersionUID = 5447608769108715379L;
+	private static final long serialVersionUID = 5447608769108715379L;
 
-    public CmdUngroup() {
-        super("Ungroup");
-    }
+	public CmdUngroup() {
+		super("Ungroup");
+	}
 
-    public void doIt() {
-        Vector ungroupedItems = new Vector();
-        Editor currentEditor = Globals.curEditor();
-        Vector selectedFigs = currentEditor.getSelectionManager().getFigs();
-        Enumeration eachDE = selectedFigs.elements();
-        while (eachDE.hasMoreElements()) {
-            Object o = eachDE.nextElement();
-            if (o instanceof FigGroup) {
-                FigGroup fg = (FigGroup) o;
-                Iterator it = fg.getFigs().iterator();
-                while (it.hasNext()) {
-                    Fig f = (Fig) it.next();
-                    currentEditor.add(f);
-                    ungroupedItems.addElement(f);
-                }
-                currentEditor.remove(fg);
-            }
-        } /* end while each selected object */
-        currentEditor.getSelectionManager().deselectAll();
-        currentEditor.getSelectionManager().select(ungroupedItems);
-    }
+	public void doIt() {
+		Vector ungroupedItems = new Vector();
+		Editor currentEditor = Globals.curEditor();
+		Vector selectedFigs = currentEditor.getSelectionManager().getFigs();
+		Enumeration eachDE = selectedFigs.elements();
+		while (eachDE.hasMoreElements()) {
+			Object o = eachDE.nextElement();
+			if (o instanceof FigGroup) {
+				FigGroup fg = (FigGroup) o;
+				Iterator it = fg.getFigs().iterator();
+				while (it.hasNext()) {
+					Fig f = (Fig) it.next();
+					currentEditor.add(f);
+					ungroupedItems.addElement(f);
+				}
+				currentEditor.remove(fg);
+			}
+		} /* end while each selected object */
+		currentEditor.getSelectionManager().deselectAll();
+		currentEditor.getSelectionManager().select(ungroupedItems);
+	}
 
-    public void undoIt() {
-        System.out.println("not implemented yet");
-    }
+	public void undoIt() {
+		System.out.println("not implemented yet");
+	}
 } /* end class CmdUngroup */

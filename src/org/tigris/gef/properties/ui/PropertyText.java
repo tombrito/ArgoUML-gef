@@ -27,51 +27,54 @@
 //package sun.beanbox;
 package org.tigris.gef.properties.ui;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.beans.*;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.beans.PropertyEditor;
+
+import javax.swing.JTextField;
 
 class PropertyText extends JTextField implements KeyListener {
 
-    public PropertyText(PropertyEditor pe) {
-        super();
-        editor = pe;
-        String s = pe.getAsText();
-        if (s != null) setText(s);
-        addKeyListener(this);
-    }
+	public PropertyText(PropertyEditor pe) {
+		super();
+		editor = pe;
+		String s = pe.getAsText();
+		if (s != null)
+			setText(s);
+		addKeyListener(this);
+	}
 
-    public void repaint() {
-        super.repaint();
-    }
+	public void repaint() {
+		super.repaint();
+	}
 
-    public Dimension getMinimumSize() {
-        return new Dimension(80, 20);
-    }
+	public Dimension getMinimumSize() {
+		return new Dimension(80, 20);
+	}
 
-    public Dimension getPreferredSize() {
-        return new Dimension(80, 20);
-    }
+	public Dimension getPreferredSize() {
+		return new Dimension(80, 20);
+	}
 
-    // ----------------------------------------------------------------------
-    // Keyboard listener methods.
+	// ----------------------------------------------------------------------
+	// Keyboard listener methods.
 
-    public void keyReleased(KeyEvent ke) {
-        // super.keyReleased(ke);
-        try {
-            editor.setAsText(getText());
-        } catch (IllegalArgumentException ex) {
-            // Quietly ignore.
-        }
-    }
+	public void keyReleased(KeyEvent ke) {
+		// super.keyReleased(ke);
+		try {
+			editor.setAsText(getText());
+		} catch (IllegalArgumentException ex) {
+			// Quietly ignore.
+		}
+	}
 
-    public void keyPressed(KeyEvent ke) {
-    } // super.keyPressed(ke);
+	public void keyPressed(KeyEvent ke) {
+	} // super.keyPressed(ke);
 
-    public void keyTyped(KeyEvent ke) {
-    } // super.keyTyped(ke);
+	public void keyTyped(KeyEvent ke) {
+	} // super.keyTyped(ke);
 
-    // ----------------------------------------------------------------------
-    private PropertyEditor editor;
+	// ----------------------------------------------------------------------
+	private PropertyEditor editor;
 }

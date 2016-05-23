@@ -36,45 +36,44 @@ import javax.swing.Icon;
  * 
  * @author Bob Tarling
  */
-public class UndoAction extends AbstractAction
-        implements PropertyChangeListener {
+public class UndoAction extends AbstractAction implements PropertyChangeListener {
 
-    /**
-     * Construct the undo action with a display name
-     * 
-     * @param name
-     */
-    public UndoAction(String name) {
-        super(name);
-        UndoManager.getInstance().addPropertyChangeListener(this);
-        setEnabled(false);
-    }
+	/**
+	 * Construct the undo action with a display name
+	 * 
+	 * @param name
+	 */
+	public UndoAction(String name) {
+		super(name);
+		UndoManager.getInstance().addPropertyChangeListener(this);
+		setEnabled(false);
+	}
 
-    /**
-     * Construct the undo action with a display name and icon.
-     * 
-     * @param name
-     * @param icon
-     */
-    public UndoAction(String name, Icon icon) {
-        super(name, icon);
-        UndoManager.getInstance().addPropertyChangeListener(this);
-        setEnabled(false);
-    }
+	/**
+	 * Construct the undo action with a display name and icon.
+	 * 
+	 * @param name
+	 * @param icon
+	 */
+	public UndoAction(String name, Icon icon) {
+		super(name, icon);
+		UndoManager.getInstance().addPropertyChangeListener(this);
+		setEnabled(false);
+	}
 
-    /**
-     * Perform the undo action.
-     */
-    public void actionPerformed(ActionEvent e) {
-        UndoManager.getInstance().undo();
-    }
+	/**
+	 * Perform the undo action.
+	 */
+	public void actionPerformed(ActionEvent e) {
+		UndoManager.getInstance().undo();
+	}
 
-    /**
-     * When the undo stack is down to zero we are disabled.
-     */
-    public void propertyChange(PropertyChangeEvent event) {
-        if ("canUndo".equals(event.getPropertyName())) {
-            setEnabled("true".equals(event.getNewValue()));
-        }
-    }
+	/**
+	 * When the undo stack is down to zero we are disabled.
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		if ("canUndo".equals(event.getPropertyName())) {
+			setEnabled("true".equals(event.getNewValue()));
+		}
+	}
 }

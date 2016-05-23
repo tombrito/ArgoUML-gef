@@ -39,43 +39,44 @@ import java.awt.Polygon;
 
 public class ArrowHeadTriangle extends ArrowHead {
 
-    private static final long serialVersionUID = -438086672038929101L;
+	private static final long serialVersionUID = -438086672038929101L;
 
-    public void paint(final Graphics g, final Point start, final Point end,
-            final Color lineColor, final Color fillColor) {
-        int xFrom, xTo, yFrom, yTo;
-        double denom, x, y, dx, dy, cos, sin;
-        Polygon triangle;
+	public void paint(final Graphics g, final Point start, final Point end, final Color lineColor,
+			final Color fillColor) {
+		int xFrom, xTo, yFrom, yTo;
+		double denom, x, y, dx, dy, cos, sin;
+		Polygon triangle;
 
-        xFrom = start.x;
-        xTo = end.x;
-        yFrom = start.y;
-        yTo = end.y;
+		xFrom = start.x;
+		xTo = end.x;
+		yFrom = start.y;
+		yTo = end.y;
 
-        dx = (double) (xTo - xFrom);
-        dy = (double) (yTo - yFrom);
-        denom = dist(dx, dy);
-        if (denom <= 0.01) return;
+		dx = (double) (xTo - xFrom);
+		dy = (double) (yTo - yFrom);
+		denom = dist(dx, dy);
+		if (denom <= 0.01)
+			return;
 
-        cos = getHeight() / denom;
-        sin = getWidth() / denom;
-        x = xTo - cos * dx;
-        y = yTo - cos * dy;
-        int x1 = (int) (x - sin * dy);
-        int y1 = (int) (y + sin * dx);
-        int x2 = (int) (x + sin * dy);
-        int y2 = (int) (y - sin * dx);
+		cos = getHeight() / denom;
+		sin = getWidth() / denom;
+		x = xTo - cos * dx;
+		y = yTo - cos * dy;
+		int x1 = (int) (x - sin * dy);
+		int y1 = (int) (y + sin * dx);
+		int x2 = (int) (x + sin * dy);
+		int y2 = (int) (y - sin * dx);
 
-        triangle = new Polygon();
-        triangle.addPoint(xTo, yTo);
-        triangle.addPoint(x1, y1);
-        triangle.addPoint(x2, y2);
+		triangle = new Polygon();
+		triangle.addPoint(xTo, yTo);
+		triangle.addPoint(x1, y1);
+		triangle.addPoint(x2, y2);
 
-        Graphics graphics = (Graphics) g;
-        graphics.setColor(fillColor);
-        graphics.fillPolygon(triangle);
-        graphics.setColor(lineColor);
-        graphics.drawPolygon(triangle);
-    }
+		Graphics graphics = (Graphics) g;
+		graphics.setColor(fillColor);
+		graphics.fillPolygon(triangle);
+		graphics.setColor(lineColor);
+		graphics.drawPolygon(triangle);
+	}
 
 } /* end class ArrowHeadTriangle */

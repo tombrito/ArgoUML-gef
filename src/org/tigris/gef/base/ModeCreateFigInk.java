@@ -43,67 +43,67 @@ import org.tigris.gef.util.Localizer;
 
 public class ModeCreateFigInk extends ModeCreate {
 
-    private static final long serialVersionUID = -4480520433643756752L;
+	private static final long serialVersionUID = -4480520433643756752L;
 
-    /**
-     * the minium distance that the mouse must move before a new point is added.
-     */
-    public static final int MIN_DELTA = 4;
+	/**
+	 * the minium distance that the mouse must move before a new point is added.
+	 */
+	public static final int MIN_DELTA = 4;
 
-    // //////////////////////////////////////////////////////////////
-    // instance variables
+	// //////////////////////////////////////////////////////////////
+	// instance variables
 
-    /** The position of the last point that was added. */
-    protected int _lastX, _lastY;
+	/** The position of the last point that was added. */
+	protected int _lastX, _lastY;
 
-    // //////////////////////////////////////////////////////////////
-    // Mode API
+	// //////////////////////////////////////////////////////////////
+	// Mode API
 
-    public String instructions() {
-        return Localizer.localize("GefBase", "ModeCreateFigInkInstructions");
-    }
+	public String instructions() {
+		return Localizer.localize("GefBase", "ModeCreateFigInkInstructions");
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // ModeCreate API
+	// //////////////////////////////////////////////////////////////
+	// ModeCreate API
 
-    /**
-     * Create a new FigInk instance based on the given mouse down event and the
-     * state of the parent Editor.
-     */
-    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-        FigInk p = new FigInk(snapX, snapY);
-        _lastX = snapX;
-        _lastY = snapY;
-        return p;
-    }
+	/**
+	 * Create a new FigInk instance based on the given mouse down event and the
+	 * state of the parent Editor.
+	 */
+	public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+		FigInk p = new FigInk(snapX, snapY);
+		_lastX = snapX;
+		_lastY = snapY;
+		return p;
+	}
 
-    protected void creationDrag(int x, int y) {
-    }
+	protected void creationDrag(int x, int y) {
+	}
 
-    // //////////////////////////////////////////////////////////////
-    // Event handlers
+	// //////////////////////////////////////////////////////////////
+	// Event handlers
 
-    /** Dragging adds points to the ink. */
-    public void mouseDragged(MouseEvent me) {
-        if (me.isConsumed()) return;
-        int x = me.getX(), y = me.getY();
-        FigInk ink = (FigInk) _newItem;
-        if (!nearLast(x, y)) {
-            editor.damageAll(); // startTrans?
-            ink.addPoint(x, y);
-            editor.damageAll(); // endTrans?
-            _lastX = x;
-            _lastY = y;
-        }
-        me.consume();
-    }
+	/** Dragging adds points to the ink. */
+	public void mouseDragged(MouseEvent me) {
+		if (me.isConsumed())
+			return;
+		int x = me.getX(), y = me.getY();
+		FigInk ink = (FigInk) _newItem;
+		if (!nearLast(x, y)) {
+			editor.damageAll(); // startTrans?
+			ink.addPoint(x, y);
+			editor.damageAll(); // endTrans?
+			_lastX = x;
+			_lastY = y;
+		}
+		me.consume();
+	}
 
-    /**
-     * Internal function to test if the current point is so close to the last
-     * point that it should not be added to the ink.
-     */
-    protected boolean nearLast(int x, int y) {
-        return x > _lastX - MIN_DELTA && x < _lastX + MIN_DELTA
-                && y > _lastY - MIN_DELTA && y < _lastY + MIN_DELTA;
-    }
+	/**
+	 * Internal function to test if the current point is so close to the last
+	 * point that it should not be added to the ink.
+	 */
+	protected boolean nearLast(int x, int y) {
+		return x > _lastX - MIN_DELTA && x < _lastX + MIN_DELTA && y > _lastY - MIN_DELTA && y < _lastY + MIN_DELTA;
+	}
 } /* end class ModeCreateFigInk */

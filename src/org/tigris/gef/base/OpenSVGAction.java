@@ -52,123 +52,136 @@ import org.tigris.gef.util.Util;
  */
 public class OpenSVGAction extends AbstractAction implements FilenameFilter {
 
-    private static final long serialVersionUID = 596114767338320391L;
+	private static final long serialVersionUID = 596114767338320391L;
 
-    private Dimension dimension;
+	private Dimension dimension;
 
-    /**
-     * Creates a new OpenSVGAction
-     * 
-     * @param name The name of the action
-     */
-    public OpenSVGAction(String name) {
-        this(name, null, false);
-    }
+	/**
+	 * Creates a new OpenSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public OpenSVGAction(String name) {
+		this(name, null, false);
+	}
 
-    /**
-     * Creates a new OpenSVGAction
-     * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
-     */
-    public OpenSVGAction(String name, Dimension dimension) {
-        this(name, dimension, false);
-    }
+	/**
+	 * Creates a new OpenSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param dimension
+	 *            The dimension of the graph
+	 */
+	public OpenSVGAction(String name, Dimension dimension) {
+		this(name, dimension, false);
+	}
 
-    /**
-     * Creates a new OpenSVGAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public OpenSVGAction(String name, Icon icon) {
-        this(name, icon, null, false);
-    }
+	/**
+	 * Creates a new OpenSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public OpenSVGAction(String name, Icon icon) {
+		this(name, icon, null, false);
+	}
 
-    /**
-     * Creates a new OpenSVGAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
-     */
-    public OpenSVGAction(String name, Icon icon, Dimension dimension) {
-        this(name, icon, dimension, false);
-    }
+	/**
+	 * Creates a new OpenSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param dimension
+	 *            The dimension of the graph
+	 */
+	public OpenSVGAction(String name, Icon icon, Dimension dimension) {
+		this(name, icon, dimension, false);
+	}
 
-    /**
-     * Creates a new OpenSVGAction
-     * 
-     * @param name The name of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
-     */
-    public OpenSVGAction(String name, Dimension dimension, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-        this.dimension = dimension;
-    }
+	/**
+	 * Creates a new OpenSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param dimension
+	 *            The dimension of the graph
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public OpenSVGAction(String name, Dimension dimension, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+		this.dimension = dimension;
+	}
 
-    /**
-     * Creates a new OpenSVGAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param dimension The dimension of the graph
-     * @param localize Whether to localize the name or not
-     */
-    public OpenSVGAction(String name, Icon icon, Dimension dimension,
-            boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-        this.dimension = dimension;
-    }
+	/**
+	 * Creates a new OpenSVGAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param dimension
+	 *            The dimension of the graph
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public OpenSVGAction(String name, Icon icon, Dimension dimension, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+		this.dimension = dimension;
+	}
 
-    /**
-     * Only let the user select files that match the filter. This does not seem
-     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
-     * it currently accepts all filenames.
-     * <p>
-     * 
-     * Needs-More-Work: The source code for this function is duplicated in
-     * CmdSave#accept.
-     * 
-     * @deprecated this method always returns true
-     */
-    public boolean accept(File dir, String name) {
-        return true;
-    }
+	/**
+	 * Only let the user select files that match the filter. This does not seem
+	 * to be called under JDK 1.0.2 on solaris. I have not finished this method,
+	 * it currently accepts all filenames.
+	 * <p>
+	 * 
+	 * Needs-More-Work: The source code for this function is duplicated in
+	 * CmdSave#accept.
+	 * 
+	 * @deprecated this method always returns true
+	 */
+	public boolean accept(File dir, String name) {
+		return true;
+	}
 
-    public void actionPerformed(ActionEvent event) {
-        Editor ce = Globals.curEditor();
-        FileDialog fd = new FileDialog(ce.findFrame(), "Open...",
-                FileDialog.LOAD);
-        fd.setFilenameFilter(this);
-        fd.setDirectory(Globals.getLastDirectory());
-        fd.setVisible(true);
-        String filename = fd.getFile(); // blocking
-        String path = fd.getDirectory(); // blocking
-        Globals.setLastDirectory(path);
+	public void actionPerformed(ActionEvent event) {
+		Editor ce = Globals.curEditor();
+		FileDialog fd = new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
+		fd.setFilenameFilter(this);
+		fd.setDirectory(Globals.getLastDirectory());
+		fd.setVisible(true);
+		String filename = fd.getFile(); // blocking
+		String path = fd.getDirectory(); // blocking
+		Globals.setLastDirectory(path);
 
-        if (filename != null) {
-            try {
-                Globals.showStatus("Reading " + path + filename + "...");
-                URL url = Util.fileToURL(new File(path + filename));
-                Diagram diag = SvgParser.SINGLETON.readDiagram(url);
-                Editor ed = new Editor(diag);
-                Globals.showStatus("Read " + path + filename);
-                JGraphFrame jgf = new JGraphFrame(path + filename, ed);
-                // Object d = getArg("dimension");
-                // if (d instanceof Dimension) {
-                // jgf.setSize((Dimension) d);
-                // }
-                if (dimension != null) {
-                    jgf.setSize(dimension);
-                }
-                jgf.setVisible(true);
-            } catch (MalformedURLException murle) {
-                System.out.println("bad URL");
-            } catch (IOException e) {
-                System.out.println("IOExcept in opensvg");
-            }
-        }
-    }
+		if (filename != null) {
+			try {
+				Globals.showStatus("Reading " + path + filename + "...");
+				URL url = Util.fileToURL(new File(path + filename));
+				Diagram diag = SvgParser.SINGLETON.readDiagram(url);
+				Editor ed = new Editor(diag);
+				Globals.showStatus("Read " + path + filename);
+				JGraphFrame jgf = new JGraphFrame(path + filename, ed);
+				// Object d = getArg("dimension");
+				// if (d instanceof Dimension) {
+				// jgf.setSize((Dimension) d);
+				// }
+				if (dimension != null) {
+					jgf.setSize(dimension);
+				}
+				jgf.setVisible(true);
+			} catch (MalformedURLException murle) {
+				System.out.println("bad URL");
+			} catch (IOException e) {
+				System.out.println("IOExcept in opensvg");
+			}
+		}
+	}
 }

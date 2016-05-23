@@ -41,59 +41,66 @@ import org.tigris.gef.util.Localizer;
  */
 public class AdjustPageBreaksAction extends UndoableAction {
 
-    private static final long serialVersionUID = -159480249557144602L;
+	private static final long serialVersionUID = -159480249557144602L;
 
-    public AdjustPageBreaksAction() {
-        super();
-    }
+	public AdjustPageBreaksAction() {
+		super();
+	}
 
-    /**
-     * Creates a new AdjustPageBreaksAction
-     * 
-     * @param name The name of the action
-     */
-    public AdjustPageBreaksAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new AdjustPageBreaksAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public AdjustPageBreaksAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new AdjustPageBreaksAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public AdjustPageBreaksAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new AdjustPageBreaksAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public AdjustPageBreaksAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new AdjustPageBreaksAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public AdjustPageBreaksAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new AdjustPageBreaksAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public AdjustPageBreaksAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new AdjustPageBreaksAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public AdjustPageBreaksAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new AdjustPageBreaksAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public AdjustPageBreaksAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent event) {
-        super.actionPerformed(event);
-        Editor ce = Globals.curEditor();
-        Layer pageBreaks = (Layer) ce.getLayerManager()
-                .findLayerNamed("PageBreaks");
-        if (pageBreaks != null) {
-            pageBreaks.adjust();
-        }
-    }
+	public void actionPerformed(ActionEvent event) {
+		super.actionPerformed(event);
+		Editor ce = Globals.curEditor();
+		Layer pageBreaks = (Layer) ce.getLayerManager().findLayerNamed("PageBreaks");
+		if (pageBreaks != null) {
+			pageBreaks.adjust();
+		}
+	}
 }

@@ -28,7 +28,8 @@
 
 package org.tigris.gef.util;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 /**
  * A enumeration that has exactly one element. Functially equivelant to:
@@ -44,22 +45,22 @@ import java.util.*;
  */
 
 public class EnumerationSingle implements Enumeration, java.io.Serializable {
-    Object _element = null;
+	Object _element = null;
 
-    public EnumerationSingle(Object ele) {
-        _element = ele;
-    }
+	public EnumerationSingle(Object ele) {
+		_element = ele;
+	}
 
-    public boolean hasMoreElements() {
-        return _element != null;
-    }
+	public boolean hasMoreElements() {
+		return _element != null;
+	}
 
-    public Object nextElement() {
-        if (_element != null) {
-            Object o = _element;
-            _element = null;
-            return o;
-        } else
-            throw new NoSuchElementException();
-    }
+	public Object nextElement() {
+		if (_element != null) {
+			Object o = _element;
+			_element = null;
+			return o;
+		} else
+			throw new NoSuchElementException();
+	}
 } /* end class EnumerationSingle */

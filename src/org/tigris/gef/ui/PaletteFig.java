@@ -59,33 +59,33 @@ import org.tigris.gef.base.ModeSelect;
 
 public class PaletteFig extends ToolBar {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 304194274216578087L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 304194274216578087L;
 
-    public PaletteFig() {
-        defineButtons();
-    }
+	public PaletteFig() {
+		defineButtons();
+	}
 
-    /**
-     * Defined the buttons in this palette. Each of these buttons is associated
-     * with an CmdSetMode, and that Cmd sets the next global Mode to somethign
-     * appropriate. All the buttons can stick except 'select'. If the user
-     * unclicks the sticky checkbox, the 'select' button is automatically
-     * pressed.
-     */
-    public void defineButtons() {
-        add(new CmdSetMode(ModeSelect.class, "Select"));
-        add(new CmdSetMode(ModeBroom.class, "Broom"));
-        addSeparator();
-        add(new CmdSetMode(ModeCreateFigCircle.class, "Circle"));
-        add(new CmdSetMode(ModeCreateFigRect.class, "Rectangle"));
-        add(new CmdSetMode(ModeCreateFigRRect.class, "RRect"));
-        add(new CmdSetMode(ModeCreateFigLine.class, "Line"));
-        add(new CmdSetMode(ModeCreateFigText.class, "Text"));
-        add(new CmdSetMode(ModeCreateFigPoly.class, "Polygon"));
-        add(new CmdSetMode(ModeCreateFigSpline.class, "Spline"));
-        add(new CmdSetMode(ModeCreateFigInk.class, "Ink"));
-    }
+	/**
+	 * Defined the buttons in this palette. Each of these buttons is associated
+	 * with an CmdSetMode, and that Cmd sets the next global Mode to somethign
+	 * appropriate. All the buttons can stick except 'select'. If the user
+	 * unclicks the sticky checkbox, the 'select' button is automatically
+	 * pressed.
+	 */
+	public void defineButtons() {
+		add(new CmdSetMode(ModeSelect.class, "Select"));
+		add(new CmdSetMode(ModeBroom.class, "Broom"));
+		addSeparator();
+		add(new CmdSetMode(ModeCreateFigCircle.class, "Circle"));
+		add(new CmdSetMode(ModeCreateFigRect.class, "Rectangle"));
+		add(new CmdSetMode(ModeCreateFigRRect.class, "RRect"));
+		add(new CmdSetMode(ModeCreateFigLine.class, "Line"));
+		add(new CmdSetMode(ModeCreateFigText.class, "Text"));
+		add(new CmdSetMode(ModeCreateFigPoly.class, "Polygon"));
+		add(new CmdSetMode(ModeCreateFigSpline.class, "Spline"));
+		add(new CmdSetMode(ModeCreateFigInk.class, "Ink"));
+	}
 } /* end class PaletteFig */

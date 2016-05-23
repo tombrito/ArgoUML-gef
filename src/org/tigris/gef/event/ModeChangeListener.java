@@ -23,7 +23,7 @@
 
 package org.tigris.gef.event;
 
-import java.util.*;
+import java.util.EventListener;
 
 /**
  * An interface that must be implemented by any object that wants to be notified
@@ -35,8 +35,8 @@ import java.util.*;
 
 public interface ModeChangeListener extends EventListener {
 
-    void modeChange(ModeChangeEvent mce);
-    // ? void modeAdded(modeChangeEvent mce);
-    // ? void modeRemoved(modeChangeEvent mce);
+	void modeChange(ModeChangeEvent mce);
+	// ? void modeAdded(modeChangeEvent mce);
+	// ? void modeRemoved(modeChangeEvent mce);
 
 } /* end class ModeChangeListener */

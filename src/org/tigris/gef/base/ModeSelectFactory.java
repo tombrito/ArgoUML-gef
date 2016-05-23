@@ -30,11 +30,11 @@ package org.tigris.gef.base;
  */
 public class ModeSelectFactory implements ModeFactory {
 
-    public FigModifyingMode createMode() {
-        return new ModeSelect();
-    }
+	public FigModifyingMode createMode() {
+		return new ModeSelect();
+	}
 
-    public FigModifyingMode createMode(Editor editor) {
-        return new ModeSelect(editor);
-    }
+	public FigModifyingMode createMode(Editor editor) {
+		return new ModeSelect(editor);
+	}
 }

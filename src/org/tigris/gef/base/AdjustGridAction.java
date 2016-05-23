@@ -41,62 +41,70 @@ import org.tigris.gef.util.Localizer;
  */
 public class AdjustGridAction extends UndoableAction {
 
-    /**
-     * Comment for <code>serialVersionUID</code>
-     */
-    private static final long serialVersionUID = 3761403097309984825L;
+	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 3761403097309984825L;
 
-    public AdjustGridAction() {
-        super();
-    }
+	public AdjustGridAction() {
+		super();
+	}
 
-    /**
-     * Creates a new AdjustGridAction
-     * 
-     * @param name The name of the action
-     */
-    public AdjustGridAction(String name) {
-        this(name, false);
-    }
+	/**
+	 * Creates a new AdjustGridAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 */
+	public AdjustGridAction(String name) {
+		this(name, false);
+	}
 
-    /**
-     * Creates a new AdjustGridAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     */
-    public AdjustGridAction(String name, Icon icon) {
-        this(name, icon, false);
-    }
+	/**
+	 * Creates a new AdjustGridAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 */
+	public AdjustGridAction(String name, Icon icon) {
+		this(name, icon, false);
+	}
 
-    /**
-     * Creates a new AdjustGridAction
-     * 
-     * @param name The name of the action
-     * @param localize Whether to localize the name or not
-     */
-    public AdjustGridAction(String name, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name);
-    }
+	/**
+	 * Creates a new AdjustGridAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public AdjustGridAction(String name, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name);
+	}
 
-    /**
-     * Creates a new AdjustGridAction
-     * 
-     * @param name The name of the action
-     * @param icon The icon of the action
-     * @param localize Whether to localize the name or not
-     */
-    public AdjustGridAction(String name, Icon icon, boolean localize) {
-        super(localize ? Localizer.localize("GefBase", name) : name, icon);
-    }
+	/**
+	 * Creates a new AdjustGridAction
+	 * 
+	 * @param name
+	 *            The name of the action
+	 * @param icon
+	 *            The icon of the action
+	 * @param localize
+	 *            Whether to localize the name or not
+	 */
+	public AdjustGridAction(String name, Icon icon, boolean localize) {
+		super(localize ? Localizer.localize("GefBase", name) : name, icon);
+	}
 
-    public void actionPerformed(ActionEvent event) {
-        super.actionPerformed(event);
-        Editor ce = Globals.curEditor();
-        Layer grid = (Layer) ce.getLayerManager().findLayerNamed("Grid");
-        if (grid != null) {
-            grid.adjust();
-        }
-    }
+	public void actionPerformed(ActionEvent event) {
+		super.actionPerformed(event);
+		Editor ce = Globals.curEditor();
+		Layer grid = (Layer) ce.getLayerManager().findLayerNamed("Grid");
+		if (grid != null) {
+			grid.adjust();
+		}
+	}
 
 }

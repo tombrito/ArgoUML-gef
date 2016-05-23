@@ -68,69 +68,68 @@ import java.io.ObjectOutputStream;
 
 public class CmdSave extends Cmd implements FilenameFilter {
 
-    private static final long serialVersionUID = -548213442545482573L;
+	private static final long serialVersionUID = -548213442545482573L;
 
-    public CmdSave() {
-        super("Save");
-    }
+	public CmdSave() {
+		super("Save");
+	}
 
-    /**
-     * Only allow the user to select files that match the fiven filename
-     * pattern. Needs-More-Work: this is not used yet.
-     */
-    public CmdSave(String filterPattern) {
-        this();
-        setArg("filterPattern", filterPattern);
-    }
+	/**
+	 * Only allow the user to select files that match the fiven filename
+	 * pattern. Needs-More-Work: this is not used yet.
+	 */
+	public CmdSave(String filterPattern) {
+		this();
+		setArg("filterPattern", filterPattern);
+	}
 
-    public void doIt() {
-        try {
-            Editor ce = Globals.curEditor();
-            // TODO Should use JFileChooser
-            FileDialog fd = new FileDialog(ce.findFrame(), "Save Diagram",
-                    FileDialog.SAVE);
-            fd.setFilenameFilter(this);
-            fd.setDirectory(Globals.getLastDirectory());
-            fd.setVisible(true);
-            String filename = fd.getFile(); // blocking
-            String path = fd.getDirectory(); // blocking
-            Globals.setLastDirectory(path);
-            if (filename != null) {
-                Globals.showStatus("Writing " + path + filename + "...");
-                FileOutputStream f = new FileOutputStream(path + filename);
-                ObjectOutput s = new ObjectOutputStream(f);
-                ce.preSave();
-                s.writeObject(ce.getLayerManager().getContents());
-                ce.postSave();
-                Globals.showStatus("Wrote " + path + filename);
-                f.close();
-            }
-        } catch (FileNotFoundException ignore) {
-            System.out.println("got an FileNotFoundException");
-        } catch (IOException ignore) {
-            System.out.println("got an IOException");
-            ignore.printStackTrace();
-        }
-    }
+	public void doIt() {
+		try {
+			Editor ce = Globals.curEditor();
+			// TODO Should use JFileChooser
+			FileDialog fd = new FileDialog(ce.findFrame(), "Save Diagram", FileDialog.SAVE);
+			fd.setFilenameFilter(this);
+			fd.setDirectory(Globals.getLastDirectory());
+			fd.setVisible(true);
+			String filename = fd.getFile(); // blocking
+			String path = fd.getDirectory(); // blocking
+			Globals.setLastDirectory(path);
+			if (filename != null) {
+				Globals.showStatus("Writing " + path + filename + "...");
+				FileOutputStream f = new FileOutputStream(path + filename);
+				ObjectOutput s = new ObjectOutputStream(f);
+				ce.preSave();
+				s.writeObject(ce.getLayerManager().getContents());
+				ce.postSave();
+				Globals.showStatus("Wrote " + path + filename);
+				f.close();
+			}
+		} catch (FileNotFoundException ignore) {
+			System.out.println("got an FileNotFoundException");
+		} catch (IOException ignore) {
+			System.out.println("got an IOException");
+			ignore.printStackTrace();
+		}
+	}
 
-    /**
-     * Only let the user select files that match the filter. This does not seem
-     * to be called under JDK 1.0.2 on solaris. I have not finished this method,
-     * it currently accepts all filenames.
-     * <p>
-     * 
-     * Needs-More-Work: the source code for this method is duplicated in
-     * CmdOpen#accept.
-     */
-    public boolean accept(File dir, String name) {
-        if (containsArg("filterPattern")) {
-            // if pattern dosen't match, return false
-            return true;
-        }
-        return true; // no pattern was specified
-    }
+	/**
+	 * Only let the user select files that match the filter. This does not seem
+	 * to be called under JDK 1.0.2 on solaris. I have not finished this method,
+	 * it currently accepts all filenames.
+	 * <p>
+	 * 
+	 * Needs-More-Work: the source code for this method is duplicated in
+	 * CmdOpen#accept.
+	 */
+	public boolean accept(File dir, String name) {
+		if (containsArg("filterPattern")) {
+			// if pattern dosen't match, return false
+			return true;
+		}
+		return true; // no pattern was specified
+	}
 
-    public void undoIt() {
-        System.out.println("Undo does not make sense for CmdSave");
-    }
+	public void undoIt() {
+		System.out.println("Undo does not make sense for CmdSave");
+	}
 } /* end class CmdSave */
