@@ -25,6 +25,5 @@ Export-Package: org.tigris.gef,
  org.tigris.gef.ui,
  org.tigris.gef.undo,
  org.tigris.gef.util,
- org.tigris.gef.xml.dtd,
- org.tigris.gef.xml.svg
+ org.tigris.gef.xml.dtd
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
