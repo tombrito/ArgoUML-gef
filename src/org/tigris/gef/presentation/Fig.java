@@ -65,6 +65,7 @@ import org.tigris.gef.undo.UndoManager;
  * figure. Fig's are Diagram elements that can be placed in any LayerDiagram.
  * Fig's are also used to define the look of FigNodes on NetNodes.
  */
+// TODO couldn't this extend a JavaFX component, with much of this work (like setBoudns) already done?
 public abstract class Fig implements DiagramElement, Cloneable, Serializable, PropertyChangeListener, PopupGenerator {
 
 	private static final long serialVersionUID = -6374649235011908787L;
@@ -78,15 +79,31 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	private static final float[][] DASH_ARRAYS = { null, { 5.0f, 5.0f }, { 15.0f, 5.0f }, { 3.0f, 10.0f },
 			{ 3.0f, 6.0f, 10.0f, 6.0f } }; // opaque,
 
-	// transparent,
-	// [opaque,
-	// transparent]
-	private static final int[] DASH_PERIOD = { 0, 10, 20, 13, 25, }; // the
+	// transparent, [opaque, transparent]
+	// the sum of each subarray
+	private static final int[] DASH_PERIOD = { 0, 10, 20, 13, 25, };
 
-	// sum
-	// of
-	// each
-	// subarray
+	/** Margin between this Fig and automatically routed arcs. */
+	private static final int BORDER = 8;
+
+	/*************************************************************************/
+
+	// //////////////////////////////////////////////////////////////
+	// static initializer
+	static {
+		PropCategoryManager.categorizeProperty("Geometry", "x");
+		PropCategoryManager.categorizeProperty("Geometry", "y");
+		PropCategoryManager.categorizeProperty("Geometry", "width");
+		PropCategoryManager.categorizeProperty("Geometry", "height");
+		PropCategoryManager.categorizeProperty("Geometry", "filled");
+		PropCategoryManager.categorizeProperty("Geometry", "locked");
+		PropCategoryManager.categorizeProperty("Style", "lineWidth");
+		PropCategoryManager.categorizeProperty("Style", "fillColor");
+		PropCategoryManager.categorizeProperty("Style", "lineColor");
+		PropCategoryManager.categorizeProperty("Style", "filled");
+	}
+
+	/*************************************************************************/
 
 	/**
 	 * Indicates whether this fig can be moved
@@ -123,34 +140,26 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	/**
 	 * X coordinate of the Fig's bounding box. It is the responsibility of
 	 * subclasses to make sure this value is ALWAYS up-to-date.
-	 * 
-	 * @deprecated in 0.13.4 use getX, getBounds or getLocation.
 	 */
-	protected int _x;
+	private int _x;
 
 	/**
 	 * Y coordinate of the Fig's bounding box. It is the responsibility of
 	 * subclasses to make sure this value is ALWAYS up-to-date.
-	 * 
-	 * @deprecated in 0.13.4 use getY, getBounds or getLocation.
 	 */
-	protected int _y;
+	private int _y;
 
 	/**
 	 * Width of the Fig's bounding box. It is the responsibility of subclasses
 	 * to make sure this value is ALWAYS up-to-date.
-	 * 
-	 * @deprecated in 0.13.4 use getWidth, getBounds or getSize.
 	 */
-	protected int _w;
+	private int _w;
 
 	/**
 	 * Height of the Fig's bounding box. It is the responsibility of subclasses
 	 * to make sure this value is ALWAYS up-to-date.
-	 * 
-	 * @deprecated in 0.13.4 use getWidth, getBounds or getSize.
 	 */
-	protected int _h;
+	private int _h;
 
 	/**
 	 * Name of the resource being basis to this figs localization.
@@ -159,43 +168,26 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 
 	/**
 	 * Outline color of fig object.
-	 * 
-	 * @deprecated in 0.13.4 use getLineColor/setLineColor.
 	 */
-	Color _lineColor = Color.black;
+	private Color _lineColor = Color.black;
 
-	/**
-	 * Fill color of fig object.
-	 * 
-	 * @deprecated in 0.13.4 use getFillColor/setFillColor.
-	 */
-	Color _fillColor = Color.white;
+	private Color _fillColor = Color.white;
 
 	/**
 	 * Thickness of object's border. This is included in the overall size of the
 	 * object, so the size of the interior is smaller by 2 * lineWidth in each
 	 * dimension.
-	 * 
-	 * @deprecated will become private use set/getLineWidth()
 	 */
-	int _lineWidth = 1;
+	private int _lineWidth = 1;
 
-	/**
-	 * @deprecated in 0.13.4 use getDashes
-	 */
-	protected float[] _dashes = null;
+	private float[] _dashes = null;
 
-	/**
-	 * @deprecated in 0.13.4 use getDashePeriod
-	 */
-	protected int _dashPeriod = 0;
+	private int _dashPeriod = 0;
 
 	/**
 	 * True if the object should fill in its area.
-	 * 
-	 * @deprecated will become private use getLineWidth()
 	 */
-	protected boolean _filled = true;
+	private boolean _filled = true;
 
 	/**
 	 * The parent Fig of which this Fig is a child
@@ -204,16 +196,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 
 	private String _context = "";
 
-	/**
-	 * True if the Fig is visible
-	 */
 	private boolean visible = true;
-
-	/**
-	 * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. See
-	 *             issue 146. This value is never set.
-	 */
-	private transient boolean _selected = false;
 
 	/**
 	 * This flag is set at the start of the removal process. It is later used
@@ -222,26 +205,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 */
 	private boolean removeStarted;
 
-	// //////////////////////////////////////////////////////////////
-	// static initializer
-	static {
-		PropCategoryManager.categorizeProperty("Geometry", "x");
-		PropCategoryManager.categorizeProperty("Geometry", "y");
-		PropCategoryManager.categorizeProperty("Geometry", "width");
-		PropCategoryManager.categorizeProperty("Geometry", "height");
-		PropCategoryManager.categorizeProperty("Geometry", "filled");
-		PropCategoryManager.categorizeProperty("Geometry", "locked");
-		PropCategoryManager.categorizeProperty("Style", "lineWidth");
-		PropCategoryManager.categorizeProperty("Style", "fillColor");
-		PropCategoryManager.categorizeProperty("Style", "lineColor");
-		PropCategoryManager.categorizeProperty("Style", "filled");
-	}
-
-	// //////////////////////////////////////////////////////////////
-	// geometric manipulations
-
-	/** Margin between this Fig and automatically routed arcs. */
-	private static final int BORDER = 8;
+	/*************************************************************************/
 
 	/**
 	 * Most subclasses will not use this constructor, it is only useful for
@@ -262,20 +226,20 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	Fig(int x, int y, int w, int h, Color lineColor, Color fillColor) {
 		/* Do not set the owner to null when none is given: */
 		this();
-		_x = x;
-		_y = y;
-		_w = w;
-		_h = h;
+		set_x(x);
+		set_y(y);
+		set_w(w);
+		set_h(h);
 		if (lineColor != null) {
-			_lineColor = lineColor;
+			set_lineColor(lineColor);
 		} else {
-			_lineWidth = 0;
+			set_lineWidth(0);
 		}
 
 		if (fillColor != null) {
-			_fillColor = fillColor;
+			set_fillColor(fillColor);
 		} else {
-			_filled = false;
+			set_filled(false);
 		}
 
 	}
@@ -583,7 +547,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * FigEdge do more specific checks.
 	 */
 	public boolean contains(int x, int y) {
-		return (_x <= x) && (x <= _x + _w) && (_y <= y) && (y <= _y + _h);
+		return (getX() <= x) && (x <= getX() + getWidth()) && (getY() <= y) && (y <= getY() + getHeight());
 	}
 
 	/**
@@ -1008,9 +972,9 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 */
 	public Rectangle getBounds(Rectangle r) {
 		if (r == null) {
-			return new Rectangle(_x, _y, _w, _h);
+			return new Rectangle(getX(), getY(), getWidth(), getHeight());
 		}
-		r.setBounds(_x, _y, _w, _h);
+		r.setBounds(getX(), getY(), getWidth(), getHeight());
 		return r;
 	}
 
@@ -1028,7 +992,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 
 	/** Get the dashed attribute */
 	public boolean getDashed() {
-		return (_dashes != null);
+		return (getDashes() != null);
 	}
 
 	public float[] getDashes() {
@@ -1049,7 +1013,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	}
 
 	final public String getDashedString() {
-		return (_dashes == null) ? DASHED_CHOICES[0] : DASHED_CHOICES[1];
+		return (getDashes() == null) ? DASHED_CHOICES[0] : DASHED_CHOICES[1];
 	}
 
 	public Vector getEnclosedFigs() {
@@ -1085,7 +1049,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	}
 
 	public boolean isFilled() {
-		return _filled;
+		return getFilled();
 	}
 
 	/**
@@ -1093,7 +1057,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 *             org.tigris.gef.persistence.pgml.PgmlUtility.getDashed(Fig)
 	 */
 	final public int getFilled01() {
-		return _filled ? 1 : 0;
+		return getFilled() ? 1 : 0;
 	}
 
 	/**
@@ -1152,7 +1116,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * USED BY PGML.tee
 	 */
 	final public int getHalfHeight() {
-		return _h / 2;
+		return getHeight() / 2;
 	}
 
 	/**
@@ -1163,7 +1127,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * USED BY PGML.tee
 	 */
 	final public int getHalfWidth() {
-		return _w / 2;
+		return getWidth() / 2;
 	}
 
 	/*
@@ -1208,7 +1172,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * for performance.
 	 */
 	final public Point getLocation() {
-		return new Point(_x, _y);
+		return new Point(getX(), getY());
 	}
 
 	final public boolean getLocked() {
@@ -1242,7 +1206,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * specific logic.
 	 */
 	public int getPerimeterLength() {
-		return _w + _w + _h + _h;
+		return getWidth() + getWidth() + getHeight() + getHeight();
 	}
 
 	public Point[] getPoints() {
@@ -1260,7 +1224,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * to return something useful.
 	 */
 	final public Dimension getPreferredSize() {
-		return new Dimension(_w, _h);
+		return new Dimension(getWidth(), getHeight());
 	}
 
 	/**
@@ -1273,7 +1237,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 
 	/** Returns the size of the Fig. */
 	public Dimension getSize() {
-		return new Dimension(_w, _h);
+		return new Dimension(getWidth(), getHeight());
 	}
 
 	@SuppressWarnings("unused")
@@ -1369,7 +1333,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 		if (!isVisible() || !isSelectable())
 			return false;
 		int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
-		if (_filled) {
+		if (getFilled()) {
 			return cornersHit > 0;
 		} else {
 			return cornersHit > 0 && cornersHit < 4;
@@ -1389,7 +1353,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * with zero height or width are handled correctly.
 	 */
 	public boolean intersects(Rectangle r) {
-		return !((r.x + r.width < _x) || (r.y + r.height < _y) || (r.x > _x + _w) || (r.y > _y + _h));
+		return !((r.x + r.width < getX()) || (r.y + r.height < getY()) || (r.x > getX() + getWidth()) || (r.y > getY() + getHeight()));
 	}
 
 	/**
@@ -1401,8 +1365,8 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * with zero height or width are handled correctly.
 	 */
 	public boolean intersectsPerimeter(Rectangle r) {
-		return (r.intersectsLine(_x, _y, _x, _y + _h) && r.intersectsLine(_x, _y + _h, _x + _w, _y + _h)
-				&& r.intersectsLine(_x + _w, _y + _h, _x + _w, _y) && r.intersectsLine(_x + _w, _y, _x, _y));
+		return (r.intersectsLine(getX(), getY(), getX(), getY() + getHeight()) && r.intersectsLine(getX(), getY() + getHeight(), getX() + getWidth(), getY() + getHeight())
+				&& r.intersectsLine(getX() + getWidth(), getY() + getHeight(), getX() + getWidth(), getY()) && r.intersectsLine(getX() + getWidth(), getY(), getX(), getY()));
 	}
 
 	/**
@@ -1447,17 +1411,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	/** Returns true if this Fig can be rotated by the user. */
 	public boolean isRotatable() {
 		return false;
-	}
-
-	/**
-	 * Returns the current selection state for this item
-	 * 
-	 * @return True, if the item is currently selected, otherwise false.
-	 * @deprecated by mvw in GEF0.13.1M2. Use SelectionManager instead. See
-	 *             issue 146. This value is never set.
-	 */
-	final public boolean isSelected() {
-		return _selected;
 	}
 
 	/**
@@ -1541,7 +1494,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * the bounding box plus some margin around all egdes.
 	 */
 	final Rectangle routingRect() {
-		return new Rectangle(_x - BORDER, _y - BORDER, _w + BORDER * 2, _h + BORDER * 2);
+		return new Rectangle(getX() - BORDER, getY() - BORDER, getWidth() + BORDER * 2, getHeight() + BORDER * 2);
 	}
 
 	/**
@@ -1550,17 +1503,17 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 */
 	final public void setBounds(final int newX, final int newY, final int newWidth, final int newHeight) {
 
-		if (group == null && (newX != _x || newY != _y || newWidth != _w || newHeight != _h)) {
+		if (group == null && (newX != getX() || newY != getY() || newWidth != getWidth() || newHeight != getHeight())) {
 			MutableGraphSupport.enableSaveAction();
 			if (UndoManager.getInstance().isGenerateMementos()) {
 				Memento memento = new Memento() {
-					int oldX = _x;
+					int oldX = getX();
 
-					int oldY = _y;
+					int oldY = getY();
 
-					int oldWidth = _w;
+					int oldWidth = getWidth();
 
-					int oldHeight = _h;
+					int oldHeight = getHeight();
 
 					public void undo() {
 						setBoundsImpl(oldX, oldY, oldWidth, oldHeight);
@@ -1589,10 +1542,10 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	/** Set the bounds of this Fig. Fires PropertyChangeEvent "bounds". */
 	protected void setBoundsImpl(int x, int y, int w, int h) {
 		Rectangle oldBounds = getBounds();
-		_x = x;
-		_y = y;
-		_w = w;
-		_h = h;
+		set_x(x);
+		set_y(y);
+		set_w(w);
+		set_h(h);
 		firePropChange("bounds", oldBounds, getBounds());
 	}
 
@@ -1605,8 +1558,8 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	}
 
 	public final void setCenter(Point p) {
-		int newX = p.x - (_w / 2);
-		int newY = p.y - (_h / 2);
+		int newX = p.x - (getWidth() / 2);
+		int newY = p.y - (getHeight() / 2);
 		setLocation(newX, newY);
 	}
 
@@ -1650,19 +1603,19 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 */
 	public void setFillColor(Color col) {
 		if (col == null) {
-			if (_fillColor == null)
+			if (getFillColor() == null)
 				return;
 		} else {
-			if (col.equals(_fillColor))
+			if (col.equals(getFillColor()))
 				return;
 		}
 
 		if (col != null) {
-			firePropChange("fillColor", _fillColor, col);
-			_fillColor = col;
+			firePropChange("fillColor", getFillColor(), col);
+			set_fillColor(col);
 		} else {
-			firePropChange("filled", _filled, false);
-			_filled = false;
+			firePropChange("filled", getFilled(), false);
+			set_filled(false);
 		}
 
 		MutableGraphSupport.enableSaveAction();
@@ -1673,8 +1626,8 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * PropertyChangeEvent "filled".
 	 */
 	public void setFilled(boolean f) {
-		firePropChange("filled", _filled, f);
-		_filled = f;
+		firePropChange("filled", getFilled(), f);
+		set_filled(f);
 	}
 
 	/**
@@ -1684,18 +1637,18 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 */
 	public void setLineColor(Color col) {
 		if (col == null) {
-			if (_lineColor == null)
+			if (getLineColor() == null)
 				return;
 		} else {
-			if (col.equals(_lineColor))
+			if (col.equals(getLineColor()))
 				return;
 		}
 		if (col != null) {
-			firePropChange("lineColor", _lineColor, col);
-			_lineColor = col;
+			firePropChange("lineColor", getLineColor(), col);
+			set_lineColor(col);
 		} else {
-			firePropChange("lineWidth", _lineWidth, 0);
-			_lineWidth = 0;
+			firePropChange("lineWidth", getLineWidth(), 0);
+			set_lineWidth(0);
 		}
 		MutableGraphSupport.enableSaveAction();
 	}
@@ -1711,17 +1664,17 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 */
 	public void setLineWidth(int w) {
 		int newLW = Math.max(0, w);
-		firePropChange("lineWidth", _lineWidth, newLW);
-		_lineWidth = newLW;
+		firePropChange("lineWidth", getLineWidth(), newLW);
+		set_lineWidth(newLW);
 	}
 
 	/** Set line to be dashed or not * */
 	public void setDashed(boolean now_dashed) {
 		if (now_dashed) {
-			_dashes = DASH_ARRAYS[1];
-			_dashPeriod = DASH_PERIOD[1];
+			set_dashes(DASH_ARRAYS[1]);
+			set_dashPeriod(DASH_PERIOD[1]);
 		} else {
-			_dashes = null;
+			set_dashes(null);
 		}
 	}
 
@@ -1735,7 +1688,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * property "bounds".
 	 */
 	final public void setLocation(int x, int y) {
-		translate(x - _x, y - _y);
+		translate(x - getX(), y - getY());
 	}
 
 	/** Move the Fig to the given position. */
@@ -1785,7 +1738,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 
 	/** Sets the size of the Fig. Fires property "bounds". */
 	final public void setSize(int w, int h) {
-		setBounds(_x, _y, w, h);
+		setBounds(getX(), getY(), w, h);
 	}
 
 	/** Sets the size of the Fig. Fires property "bounds". */
@@ -1806,9 +1759,14 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 *            The new width.
 	 */
 	final public void setWidth(int w) {
-		setBounds(_x, _y, w, _h);
+		setBounds(getX(), getY(), w, getHeight());
 	}
 
+	// TODO use setWidth?
+	protected void set_w(int _w) {
+		this._w = _w;
+	}
+	
 	/**
 	 * Set the height of the Fig.
 	 * <p>
@@ -1822,7 +1780,12 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 *            The new height.
 	 */
 	final public void setHeight(int h) {
-		setBounds(_x, _y, _w, h);
+		setBounds(getX(), getY(), getWidth(), h);
+	}
+
+	// TODO should use setHeight()?
+	protected void set_h(int _h) {
+		this._h = _h;
 	}
 
 	/**
@@ -1838,7 +1801,12 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 *            The new x co-ordinate
 	 */
 	final public void setX(int x) {
-		setBounds(x, _y, _w, _h);
+		setBounds(x, getY(), getWidth(), getHeight());
+	}
+
+	// TODO use setX()?
+	protected void set_x(int _x) {
+		this._x = _x;
 	}
 
 	@SuppressWarnings("unused")
@@ -1858,25 +1826,30 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 *            The new y co-ordinate
 	 */
 	final public void setY(int y) {
-		setBounds(_x, y, _w, _h);
+		setBounds(getX(), y, getWidth(), getHeight());
+	}
+
+	// TODO use setY()?
+	protected void set_y(int _y) {
+		this._y = _y;
 	}
 
 	public void stuffPointAlongPerimeter(int dist, Point res) {
-		if (dist < _w && dist >= 0) {
-			res.x = _x + (dist);
-			res.y = _y;
-		} else if (dist < _w + _h) {
-			res.x = _x + _w;
-			res.y = _y + (dist - _w);
-		} else if (dist < _w + _h + _w) {
-			res.x = _x + _w - (dist - _w - _h);
-			res.y = _y + _h;
-		} else if (dist < _w + _h + _w + _h) {
-			res.x = _x;
-			res.y = _y + (_w + _h + _w + _h - dist);
+		if (dist < getWidth() && dist >= 0) {
+			res.x = getX() + (dist);
+			res.y = getY();
+		} else if (dist < getWidth() + getHeight()) {
+			res.x = getX() + getWidth();
+			res.y = getY() + (dist - getWidth());
+		} else if (dist < getWidth() + getHeight() + getWidth()) {
+			res.x = getX() + getWidth() - (dist - getWidth() - getHeight());
+			res.y = getY() + getHeight();
+		} else if (dist < getWidth() + getHeight() + getWidth() + getHeight()) {
+			res.x = getX();
+			res.y = getY() + (getWidth() + getHeight() + getWidth() + getHeight() - dist);
 		} else {
-			res.x = _x;
-			res.y = _y;
+			res.x = getX();
+			res.y = getY();
 		}
 	}
 
@@ -1928,7 +1901,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 				}
 			}
 			if (UndoManager.getInstance().isGenerateMementos()) {
-				UndoManager.getInstance().addMemento(new TranslateMemento(_x, _y, _w, _h));
+				UndoManager.getInstance().addMemento(new TranslateMemento(getX(), getY(), getWidth(), getHeight()));
 			}
 		}
 		MutableGraphSupport.enableSaveAction();
@@ -1943,8 +1916,8 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 */
 	protected void translateImpl(int dx, int dy) {
 		Rectangle oldBounds = getBounds();
-		_x += dx;
-		_y += dy;
+		set_x(getX() + dx);
+		set_y(getY() + dy);
 		firePropChange("bounds", oldBounds, getBounds());
 	}
 
@@ -1954,7 +1927,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * selection rectangle.
 	 */
 	final public boolean within(Rectangle r) {
-		return r.contains(_x, _y) && r.contains(_x + _w, _y + _h);
+		return r.contains(getX(), getY()) && r.contains(getX() + getWidth(), getY() + getHeight());
 	}
 
 	/** Returns true if the fig is visible */
@@ -1999,7 +1972,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	protected Stroke getDefaultStroke(int lineWidth) {
 		float[] dashes = null;
 		if (getDashed()) {
-			dashes = _dashes;
+			dashes = getDashes();
 		}
 		return getDefaultStroke(lineWidth, dashes, 0);
 	}
@@ -2027,6 +2000,30 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 		// p = new TexturePaint(img,
 		// new Rectangle(0, 0, img.getWidth(), img.getHeight()));
 		return p;
+	}
+
+	void set_lineColor(Color _lineColor) {
+		this._lineColor = _lineColor;
+	}
+
+	void set_fillColor(Color _fillColor) {
+		this._fillColor = _fillColor;
+	}
+
+	void set_lineWidth(int _lineWidth) {
+		this._lineWidth = _lineWidth;
+	}
+
+	protected void set_dashes(float[] _dashes) {
+		this._dashes = _dashes;
+	}
+
+	protected void set_dashPeriod(int _dashPeriod) {
+		this._dashPeriod = _dashPeriod;
+	}
+
+	protected void set_filled(boolean _filled) {
+		this._filled = _filled;
 	}
 
 }

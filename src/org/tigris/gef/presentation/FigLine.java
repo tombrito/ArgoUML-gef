@@ -287,10 +287,10 @@ public class FigLine extends Fig {
 	 * bounding box. Fires PropertyChange with "bounds".
 	 */
 	protected void setBoundsImpl(int x, int y, int w, int h) {
-		_x1 = (_w == 0) ? x : x + ((_x1 - _x) * w) / _w;
-		_y1 = (_h == 0) ? y : y + ((_y1 - _y) * h) / _h;
-		_x2 = (_w == 0) ? x : x + ((_x2 - _x) * w) / _w;
-		_y2 = (_h == 0) ? y : y + ((_y2 - _y) * h) / _h;
+		_x1 = (getWidth() == 0) ? x : x + ((_x1 - getX()) * w) / getWidth();
+		_y1 = (getHeight() == 0) ? y : y + ((_y1 - getY()) * h) / getHeight();
+		_x2 = (getWidth() == 0) ? x : x + ((_x2 - getX()) * w) / getWidth();
+		_y2 = (getHeight() == 0) ? y : y + ((_y2 - getY()) * h) / getHeight();
 		calcBounds(); // _x = x; _y = y; _w = w; _h = h;
 		firePropChange("bounds", null, null);
 	}
@@ -316,27 +316,27 @@ public class FigLine extends Fig {
 		_y1 += dy;
 		_x2 += dx;
 		_y2 += dy;
-		_x += dx;
-		_y += dy; // dont calcBounds because _w and _h are unchanged
+		set_x(getX() + dx);
+		set_y(getY() + dy); // dont calcBounds because _w and _h are unchanged
 		firePropChange("bounds", null, null);
 	}
 
 	/** Update the bounding box so that it encloses (_x1, _y1)--(_x2, _y2). */
 	public void calcBounds() {
 		if (_x1 < _x2) {
-			_x = _x1;
-			_w = _x2 - _x1;
+			set_x(_x1);
+			set_w(_x2 - _x1);
 		} else {
-			_x = _x2;
-			_w = _x1 - _x2;
+			set_x(_x2);
+			set_w(_x1 - _x2);
 		}
 
 		if (_y1 < _y2) {
-			_y = _y1;
-			_h = _y2 - _y1;
+			set_y(_y1);
+			set_h(_y2 - _y1);
 		} else {
-			_y = _y2;
-			_h = _y1 - _y2;
+			set_y(_y2);
+			set_h(_y1 - _y2);
 		}
 	}
 
@@ -353,7 +353,7 @@ public class FigLine extends Fig {
 
 		g.setColor(lineColor);
 		if (dashed) {
-			drawDashedLine(g, lineWidth, _x1, _y1, _x2, _y2, 0, _dashes, _dashPeriod);
+			drawDashedLine(g, lineWidth, _x1, _y1, _x2, _y2, 0, getDashes(), getDashPeriod());
 		} else {
 			if (g instanceof Graphics2D) {
 				/* In this case, line-width is supported. */

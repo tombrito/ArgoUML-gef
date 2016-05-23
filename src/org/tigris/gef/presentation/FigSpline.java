@@ -185,22 +185,22 @@ public class FigSpline extends FigPoly {
 
 	public void paint(Graphics g) {
 		if (_npoints == 2) {
-			g.setColor(_lineColor);
+			g.setColor(getLineColor());
 			g.drawLine(_xknots[0], _yknots[0], _xknots[1], _yknots[1]);
 
 		} else {
 			int nSegments = _npoints - 2;
 			_curve = new Polygon();
-			g.setColor(_lineColor);
+			g.setColor(getLineColor());
 			for (int i = 0; i <= nSegments - 1; i++) {
-				drawBezier(g, _filled, _fillColor, _curve, _xknots[2 * i], _yknots[2 * i], _xknots[2 * i + 1],
+				drawBezier(g, getFilled(), getFillColor(), _curve, _xknots[2 * i], _yknots[2 * i], _xknots[2 * i + 1],
 						_yknots[2 * i + 1], _xknots[2 * i + 2], _yknots[2 * i + 2]);
 			}
-			if (_filled) {
-				g.setColor(_fillColor);
+			if (getFilled()) {
+				g.setColor(getFillColor());
 				g.fillPolygon(_curve); // here the curve gets partially
 										// destroyed
-				g.setColor(_lineColor);
+				g.setColor(getLineColor());
 				g.drawPolyline(_curve.xpoints, _curve.ypoints, _curve.npoints);
 			}
 		}
@@ -238,7 +238,7 @@ public class FigSpline extends FigPoly {
 
 	private void drawLine(Graphics g, int lineWidth, int x1, int y1, int x2, int y2) {
 		if (g instanceof Graphics2D && getDashed()) {
-			drawDashedLine(g, lineWidth, x1, y1, x2, y2, 0, _dashes, _dashPeriod);
+			drawDashedLine(g, lineWidth, x1, y1, x2, y2, 0, getDashes(), getDashPeriod());
 		} else {
 			g.drawLine(x1, y1, x2, y2);
 		}

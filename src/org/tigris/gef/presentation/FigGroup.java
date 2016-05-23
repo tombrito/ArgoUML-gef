@@ -195,10 +195,10 @@ public class FigGroup extends Fig {
 			boundingBox = new Rectangle(0, 0, 0, 0);
 		}
 
-		_x = boundingBox.x;
-		_y = boundingBox.y;
-		_w = boundingBox.width;
-		_h = boundingBox.height + extraFrameSpace;
+		set_x(boundingBox.x);
+		set_y(boundingBox.y);
+		set_w(boundingBox.width);
+		set_h(boundingBox.height + extraFrameSpace);
 	}
 
 	/**
@@ -464,10 +464,10 @@ public class FigGroup extends Fig {
 		for (int figIndex = 0; figIndex < figCount; ++figIndex) {
 			Fig f = (Fig) this.figs.get(figIndex);
 			if (f.isVisible()) {
-				int newW = (_w == 0) ? 0 : (f.getWidth() * w) / _w;
-				int newH = (_h == 0) ? 0 : (f.getHeight() * h) / _h;
-				int newX = (_w == 0) ? x : x + ((f.getX() - _x) * w) / _w;
-				int newY = (_h == 0) ? y : y + ((f.getY() - _y) * h) / _h;
+				int newW = (getWidth() == 0) ? 0 : (f.getWidth() * w) / getWidth();
+				int newH = (getHeight() == 0) ? 0 : (f.getHeight() * h) / getHeight();
+				int newX = (getWidth() == 0) ? x : x + ((f.getX() - getX()) * w) / getWidth();
+				int newY = (getHeight() == 0) ? y : y + ((f.getY() - getY()) * h) / getHeight();
 				f.setBoundsImpl(newX, newY, newW, newH);
 			}
 		}
@@ -631,8 +631,8 @@ public class FigGroup extends Fig {
 			Fig f = (Fig) this.figs.get(figIndex);
 			f.translate(dx, dy);
 		}
-		_x += dx;
-		_y += dy; // no need to call calcBounds();
+		set_x(getX() + dx);
+		set_y(getY() + dy); // no need to call calcBounds();
 		firePropChange("bounds", oldBounds, getBounds());
 	}
 

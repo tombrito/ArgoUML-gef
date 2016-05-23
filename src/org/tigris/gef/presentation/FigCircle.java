@@ -96,19 +96,19 @@ public class FigCircle extends Fig {
 
 		if (g instanceof Graphics2D) {
 			paint((Graphics2D) g);
-		} else if (_filled && _fillColor != null) {
-			if (lineWidth > 0 && _lineColor != null) {
-				g.setColor(_lineColor);
-				g.fillOval(_x, _y, _w, _h);
+		} else if (getFilled() && getFillColor() != null) {
+			if (lineWidth > 0 && getLineColor() != null) {
+				g.setColor(getLineColor());
+				g.fillOval(getX(), getY(), getWidth(), getHeight());
 			}
 
-			if (!_fillColor.equals(_lineColor)) {
-				g.setColor(_fillColor);
-				g.fillOval(_x + lineWidth, _y + lineWidth, _w - (lineWidth * 2), _h - (lineWidth * 2));
+			if (!getFillColor().equals(getLineColor())) {
+				g.setColor(getFillColor());
+				g.fillOval(getX() + lineWidth, getY() + lineWidth, getWidth() - (lineWidth * 2), getHeight() - (lineWidth * 2));
 			}
-		} else if (lineWidth > 0 && _lineColor != null) {
-			g.setColor(_lineColor);
-			g.drawOval(_x, _y, _w, _h);
+		} else if (lineWidth > 0 && getLineColor() != null) {
+			g.setColor(getLineColor());
+			g.drawOval(getX(), getY(), getWidth(), getHeight());
 		}
 	}
 
@@ -117,14 +117,14 @@ public class FigCircle extends Fig {
 		Stroke oldStroke = g2.getStroke();
 		Paint oldPaint = g2.getPaint();
 		g2.setStroke(getDefaultStroke(lineWidth));
-		if (_filled && _fillColor != null) {
-			g2.setPaint(getDefaultPaint(_fillColor, _lineColor, _x, _y, _w, _h));
-			g2.fill(new Ellipse2D.Float(_x + lineWidth, _y + lineWidth, _w - (2 * lineWidth), _h - (2 * lineWidth)));
+		if (getFilled() && getFillColor() != null) {
+			g2.setPaint(getDefaultPaint(getFillColor(), getLineColor(), getX(), getY(), getWidth(), getHeight()));
+			g2.fill(new Ellipse2D.Float(getX() + lineWidth, getY() + lineWidth, getWidth() - (2 * lineWidth), getHeight() - (2 * lineWidth)));
 		}
 
-		if (lineWidth > 0 && _lineColor != null) {
-			g2.setPaint(_lineColor);
-			g2.draw(new Ellipse2D.Float(_x + lineWidth / 2, _y + lineWidth / 2, _w - lineWidth, _h - lineWidth));
+		if (lineWidth > 0 && getLineColor() != null) {
+			g2.setPaint(getLineColor());
+			g2.draw(new Ellipse2D.Float(getX() + lineWidth / 2, getY() + lineWidth / 2, getWidth() - lineWidth, getHeight() - lineWidth));
 		}
 
 		g2.setStroke(oldStroke);
@@ -145,8 +145,8 @@ public class FigCircle extends Fig {
 			return false;
 		}
 
-		double dx = (double) (_x + _w / 2 - x) * 2 / _w;
-		double dy = (double) (_y + _h / 2 - y) * 2 / _h;
+		double dx = (double) (getX() + getWidth() / 2 - x) * 2 / getWidth();
+		double dy = (double) (getY() + getHeight() / 2 - y) * 2 / getHeight();
 		double distSquared = dx * dx + dy * dy;
 		return distSquared <= 1.01;
 	}
@@ -188,13 +188,13 @@ public class FigCircle extends Fig {
 	 * original coordinate system.
 	 */
 	public Point connectionPoint(Point anotherPt) {
-		double rx = _w / 2;
-		double ry = _h / 2;
-		double dx = anotherPt.x - (_x + rx);
-		double dy = anotherPt.y - (_y + ry);
+		double rx = getWidth() / 2;
+		double ry = getHeight() / 2;
+		double dx = anotherPt.x - (getX() + rx);
+		double dy = anotherPt.y - (getY() + ry);
 		double dd = ry * ry * dx * dx + rx * rx * dy * dy;
 		double mu = rx * ry / Math.sqrt(dd);
-		Point res = new Point((int) (mu * dx + _x + rx), (int) (mu * dy + _y + ry));
+		Point res = new Point((int) (mu * dx + getX() + rx), (int) (mu * dy + getY() + ry));
 		return res;
 	}
 

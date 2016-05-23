@@ -226,8 +226,8 @@ public class FigPoly extends Fig {
 		}
 
 		// dont call calcBounds because width and height are unchanged
-		_x += dx;
-		_y += dy;
+		set_x(getX() + dx);
+		set_y(getY() + dy);
 		firePropChange("bounds", oldBounds, getBounds());
 	}
 
@@ -535,33 +535,33 @@ public class FigPoly extends Fig {
 	/** Paint the FigPoly on the given Graphics */
 	public void paint(Graphics g) {
 
-		if (_filled && _fillColor != null) {
+		if (getFilled() && getFillColor() != null) {
 			if (g instanceof Graphics2D) {
 				Graphics2D g2 = (Graphics2D) g;
 				// TODO: Move this out of paint for performance
 				Shape poly = new Polygon(getXs(), getYs(), getNumPoints());
 				Rectangle bb = poly.getBounds();
 				Paint oldPaint = g2.getPaint();
-				g2.setPaint(getDefaultPaint(_fillColor, _lineColor, bb.x, bb.y, bb.width, bb.height));
+				g2.setPaint(getDefaultPaint(getFillColor(), getLineColor(), bb.x, bb.y, bb.width, bb.height));
 				g2.fill(poly);
 				g2.setPaint(oldPaint);
 			} else {
-				g.setColor(_fillColor);
+				g.setColor(getFillColor());
 				g.fillPolygon(_xpoints, _ypoints, _npoints);
 			}
 		}
 
-		if (getLineWidth() > 0 && _lineColor != null) {
-			g.setColor(_lineColor);
+		if (getLineWidth() > 0 && getLineColor() != null) {
+			g.setColor(getLineColor());
 			if (g instanceof Graphics2D) {
 				float[] dashes = null;
 				if (getDashed()) {
-					dashes = _dashes;
+					dashes = getDashes();
 				}
 				drawPolyLine((Graphics2D) g, (float) getLineWidth(), _npoints, _xpoints, _ypoints, dashes, 0f);
 			} else {
 				if (getDashed()) {
-					drawDashedPerimeter(g, getLineWidth(), _npoints, _xpoints, _ypoints, _dashes, _dashPeriod);
+					drawDashedPerimeter(g, getLineWidth(), _npoints, _xpoints, _ypoints, getDashes(), getDashPeriod());
 				} else {
 					g.drawPolyline(_xpoints, _ypoints, _npoints);
 				}
@@ -678,14 +678,14 @@ public class FigPoly extends Fig {
 		if (w > 0 && h > 0) {
 
 			for (int i = 0; i < _npoints; ++i) {
-				_xpoints[i] = x + ((_xpoints[i] - _x) * w) / _w;
-				_ypoints[i] = y + ((_ypoints[i] - _y) * h) / _h;
+				_xpoints[i] = x + ((_xpoints[i] - getX()) * w) / getWidth();
+				_ypoints[i] = y + ((_ypoints[i] - getY()) * h) / getHeight();
 			}
 
-			_x = x;
-			_y = y;
-			_w = w;
-			_h = h;
+			set_x(x);
+			set_y(y);
+			set_w(w);
+			set_h(h);
 			firePropChange("bounds", oldBounds, getBounds());
 		}
 	}
@@ -851,9 +851,9 @@ public class FigPoly extends Fig {
 		// needs-more-work: could be faster, dont alloc polygon
 		Rectangle polyBounds = getPolygon().getBounds();
 
-		_x = polyBounds.x;
-		_y = polyBounds.y;
-		_w = polyBounds.width;
-		_h = polyBounds.height;
+		set_x(polyBounds.x);
+		set_y(polyBounds.y);
+		set_w(polyBounds.width);
+		set_h(polyBounds.height);
 	}
 } /* end class FigPoly */

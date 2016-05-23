@@ -213,10 +213,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 	 */
 	public FigText(int x, int y, int w, int h, Color textColor, String familyName, int fontSize, boolean expandOnly) {
 		super(x, y, w, h);
-		_x = x;
-		_y = y;
-		_w = w;
-		_h = h;
+		set_x(x);
+		set_y(y);
+		set_w(w);
+		set_h(h);
 		_textColor = textColor;
 		_font = new Font(familyName, Font.PLAIN, fontSize);
 		_justification = JUSTIFY_CENTER;
@@ -236,10 +236,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 	/** Construct a new FigText with the given position and size */
 	public FigText(int x, int y, int w, int h) {
 		super(x, y, w, h);
-		_x = x;
-		_y = y;
-		_w = w;
-		_h = h;
+		set_x(x);
+		set_y(y);
+		set_w(w);
+		set_h(h);
 		_justification = JUSTIFY_CENTER;
 		_curText = "";
 		_expandOnly = false;
@@ -251,10 +251,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 	 */
 	public FigText(int x, int y, int w, int h, boolean expandOnly) {
 		super(x, y, w, h);
-		_x = x;
-		_y = y;
-		_w = w;
-		_h = h;
+		set_x(x);
+		set_y(y);
+		set_w(w);
+		set_h(h);
 		_justification = JUSTIFY_CENTER;
 		_curText = "";
 		_expandOnly = expandOnly;
@@ -760,7 +760,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 		 */
 		if (isFilled()) {
 			g.setColor(getFillColor());
-			g.fillRect(_x, _y, _w, _h);
+			g.fillRect(getX(), getY(), getWidth(), getHeight());
 		}
 
 		/*
@@ -772,14 +772,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 			// test linewidth
 			if (lineWidth == 1) {
 				// paint single rectangle
-				g.drawRect(_x, _y, _w - lineWidth, _h - lineWidth);
+				g.drawRect(getX(), getY(), getWidth() - lineWidth, getHeight() - lineWidth);
 			} else {
 				// paint 4 rectangles without overlap,
 				// just like Graphics.drawRect():
-				g.fillRect(_x, _y, _w - lineWidth, lineWidth);
-				g.fillRect(_x + _w - lineWidth, _y, lineWidth, _h - lineWidth);
-				g.fillRect(_x + lineWidth, _y + _h - lineWidth, _w - lineWidth, lineWidth);
-				g.fillRect(_x, _y + lineWidth, lineWidth, _h - lineWidth);
+				g.fillRect(getX(), getY(), getWidth() - lineWidth, lineWidth);
+				g.fillRect(getX() + getWidth() - lineWidth, getY(), lineWidth, getHeight() - lineWidth);
+				g.fillRect(getX() + lineWidth, getY() + getHeight() - lineWidth, getWidth() - lineWidth, lineWidth);
+				g.fillRect(getX(), getY() + lineWidth, lineWidth, getHeight() - lineWidth);
 			}
 		}
 
@@ -789,7 +789,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 		 */
 		if (_textFilled) {
 			g.setColor(textFillColor);
-			g.fillRect(_x + lineWidth, _y + lineWidth, _w - 2 * lineWidth, _h - 2 * lineWidth);
+			g.fillRect(getX() + lineWidth, getY() + lineWidth, getWidth() - 2 * lineWidth, getHeight() - 2 * lineWidth);
 		}
 
 		/* Paint the text: */
@@ -801,10 +801,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 		int chunkH = _fm.getHeight() + _lineSpacing;
 
 		g.setColor(_textColor);
-		int chunkX = _x + _leftMargin + lineWidth;
+		int chunkX = getX() + _leftMargin + lineWidth;
 		// The first line of text has its "baseline" y coordinate at the
 		// "ascent" position
-		int chunkY = _y + _topMargin + lineWidth + _fm.getAscent();
+		int chunkY = getY() + _topMargin + lineWidth + _fm.getAscent();
 
 		lines = new StringTokenizer(_curText, "" + HARD_RETURN + SOFT_RETURN, true);
 		while (lines.hasMoreTokens() && chunkY <= getHeight() + getY() + _topMargin - _botMargin) {
@@ -814,10 +814,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 			case JUSTIFY_LEFT:
 				break;
 			case JUSTIFY_CENTER:
-				chunkX = _x + _leftMargin + (_w - _leftMargin - _rightMargin - chunkW) / 2;
+				chunkX = getX() + _leftMargin + (getWidth() - _leftMargin - _rightMargin - chunkW) / 2;
 				break;
 			case JUSTIFY_RIGHT:
-				chunkX = _x + _w - lineWidth - _rightMargin - chunkW;
+				chunkX = getX() + getWidth() - lineWidth - _rightMargin - chunkW;
 				break;
 			}
 			if (isHardReturn(curLine) || isSoftReturn(curLine)) {
@@ -1109,19 +1109,19 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 				break;
 
 			case JUSTIFY_CENTER:
-				if (_w < overallW)
-					_x -= (overallW - _w) / 2;
+				if (getWidth() < overallW)
+					set_x(getX() - (overallW - getWidth()) / 2);
 				break;
 
 			case JUSTIFY_RIGHT:
-				if (_w < overallW)
-					_x -= (overallW - _w);
+				if (getWidth() < overallW)
+					set_x(getX() - (overallW - getWidth()));
 				break;
 			}
 		}
 
-		_w = _expandOnly ? Math.max(_w, overallW) : overallW;
-		_h = _expandOnly ? Math.max(_h, overallH) : overallH;
+		set_w(_expandOnly ? Math.max(getWidth(), overallW) : overallW);
+		set_h(_expandOnly ? Math.max(getHeight(), overallH) : overallH);
 	}
 
 	/**
@@ -1286,7 +1286,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 	}
 
 	protected void setBoundsImpl(int x, int y, int w, int h) {
-		if (_w != w && wordWrap) {
+		if (getWidth() != w && wordWrap) {
 			super.setBoundsImpl(x, y, w, h);
 			_curText = wordWrap(_curText);
 		} else {

@@ -296,14 +296,14 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
 	/** Returns true if any Fig in the group hits the given rect. */
 	public boolean hit(Rectangle r) {
 		int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
-		if (_filled)
+		if (getFilled())
 			return cornersHit > 0;
 		else
 			return cornersHit > 0 && cornersHit < 4;
 	}
 
 	public boolean contains(int x, int y) {
-		return (_x <= x) && (x <= _x + _w) && (_y <= y) && (y <= _y + _h);
+		return (getX() <= x) && (x <= getX() + getWidth()) && (getY() <= y) && (y <= getY() + getHeight());
 	}
 
 	public void setEnclosingFig(Fig f) {
@@ -597,7 +597,7 @@ public class FigNode extends FigGroup implements Highlightable, GraphNode, Mouse
 		// System.out.println("[FigNode] paint: owner = " + getOwner());
 		if (_highlight) {
 			Color lineColor = Globals.getPrefs().getHighlightColor();
-			drawRect(g, false, null, 3, lineColor, _x - 5, _y - 5, _w + 9, _h + 8, false, _dashes, _dashPeriod);
+			drawRect(g, false, null, 3, lineColor, getX() - 5, getY() - 5, getWidth() + 9, getHeight() + 8, false, getDashes(), getDashPeriod());
 		}
 	}
 

@@ -73,7 +73,7 @@ public class FigRect extends Fig {
 	/** Paint this FigRect */
 	public void paint(final Graphics g) {
 		drawRect(g, isFilled(), getFillColor(), getLineWidth(), getLineColor(), getX(), getY(), getWidth(), getHeight(),
-				getDashed(), _dashes, _dashPeriod);
+				getDashed(), getDashes(), getDashPeriod());
 	}
 
 	public void appendSvg(StringBuffer sb) {

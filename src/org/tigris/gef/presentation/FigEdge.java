@@ -170,10 +170,10 @@ public abstract class FigEdge extends Fig implements Highlightable, GraphEdge {
 			res.add(f.getBounds());
 		}
 
-		_x = res.x;
-		_y = res.y;
-		_w = res.width;
-		_h = res.height;
+		set_x(res.x);
+		set_y(res.y);
+		set_w(res.width);
+		set_h(res.height);
 	}
 
 	final public void cleanUp() {

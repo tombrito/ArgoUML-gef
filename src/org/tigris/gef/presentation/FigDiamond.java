@@ -74,10 +74,10 @@ public class FigDiamond extends Fig {
 	 */
 	public List<Point> getGravityPoints() {
 		ArrayList<Point> ret = new ArrayList<Point>(4);
-		ret.add(new Point(_x + _w / 2, _y));
-		ret.add(new Point(_x + _w, _y + _h / 2));
-		ret.add(new Point(_x + _w / 2, _y + _h));
-		ret.add(new Point(_x, _y + _h / 2));
+		ret.add(new Point(getX() + getWidth() / 2, getY()));
+		ret.add(new Point(getX() + getWidth(), getY() + getHeight() / 2));
+		ret.add(new Point(getX() + getWidth() / 2, getY() + getHeight()));
+		ret.add(new Point(getX(), getY() + getHeight() / 2));
 		return ret;
 	}
 
@@ -88,16 +88,16 @@ public class FigDiamond extends Fig {
 	public void paint(Graphics graphicContext) {
 		int xs[] = new int[4];
 		int ys[] = new int[4];
-		xs[0] = _x + _w / 2;
-		ys[0] = _y;
-		xs[1] = _x + _w;
-		ys[1] = _y + _h / 2;
-		xs[2] = _x + _w / 2;
-		ys[2] = _y + _h;
-		xs[3] = _x;
-		ys[3] = _y + _h / 2;
+		xs[0] = getX() + getWidth() / 2;
+		ys[0] = getY();
+		xs[1] = getX() + getWidth();
+		ys[1] = getY() + getHeight() / 2;
+		xs[2] = getX() + getWidth() / 2;
+		ys[2] = getY() + getHeight();
+		xs[3] = getX();
+		ys[3] = getY() + getHeight() / 2;
 		Graphics g = graphicContext;
-		if (_filled && getFillColor() != null) {
+		if (getFilled() && getFillColor() != null) {
 			g.setColor(getFillColor());
 			g.fillPolygon(xs, ys, 4);
 		}
