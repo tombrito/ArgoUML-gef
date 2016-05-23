@@ -336,10 +336,6 @@ public class Diagram implements Serializable, GraphListener {
 		return result;
 	}
 
-	public Fig hit(Rectangle r) {
-		return layer.hit(r);
-	}
-
 	public Enumeration elementsIn(Rectangle r) {
 		return layer.elementsIn(r);
 	}

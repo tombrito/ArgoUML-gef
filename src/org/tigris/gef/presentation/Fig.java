@@ -65,7 +65,8 @@ import org.tigris.gef.undo.UndoManager;
  * figure. Fig's are Diagram elements that can be placed in any LayerDiagram.
  * Fig's are also used to define the look of FigNodes on NetNodes.
  */
-// TODO couldn't this extend a JavaFX component, with much of this work (like setBoudns) already done?
+// TODO couldn't this extend a JavaFX component, with much of this work (like
+// setBoudns) already done?
 public abstract class Fig implements DiagramElement, Cloneable, Serializable, PropertyChangeListener, PopupGenerator {
 
 	private static final long serialVersionUID = -6374649235011908787L;
@@ -162,11 +163,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	private int _h;
 
 	/**
-	 * Name of the resource being basis to this figs localization.
-	 */
-	private String resource = "";
-
-	/**
 	 * Outline color of fig object.
 	 */
 	private Color _lineColor = Color.black;
@@ -242,22 +238,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 			set_filled(false);
 		}
 
-	}
-
-	/**
-	 * @deprecated Feature removed. It is unrealistic that different Figs will
-	 *             have different locales.
-	 */
-	public void setResource(String resource) {
-		this.resource = resource;
-	}
-
-	/**
-	 * @deprecated Feature removed. It is unrealistic that different Figs will
-	 *             have different locales.
-	 */
-	public String getResource() {
-		return resource;
 	}
 
 	// --------------------------------
@@ -357,12 +337,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 		endTrans();
 	}
 
-	// Only used by PGMLParser
-	final public void initAnnotations() {
-	}
-
-	// end annotation related
-	// -----------------------------------
 	/**
 	 * Add a point to this fig. sub classes should implement. TODO: Why isn't
 	 * this extended by FigEdgePoly?
@@ -472,15 +446,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	public Point getCenter() {
 		Rectangle bbox = getBounds();
 		return new Point(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
-	}
-
-	/**
-	 * @deprecated in 0.11.1 use org.tigris.gef.persistence.pgml.PgmlUtility.
-	 *             getClassNameAndBounds (Fig)
-	 */
-	// USED BY PGML.tee
-	public String classNameAndBounds() {
-		return getClass().getName() + "[" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + "]";
 	}
 
 	public void cleanUp() {
@@ -1053,14 +1018,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	}
 
 	/**
-	 * @deprecated in 0.11.1 us
-	 *             org.tigris.gef.persistence.pgml.PgmlUtility.getDashed(Fig)
-	 */
-	final public int getFilled01() {
-		return getFilled() ? 1 : 0;
-	}
-
-	/**
 	 * USED BY SVG.tee
 	 */
 	public Color getLineColor() {
@@ -1227,14 +1184,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 		return new Dimension(getWidth(), getHeight());
 	}
 
-	/**
-	 * @deprecated in 0.11.1 this should not form part of the API
-	 */
-	// Used in SVG.TEE
-	public String getPrivateData() {
-		return "";
-	}
-
 	/** Returns the size of the Fig. */
 	public Dimension getSize() {
 		return new Dimension(getWidth(), getHeight());
@@ -1266,16 +1215,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 
 	public boolean getUseTrapRect() {
 		return false;
-	}
-
-	/**
-	 * @deprecated use PgmlUtility.visibilityToString(Fig f)
-	 */
-	// USED BY PGML.tee
-	final public int getVisState() {
-		if (isVisible())
-			return 1;
-		return 0;
 	}
 
 	/**
@@ -1340,10 +1279,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 		}
 	}
 
-	@SuppressWarnings("unused")
-	public void insertPoint(int i, int x, int y) {
-	}
-
 	/**
 	 * Reply true if the object intersects the given rectangle. Used for
 	 * selective redrawing and by ModeSelect to select all Figs that are partly
@@ -1353,7 +1288,8 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * with zero height or width are handled correctly.
 	 */
 	public boolean intersects(Rectangle r) {
-		return !((r.x + r.width < getX()) || (r.y + r.height < getY()) || (r.x > getX() + getWidth()) || (r.y > getY() + getHeight()));
+		return !((r.x + r.width < getX()) || (r.y + r.height < getY()) || (r.x > getX() + getWidth())
+				|| (r.y > getY() + getHeight()));
 	}
 
 	/**
@@ -1365,8 +1301,10 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	 * with zero height or width are handled correctly.
 	 */
 	public boolean intersectsPerimeter(Rectangle r) {
-		return (r.intersectsLine(getX(), getY(), getX(), getY() + getHeight()) && r.intersectsLine(getX(), getY() + getHeight(), getX() + getWidth(), getY() + getHeight())
-				&& r.intersectsLine(getX() + getWidth(), getY() + getHeight(), getX() + getWidth(), getY()) && r.intersectsLine(getX() + getWidth(), getY(), getX(), getY()));
+		return (r.intersectsLine(getX(), getY(), getX(), getY() + getHeight())
+				&& r.intersectsLine(getX(), getY() + getHeight(), getX() + getWidth(), getY() + getHeight())
+				&& r.intersectsLine(getX() + getWidth(), getY() + getHeight(), getX() + getWidth(), getY())
+				&& r.intersectsLine(getX() + getWidth(), getY(), getX(), getY()));
 	}
 
 	/**
@@ -1727,15 +1665,6 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 		setPoint(h.index, x, y);
 	}
 
-	/**
-	 * Derived classes should implement this method
-	 * 
-	 * @deprecated in 0.11.1 this should not form part of the API
-	 */
-	@SuppressWarnings("unused")
-	public void setPrivateData(String data) {
-	}
-
 	/** Sets the size of the Fig. Fires property "bounds". */
 	final public void setSize(int w, int h) {
 		setBounds(getX(), getY(), w, h);
@@ -1766,7 +1695,7 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 	protected void set_w(int _w) {
 		this._w = _w;
 	}
-	
+
 	/**
 	 * Set the height of the Fig.
 	 * <p>
@@ -2002,23 +1931,23 @@ public abstract class Fig implements DiagramElement, Cloneable, Serializable, Pr
 		return p;
 	}
 
-	void set_lineColor(Color _lineColor) {
+	private void set_lineColor(Color _lineColor) {
 		this._lineColor = _lineColor;
 	}
 
-	void set_fillColor(Color _fillColor) {
+	private void set_fillColor(Color _fillColor) {
 		this._fillColor = _fillColor;
 	}
 
-	void set_lineWidth(int _lineWidth) {
+	private void set_lineWidth(int _lineWidth) {
 		this._lineWidth = _lineWidth;
 	}
 
-	protected void set_dashes(float[] _dashes) {
+	private void set_dashes(float[] _dashes) {
 		this._dashes = _dashes;
 	}
 
-	protected void set_dashPeriod(int _dashPeriod) {
+	private void set_dashPeriod(int _dashPeriod) {
 		this._dashPeriod = _dashPeriod;
 	}
 
